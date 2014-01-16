@@ -24,6 +24,8 @@ class Sinatra::Application
     # puts exit_code = wait_thr.inspect
     # puts stdin = stdin.inspect
 
+	
+	
     json "test" => {"stdout" => stdout.to_s, "stderr" => stderr.to_s}
   end
 
