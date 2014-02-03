@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/lips/db" VERSION="20140111" COMMENT="XMLDB file for Moodle LIPS module"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="lips" COMMENT="LIPS plugin configuration">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course lips activity belongs to"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="name field for moodle instances"/>
+        <FIELD NAME="intro" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="General introduction of the lips activity"/>
+        <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Format of the intro field (MOODLE, HTML, MARKDOWN...)"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="compile_language" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Programming language use for the compilation"/>
+        <FIELD NAME="language_picture" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="images/default-language.png" SEQUENCE="false" COMMENT="Picture of the language"/>
+        <FIELD NAME="base_code" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Base code that will be use for each program"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="lips_category" COMMENT="Language categories">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="category_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Category name"/>
+        <FIELD NAME="category_documentation" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Category documentation"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_user" COMMENT="User list">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="user_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User name"/>
+        <FIELD NAME="user_first_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User first name"/>
+        <FIELD NAME="user_status" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User status"/>
+        <FIELD NAME="user_rank_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="User rank id"/>
+        <FIELD NAME="user_score" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="User score"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="user_rank_id" TYPE="foreign" FIELDS="user_rank_id" REFTABLE="lips_rank" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_follow" COMMENT="The followed users">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="follow_by" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who decided to follow an other user"/>
+        <FIELD NAME="follow_user" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the followed user"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="follow_by" TYPE="foreign" FIELDS="follow_by" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="follow_user" TYPE="foreign" FIELDS="follow_user" REFTABLE="lips_user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_rank" COMMENT="Possible ranks">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="rank_label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Rank label"/>
+        <FIELD NAME="rank_percentage" TYPE="int" LENGTH="3" NOTNULL="true" SEQUENCE="false" COMMENT="Percentage (of the maximal score that a user can reach) from which a user can receive the rank"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_problem" COMMENT="Problem informations">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="problem_creator_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Creator ID"/>
+        <FIELD NAME="problem_category_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the problem category"/>
+        <FIELD NAME="problem_label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Problem title"/>
+        <FIELD NAME="problem_difficulty_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Problem difficulty"/>
+        <FIELD NAME="problem_preconditions" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Problem preconditions"/>
+        <FIELD NAME="problem_statement" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Problem statement"/>
+        <FIELD NAME="problem_tips" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Problem tips"/>
+        <FIELD NAME="problem_code" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Code to complete"/>
+        <FIELD NAME="problem_unit_tests" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Problem unit tests"/>
+        <FIELD NAME="problem_date" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Timestamp of the problem creation"/>
+        <FIELD NAME="problem_attempts" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Number of attempts"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="problem_creator_id" TYPE="foreign" FIELDS="problem_creator_id" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="problem_category_id" TYPE="foreign" FIELDS="problem_category_id" REFTABLE="lips_category" REFFIELDS="id"/>
+        <KEY NAME="problem_difficulty_id" TYPE="foreign" FIELDS="problem_difficulty_id" REFTABLE="lips_problem" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_problem_similar" COMMENT="Offer a list of similar problems for a given problem">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="problem_similar_main_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the problem for which one we select a similar problem"/>
+        <FIELD NAME="problem_similar_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the similar problem"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="problem_similar_main_id" TYPE="foreign" FIELDS="problem_similar_main_id" REFTABLE="lips_problem" REFFIELDS="id"/>
+        <KEY NAME="problem_similar_id" TYPE="foreign" FIELDS="problem_similar_id" REFTABLE="lips_problem" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_problem_solved" COMMENT="List of the solved problems">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="problem_solved_problem" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the solved problem"/>
+        <FIELD NAME="problem_solved_user" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who solved the problem"/>
+        <FIELD NAME="problem_solved_date" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Timestamp corresponding to the date of the problem resolution"/>
+        <FIELD NAME="problem_solved_solution" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Problem solution"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="problem_solved_problem" TYPE="foreign" FIELDS="problem_solved_problem" REFTABLE="lips_problem" REFFIELDS="id"/>
+        <KEY NAME="problem_solved_user" TYPE="foreign" FIELDS="problem_solved_user" REFTABLE="lips_user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_notification" COMMENT="Notifications">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="notification_user_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who receive the notification"/>
+        <FIELD NAME="notification_type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Notification type"/>
+        <FIELD NAME="notification_date" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Timestamp corresponding to the date of the notification creation"/>
+        <FIELD NAME="notification_from" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who emit the notification"/>
+        <FIELD NAME="notification_to" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID of a user in relation to the notification"/>
+        <FIELD NAME="notification_problem" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID of a problem in relation to the notification"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="notification_user_id" TYPE="foreign" FIELDS="notification_user_id" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="notification_from" TYPE="foreign" FIELDS="notification_from" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="notification_to" TYPE="foreign" FIELDS="notification_to" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="notification_problem" TYPE="foreign" FIELDS="notification_problem" REFTABLE="lips_problem" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_challenge" COMMENT="Challenges">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="challenge_from" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who emit the challenge"/>
+        <FIELD NAME="challenge_to" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who receive the challenge"/>
+        <FIELD NAME="challenge_problem" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Problem ID"/>
+        <FIELD NAME="challenge_date" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Timestamp corresponding to sending date of the challenge"/>
+        <FIELD NAME="challenge_state" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Challenge state"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="challenge_from" TYPE="foreign" FIELDS="challenge_from" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="challenge_to" TYPE="foreign" FIELDS="challenge_to" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="challenge_problem" TYPE="foreign" FIELDS="challenge_problem" REFTABLE="lips_problem" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_difficulty" COMMENT="Difficulties list">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="difficulty_label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Difficulty label"/>
+        <FIELD NAME="difficulty_points" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Number of points granted when a problem of this difficulty is solved"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_achievement" COMMENT="Achievements">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="achievement_label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Achievement label"/>
+        <FIELD NAME="achievement_desc" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Achievement description"/>
+        <FIELD NAME="achievement_picture" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="images/default-achievement.png" SEQUENCE="false" COMMENT="Achievement picture"/>
+        <FIELD NAME="achievement_category" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the category in relation to the achievement"/>
+        <FIELD NAME="achievement_percent" TYPE="int" LENGTH="3" NOTNULL="true" SEQUENCE="false" COMMENT="Percentage of progress to receive the achievement"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="achievement_category" TYPE="foreign" FIELDS="achievement_category" REFTABLE="lips_category" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_achievement_user" COMMENT="User achievements">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="au_user_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who received the achievement"/>
+        <FIELD NAME="au_achievement_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the achievement received by the user"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="au_user_id" TYPE="foreign" FIELDS="au_user_id" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="au_achievement_id" TYPE="foreign" FIELDS="au_achievement_id" REFTABLE="lips_achievement" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
