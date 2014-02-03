@@ -6,6 +6,7 @@
  * Time: 22:56
  */
 require_once($CFG->dirroot . '/tag/lib.php');
+require_once($CFG->dirroot . '/mod/lips/locallib.php');
 
 abstract class page_view  {
 
@@ -101,6 +102,7 @@ class page_admin extends page_view {
         }
 
         echo '<h1>Administration</h1>';
+
         // Configure language
         echo '<h2>' . get_string('administration_language_configure_title', 'lips') . '</h2>';
         echo '<p>' . get_string('administration_language_configure_msg', 'lips') . '</p>';
@@ -122,7 +124,6 @@ class page_admin extends page_view {
 
         $configureCodeForm = new mod_lips_configure_code_form("test.html", null, 'post');
         $configureCodeForm->display();
-
     }
 }
 

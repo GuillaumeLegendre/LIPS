@@ -71,10 +71,10 @@ function get_category_details($id) {
  * @return string The language picture
  */
 function get_language_picture() {
-    global $DB;
+	global $DB;
 
-    $id = optional_param('id', 0, PARAM_INT);
+	$id = optional_param('id', 0, PARAM_INT);
     $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
 
-    return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
+	return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
 }
