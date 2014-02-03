@@ -71,8 +71,8 @@ $PAGE->set_context($context);
 
 switch($view) {
     case "index" :
-        $viewPage=new page_index($cm);
-        break;
+    $viewPage=new page_index($cm);
+    break;
 
     case "administration" :
         $viewPage=new page_admin($cm);
@@ -89,9 +89,12 @@ switch($view) {
     case "users" :
         $viewPage=new page_users($cm);
         break;
+    case "category" :
+        $idCategory  = optional_param('categoryId', 0, PARAM_INT);
+        $viewPage=new page_category($cm,$idCategory);
+        break;
     default :
         $viewPage=new page_index($cm);
 }
 
 $viewPage->display();
-

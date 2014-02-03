@@ -20,21 +20,21 @@ abstract class page_view  {
         $this->lipsoutput = $PAGE->get_renderer('mod_lips');
     }
 
-    function displayHeader() {
+    function display_header() {
         global $OUTPUT;
         echo $OUTPUT->header();
         echo $this->lipsoutput->tabs($this->view);
     }
 
     function display() {
-        $this->displayHeader();
+        $this->display_header();
         $this->display_content();
-        $this->displayFooter();
+        $this->display_footer();
     }
 
     abstract protected function display_content();
 
-    function displayFooter() {
+    function display_footer() {
         global $OUTPUT;
         echo $OUTPUT->footer();
     }
@@ -51,11 +51,7 @@ class page_list_categories extends page_view {
         require_once "$CFG->libdir/tablelib.php";
         require_once(dirname(__FILE__).'/categories_table.php');
         $table=new categories_table("mdl_lips_category");
-        $table->set_sql("*","mdl_lips_category","1");
-        $table->define_baseurl("http://localhost/moodle/mod/lips/view.php?id=6&view=problems");
-        $table->define_headers(array("Catégorie","Documentation",""));
-        $table->define_columns(array("category_name","category_documentation","actions"));
-        $table->sortable(true);
+
         $table->out(10,true);
     }
 }
@@ -82,7 +78,8 @@ class page_admin extends page_view {
         global $CFG;
         echo "<h1>Administration</h1>";
         require_once(dirname(__FILE__).'/administration_form.php');
-        $mform = new mod_lips_administration_form("http://localhost/moodle/mod/lips/view.php?id=6&view=administration", null,
+        require_once(dirname(__FILE__) . '/mod_lips_configure_form.php');
+        $mform = new mod_lips_administration_form(new moodle_url('view.php',array('id' => $this->cm->id, 'view'=>$this->view)), null,
             'post');
         /* Donne le focus au premier élément du formulaire. */
         $mform->focus();
@@ -102,6 +99,30 @@ class page_admin extends page_view {
             //displays the form
             $mform->display();
         }
+
+        echo '<h1>Administration</h1>';
+        // Configure language
+        echo '<h2>' . get_string('administration_language_configure_title', 'lips') . '</h2>';
+        echo '<p>' . get_string('administration_language_configure_msg', 'lips') . '</p>';
+
+        $configureLanguageForm = new mod_lips_configure_language_form("test.html", null, 'post');
+        $configureLanguageForm->display();
+
+        // Modify language picture
+        echo '<h2>' . get_string('administration_language_image_title', 'lips') . '</h2>';
+        echo '<p>' . get_string('administration_language_image_msg', 'lips') . '</p>';
+        echo '<center><img src="' . get_language_picture() . '" width="64px" height="64px"/></center>';
+
+        $configurePictureForm = new mod_lips_configure_picture_form("test.html", null, 'post');
+        $configurePictureForm->display();
+
+        // Language base code
+        echo '<h2>' . get_string('administration_language_code_title', 'lips') . '</h2>';
+        echo '<p>' . get_string('administration_language_code_msg', 'lips') . '</p>';
+
+        $configureCodeForm = new mod_lips_configure_code_form("test.html", null, 'post');
+        $configureCodeForm->display();
+
     }
 }
 
@@ -112,11 +133,12 @@ class page_users extends page_view {
     }
 
     function display_content() {
+
         global $CFG,$OUTPUT;
         require "$CFG->libdir/tablelib.php";
         $table=new table_sql("mdl_lips_user");
         $table->set_sql("*","mdl_lips_user","1");
-        $table->define_baseurl("http://localhost/moodle/mod/lips/view.php?id=6&view=problems");
+        $table->define_baseurl(new moodle_url('view.php',array('id' => $this->cm->id, 'view'=>$this->view)));
         $table->define_headers(array("Nom","Prenom"));
         $table->define_columns(array("user_name","user_first_name"));
         $table->sortable(true);
@@ -136,7 +158,7 @@ class page_profil extends page_view {
 
     function display_content() {
         global $OUTPUT,$USER,$DB;
-        $id=$DB->get_record('course', array('id' => $this->cm->course), '*', MUST_EXIST);;
+        $id=$DB->get_record('course', array('id' => $this->cm->course), '*', MUST_EXIST);
         $avatar = new user_picture($USER);
         $avatar->courseid = $this->cmId;
         $avatar->link = true;
@@ -144,4 +166,20 @@ class page_profil extends page_view {
         echo $USER->firstname." ".$USER->lastname;
     }
 
+}
+
+class page_category extends page_view {
+    private $id;
+
+    function  __construct($cm,$id) {
+        parent::__construct($cm,"category");
+        $this->id=$id;
+    }
+
+    function display_content() {
+        echo "<h1>".get_category_details($this->id)->category_name."</h1>";
+        require_once(dirname(__FILE__).'/problems_table.php');
+        $table=new problems_table("mdl_lips_problem");
+        $table->out(10,true);
+    }
 }

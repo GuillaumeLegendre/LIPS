@@ -37,3 +37,44 @@ defined('MOODLE_INTERNAL') || die();
 //function lips_do_something_useful(array $things) {
 //    return new stdClass();
 //}
+
+/**
+ * Get the tab name corresponding to the view name in parameter.
+ *
+ * @return the tab name corresponding to the view name in parameter.
+ */
+function convert_active_tab($activeTab) {
+    $tabs=array(
+        "index"=>"index",
+        "administration"=>"administration",
+        "problems"=>"problems",
+        "profil"=>"profil",
+        "users"=>"users",
+        "category"=>"problems",
+    );
+    return $tabs[$activeTab];
+}
+
+/**
+ * Get details of a specific category.
+ *
+ * @return an array containing the etails of a category.
+ */
+function get_category_details($id) {
+    global $DB;
+    return $DB->get_record('lips_category', array('id' => $id), '*', MUST_EXIST);
+}
+
+/**
+ * Get the language picture
+ *
+ * @return string The language picture
+ */
+function get_language_picture() {
+    global $DB;
+
+    $id = optional_param('id', 0, PARAM_INT);
+    $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
+
+    return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
+}

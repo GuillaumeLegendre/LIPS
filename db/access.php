@@ -48,8 +48,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-/***************************** remove these comment marks and modify the code as needed
-
 	'mod/lips:addinstance' => array(
 			'riskbitmask' => RISK_XSS,
 	
@@ -62,12 +60,10 @@ $capabilities = array(
 			'clonepermissionsfrom' => 'moodle/course:manageactivities'
 	),
 
-    'mod/lips:view' => array(
+    'mod/lips:administration' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
-            'guest' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'admin' => CAP_ALLOW
@@ -82,6 +78,5 @@ $capabilities = array(
             'student' => CAP_ALLOW
         )
     ),
-******************************/
 );
 
