@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * English strings for lips
  *
@@ -23,18 +22,53 @@
  * if you like, and it can span multiple lines.
  *
  * @package    mod_lips
- * @copyright  2011 Your Name
+ * @copyright  2014 LIPS
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['modulename'] = 'lips';
-$string['modulenameplural'] = 'lipss';
+/*--------------------------------------------------
+ * Module informations
+ *------------------------------------------------*/
+$string['modulename'] = 'LIPS';
+$string['modulenameplural'] = 'LIPS';
 $string['modulename_help'] = 'Use the lips module for... | The lips module allows...';
 $string['lipsfieldset'] = 'Custom example fieldset';
-$string['lipsname'] = 'lips name';
+$string['lipsname'] = 'LIPS';
 $string['lipsname_help'] = 'This is the content of the help tooltip associated with the lipsname field. Markdown syntax is supported.';
-$string['lips'] = 'lips';
+$string['lips'] = 'LIPS';
 $string['pluginadministration'] = 'lips administration';
-$string['pluginname'] = 'lips';
+$string['pluginname'] = 'LIPS';
+
+/*--------------------------------------------------
+ * Constants
+ *------------------------------------------------*/
+$string['modify'] = 'Modify';
+
+/*--------------------------------------------------
+ * Tabs
+ *------------------------------------------------*/
+$string['index'] = 'Index';
+$string['problems'] = 'Problems';
+$string['users'] = 'Users';
+$string['rank'] = 'Rank';
+$string['profile'] = 'Profile';
+$string['administration'] = 'Administration';
+
+/*--------------------------------------------------
+ * Administration
+ *------------------------------------------------*/
+
+// Language
+$string['administration_language_configure_title'] = 'Configure language';
+$string['administration_language_configure_msg'] = 'Select the language in which you want to compile.';
+$string['administration_language_image_title'] = 'Picture';
+$string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.';
+$string['administration_language_code_title'] = 'Base code';
+$string['administration_language_code_msg'] = 'Enter the base used for each compilation.<br/>Before the compilation :<ul><li>The <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> tag will be replaced by the "<strong>Import libaries</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> tag will be replace by the "<strong>Code complete</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> tag will be replaced by the "<strong>Unit tests</strong>" content.</li></ul>';
+$string['administration_language_form_select'] = 'Programming language';
+$string['administration_language_form_select_error'] = 'You must select a language';
+$string['administration_language_form_file'] = 'Select the picture';
+$string['administration_language_form_file_error'] = 'You must select a picture';
+$string['administration_language_form_area_error'] = 'You must select a picture';

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/lips/db" VERSION="20140111" COMMENT="XMLDB file for Moodle LIPS module"
+<XMLDB PATH="mod/lips/db" VERSION="20140112" COMMENT="XMLDB file for Moodle LIPS module"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -27,47 +27,13 @@
     <TABLE NAME="lips_category" COMMENT="Language categories">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="id_language" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="category_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Category name"/>
         <FIELD NAME="category_documentation" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Category documentation"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="lips_user" COMMENT="User list">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="user_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User name"/>
-        <FIELD NAME="user_first_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User first name"/>
-        <FIELD NAME="user_status" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User status"/>
-        <FIELD NAME="user_rank_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="User rank id"/>
-        <FIELD NAME="user_score" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="User score"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="user_rank_id" TYPE="foreign" FIELDS="user_rank_id" REFTABLE="lips_rank" REFFIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="lips_follow" COMMENT="The followed users">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="follow_by" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who decided to follow an other user"/>
-        <FIELD NAME="follow_user" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the followed user"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="follow_by" TYPE="foreign" FIELDS="follow_by" REFTABLE="lips_user" REFFIELDS="id"/>
-        <KEY NAME="follow_user" TYPE="foreign" FIELDS="follow_user" REFTABLE="lips_user" REFFIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="lips_rank" COMMENT="Possible ranks">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="rank_label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Rank label"/>
-        <FIELD NAME="rank_percentage" TYPE="int" LENGTH="3" NOTNULL="true" SEQUENCE="false" COMMENT="Percentage (of the maximal score that a user can reach) from which a user can receive the rank"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="id_language" TYPE="foreign" FIELDS="id_language" REFTABLE="lips" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="lips_problem" COMMENT="Problem informations">
@@ -116,6 +82,42 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="problem_solved_problem" TYPE="foreign" FIELDS="problem_solved_problem" REFTABLE="lips_problem" REFFIELDS="id"/>
         <KEY NAME="problem_solved_user" TYPE="foreign" FIELDS="problem_solved_user" REFTABLE="lips_user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_user" COMMENT="User list">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="user_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User name"/>
+        <FIELD NAME="user_first_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User first name"/>
+        <FIELD NAME="user_status" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User status"/>
+        <FIELD NAME="user_rank_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="User rank id"/>
+        <FIELD NAME="user_score" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="User score"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="user_rank_id" TYPE="foreign" FIELDS="user_rank_id" REFTABLE="lips_rank" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_follow" COMMENT="The followed users">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="follow_by" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who decided to follow an other user"/>
+        <FIELD NAME="follow_user" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the followed user"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="follow_by" TYPE="foreign" FIELDS="follow_by" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="follow_user" TYPE="foreign" FIELDS="follow_user" REFTABLE="lips_user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_rank" COMMENT="Possible ranks">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="rank_label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Rank label"/>
+        <FIELD NAME="rank_percentage" TYPE="int" LENGTH="3" NOTNULL="true" SEQUENCE="false" COMMENT="Percentage (of the maximal score that a user can reach) from which a user can receive the rank"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="lips_notification" COMMENT="Notifications">

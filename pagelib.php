@@ -6,6 +6,7 @@
  * Time: 22:56
  */
 require_once($CFG->dirroot . '/tag/lib.php');
+require_once($CFG->dirroot . '/mod/lips/locallib.php');
 
 abstract class page_view  {
 
@@ -80,28 +81,33 @@ class page_admin extends page_view {
 
     function display_content() {
         global $CFG;
-        echo "<h1>Administration</h1>";
-        require_once(dirname(__FILE__).'/administration_form.php');
-        $mform = new mod_lips_administration_form("http://localhost/moodle/mod/lips/view.php?id=6&view=administration", null,
-            'post');
-        /* Donne le focus au premier élément du formulaire. */
-        $mform->focus();
-        //Form processing and displaying is done here
-        if ($mform->is_cancelled()) {
-            //Handle form cancel operation, if cancel button is present on form
-        } else if ($fromform = $mform->get_data()) {
-            global $DB;
-            unset($fromform->submitbutton);
-            $DB->insert_record("lips_category", $fromform);
-            echo "Category created";
-        } else {
-            // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-            // or on the first display of the form.
 
-            //Set default data (if any)
-            //displays the form
-            $mform->display();
-        }
+        // Form classes
+        require_once(dirname(__FILE__) . '/mod_lips_configure_form.php');
+
+        echo '<h1>Administration</h1>';
+
+        // Configure language
+        echo '<h2>' . get_string('administration_language_configure_title', 'lips') . '</h2>';
+        echo '<p>' . get_string('administration_language_configure_msg', 'lips') . '</p>';
+
+        $configureLanguageForm = new mod_lips_configure_language_form("test.html", null, 'post');
+        $configureLanguageForm->display();
+
+        // Modify language picture
+        echo '<h2>' . get_string('administration_language_image_title', 'lips') . '</h2>';
+        echo '<p>' . get_string('administration_language_image_msg', 'lips') . '</p>';
+        echo '<center><img src="' . get_language_picture() . '" width="64px" height="64px"/></center>';
+
+        $configurePictureForm = new mod_lips_configure_picture_form("test.html", null, 'post');
+        $configurePictureForm->display();
+
+        // Language base code
+        echo '<h2>' . get_string('administration_language_code_title', 'lips') . '</h2>';
+        echo '<p>' . get_string('administration_language_code_msg', 'lips') . '</p>';
+
+        $configureCodeForm = new mod_lips_configure_code_form("test.html", null, 'post');
+        $configureCodeForm->display();
     }
 }
 

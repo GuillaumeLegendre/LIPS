@@ -37,3 +37,17 @@ defined('MOODLE_INTERNAL') || die();
 //function lips_do_something_useful(array $things) {
 //    return new stdClass();
 //}
+
+/**
+ * Get the language picture
+ *
+ * @return string The language picture
+ */
+function get_language_picture() {
+	global $DB;
+
+	$id = optional_param('id', 0, PARAM_INT);
+    $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
+
+	return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
+}
