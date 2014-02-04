@@ -78,3 +78,8 @@ function get_language_picture() {
 
     return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
 }
+
+function delete_category($id) {
+    global $DB;
+    $DB->delete_records("lips_category", array("id" => $id));
+}

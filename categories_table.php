@@ -1,37 +1,37 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mickael
- * Date: 07/01/14
- * Time: 20:24
- */
 global $CFG;
-require_once "$CFG->libdir/tablelib.php";
-require_once "$CFG->libdir/outputrenderers.php";
+require_once("$CFG->libdir/tablelib.php");
+require_once("$CFG->libdir/outputrenderers.php");
 
 
-class categories_table extends table_sql
-{
+class categories_table extends table_sql {
+    private $cm;
 
-    function  __construct(){
-        global $PAGE;
-        parent::__construct("mdl_lips_problem");
-        $this->set_sql("*", "mdl_lips_category", "1");
-        $this->define_baseurl(new moodle_url('view.php', array('id' => $PAGE->cm->id, 'view' => "problems")));
-        $this->define_headers(array("Catégorie", "Documentation", ""));
-        $this->define_columns(array("category_name", "category_documentation", "actions"));
+    function  __construct($cm) {
+        parent::__construct("mdl_lips_category");
+        $this->cm = $cm;
+        $this->set_sql("mlc.id, category_name, category_documentation, count(mlp.id) AS category_problems", "mdl_lips_category mlc LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id", "1");
+        $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "problems")));
+        $context = context_module::instance($cm->id);
+        if (has_capability('mod/lips:administration', $context)) {
+            $this->define_headers(array("Catégorie", "Nombre de problèmes", ""));
+            $this->define_columns(array("category_name", "category_problems", "actions"));
+        } else {
+            $this->define_headers(array("Catégorie", "Nombre de problèmes"));
+            $this->define_columns(array("category_name", "category_problems"));
+        }
         $this->sortable(true);
     }
 
     function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE;
         if ($colname == "category_name") {
-            $url = new action_link(new moodle_url('view.php', array('id' => $PAGE->cm->id, 'view' => 'category', 'categoryId' => $attempt->id)), $attempt->category_name);
+            $url = new action_link(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'category', 'categoryId' => $attempt->id)), $attempt->category_name);
             return $OUTPUT->render($url);
         }
 
         if ($colname == "actions") {
-            return $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $PAGE->cm->id, 'action' => 'editCategory', 'categoryId' => $attempt->id)), new pix_icon("t/edit", "edit")) . " " . $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $PAGE->cm->id, 'action' => 'deleteCategory', 'categoryId' => $attempt->id)), new pix_icon("t/delete", "delete"));
+            return $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $this->cm->id, 'action' => 'editCategory', 'categoryId' => $attempt->id, "originV" => "problems")), new pix_icon("t/edit", "edit")) . " " . $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $PAGE->cm->id, 'action' => 'deleteCategory', 'categoryId' => $attempt->id, "originV" => "problems")), new pix_icon("t/delete", "delete"));
         }
         return null;
     }

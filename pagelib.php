@@ -52,8 +52,7 @@ class page_list_categories extends page_view
         global $CFG;
         require_once("$CFG->libdir/tablelib.php");
         require_once(dirname(__FILE__) . '/categories_table.php');
-        $table = new categories_table("mdl_lips_category");
-
+        $table = new categories_table($this->cm);
         $table->out(10, true);
     }
 }
