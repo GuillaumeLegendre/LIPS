@@ -10,7 +10,8 @@ class categories_table extends table_sql {
     function  __construct($cm) {
         parent::__construct("mdl_lips_category");
         $this->cm = $cm;
-        $this->set_sql("mlc.id, category_name, category_documentation, count(mlp.id) AS category_problems", "mdl_lips_category mlc LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id", "1");
+        $this->set_sql("mlc.id, category_name, category_documentation, count(mlp.id) AS category_problems", "mdl_lips_category mlc LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id","1=1 GROUP BY mlc.id HAVING COUNT( mlc.id ) >0");
+        $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_category mlc LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id");
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "problems")));
         $context = context_module::instance($cm->id);
         if (has_capability('mod/lips:administration', $context)) {
