@@ -28,26 +28,26 @@
 
 /// (Replace lips with the name of your module and remove this line)
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/lib.php');
-require_once(dirname(__FILE__).'/pagelib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/lib.php');
+require_once(dirname(__FILE__) . '/pagelib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
-$n  = optional_param('n', 0, PARAM_INT);  // lips instance ID - it should be named as the first character of the module
-$view  = optional_param('view', 0, PARAM_TEXT);  // lips instance ID - it should be named as the first character of the module
-if(!$view) {
-    $view="index";
+$n = optional_param('n', 0, PARAM_INT); // lips instance ID - it should be named as the first character of the module
+$view = optional_param('view', 0, PARAM_TEXT); // lips instance ID - it should be named as the first character of the module
+if (!$view) {
+    $view = "index";
 }
 
 
 if ($id) {
-    $cm         = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
-    $course     = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $lips  = $DB->get_record('lips', array('id' => $cm->instance), '*', MUST_EXIST);
-} elseif ($n) {
-    $lips  = $DB->get_record('lips', array('id' => $n), '*', MUST_EXIST);
-    $course     = $DB->get_record('course', array('id' => $lips->course), '*', MUST_EXIST);
-    $cm         = get_coursemodule_from_instance('lips', $lips->id, $course->id, false, MUST_EXIST);
+    $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+    $lips = $DB->get_record('lips', array('id' => $cm->instance), '*', MUST_EXIST);
+} else if ($n) {
+    $lips = $DB->get_record('lips', array('id' => $n), '*', MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $lips->course), '*', MUST_EXIST);
+    $cm = get_coursemodule_from_instance('lips', $lips->id, $course->id, false, MUST_EXIST);
 } else {
     error('You must specify a course_module ID or an instance ID');
 }
@@ -57,44 +57,35 @@ $context = context_module::instance($cm->id);
 
 add_to_log($course->id, 'lips', 'view', "view.php?id={$cm->id}", $lips->name, $cm->id);
 
-/// Print the page header
-
 $PAGE->set_url('/mod/lips/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($lips->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
-// other things you may want to set - remove if not needed
-//$PAGE->set_cacheable(false);
-//$PAGE->set_focuscontrol('some-html-id');
-//$PAGE->add_body_class('lips-'.$somevar);
 
+$viewpage = new page_index($cm);
 
-switch($view) {
-    case "index" :
-    $viewPage=new page_index($cm);
-    break;
-
+switch ($view) {
     case "administration" :
-        $viewPage=new page_admin($cm);
+        if (has_capability('mod/lips:administration', $context)) {
+            $viewpage = new page_admin($cm);
+        }
         break;
-
     case "problems" :
-        $viewPage=new page_list_categories($cm);
+        $viewpage = new page_list_categories($cm);
         break;
-
     case "profil" :
-        $viewPage=new page_profil($cm,$id);
+        $viewpage = new page_profil($cm, $id);
         break;
 
     case "users" :
-        $viewPage=new page_users($cm);
+        $viewpage = new page_users($cm);
         break;
     case "category" :
-        $idCategory  = optional_param('categoryId', 0, PARAM_INT);
-        $viewPage=new page_category($cm,$idCategory);
+        $idcategory = optional_param('categoryId', 0, PARAM_INT);
+        $viewpage = new page_category($cm, $idcategory);
         break;
     default :
-        $viewPage=new page_index($cm);
+        $viewpage = new page_index($cm);
 }
 
-$viewPage->display();
+$viewpage->display();

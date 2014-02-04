@@ -46,11 +46,14 @@ defined('MOODLE_INTERNAL') || die();
  * @return mixed true if the feature is supported, null if unknown
  */
 function lips_supports($feature) {
-    switch($feature) {
-        case FEATURE_MOD_INTRO:         return true;
-        case FEATURE_SHOW_DESCRIPTION:  return true;
+    switch ($feature) {
+        case FEATURE_MOD_INTRO:
+            return true;
+        case FEATURE_SHOW_DESCRIPTION:
+            return true;
 
-        default:                        return null;
+        default:
+            return null;
     }
 }
 
@@ -111,7 +114,7 @@ function lips_update_instance(stdClass $lips, mod_lips_mod_form $mform = null) {
 function lips_delete_instance($id) {
     global $DB;
 
-    if (! $lips = $DB->get_record('lips', array('id' => $id))) {
+    if (!$lips = $DB->get_record('lips', array('id' => $id))) {
         return false;
     }
 
@@ -160,7 +163,7 @@ function lips_user_complete($course, $user, $mod, $lips) {
  * @return boolean
  */
 function lips_print_recent_activity($course, $viewfullnames, $timestart) {
-    return false;  //  True if anything was printed, otherwise false
+    return false; //  True if anything was printed, otherwise false
 }
 
 /**
@@ -179,12 +182,11 @@ function lips_print_recent_activity($course, $viewfullnames, $timestart) {
  * @param int $groupid check for a particular group's activity only, defaults to 0 (all groups)
  * @return void adds items into $activities and increases $index
  */
-function lips_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
+function lips_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid = 0, $groupid = 0) {
 }
 
 /**
  * Prints single activity item prepared by {@see lips_get_recent_mod_activity()}
-
  * @return void
  */
 function lips_print_recent_mod_activity($activity, $courseid, $detail, $modnames, $viewfullnames) {
@@ -198,7 +200,7 @@ function lips_print_recent_mod_activity($activity, $courseid, $detail, $modnames
  * @return boolean
  * @todo Finish documenting this function
  **/
-function lips_cron () {
+function lips_cron() {
     return true;
 }
 
@@ -266,16 +268,16 @@ function lips_scale_used_anywhere($scaleid) {
  * @param mixed optional array/object of grade(s); 'reset' means reset grades in gradebook
  * @return void
  */
-function lips_grade_item_update(stdClass $lips, $grades=null) {
+function lips_grade_item_update(stdClass $lips, $grades = null) {
     global $CFG;
-    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir . '/gradelib.php');
 
     /** @example */
     $item = array();
     $item['itemname'] = clean_param($lips->name, PARAM_NOTAGS);
     $item['gradetype'] = GRADE_TYPE_VALUE;
-    $item['grademax']  = $lips->grade;
-    $item['grademin']  = 0;
+    $item['grademax'] = $lips->grade;
+    $item['grademin'] = 0;
 
     grade_update('mod/lips', $lips->course, 'mod', 'lips', $lips->id, 0, null, $item);
 }
@@ -291,7 +293,7 @@ function lips_grade_item_update(stdClass $lips, $grades=null) {
  */
 function lips_update_grades(stdClass $lips, $userid = 0) {
     global $CFG, $DB;
-    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir . '/gradelib.php');
 
     /** @example */
     $grades = array(); // populate array of grade objects indexed by userid
@@ -353,7 +355,7 @@ function lips_get_file_info($browser, $areas, $course, $cm, $context, $filearea,
  * @param bool $forcedownload whether or not force download
  * @param array $options additional options affecting the file serving
  */
-function lips_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options=array()) {
+function lips_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options = array()) {
     global $DB, $CFG;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -391,5 +393,5 @@ function lips_extend_navigation(navigation_node $navref, stdclass $course, stdcl
  * @param settings_navigation $settingsnav {@link settings_navigation}
  * @param navigation_node $lipsnode {@link navigation_node}
  */
-function lips_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $lipsnode=null) {
+function lips_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $lipsnode = null) {
 }

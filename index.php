@@ -26,18 +26,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-/// Replace lips with the name of your module and remove this line
+// Replace lips with the name of your module and remove this line.
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/lib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/lib.php');
 
-$id = required_param('id', PARAM_INT);   // course
+$id = required_param('id', PARAM_INT); // course.
 
 $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 
 require_course_login($course);
 
-add_to_log($course->id, 'lips', 'view all', 'index.php?id='.$course->id, '');
+add_to_log($course->id, 'lips', 'view all', 'index.php?id=' . $course->id, '');
 
 $coursecontext = context_course::instance($course->id);
 
@@ -48,19 +48,19 @@ $PAGE->set_context($coursecontext);
 
 echo $OUTPUT->header();
 
-if (! $lipss = get_all_instances_in_course('lips', $course)) {
+if (!$lipss = get_all_instances_in_course('lips', $course)) {
     notice(get_string('nolipss', 'lips'), new moodle_url('/course/view.php', array('id' => $course->id)));
 }
 
 $table = new html_table();
 if ($course->format == 'weeks') {
-    $table->head  = array(get_string('week'), get_string('name'));
+    $table->head = array(get_string('week'), get_string('name'));
     $table->align = array('center', 'left');
 } else if ($course->format == 'topics') {
-    $table->head  = array(get_string('topic'), get_string('name'));
+    $table->head = array(get_string('topic'), get_string('name'));
     $table->align = array('center', 'left', 'left', 'left');
 } else {
-    $table->head  = array(get_string('name'));
+    $table->head = array(get_string('name'));
     $table->align = array('left', 'left', 'left');
 }
 

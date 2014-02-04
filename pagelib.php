@@ -6,31 +6,31 @@
  * Time: 22:56
  */
 require_once($CFG->dirroot . '/tag/lib.php');
-require_once($CFG->dirroot . '/mod/lips/locallib.php');
 
-abstract class page_view  {
+abstract class page_view
+{
 
     protected $cm;
     protected $view;
     protected $lipsoutput;
 
-    function __construct($cm,$view) {
+    function __construct($cm, $view) {
         global $PAGE;
-        $this->cm=$cm;
-        $this->view=$view;
+        $this->cm = $cm;
+        $this->view = $view;
         $this->lipsoutput = $PAGE->get_renderer('mod_lips');
-    }
-
-    function display_header() {
-        global $OUTPUT;
-        echo $OUTPUT->header();
-        echo $this->lipsoutput->tabs($this->view);
     }
 
     function display() {
         $this->display_header();
         $this->display_content();
         $this->display_footer();
+    }
+
+    function display_header() {
+        global $OUTPUT;
+        echo $OUTPUT->header();
+        echo $this->lipsoutput->tabs($this->view);
     }
 
     abstract protected function display_content();
@@ -41,46 +41,48 @@ abstract class page_view  {
     }
 }
 
-class page_list_categories extends page_view {
+class page_list_categories extends page_view
+{
 
     function  __construct($cm) {
-        parent::__construct($cm,"problems");
+        parent::__construct($cm, "problems");
     }
 
     function display_content() {
         global $CFG;
-        require_once "$CFG->libdir/tablelib.php";
-        require_once(dirname(__FILE__).'/categories_table.php');
-        $table=new categories_table("mdl_lips_category");
+        require_once("$CFG->libdir/tablelib.php");
+        require_once(dirname(__FILE__) . '/categories_table.php');
+        $table = new categories_table("mdl_lips_category");
 
-        $table->out(10,true);
+        $table->out(10, true);
     }
 }
 
-class page_index extends page_view {
+class page_index extends page_view
+{
 
     function  __construct($cm) {
-        parent::__construct($cm,"index");
+        parent::__construct($cm, "index");
     }
 
     function display_content() {
         global $USER;
-        echo ("<h1>Bienvenue ".$USER->username."</h1>");
+        echo("<h1>Bienvenue " . $USER->username . "</h1>");
     }
 }
 
-
-class page_admin extends page_view {
+class page_admin extends page_view
+{
     function  __construct($cm) {
-        parent::__construct($cm,"administration");
+        parent::__construct($cm, "administration");
     }
 
     function display_content() {
         global $CFG;
         echo "<h1>Administration</h1>";
-        require_once(dirname(__FILE__).'/administration_form.php');
+        require_once(dirname(__FILE__) . '/administration_form.php');
         require_once(dirname(__FILE__) . '/mod_lips_configure_form.php');
-        $mform = new mod_lips_administration_form(new moodle_url('view.php',array('id' => $this->cm->id, 'view'=>$this->view)), null,
+        $mform = new mod_lips_administration_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null,
             'post');
         /* Donne le focus au premier élément du formulaire. */
         $mform->focus();
@@ -102,7 +104,6 @@ class page_admin extends page_view {
         }
 
         echo '<h1>Administration</h1>';
-
         // Configure language
         echo '<h2>' . get_string('administration_language_configure_title', 'lips') . '</h2>';
         echo '<p>' . get_string('administration_language_configure_msg', 'lips') . '</p>';
@@ -124,63 +125,66 @@ class page_admin extends page_view {
 
         $configureCodeForm = new mod_lips_configure_code_form("test.html", null, 'post');
         $configureCodeForm->display();
+
     }
 }
 
-
-class page_users extends page_view {
+class page_users extends page_view
+{
     function  __construct($cm) {
-        parent::__construct($cm,"users");
+        parent::__construct($cm, "users");
     }
 
     function display_content() {
 
-        global $CFG,$OUTPUT;
+        global $CFG, $OUTPUT;
         require "$CFG->libdir/tablelib.php";
-        $table=new table_sql("mdl_lips_user");
-        $table->set_sql("*","mdl_lips_user","1");
-        $table->define_baseurl(new moodle_url('view.php',array('id' => $this->cm->id, 'view'=>$this->view)));
-        $table->define_headers(array("Nom","Prenom"));
-        $table->define_columns(array("user_name","user_first_name"));
+        $table = new table_sql("mdl_lips_user");
+        $table->set_sql("*", "mdl_lips_user", "1");
+        $table->define_baseurl(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)));
+        $table->define_headers(array("Nom", "Prenom"));
+        $table->define_columns(array("user_name", "user_first_name"));
         $table->sortable(true);
-        $table->out(10,true);
+        $table->out(10, true);
     }
 
 }
 
-class page_profil extends page_view {
+class page_profil extends page_view
+{
 
-    private $cmId;
+    private $cmid;
 
-    function  __construct($cm,$cmId) {
-        parent::__construct($cm,"profil");
-        $this->cmId=$cmId;
+    function  __construct($cm, $cmid) {
+        parent::__construct($cm, "profil");
+        $this->cmid = $cmid;
     }
 
     function display_content() {
-        global $OUTPUT,$USER,$DB;
-        $id=$DB->get_record('course', array('id' => $this->cm->course), '*', MUST_EXIST);
+        global $OUTPUT, $USER, $DB;
+        $id = $DB->get_record('course', array('id' => $this->cm->course), '*', MUST_EXIST);
         $avatar = new user_picture($USER);
-        $avatar->courseid = $this->cmId;
+        $avatar->courseid = $this->cmid;
         $avatar->link = true;
-        echo $OUTPUT->render($avatar)." ";
-        echo $USER->firstname." ".$USER->lastname;
+        echo $OUTPUT->render($avatar) . " ";
+        echo $USER->firstname . " " . $USER->lastname;
     }
 
 }
 
-class page_category extends page_view {
+class page_category extends page_view
+{
     private $id;
 
-    function  __construct($cm,$id) {
-        parent::__construct($cm,"category");
-        $this->id=$id;
+    function  __construct($cm, $id) {
+        parent::__construct($cm, "category");
+        $this->id = $id;
     }
 
     function display_content() {
-        echo "<h1>".get_category_details($this->id)->category_name."</h1>";
-        require_once(dirname(__FILE__).'/problems_table.php');
-        $table=new problems_table("mdl_lips_problem");
-        $table->out(10,true);
+        echo "<h1>" . get_category_details($this->id)->category_name . "</h1>";
+        require_once(dirname(__FILE__) . '/problems_table.php');
+        $table = new problems_table("mdl_lips_problem");
+        $table->out(10, true);
     }
 }

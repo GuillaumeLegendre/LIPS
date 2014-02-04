@@ -81,7 +81,7 @@ function xmldb_lips_upgrade($oldversion) {
 
         // Define field intro to be added to lips
         $table = new xmldb_table('lips');
-        $field = new xmldb_field('intro', XMLDB_TYPE_TEXT, 'medium', null, null, null, null,'name');
+        $field = new xmldb_field('intro', XMLDB_TYPE_TEXT, 'medium', null, null, null, null, 'name');
 
         // Add field intro
         if (!$dbman->field_exists($table, $field)) {

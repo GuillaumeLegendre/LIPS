@@ -1,5 +1,5 @@
 <?php
-require_once ($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
 
 /**
  * Language configuration form
@@ -9,7 +9,8 @@ require_once ($CFG->dirroot.'/course/moodleform_mod.php');
  * @author     Valentin GOT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_lips_configure_language_form extends moodleform {
+class mod_lips_configure_language_form extends moodleform
+{
 
     /**
      * Form definition
@@ -42,7 +43,8 @@ class mod_lips_configure_language_form extends moodleform {
  * @author     Valentin GOT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_lips_configure_picture_form extends moodleform {
+class mod_lips_configure_picture_form extends moodleform
+{
 
     /**
      * Form definition
@@ -67,7 +69,8 @@ class mod_lips_configure_picture_form extends moodleform {
  * @author     Valentin GOT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_lips_configure_code_form extends moodleform {
+class mod_lips_configure_code_form extends moodleform
+{
 
     /**
      * Form definition
