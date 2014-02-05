@@ -3,8 +3,7 @@
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 
 // Définition de notre classe qui hérite de moodleform (formslib).
-class mod_lips_administration_form extends moodleform
-{
+class mod_lips_administration_form extends moodleform {
 // Définition du formulaire
     function definition() {
         $mform =& $this->_form;
