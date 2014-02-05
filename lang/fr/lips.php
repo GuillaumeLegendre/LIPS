@@ -64,6 +64,12 @@ $string['administration'] = 'Administration';
  * Tables
  *------------------------------------------------*/
 $string['number_of_problems'] = 'Nombre de problèmes';
++$string['problem'] = 'Problème';
++$string['level'] = 'Niveau';
++$string['date'] = 'Date';
++$string['author'] = 'Auteur';
++$string['number_of_resolutions'] = 'Nombre de résolutions';
++$string['resolved'] = 'Résolu';
 
 /*--------------------------------------------------
  * Administration
