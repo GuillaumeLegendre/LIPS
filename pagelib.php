@@ -307,3 +307,34 @@ class page_category extends page_view {
         $table->out(10, true);
     }
 }
+
+/**
+ * Display the documentation of a category
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickaël Ohlen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_category_documentation extends page_view {
+    private $id;
+
+    /**
+     * page_documentation constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm, $id) {
+        parent::__construct($cm, "categoryDocumentation");
+        $this->id = $id;
+    }
+
+    /**
+     * Display the category_documentation content
+     */
+    function display_content() {
+        $details=get_category_details($this->id);
+        echo "<h1>" . $details->category_name . " - Documentation</h1>";
+        echo $details->category_documentation;
+    }
+}

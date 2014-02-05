@@ -101,4 +101,8 @@ class mod_lips_renderer extends plugin_renderer_base {
             </li>
         </ul>';
     }
+
+    public function display_documentation($documentation) {
+
+    }
 }
