@@ -31,10 +31,6 @@ class mod_lips_administration_form extends moodleform
             'required', null, 'client');
 // Bouton enregistrement et annulation standard
         $this->add_action_buttons();
-        $json = file_get_contents("http://localhost:4567/available_languages");
-        var_dump($json);
-        $data = json_decode($json);
-        var_dump($data);
     }
 
     function validation($data, $files) {

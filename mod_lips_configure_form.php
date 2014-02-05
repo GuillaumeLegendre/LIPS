@@ -1,5 +1,6 @@
 <?php
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
+require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
 
 /**
  * Language configuration form
@@ -9,8 +10,7 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
  * @author     Valentin GOT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_lips_configure_language_form extends moodleform
-{
+class mod_lips_configure_language_form extends moodleform {
 
     /**
      * Form definition
@@ -19,15 +19,9 @@ class mod_lips_configure_language_form extends moodleform
         $mform =& $this->_form;
 
         // /!\ Temporary ==> Switch to use the web service
-        $languages['java'] = 'Java';
-        $languages['c'] = 'C';
-        $languages['perl'] = 'Perl';
-        $languages['python'] = 'Python';
-        $languages['php'] = 'PHP';
-        $languages['c#'] = 'C#';
 
         // Select the language
-        $mform->addElement('select', 'selectLanguages', get_string('administration_language_form_select', 'lips'), $languages);
+        $mform->addElement('select', 'selectLanguages', get_string('administration_language_form_select', 'lips'), lips_rest_interface_impl::get_list_languages());
         $mform->addRule('selectLanguages', get_string('administration_language_form_select_error', 'lips'), 'required');
 
         // Modify button
@@ -43,8 +37,7 @@ class mod_lips_configure_language_form extends moodleform
  * @author     Valentin GOT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_lips_configure_picture_form extends moodleform
-{
+class mod_lips_configure_picture_form extends moodleform {
 
     /**
      * Form definition
@@ -69,8 +62,7 @@ class mod_lips_configure_picture_form extends moodleform
  * @author     Valentin GOT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_lips_configure_code_form extends moodleform
-{
+class mod_lips_configure_code_form extends moodleform {
 
     /**
      * Form definition
