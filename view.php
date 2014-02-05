@@ -73,11 +73,9 @@ switch ($view) {
                 case "langage":
                     $viewpage = new page_admin_langage($cm);
                     break;
-
                 case "category_create":
                     $viewpage = new page_admin_category_create($cm);
                     break;
-                
                 default:
                     $viewpage = new page_admin($cm);
                     break;
@@ -101,6 +99,10 @@ switch ($view) {
     case "categoryDocumentation" :
         $idcategory = optional_param('categoryId', 0, PARAM_INT);
         $viewpage = new page_category_documentation($cm, $idcategory);
+        break;
+    case "deleteCategory" :
+        $idcategory = optional_param('categoryId', 0, PARAM_INT);
+        $viewpage = new page_delete_category($cm, $idcategory);
         break;
     default :
         $viewpage = new page_index($cm);
