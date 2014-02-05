@@ -20,6 +20,8 @@ class mod_lips_configure_language_form extends moodleform {
 
         // /!\ Temporary ==> Switch to use the web service
 
+        print_object(lips_rest_interface_impl::get_list_languages());
+
         // Select the language
         $mform->addElement('select', 'selectLanguages', get_string('administration_language_form_select', 'lips'), lips_rest_interface_impl::get_list_languages());
         $mform->addRule('selectLanguages', get_string('administration_language_form_select_error', 'lips'), 'required');
