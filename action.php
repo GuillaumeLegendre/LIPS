@@ -4,6 +4,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/pagelib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
+require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $n = optional_param('n', 0, PARAM_INT); // lips instance ID - it should be named as the first character of the module
@@ -32,7 +33,7 @@ if (!has_capability('mod/lips:administration', $context)) {
 add_to_log($course->id, 'lips', 'action', "action.php?id={$cm->id}", $lips->name, $cm->id);
 
 switch ($action) {
-    case "deleteCategory" :
+    case "deleteCategory":
         $categoryid = optional_param('categoryId', 0, PARAM_INT);
         delete_category($categoryid);
         redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));

@@ -159,6 +159,14 @@ class page_admin extends page_view {
     }
 }
 
+/**
+ * Language configuration page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class page_admin_langage extends page_view {
 
     /**
@@ -207,6 +215,14 @@ class page_admin_langage extends page_view {
     }
 }
 
+/**
+ * Category creation page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class page_admin_category_create extends page_view {
 
     /**
@@ -233,9 +249,16 @@ class page_admin_category_create extends page_view {
 
         // Create a category
         echo $this->lipsoutput->display_h2(get_string('administration_category_create_title', 'lips'));
+        echo $this->lipsoutput->display_p(get_string('administration_category_msg', 'lips'));
 
         $createCategoryForm = new mod_lips_category_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_create')), null, 'post');
-        $createCategoryForm->display();
+
+        if($createCategoryForm->is_submitted()) {
+            $createCategoryForm->handle($this->cm->instance);
+            $createCategoryForm->display();
+        } else {
+            $createCategoryForm->display();
+        }
         
         /*//Form processing and displaying is done here
         if ($mform->is_cancelled()) {
@@ -387,7 +410,33 @@ class page_category_documentation extends page_view {
      */
     function display_content() {
         $details=get_category_details($this->id);
-        echo "<h1>" . $details->category_name . " - Documentation</h1>";
+        echo $this->lipsoutput->display_h2($details->category_name . " - ".get_string('documentation', 'lips'));
         echo $details->category_documentation;
+    }
+}
+
+/**
+ * Display a message of confirmation for the deletion of a category.
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickaël Ohlen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_delete_category extends page_view {
+    private $id;
+
+    function  __construct($cm, $id) {
+        parent::__construct($cm, "deleteCategory");
+        $this->id = $id;
+    }
+
+    /**
+     * Display the message of confirmation.
+     */
+    function display_content() {
+        $details=get_category_details($this->id);
+        $message=$this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips')." ". $details->category_name. "?");
+        echo $this->lipsoutput->confirm($message, new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view,"originV" => "problems", 'categoryId' => $this->id)),new moodle_url('view.php', array('id' => $this->cm->id, 'action' => $this->view,"view" => "problems", 'categoryId' => $this->id)));
     }
 }

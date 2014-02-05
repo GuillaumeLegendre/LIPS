@@ -108,7 +108,38 @@ class mod_lips_renderer extends plugin_renderer_base {
         </ul>';
     }
 
+    /**
+     * Display a notification message
+     *
+     * @param string $msg Message to display
+     * @param stirng $type Notification type (INFO, SUCCESS, WARNING, ERROR)
+     * @return string The notification message
+     */
+    public function display_notification($msg, $type) {
+        switch($type) {
+            case 'INFO':
+                return '<div id="notify" class="notifyInfo">' . $msg . '</div>';
+            break;
+
+            case 'SUCCESS':
+                return '<div id="notify" class="notifySuccess">' . $msg . '</div>';
+            break;
+
+            case 'WARNING':
+                return '<div id="notify" class="notifyWarning">' . $msg . '</div>';
+            break;
+
+            case 'ERROR':
+                return '<div id="notify" class="notifyError">' . $msg . '</div>';
+            break;
+        }
+    }
+
     public function display_documentation($documentation) {
 
+    }
+
+    public function display_button($moodleurl, $label) {
+        return $this->render(new single_button($moodleurl, $label));
     }
 }

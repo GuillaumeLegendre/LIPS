@@ -11,6 +11,9 @@ class lips_rest_interface_impl implements lips_rest_interface {
     public static function get_list_languages() {
         $languages = array();
         $json = file_get_contents("http://localhost:4567/available_languages");
+        if (!$json) {
+            return false;
+        }
         $data = json_decode($json);
         foreach ($data->languages as $language) {
             $languages[$language] = $language;
