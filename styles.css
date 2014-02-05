@@ -1,5 +1,37 @@
 /*---------------------------------
- *	Administration menu 
+ *  Title styles
+ *-------------------------------*/
+
+h1, h2 {
+    text-align: left;
+    margin-top: 0;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+h2 {
+    font-size: 1.3em;
+    margin-bottom: 1px;
+}
+
+.h2_sub {
+    border: 1px solid #555555;
+    width: 90%;
+    margin-bottom: 15px;
+}
+
+/*---------------------------------
+ *  Forms
+ *-------------------------------*/
+
+.mform .fitem .fitemtitle {
+    width: auto;
+}
+
+/*---------------------------------
+ *	Administration menu
  *-------------------------------*/
 
 #administration_menu, #administration_menu ul, #administration_menu li, #administration_menu a {
@@ -21,6 +53,8 @@
     background: linear-gradient(top, #FFFFFF 0%, #E7E7E7 100%);
 
     border: 1px solid #DDDDDD;
+
+    margin-bottom: 20px;
 }
  
 #administration_menu li {
@@ -29,6 +63,7 @@
     float: left;
     display: block;
     height: 30px;
+    margin-top: 1px;
 }
 
 #administration_menu li a {

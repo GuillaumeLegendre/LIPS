@@ -67,7 +67,21 @@ $viewpage = new page_index($cm);
 switch ($view) {
     case "administration" :
         if (has_capability('mod/lips:administration', $context)) {
-            $viewpage = new page_admin($cm);
+            $action = optional_param('action', null, PARAM_TEXT);
+
+            switch ($action) {
+                case "langage":
+                    $viewpage = new page_admin_langage($cm);
+                    break;
+
+                case "category_create":
+                    $viewpage = new page_admin_category_create($cm);
+                    break;
+                
+                default:
+                    $viewpage = new page_admin($cm);
+                    break;
+            }
         }
         break;
     case "problems" :

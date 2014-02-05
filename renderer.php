@@ -45,7 +45,10 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @return string H2 tag
      */
     public function display_h2($title, array $attributes = null) {
-        return html_writer::tag('h2', format_string($title), $attributes);
+        $html = html_writer::tag('h2', format_string($title), $attributes);
+        $html .= html_writer::tag('div', null, array('class' => 'h2_sub'));
+
+        return $html;
     }
 
     /**
@@ -76,27 +79,30 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @return string The Administration menu
      */
     public function display_administration_menu() {
+        $id = $this->page->cm->id;
+        $view = optional_param('view', 0, PARAM_TEXT);
+
         return '<ul id="administration_menu">
-            <li><a href="#">Langage</a></li>
+            <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=langage">Langage</a></li>
             <li><a href="#">Badges</a>
                 <ul>
-                    <li><a href="#">Créer</a></li>
-                    <li><a href="#">Modifier</a></li>
-                    <li><a href="#">Supprimer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_create">Créer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_modify">Modifier</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_delete">Supprimer</a></li>
                 </ul>
             </li>
             <li><a href="#">Catégories</a>
                 <ul>
-                    <li><a href="#">Créer</a></li>
-                    <li><a href="#">Modifier</a></li>
-                    <li><a href="#">Supprimer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_create">Créer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_modify">Modifier</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_delete">Supprimer</a></li>
                 </ul>
             </li>
             <li><a href="#">Problèmes</a>
                 <ul>
-                    <li><a href="#">Créer</a></li>
-                    <li><a href="#">Modifier</a></li>
-                    <li><a href="#">Supprimer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_create">Créer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_modify">Modifier</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_delete">Supprimer</a></li>
                 </ul>
             </li>
         </ul>';

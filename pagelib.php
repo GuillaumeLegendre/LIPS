@@ -150,34 +150,38 @@ class page_admin extends page_view {
     function display_content() {
         global $CFG;
 
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
         echo $this->lipsoutput->display_administration_menu();
+        echo '<br/><br/><br/><br/>';
+    }
+}
 
-        echo "<h1>Administration</h1>";
-        require_once(dirname(__FILE__) . '/administration_form.php');
+class page_admin_langage extends page_view {
+
+    /**
+     * page_admin constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin content
+     */
+    function display_content() {
+        global $CFG;
         require_once(dirname(__FILE__) . '/mod_lips_configure_form.php');
-        $mform = new mod_lips_administration_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null,
-            'post');
-        /* Donne le focus au premier élément du formulaire. */
-        $mform->focus();
-        //Form processing and displaying is done here
-        if ($mform->is_cancelled()) {
-            //Handle form cancel operation, if cancel button is present on form
-        } else if ($fromform = $mform->get_data()) {
-            global $DB;
-            unset($fromform->submitbutton);
-            $DB->insert_record("lips_category", $fromform);
-            echo "Category created";
-        } else {
-            // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-            // or on the first display of the form.
-
-            //Set default data (if any)
-            //displays the form
-            $mform->display();
-        }
 
         // Administration title
         echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
 
         // Configure language
         echo $this->lipsoutput->display_h2(get_string('administration_language_configure_title', 'lips'));
@@ -200,6 +204,55 @@ class page_admin extends page_view {
 
         $configureCodeForm = new mod_lips_configure_code_form("test.html", null, 'post');
         $configureCodeForm->display();
+    }
+}
+
+class page_admin_category_create extends page_view {
+
+    /**
+     * page_admin constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin content
+     */
+    function display_content() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Create a category
+        echo $this->lipsoutput->display_h2(get_string('administration_category_create_title', 'lips'));
+
+        $createCategoryForm = new mod_lips_category_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_create')), null, 'post');
+        $createCategoryForm->display();
+        
+        /*//Form processing and displaying is done here
+        if ($mform->is_cancelled()) {
+            //Handle form cancel operation, if cancel button is present on form
+        } else if ($fromform = $mform->get_data()) {
+            global $DB;
+            unset($fromform->submitbutton);
+            $DB->insert_record("lips_category", $fromform);
+            echo "Category created";
+        } else {
+            // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
+            // or on the first display of the form.
+
+            //Set default data (if any)
+            //displays the form
+            $mform->display();
+        }*/
     }
 }
 

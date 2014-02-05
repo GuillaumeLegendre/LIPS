@@ -44,7 +44,11 @@ $string['pluginname'] = 'LIPS';
 /*--------------------------------------------------
  * Constants
  *------------------------------------------------*/
+$string['create'] = 'Create';
 $string['modify'] = 'Modify';
+$string['category'] = 'Catégorie';
+$string['documentation'] = 'Documentation';
+$string['name'] = 'Name';
 
 /*--------------------------------------------------
  * Tabs
@@ -71,4 +75,8 @@ $string['administration_language_form_select'] = 'Programming language';
 $string['administration_language_form_select_error'] = 'You must select a language';
 $string['administration_language_form_file'] = 'Select the picture';
 $string['administration_language_form_file_error'] = 'You must select a picture';
-$string['administration_language_form_area_error'] = 'You must select a picture';
+
+// Category
+$string['administration_category_create_title'] = 'Create a category';
+$string['administration_category_name_error'] = 'You must enter a category name';
+$string['administration_category_documentation_placeholder'] = 'Link to an external documentation';

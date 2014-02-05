@@ -70,7 +70,6 @@ class mod_lips_configure_code_form extends moodleform {
 
         // Textarea for base code
         $mform->addElement('textarea', 'areaBaseCode', null, 'rows="15" cols="100"');
-        $mform->addRule('areaBaseCode', get_string('administration_language_form_area_error', 'lips'), 'required');
 
         // Modify button
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
