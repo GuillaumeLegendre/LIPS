@@ -387,7 +387,33 @@ class page_category_documentation extends page_view {
      */
     function display_content() {
         $details=get_category_details($this->id);
-        echo "<h1>" . $details->category_name . " - Documentation</h1>";
+        echo $this->lipsoutput->display_h2($details->category_name . " - ".get_string('documentation', 'lips'));
         echo $details->category_documentation;
+    }
+}
+
+/**
+ * Display a message of confirmation for the deletion of a category.
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickaël Ohlen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_delete_category extends page_view {
+    private $id;
+
+    function  __construct($cm, $id) {
+        parent::__construct($cm, "deleteCategory");
+        $this->id = $id;
+    }
+
+    /**
+     * Display the message of confirmation.
+     */
+    function display_content() {
+        $details=get_category_details($this->id);
+        $message=$this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips')." ". $details->category_name. "?");
+        echo $this->lipsoutput->confirm($message, new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view,"originV" => "problems", 'categoryId' => $this->id)),new moodle_url('view.php', array('id' => $this->cm->id, 'action' => $this->view,"view" => "problems", 'categoryId' => $this->id)));
     }
 }

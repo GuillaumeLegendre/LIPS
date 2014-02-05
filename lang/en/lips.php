@@ -80,3 +80,4 @@ $string['administration_language_form_file_error'] = 'You must select a picture'
 $string['administration_category_create_title'] = 'Create a category';
 $string['administration_category_name_error'] = 'You must enter a category name';
 $string['administration_category_documentation_placeholder'] = 'Link to an external documentation';
+$string['administration_delete_category_confirmation'] = "Confirm the deletion of the category";

@@ -51,7 +51,8 @@ function convert_active_tab($view) {
         "profil" => "profil",
         "users" => "users",
         "category" => "problems",
-        "categoryDocumentation" => "problems"
+        "categoryDocumentation" => "problems",
+        "deleteCategory" => "poblems"
     );
     return $tabs[$view];
 }

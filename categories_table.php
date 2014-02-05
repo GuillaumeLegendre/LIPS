@@ -36,7 +36,8 @@ class categories_table extends table_sql {
             $a="";
             if (has_capability('mod/lips:administration', $context)) {
                 $a=$OUTPUT->action_icon(new moodle_url("action.php", array('id' => $this->cm->id, 'action' => 'editCategory', 'categoryId' => $attempt->id, "originV" => "problems")), new pix_icon("t/edit", "edit"));
-                $a.=" " . $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $PAGE->cm->id, 'action' => 'deleteCategory', 'categoryId' => $attempt->id, "originV" => "problems")), new pix_icon("t/delete", "delete"));
+                //$a.=" " . $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $PAGE->cm->id, 'action' => 'deleteCategory', 'categoryId' => $attempt->id, "originV" => "problems")), new pix_icon("t/delete", "delete"));
+                $a.=" " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'deleteCategory', 'categoryId' => $attempt->id)), new pix_icon("t/delete", "delete"));
             }
             return $a.=" " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $attempt->id)), new pix_icon("t/manual_item", "documentation"));
         }
