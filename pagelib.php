@@ -22,6 +22,7 @@ abstract class page_view {
      */
     function __construct($cm, $view) {
         global $PAGE;
+        
         $this->cm = $cm;
         $this->view = $view;
         $this->lipsoutput = $PAGE->get_renderer('mod_lips');
@@ -56,7 +57,11 @@ abstract class page_view {
      */
     function display_footer() {
         global $OUTPUT;
+
         echo $OUTPUT->footer();
+
+        // Add the custom stylesheet
+        echo '<script type="text/javascript" src="js/jquery.js"></script><script type="text/javascript">$(document).ready(function () {$(\'head\').append(\'<link rel="stylesheet" type="text/css" href="styles.css">\');});</script>';
     }
 }
 
@@ -144,7 +149,9 @@ class page_admin extends page_view {
      */
     function display_content() {
         global $CFG;
-        
+
+        echo $this->lipsoutput->display_administration_menu();
+
         echo "<h1>Administration</h1>";
         require_once(dirname(__FILE__) . '/administration_form.php');
         require_once(dirname(__FILE__) . '/mod_lips_configure_form.php');
@@ -182,7 +189,7 @@ class page_admin extends page_view {
         // Modify language picture
         $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'));
         $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips'));
-        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('width' => '64px', 'height' => '64px')) . '</center>';
+        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('id' => 'testimg', 'width' => '64px', 'height' => '64px')) . '</center>';
 
         $configurePictureForm = new mod_lips_configure_picture_form("test.html", null, 'post');
         $configurePictureForm->display();
