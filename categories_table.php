@@ -15,7 +15,7 @@ class categories_table extends table_sql {
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "problems")));
         $context = context_module::instance($cm->id);
         if (has_capability('mod/lips:administration', $context)) {
-            $this->define_headers(array(get_string('category', 'lips'), get_string('number_of_problems', 'lips') ""));
+            $this->define_headers(array(get_string('category', 'lips'), get_string('number_of_problems', 'lips'), ""));
             $this->define_columns(array("category_name", "category_problems", "actions"));
         } else {
             $this->define_headers(array(get_string('category', 'lips'), get_string('number_of_problems', 'lips')));
