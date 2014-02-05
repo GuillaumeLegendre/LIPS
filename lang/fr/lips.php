@@ -63,7 +63,7 @@ $string['administration'] = 'Administration';
 /*--------------------------------------------------
  * Tables
  *------------------------------------------------*/
-$string['index'] = 'Nombre de problèmes';
+$string['number_of_problems'] = 'Nombre de problèmes';
 
 /*--------------------------------------------------
  * Administration
