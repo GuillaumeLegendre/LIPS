@@ -22,7 +22,7 @@ abstract class page_view {
      */
     function __construct($cm, $view) {
         global $PAGE;
-        
+
         $this->cm = $cm;
         $this->view = $view;
         $this->lipsoutput = $PAGE->get_renderer('mod_lips');
