@@ -69,4 +69,36 @@ class mod_lips_renderer extends plugin_renderer_base {
     public function display_img($src, array $attributes = null) {
         return html_writer::tag('img', null, array_merge(array('src' => $src), $attributes));
     }
+
+    /**
+     * Display the administration menu
+     *
+     * @return string The Administration menu
+     */
+    public function display_administration_menu() {
+        return '<ul id="administration_menu">
+            <li><a href="#">Langage</a></li>
+            <li><a href="#">Badges</a>
+                <ul>
+                    <li><a href="#">Créer</a></li>
+                    <li><a href="#">Modifier</a></li>
+                    <li><a href="#">Supprimer</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Catégories</a>
+                <ul>
+                    <li><a href="#">Créer</a></li>
+                    <li><a href="#">Modifier</a></li>
+                    <li><a href="#">Supprimer</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Problèmes</a>
+                <ul>
+                    <li><a href="#">Créer</a></li>
+                    <li><a href="#">Modifier</a></li>
+                    <li><a href="#">Supprimer</a></li>
+                </ul>
+            </li>
+        </ul>';
+    }
 }
