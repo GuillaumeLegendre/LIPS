@@ -16,7 +16,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * English strings for lips
+ * French strings for lips
  *
  * You can have a rather longer description of the file as well,
  * if you like, and it can span multiple lines.
@@ -44,48 +44,44 @@ $string['pluginname'] = 'LIPS';
 /*--------------------------------------------------
  * Constants
  *------------------------------------------------*/
-$string['create'] = 'Create';
-$string['modify'] = 'Modify';
+$string['create'] = 'Créer';
+$string['modify'] = 'Modifier';
 $string['category'] = 'Catégorie';
 $string['documentation'] = 'Documentation';
-$string['name'] = 'Name';
+$string['name'] = 'Nom';
 
 /*--------------------------------------------------
  * Tabs
  *------------------------------------------------*/
-$string['index'] = 'Index';
-$string['problems'] = 'Problems';
-$string['users'] = 'Users';
-$string['rank'] = 'Rank';
-$string['profile'] = 'Profile';
+$string['index'] = 'Accueil';
+$string['problems'] = 'Problèmes';
+$string['users'] = 'Utilisateurs';
+$string['rank'] = 'Classement';
+$string['profile'] = 'Profil';
 $string['administration'] = 'Administration';
 
 /*--------------------------------------------------
  * Tables
  *------------------------------------------------*/
-$string['number_of_problems'] = 'Number of problems';
+$string['number_of_problems'] = 'Nombre de problèmes';
 
 /*--------------------------------------------------
  * Administration
  *------------------------------------------------*/
 
 // Language
-$string['administration_language_configure_title'] = 'Configure language';
-$string['administration_language_configure_msg'] = 'Select the language in which you want to compile.';
-$string['administration_language_image_title'] = 'Picture';
-$string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.';
-$string['administration_language_code_title'] = 'Base code';
-$string['administration_language_code_msg'] = 'Enter the base used for each compilation.<br/>Before the compilation :<ul><li>The <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> tag will be replaced by the "<strong>Import libaries</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> tag will be replace by the "<strong>Code complete</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> tag will be replaced by the "<strong>Unit tests</strong>" content.</li></ul>';
-$string['administration_language_form_select'] = 'Programming language';
-$string['administration_language_form_select_error'] = 'You must select a language';
-$string['administration_language_form_file'] = 'Select the picture';
-$string['administration_language_form_file_error'] = 'You must select a picture';
+$string['administration_language_configure_title'] = 'Configurer le langage';
+$string['administration_language_configure_msg'] = 'Selectionnez le langage dans lequel vous souhaitez compiler.';
+$string['administration_language_image_title'] = 'Image';
+$string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.';
+$string['administration_language_code_title'] = 'Base du code';
+$string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisé à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
+$string['administration_language_form_select'] = 'Langage de programmation';
+$string['administration_language_form_select_error'] = 'Vous devez sélectionner un langage';
+$string['administration_language_form_file'] = 'Sélectionner l\'image';
+$string['administration_language_form_file_error'] = 'Vous devez sélectionner une image';
 
 // Category
-$string['administration_category_create_title'] = 'Create a category';
-$string['administration_category_name_error'] = 'You must enter a category name';
-$string['administration_category_documentation_placeholder'] = 'Link to an external documentation';
-$string['administration_delete_category_confirmation'] = "Confirm the deletion of the category";
-
-//Web services
-$string['web_service_communication_error'] = 'An error occured when contacting the web service';
+$string['administration_category_create_title'] = 'Créer une catégorie';
+$string['administration_category_name_error'] = 'Vous devez saisir le nom de la catégorie';
+$string['administration_category_documentation_placeholder'] = 'Lien vers une documentation externe';
