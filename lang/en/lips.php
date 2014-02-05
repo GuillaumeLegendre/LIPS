@@ -62,6 +62,11 @@ $string['profile'] = 'Profile';
 $string['administration'] = 'Administration';
 
 /*--------------------------------------------------
+ * Tables
+ *------------------------------------------------*/
+$string['number_of_problems'] = 'Number of problems';
+
+/*--------------------------------------------------
  * Administration
  *------------------------------------------------*/
 
@@ -88,3 +93,9 @@ $string['administration_category_documentation_text_placeholder'] = 'Textual doc
 $string['administration_category_documentation_link'] = 'Documentation (Link)';
 $string['administration_category_documentation_text'] = 'Documentation (Text)';
 $string['administration_category_documentation_error'] = 'You can\'t have both documentations, please choose either a link to an external documentation or a textual documentation.';
+$string['administration_delete_category_confirmation'] = "Confirm the deletion of the category";
+
+/*--------------------------------------------------
+ * Web services
+ *------------------------------------------------*/
+$string['web_service_communication_error'] = 'An error occured when contacting the web service';

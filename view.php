@@ -34,7 +34,7 @@ require_once(dirname(__FILE__) . '/pagelib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $n = optional_param('n', 0, PARAM_INT); // lips instance ID - it should be named as the first character of the module
-$view = optional_param('view', 0, PARAM_TEXT); // lips instance ID - it should be named as the first character of the module
+$view = optional_param('view', 0, PARAM_TEXT); // lips instance ID - it should be named as the first character of the module.
 if (!$view) {
     $view = "index";
 }
@@ -73,11 +73,9 @@ switch ($view) {
                 case "langage":
                     $viewpage = new page_admin_langage($cm);
                     break;
-
                 case "category_create":
                     $viewpage = new page_admin_category_create($cm);
                     break;
-                
                 default:
                     $viewpage = new page_admin($cm);
                     break;
@@ -97,6 +95,14 @@ switch ($view) {
     case "category" :
         $idcategory = optional_param('categoryId', 0, PARAM_INT);
         $viewpage = new page_category($cm, $idcategory);
+        break;
+    case "categoryDocumentation" :
+        $idcategory = optional_param('categoryId', 0, PARAM_INT);
+        $viewpage = new page_category_documentation($cm, $idcategory);
+        break;
+    case "deleteCategory" :
+        $idcategory = optional_param('categoryId', 0, PARAM_INT);
+        $viewpage = new page_delete_category($cm, $idcategory);
         break;
     default :
         $viewpage = new page_index($cm);

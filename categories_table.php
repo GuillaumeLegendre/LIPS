@@ -15,10 +15,10 @@ class categories_table extends table_sql {
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "problems")));
         $context = context_module::instance($cm->id);
         if (has_capability('mod/lips:administration', $context)) {
-            $this->define_headers(array("Catégorie", "Nombre de problèmes", ""));
+            $this->define_headers(array(get_string('category', 'lips'), get_string('number_of_problems', 'lips'), ""));
             $this->define_columns(array("category_name", "category_problems", "actions"));
         } else {
-            $this->define_headers(array("Catégorie", "Nombre de problèmes"));
+            $this->define_headers(array(get_string('category', 'lips'), get_string('number_of_problems', 'lips')));
             $this->define_columns(array("category_name", "category_problems"));
         }
         $this->sortable(true);
@@ -32,7 +32,14 @@ class categories_table extends table_sql {
         }
 
         if ($colname == "actions") {
-            return $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $this->cm->id, 'action' => 'editCategory', 'categoryId' => $attempt->id, "originV" => "problems")), new pix_icon("t/edit", "edit")) . " " . $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $PAGE->cm->id, 'action' => 'deleteCategory', 'categoryId' => $attempt->id, "originV" => "problems")), new pix_icon("t/delete", "delete"));
+            $context = context_module::instance($this->cm->id);
+            $a="";
+            if (has_capability('mod/lips:administration', $context)) {
+                $a=$OUTPUT->action_icon(new moodle_url("action.php", array('id' => $this->cm->id, 'action' => 'editCategory', 'categoryId' => $attempt->id, "originV" => "problems")), new pix_icon("t/edit", "edit"));
+                //$a.=" " . $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $PAGE->cm->id, 'action' => 'deleteCategory', 'categoryId' => $attempt->id, "originV" => "problems")), new pix_icon("t/delete", "delete"));
+                $a.=" " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'deleteCategory', 'categoryId' => $attempt->id)), new pix_icon("t/delete", "delete"));
+            }
+            return $a.=" " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $attempt->id)), new pix_icon("t/manual_item", "documentation"));
         }
         return null;
     }

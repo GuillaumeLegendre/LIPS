@@ -43,7 +43,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @return array The tab name corresponding to the view name in parameter.
  */
-function convert_active_tab($activeTab) {
+function convert_active_tab($view) {
     $tabs = array(
         "index" => "index",
         "administration" => "administration",
@@ -51,8 +51,10 @@ function convert_active_tab($activeTab) {
         "profil" => "profil",
         "users" => "users",
         "category" => "problems",
+        "categoryDocumentation" => "problems",
+        "deleteCategory" => "poblems"
     );
-    return $tabs[$activeTab];
+    return $tabs[$view];
 }
 
 /**

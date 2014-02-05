@@ -134,4 +134,12 @@ class mod_lips_renderer extends plugin_renderer_base {
             break;
         }
     }
+
+    public function display_documentation($documentation) {
+
+    }
+
+    public function display_button($moodleurl, $label) {
+        return $this->render(new single_button($moodleurl, $label));
+    }
 }
