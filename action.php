@@ -22,10 +22,8 @@ if ($id) {
     error('You must specify a course_module ID or an instance ID');
 }
 
-
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
-
 
 if (!has_capability('mod/lips:administration', $context)) {
     redirect(new moodle_url('view.php', array('id' => $cm->id)));
