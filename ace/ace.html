@@ -29,21 +29,12 @@
     </div>
 </div>
 
-<!--  includes ace JavaScript file-->
 <script src="./ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<!--  includes jQuery JavaScript file-->
 <script src="./ace-builds/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
-<!--  includes the ace script JavaScript file-->
 <script src="ace-script.js" type="text/javascript" charset="utf-8"></script>
 <script>
-	/*
-	Creates an ace editor in the div #editor
-	*/
     var editor = ace.edit("editor");
 	
-	/*
-	Sets  themes and highlighting mode of the editor
-	*/
 	editor.setTheme("ace/theme/eclipse");
     editor.getSession().setMode("ace/mode/javascript");
 

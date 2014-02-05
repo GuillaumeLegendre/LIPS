@@ -1,9 +1,6 @@
 // JavaScript Document
 $(document).ready(function(){
 	
-	/*
-	Creates customized tags for the lips language configuration
-	*/
 	$("#editor").before('	<div id="editorpanel">' + 
 										'<a href=\"#\" id=\"import\" >&lt;lips-preconfig-import/&gt;</a>' + 
 										'<a href=\"#\" id=\"code\" >&lt;lips-preconfig-code/&gt;</a>' +
@@ -16,10 +13,6 @@ $(document).ready(function(){
 		$(this).css("margin-right", 20);
 	});
 	
-	
-	/*
-	handlers for the click event on new added tags
-	*/
 	$("#import").click(function(){
 		
 		if (editor.findAll('<lips-preconfig-import/>', null, true) == 0)

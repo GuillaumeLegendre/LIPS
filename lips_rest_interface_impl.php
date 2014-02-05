@@ -13,7 +13,8 @@ class lips_rest_interface_impl implements lips_rest_interface {
         $json = file_get_contents("http://localhost:4567/available_languages");
         $data = json_decode($json);
         foreach ($data->languages as $language) {
-            $languages[] = $language;
+            $languages[$language] = $language;
         }
+        return $languages;
     }
 }
