@@ -41,7 +41,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Get the tab name corresponding to the view name in parameter.
  *
- * @return the tab name corresponding to the view name in parameter.
+ * @return array The tab name corresponding to the view name in parameter.
  */
 function convert_active_tab($activeTab) {
     $tabs = array(
@@ -58,7 +58,7 @@ function convert_active_tab($activeTab) {
 /**
  * Get details of a specific category.
  *
- * @return an array containing the etails of a category.
+ * @return array An array containing the details of a category.
  */
 function get_category_details($id) {
     global $DB;
@@ -79,7 +79,41 @@ function get_language_picture() {
     return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
 }
 
+/**
+ * Delete a category of the database
+ *
+ * @param $id Id the of the category to delete
+ */
 function delete_category($id) {
     global $DB;
+    
     $DB->delete_records("lips_category", array("id" => $id));
+}
+
+/**
+ * Test if the category already exists
+ *
+ * @param array $conditions Category fields
+ * @return bool True if the category already exists, otherwise false
+ */
+function category_exists($conditions) {
+    global $DB;
+
+    if($DB->count_records('lips_category', $conditions) > 0)
+        return true;
+    return false;
+}
+
+/**
+ * Insert a category to the database
+ *
+ * @param int $id_language Language id
+ * @param string $category_name Category name
+ * @param string $category_documentation Category documentation
+ * @param string $category_documentation_type Category documentation type (LINK or TEXT)
+ */
+function insert_category($id_language, $category_name, $category_documentation, $category_documentation_type) {
+    global $DB;
+
+    $DB->insert_record('lips_category', array('id_language' => $id_language, 'category_name' => $category_name, 'category_documentation' => $category_documentation, 'category_documentation_type' => $category_documentation_type));
 }
