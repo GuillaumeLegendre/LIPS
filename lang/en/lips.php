@@ -46,10 +46,12 @@ $string['pluginname'] = 'LIPS';
  *------------------------------------------------*/
 $string['create'] = 'Create';
 $string['modify'] = 'Modify';
-$string['category'] = 'Catégorie';
+$string['delete'] = 'Delete';
+$string['category'] = 'Category';
 $string['documentation'] = 'Documentation';
 $string['name'] = 'Name';
 $string['error_impossible'] = 'You shouldn\'t have access this page';
+$string['language'] = 'Language';
 
 /*--------------------------------------------------
  * Tabs
@@ -65,6 +67,12 @@ $string['administration'] = 'Administration';
  * Tables
  *------------------------------------------------*/
 $string['number_of_problems'] = 'Number of problems';
++$string['problem'] = 'Problem';
++$string['level'] = 'Level';
++$string['date'] = 'Date';
++$string['author'] = 'Author';
++$string['number_of_resolutions'] = 'Number of resolutions';
++$string['resolved'] = 'Resoled';
 
 /*--------------------------------------------------
  * Administration

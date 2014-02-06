@@ -40,7 +40,7 @@ h2 {
     border: none;
     outline: none;
 }
- 
+
 #administration_menu {
     height: 30px;
     width: 400px;
@@ -56,7 +56,7 @@ h2 {
 
     margin-bottom: 20px;
 }
- 
+
 #administration_menu li {
     position: relative;
     list-style: none;
@@ -89,10 +89,17 @@ h2 {
     transition: color .2s ease-in-out;
 }
 
-#administration_menu li:first-child a { border-left: none; }
-#administration_menu li:last-child a{ border-right: none; }
+#administration_menu li:first-child a {
+    border-left: none;
+}
 
-#administration_menu li:hover > a { color: #0000FF; }
+#administration_menu li:last-child a {
+    border-right: none;
+}
+
+#administration_menu li:hover > a {
+    color: #0000FF;
+}
 
 #administration_menu ul {
     position: absolute;
@@ -113,21 +120,23 @@ h2 {
     -ms-transition: opacity .25s ease .1s;
     transition: opacity .25s ease .1s;
 }
- 
-#administration_menu li:hover > ul { opacity: 1; }
- 
+
+#administration_menu li:hover > ul {
+    opacity: 1;
+}
+
 #administration_menu ul li {
     height: 0;
     overflow: hidden;
     padding: 0;
- 
+
     -webkit-transition: height .25s ease .1s;
     -moz-transition: height .25s ease .1s;
     -o-transition: height .25s ease .1s;
     -ms-transition: height .25s ease .1s;
     transition: height .25s ease .1s;
 }
- 
+
 #administration_menu li:hover > ul li {
     height: 26px;
     overflow: visible;
@@ -138,9 +147,22 @@ h2 {
     width: 100px;
     padding: 4px 0 4px 30px;
     margin: 0;
- 
+
     border: none;
     border-bottom: 1px solid #353539;
+}
+
+.generaltable {
+    width: 100%;
+    margin: auto;
+}
+
+.generaltable td {
+    text-align: center;
+}
+
+#administration_menu ul li:last-child a {
+    border: none;
 }
  
 #administration_menu ul li:last-child a { border: none; }

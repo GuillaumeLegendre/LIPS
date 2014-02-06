@@ -55,7 +55,7 @@ function convert_active_tab($view) {
         "users" => "users",
         "category" => "problems",
         "categoryDocumentation" => "problems",
-        "deleteCategory" => "poblems"
+        "deleteCategory" => "problems"
     );
     return $tabs[$view];
 }
@@ -98,7 +98,7 @@ function get_language_picture() {
 }
 
 /**
- * Delete a category of the database
+ * Remove from the Database the category with the id in parameter.
  *
  * @param int $id Id the of the category to delete
  */
@@ -109,7 +109,16 @@ function delete_category($id) {
 }
 
 /**
- * Test if the category already exists
+ * Return true if the user is the author of the problem in parameter.
+ *
+ * @return boolean true if the user is the author of the problem.
+ */
+function is_author($idproblem, $iduser) {
+    global $DB;
+    return $DB->get_record("lips_problem", array('id' => $idproblem))->problem_creator_id == $iduser;
+}
+
+/* Test if the category already exists
  *
  * @param array $conditions Category fields
  * @return bool True if the category already exists, otherwise false

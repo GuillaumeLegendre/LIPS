@@ -46,9 +46,12 @@ $string['pluginname'] = 'LIPS';
  *------------------------------------------------*/
 $string['create'] = 'Créer';
 $string['modify'] = 'Modifier';
+$string['delete'] = 'Supprimer';
 $string['category'] = 'Catégorie';
 $string['documentation'] = 'Documentation';
 $string['name'] = 'Nom';
+$string['error_impossible'] = 'Vous ne devriez pas avoir accès à cette page';
+$string['language'] = 'Langage';
 
 /*--------------------------------------------------
  * Tabs
@@ -64,6 +67,12 @@ $string['administration'] = 'Administration';
  * Tables
  *------------------------------------------------*/
 $string['number_of_problems'] = 'Nombre de problèmes';
++$string['problem'] = 'Problème';
++$string['level'] = 'Niveau';
++$string['date'] = 'Date';
++$string['author'] = 'Auteur';
++$string['number_of_resolutions'] = 'Nombre de résolutions';
++$string['resolved'] = 'Résolu';
 
 /*--------------------------------------------------
  * Administration
@@ -87,5 +96,17 @@ $string['administration_category_create_success'] = 'La catégorie a été cré�
 $string['administration_category_modify_title'] = 'Modifier une catégorie';
 $string['administration_category_modify_select'] = 'Sélection de la catégorie';
 $string['administration_category_modify_select_error'] = 'Vous devez sélectionner une catégorie';
+$string['administration_category_msg'] = 'Choisissez soit un lien vers une documentation externe soit une documentation textuelle. <strong>Vous ne pouvez pas choisir les deux</strong>.';
 $string['administration_category_name_error'] = 'Vous devez saisir le nom de la catégorie';
-$string['administration_category_documentation_placeholder'] = 'Lien vers une documentation externe';
+$string['administration_category_already_exists'] = 'Ce nom de catégorie est déjà utilisé, merci d\'en choisir un autre';
+$string['administration_category_documentation_link_placeholder'] = 'Lien vers une documentation externe';
+$string['administration_category_documentation_text_placeholder'] = 'Documentation textuelle';
+$string['administration_category_documentation_link'] = 'Documentation (Lien)';
+$string['administration_category_documentation_text'] = 'Documentation (Texte)';
+$string['administration_category_documentation_error'] = 'Vous ne pouvez pas avoir les deux types de documentation, choisissez soit un lien vers une documentation externe soit une documentation textuelle.';
+$string['administration_delete_category_confirmation'] = "Confirmez-vous la suppression de la catégorie ?";
+
+/*--------------------------------------------------
+ * Web services
+ *------------------------------------------------*/
+$string['web_service_communication_error'] = 'Une erreur est survenue lors de la communication avec le service web';
