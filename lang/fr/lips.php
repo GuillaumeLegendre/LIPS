@@ -46,9 +46,11 @@ $string['pluginname'] = 'LIPS';
  *------------------------------------------------*/
 $string['create'] = 'Créer';
 $string['modify'] = 'Modifier';
+$string['delete'] = 'Supprimer';
 $string['category'] = 'Catégorie';
 $string['documentation'] = 'Documentation';
 $string['name'] = 'Nom';
+$string['language'] = 'Langage';
 
 /*--------------------------------------------------
  * Tabs

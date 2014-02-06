@@ -13,14 +13,14 @@ class mod_lips_renderer extends plugin_renderer_base {
         $id = $this->page->cm->id;
         $context = context_module::instance($id);
 
-        $tabs[] = new tabobject('index', "view.php?id={$id}&amp;view=index", "Accueil");
-        $tabs[] = new tabobject('problems', "view.php?id={$id}&amp;view=problems", "Problèmes");
-        $tabs[] = new tabobject('users', "view.php?id={$id}&amp;view=users", "Utilisateurs");
-        $tabs[] = new tabobject('rank', "view.php?id={$id}&amp;view=rank", "Classement");
-        $tabs[] = new tabobject('profil', "view.php?id={$id}&amp;view=profil", "Profil");
+        $tabs[] = new tabobject('index', "view.php?id={$id}&amp;view=index", get_string('index', 'lips'));
+        $tabs[] = new tabobject('problems', "view.php?id={$id}&amp;view=problems", get_string('problems', 'lips'));
+        $tabs[] = new tabobject('users', "view.php?id={$id}&amp;view=users", get_string('users', 'lips'));
+        $tabs[] = new tabobject('rank', "view.php?id={$id}&amp;view=rank", get_string('rank', 'lips'));
+        $tabs[] = new tabobject('profil', "view.php?id={$id}&amp;view=profil", get_string('profile', 'lips'));
 
         if (has_capability('mod/lips:administration', $context)) {
-            $tabs[] = new tabobject('administration', "view.php?id={$id}&amp;view=administration", "Administration");
+            $tabs[] = new tabobject('administration', "view.php?id={$id}&amp;view=administration", get_string('administration', 'lips'));
         }
 
         return $this->tabtree($tabs, convert_active_tab($activetab));
@@ -83,26 +83,26 @@ class mod_lips_renderer extends plugin_renderer_base {
         $view = optional_param('view', 0, PARAM_TEXT);
 
         return '<ul id="administration_menu">
-            <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=langage">Langage</a></li>
+            <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=langage">' . get_string('language', 'lips') . '</a></li>
             <li><a href="#">Badges</a>
                 <ul>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_create">Créer</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_modify">Modifier</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_delete">Supprimer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_create">' . get_string('create', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_modify">' . get_string('modify', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_delete">' . get_string('delete', 'lips') . '</a></li>
                 </ul>
             </li>
             <li><a href="#">Catégories</a>
                 <ul>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_create">Créer</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_modify">Modifier</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_delete">Supprimer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_create">' . get_string('create', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_modify">' . get_string('modify', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_delete">' . get_string('delete', 'lips') . '</a></li>
                 </ul>
             </li>
             <li><a href="#">Problèmes</a>
                 <ul>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_create">Créer</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_modify">Modifier</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_delete">Supprimer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_create">' . get_string('create', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_modify">' . get_string('modify', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_delete">' . get_string('delete', 'lips') . '</a></li>
                 </ul>
             </li>
         </ul>';
