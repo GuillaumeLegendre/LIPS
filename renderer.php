@@ -94,7 +94,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             <li><a href="#">Catégories</a>
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_create">Créer</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_modify">Modifier</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_select_modify">Modifier</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_delete">Supprimer</a></li>
                 </ul>
             </li>

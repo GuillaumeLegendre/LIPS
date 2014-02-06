@@ -83,5 +83,9 @@ $string['administration_language_form_file_error'] = 'Vous devez sélectionner u
 
 // Category
 $string['administration_category_create_title'] = 'Créer une catégorie';
+$string['administration_category_create_success'] = 'La catégorie a été créé';
+$string['administration_category_modify_title'] = 'Modifier une catégorie';
+$string['administration_category_modify_select'] = 'Sélection de la catégorie';
+$string['administration_category_modify_select_error'] = 'Vous devez sélectionner une catégorie';
 $string['administration_category_name_error'] = 'Vous devez saisir le nom de la catégorie';
 $string['administration_category_documentation_placeholder'] = 'Lien vers une documentation externe';

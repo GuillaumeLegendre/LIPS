@@ -17,11 +17,11 @@ class mod_lips_configure_language_form extends moodleform {
      */
     public function definition() {
         $mform =& $this->_form;
-        $languages = lips_rest_interface_impl::get_list_languages();
-        if (!$languages) {
-            print_error(get_string('web_service_communication_error', 'lips'));
-        }
+
         // Select the language
+        $languages = lips_rest_interface_impl::get_list_languages();
+        if (!$languages)
+            print_error(get_string('web_service_communication_error', 'lips'));
         $mform->addElement('select', 'selectLanguages', get_string('administration_language_form_select', 'lips'), lips_rest_interface_impl::get_list_languages());
         $mform->addRule('selectLanguages', get_string('administration_language_form_select_error', 'lips'), 'required');
 

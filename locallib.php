@@ -29,14 +29,17 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Does something really useful with the passed things
+ * Get the current instance of the plugin
  *
- * @param array $things
- * @return object
+ * @return object The current instance of the plugin
  */
-//function lips_do_something_useful(array $things) {
-//    return new stdClass();
-//}
+function get_current_instance() {
+    global $DB;
+
+    $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);
+
+    return $DB->get_record('lips', array('id' => $cm->instance), '*', MUST_EXIST);
+}
 
 /**
  * Get the tab name corresponding to the view name in parameter.
@@ -58,12 +61,25 @@ function convert_active_tab($view) {
 }
 
 /**
+ * Fetch all categories of the current instance
+ * 
+ * @param int Id the the current instance
+ * @return object List of all categories of the current instance
+ */
+function fetch_all_categories($id_language) {
+    global $DB;
+
+    return $DB->get_records('lips_category', array('id_language' => $id_language));
+}
+
+/**
  * Get details of a specific category.
  *
- * @return array An array containing the details of a category.
+ * @return object An array containing the details of a category.
  */
 function get_category_details($id) {
     global $DB;
+
     return $DB->get_record('lips_category', array('id' => $id), '*', MUST_EXIST);
 }
 
@@ -84,7 +100,7 @@ function get_language_picture() {
 /**
  * Delete a category of the database
  *
- * @param $id Id the of the category to delete
+ * @param int $id Id the of the category to delete
  */
 function delete_category($id) {
     global $DB;

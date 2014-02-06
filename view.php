@@ -76,6 +76,12 @@ switch ($view) {
                 case "category_create":
                     $viewpage = new page_admin_category_create($cm);
                     break;
+                case "category_select_modify":
+                    $viewpage = new page_admin_category_select_modify($cm);
+                    break;
+                case "category_modify":
+                    $viewpage = new page_admin_category_modify($cm);
+                    break;
                 default:
                     $viewpage = new page_admin($cm);
                     break;
