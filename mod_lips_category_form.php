@@ -247,3 +247,33 @@ class mod_lips_category_modify_form extends moodleform {
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_modify_success', 'lips'), 'SUCCESS');
     }
 }
+
+/**
+ * Form to delete a category
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin GOT
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class mod_lips_category_delete_form extends moodleform {
+
+    /**
+     * Form definition
+     */
+    public function definition() {
+        $mform =& $this->_form;
+
+        // Select the category
+        $lips = get_current_instance();
+        $categories = array();
+        foreach (fetch_all_categories($lips->id) as $category)
+            $categories[$category->id] = $category->category_name;
+
+        $mform->addElement('select', 'categoryId', get_string('administration_category_modify_select', 'lips'), $categories);
+        $mform->addRule('categoryId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+
+        // Delete button
+        $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
+    }
+}
