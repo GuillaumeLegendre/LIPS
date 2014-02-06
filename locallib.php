@@ -144,3 +144,17 @@ function insert_category($id_language, $category_name, $category_documentation, 
 
     $DB->insert_record('lips_category', array('id_language' => $id_language, 'category_name' => $category_name, 'category_documentation' => $category_documentation, 'category_documentation_type' => $category_documentation_type));
 }
+
+/**
+ * Update a category
+ *
+ * @param int $id Category id
+ * @param string $category_name Category name
+ * @param string $category_documentation Category documentation
+ * @param string $category_documentation_type Category documentation type (LINK or TEXT)
+ */
+function update_category($id, $category_name, $category_documentation, $category_documentation_type) {
+    global $DB;
+
+    $DB->update_record('lips_category', array('id' => $id, 'category_name' => $category_name, 'category_documentation' => $category_documentation, 'category_documentation_type' => $category_documentation_type));
+}

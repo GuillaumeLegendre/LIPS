@@ -149,6 +149,16 @@ class mod_lips_category_modify_form extends moodleform {
         $mform =& $this->_form;
         $mcustomdata = $this->_customdata;
 
+        // Category ID
+        $mform->addElement('hidden', 'inputCategoryID', null, null);
+        $mform->setType('inputCategoryID', PARAM_INT);
+        $mform->setDefault('inputCategoryID', $mcustomdata['id']);
+
+        // Category current name
+        $mform->addElement('hidden', 'inputCategoryCurrentName', null, null);
+        $mform->setType('inputCategoryCurrentName', PARAM_TEXT);
+        $mform->setDefault('inputCategoryCurrentName', $mcustomdata['category_name']);
+
         // Category name
         $mform->addElement('text', 'inputCategoryName', get_string('category', 'lips'), array('size' => '64', 'maxlength' => '255', 'placeholder' => get_string('name', 'lips')));
         $mform->setType('inputCategoryName', PARAM_TEXT);
@@ -183,7 +193,7 @@ class mod_lips_category_modify_form extends moodleform {
 
         if(isset($data->inputCategoryName) && isset($data->inputCategoryDocumentation) && isset($data->areaCategoryDocumentation)) {
             if(!empty($data->inputCategoryName)) {
-                if(category_exists(array('category_name' => $data->inputCategoryName)))
+                if($data->inputCategoryCurrentName != $data->inputCategoryName && category_exists(array('category_name' => $data->inputCategoryName)))
                     $errors['alreadyExists'] = get_string('administration_category_already_exists', 'lips');
 
                 if(!empty($data->inputCategoryDocumentation) && $data->areaCategoryDocumentation != "")
@@ -225,15 +235,15 @@ class mod_lips_category_modify_form extends moodleform {
         }
 
         // Params
+        $category_id = $data->inputCategoryID;
         $category_name = $data->inputCategoryName;
         $category_documentation = (empty($data->inputCategoryDocumentation)) ? $data->areaCategoryDocumentation : $data->inputCategoryDocumentation;
         $category_documentation_type = (empty($data->inputCategoryDocumentation)) ? 'TEXT' : 'LINK';
 
-        // Insert the data
-        $lips = get_current_instance();
-        insert_category($lips->id, $category_name, $category_documentation, $category_documentation_type);
+        // Update the data
+        update_category($category_id, $category_name, $category_documentation, $category_documentation_type);
 
         // Success message
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_create_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_modify_success', 'lips'), 'SUCCESS');
     }
 }

@@ -333,20 +333,24 @@ class page_admin_category_modify extends page_view {
         // Administration menu
         echo $this->lipsoutput->display_administration_menu();
 
-        // Create a category
-        echo $this->lipsoutput->display_h2(get_string('administration_category_create_title', 'lips'));
+        // Modify a category
+        echo $this->lipsoutput->display_h2(get_string('administration_category_modify_title', 'lips'));
         echo $this->lipsoutput->display_p(get_string('administration_category_msg', 'lips'));
 
-        $modifySelectCategoryForm = new mod_lips_category_modify_select_form();
-        $category = $modifySelectCategoryForm->get_submitted_data();
-        $categoryDetails = get_category_details($category->selectCategory);
-
-        $modifiyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_create')), (array) $categoryDetails, 'post');
+        $modifiyCategoryForm = new mod_lips_category_modify_form();
 
         if($modifiyCategoryForm->is_submitted()) {
+            $modifiyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
+
             $modifiyCategoryForm->handle();
             $modifiyCategoryForm->display();
         } else {
+            $modifySelectCategoryForm = new mod_lips_category_modify_select_form();
+            $category = $modifySelectCategoryForm->get_submitted_data();
+            $categoryDetails = get_category_details($category->selectCategory);
+
+            $modifiyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array) $categoryDetails, 'post');
+
             $modifiyCategoryForm->display();
         }
     }
