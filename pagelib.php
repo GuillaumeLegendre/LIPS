@@ -158,6 +158,14 @@ class page_admin extends page_view {
     }
 }
 
+/**
+ * Language configuration page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class page_admin_langage extends page_view {
 
     /**
@@ -206,6 +214,14 @@ class page_admin_langage extends page_view {
     }
 }
 
+/**
+ * Category creation page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class page_admin_category_create extends page_view {
 
     /**
@@ -232,10 +248,16 @@ class page_admin_category_create extends page_view {
 
         // Create a category
         echo $this->lipsoutput->display_h2(get_string('administration_category_create_title', 'lips'));
+        echo $this->lipsoutput->display_p(get_string('administration_category_msg', 'lips'));
 
         $createCategoryForm = new mod_lips_category_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_create')), null, 'post');
-        $createCategoryForm->display();
 
+        if($createCategoryForm->is_submitted()) {
+            $createCategoryForm->handle($this->cm->instance);
+            $createCategoryForm->display();
+        } else {
+            $createCategoryForm->display();
+        }
         /*//Form processing and displaying is done here
         if ($mform->is_cancelled()) {
             //Handle form cancel operation, if cancel button is present on form

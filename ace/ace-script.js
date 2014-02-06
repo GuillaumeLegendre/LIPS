@@ -1,4 +1,9 @@
 // JavaScript Document
+
+window.setAceMode = function(mode){
+	editor.getSession().setMode("ace/mode/" + mode);
+}
+
 $(document).ready(function(){
 	
 	$("#editor").before('	<div id="editorpanel">' + 
@@ -30,4 +35,6 @@ $(document).ready(function(){
 		if (editor.findAll('<lips-preconfig-tests/>', null, true) == 0)
 			editor.insert("<lips-preconfig-tests/>");
 	});
+	
+
 });

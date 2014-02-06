@@ -15,7 +15,7 @@ class mod_lips_configure_language_form extends moodleform {
     /**
      * Form definition
      */
-    function definition() {
+    public function definition() {
         $mform =& $this->_form;
         $languages = lips_rest_interface_impl::get_list_languages();
         if (!$languages) {
@@ -43,7 +43,7 @@ class mod_lips_configure_picture_form extends moodleform {
     /**
      * Form definition
      */
-    function definition() {
+    public function definition() {
         $mform =& $this->_form;
 
         // Select the image
@@ -68,7 +68,7 @@ class mod_lips_configure_code_form extends moodleform {
     /**
      * Form definition
      */
-    function definition() {
+    public function definition() {
         $mform =& $this->_form;
 
         // Textarea for base code

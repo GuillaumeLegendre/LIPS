@@ -41,7 +41,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Get the tab name corresponding to the view name in parameter.
  *
- * @return the tab name corresponding to the view name in parameter.
+ * @return array The tab name corresponding to the view name in parameter.
  */
 function convert_active_tab($view) {
     $tabs = array(
@@ -52,7 +52,7 @@ function convert_active_tab($view) {
         "users" => "users",
         "category" => "problems",
         "categoryDocumentation" => "problems",
-        "deleteCategory" => "poblems"
+        "deleteCategory" => "problems"
     );
     return $tabs[$view];
 }
@@ -60,7 +60,7 @@ function convert_active_tab($view) {
 /**
  * Get details of a specific category.
  *
- * @return an array containing the etails of a category.
+ * @return array An array containing the details of a category.
  */
 function get_category_details($id) {
     global $DB;
@@ -87,6 +87,7 @@ function get_language_picture() {
  */
 function delete_category($id) {
     global $DB;
+    
     $DB->delete_records("lips_category", array("id" => $id));
 }
 
@@ -98,4 +99,31 @@ function delete_category($id) {
 function is_author($idproblem, $iduser) {
     global $DB;
     return $DB->get_record("lips_problem", array('id' => $idproblem))->problem_creator_id == $iduser;
+}
+
+/* Test if the category already exists
+ *
+ * @param array $conditions Category fields
+ * @return bool True if the category already exists, otherwise false
+ */
+function category_exists($conditions) {
+    global $DB;
+
+    if($DB->count_records('lips_category', $conditions) > 0)
+        return true;
+    return false;
+}
+
+/**
+ * Insert a category to the database
+ *
+ * @param int $id_language Language id
+ * @param string $category_name Category name
+ * @param string $category_documentation Category documentation
+ * @param string $category_documentation_type Category documentation type (LINK or TEXT)
+ */
+function insert_category($id_language, $category_name, $category_documentation, $category_documentation_type) {
+    global $DB;
+
+    $DB->insert_record('lips_category', array('id_language' => $id_language, 'category_name' => $category_name, 'category_documentation' => $category_documentation, 'category_documentation_type' => $category_documentation_type));
 }
