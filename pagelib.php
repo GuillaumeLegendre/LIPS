@@ -120,7 +120,6 @@ class page_index extends page_view {
      */
     function display_content() {
         global $USER;
-
         echo $this->lipsoutput->display_h1('Bienvenue ' . $USER->username);
     }
 }
@@ -236,7 +235,7 @@ class page_admin_category_create extends page_view {
 
         $createCategoryForm = new mod_lips_category_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_create')), null, 'post');
         $createCategoryForm->display();
-        
+
         /*//Form processing and displaying is done here
         if ($mform->is_cancelled()) {
             //Handle form cancel operation, if cancel button is present on form
@@ -356,7 +355,7 @@ class page_category extends page_view {
     function display_content() {
         echo "<h1>" . get_category_details($this->id)->category_name . "</h1>";
         require_once(dirname(__FILE__) . '/problems_table.php');
-        $table = new problems_table("mdl_lips_problem");
+        $table = new problems_table($this->cm, $this->id);
         $table->out(10, true);
     }
 }
@@ -386,8 +385,8 @@ class page_category_documentation extends page_view {
      * Display the category_documentation content
      */
     function display_content() {
-        $details=get_category_details($this->id);
-        echo $this->lipsoutput->display_h2($details->category_name . " - ".get_string('documentation', 'lips'));
+        $details = get_category_details($this->id);
+        echo $this->lipsoutput->display_h2($details->category_name . " - " . get_string('documentation', 'lips'));
         echo $details->category_documentation;
     }
 }
@@ -412,8 +411,8 @@ class page_delete_category extends page_view {
      * Display the message of confirmation.
      */
     function display_content() {
-        $details=get_category_details($this->id);
-        $message=$this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips')." ". $details->category_name. "?");
-        echo $this->lipsoutput->confirm($message, new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view,"originV" => "problems", 'categoryId' => $this->id)),new moodle_url('view.php', array('id' => $this->cm->id, 'action' => $this->view,"view" => "problems", 'categoryId' => $this->id)));
+        $details = get_category_details($this->id);
+        $message = $this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips') . " " . $details->category_name . "?");
+        echo $this->lipsoutput->confirm($message, new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view, "originV" => "problems", 'categoryId' => $this->id)), new moodle_url('view.php', array('id' => $this->cm->id, 'action' => $this->view, "view" => "problems", 'categoryId' => $this->id)));
     }
 }

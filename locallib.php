@@ -81,7 +81,21 @@ function get_language_picture() {
     return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
 }
 
+/**
+ * Remove from the Database the category with the id in parameter.
+ *
+ */
 function delete_category($id) {
     global $DB;
     $DB->delete_records("lips_category", array("id" => $id));
+}
+
+/**
+ * Return true if the user is the author of the problem in parameter.
+ *
+ * @return boolean true if the user is the author of the problem.
+ */
+function is_author($idproblem, $iduser) {
+    global $DB;
+    return $DB->get_record("lips_problem", array('id' => $idproblem))->problem_creator_id == $iduser;
 }
