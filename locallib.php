@@ -76,13 +76,27 @@ function convert_active_tab($view) {
 /**
  * Fetch all categories of the current instance
  *
- * @param int Id the the current instance
+ * @param int Id of the current instance
  * @return object List of all categories of the current instance
  */
 function fetch_all_categories($idlanguage) {
     global $DB;
+
     return $DB->get_records('lips_category', array('id_language' => $idlanguage));
 }
+
+/**
+ * Count the number of languages present on the current instance
+ *
+ * @param int Id of the current instance
+ * @return object List of all languages of the current instance
+ */
+function count_languages_number($idlanguage) {
+    global $DB;
+
+    return $DB->count_records_sql('SELECT count(*) FROM mdl_lips_category mlc, mdl_lips_problem mlp WHERE mlc.id = mlp.problem_category_id AND id_language = ' . $idlanguage);
+}
+
 
 /**
  * Fetch all difficulties.
@@ -91,6 +105,7 @@ function fetch_all_categories($idlanguage) {
  */
 function fetch_all_difficulties() {
     global $DB;
+
     return $DB->get_records('lips_difficulty');
 }
 
@@ -148,7 +163,7 @@ function is_author($idproblem, $iduser) {
 function category_exists($conditions) {
     global $DB;
 
-    if ($DB->count_records('lips_category', $conditions) > 0)
+    if($DB->count_records('lips_category', $conditions) > 0)
         return true;
     return false;
 }
@@ -183,11 +198,14 @@ function update_category($id, $category_name, $category_documentation, $category
 
 function has_documentation($idcategory) {
     $cat = get_category_details($idcategory);
+    
     if ($cat->category_documentation) {
         return true;
     }
+
     return false;
 }
+
 /**
  * Update a language
  *

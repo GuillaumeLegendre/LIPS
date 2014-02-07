@@ -103,11 +103,18 @@ $string['administration_language_form_highlighting_select'] = 'Syntax highlighti
 $string['administration_language_form_highlighting_select_error'] = 'You must select a syntax highlighting';
 $string['administration_language_form_file'] = 'Select the picture';
 $string['administration_language_form_file_error'] = 'You must select a picture';
+$string['administration_existing_problems'] = 'Warning, some problems already exists in this course, the configuration can cause errors in the presents problems.';
 $string['administration_no_syntax_highlighting'] = 'There is no syntax highlighting defined. Go to <strong>Administration > Language > Configure language</strong>.';
+$string['administration_no_compile_language'] = 'There is no compile language defined. Go to <strong>Administration > Language > Configure language</strong>.';
 
 // Category
 $string['administration_category_create_title'] = 'Create a category';
 $string['administration_category_create_success'] = 'The category has been created';
+$string['administration_category_modify_title'] = 'Modify a category';
+$string['administration_category_modify_select'] = 'Select the category';
+$string['administration_category_modify_select_error'] = 'You must select a category';
+$string['administration_category_modify_success'] = 'The category has been modified';
+$string['administration_category_delete_title'] = 'Delete a category';
 $string['administration_category_msg'] = 'Choose either a link to an external documentation or a textual documentation. <strong>You can\'t choose both</strong>.';
 $string['administration_category_name_error'] = 'You must enter a category name';
 $string['administration_category_already_exists'] = 'This category name already exists, please choose an other';

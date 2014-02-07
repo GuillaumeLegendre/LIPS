@@ -39,6 +39,7 @@ if (!$view) {
     $view = "index";
 }
 
+
 if ($id) {
     $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
@@ -81,6 +82,15 @@ switch ($view) {
                 case "category_create":
                     $viewpage = new page_admin_category_create($cm);
                     break;
+                case "category_select_modify":
+                    $viewpage = new page_admin_category_select_modify($cm);
+                    break;
+                case "category_modify":
+                    $viewpage = new page_admin_category_modify($cm);
+                    break;
+                case "category_delete":
+                    $viewpage = new page_admin_category_delete($cm);
+                    break;
                 case "problem_create":
                     $viewpage = new page_admin_problem_create($cm);
                     break;
@@ -110,7 +120,10 @@ switch ($view) {
         break;
     case "deleteCategory" :
         $idcategory = optional_param('categoryId', 0, PARAM_INT);
-        $viewpage = new page_delete_category($cm, $idcategory);
+        $originV = optional_param('originV', 0, PARAM_TEXT);
+        $originAction = optional_param('originAction', 0, PARAM_TEXT);
+
+        $viewpage = new page_delete_category($cm, $idcategory, $originV, $originAction);
         break;
     default :
         $viewpage = new page_index($cm);

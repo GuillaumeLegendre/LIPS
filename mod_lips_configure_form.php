@@ -32,7 +32,7 @@ class mod_lips_configure_language_form extends moodleform {
             $mform->addElement('select', 'selectLanguage', get_string('administration_language_form_select', 'lips'), $languages);
             $mform->addRule('selectLanguage', get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
             if($lips->compile_language != null)
-                $mform->setDefault('selectSyntaxHighlighting', $lips->compile_language);
+                $mform->setDefault('selectLanguage', $lips->compile_language);
         }
 
         // Select the syntax highlighting
@@ -124,7 +124,7 @@ class mod_lips_configure_picture_form extends moodleform {
         $mform =& $this->_form;
 
         // Select the image
-        $mform->addElement('file', 'filePicture', get_string('administration_language_form_file', 'lips'));
+        $mform->addElement('filepicker', 'filePicture', get_string('administration_language_form_file', 'lips'), null, array('maxbytes' => '3000000', 'accepted_types' => array('image')));
         $mform->addRule('filePicture', get_string('administration_language_form_file_error', 'lips'), 'required');
 
         // Modify button

@@ -207,6 +207,10 @@ class page_admin_langage_configure extends page_view {
         echo $this->lipsoutput->display_h2(get_string('administration_language_configure_title', 'lips'));
         echo $this->lipsoutput->display_p(get_string('administration_language_configure_msg', 'lips'));
 
+        $lips = get_current_instance();
+        if(count_languages_number($lips->id) > 0)
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_existing_problems', 'lips'), 'ERROR');
+
         $configureLanguageForm = new mod_lips_configure_language_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_configure')), null, 'post');
 
         if($configureLanguageForm->is_submitted()) {
@@ -305,6 +309,8 @@ class page_admin_langage_base extends page_view {
         echo $this->lipsoutput->display_p(get_string('administration_language_code_msg', 'lips'));
 
         $lips = get_current_instance();
+        if($lips->compile_language == null && has_role('adminplugin'))
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_no_compile_language', 'lips'), 'ERROR');
         if($lips->coloration_language == null && has_role('adminplugin'))
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_no_syntax_highlighting', 'lips'), 'WARNING');
 
@@ -366,7 +372,7 @@ class page_admin_category_create extends page_view {
         $createCategoryForm = new mod_lips_category_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_create')), null, 'post');
 
         if($createCategoryForm->is_submitted()) {
-            $createCategoryForm->handle($this->cm->instance);
+            $createCategoryForm->handle();
             $createCategoryForm->display();
         } else {
             $createCategoryForm->display();
@@ -375,7 +381,159 @@ class page_admin_category_create extends page_view {
 }
 
 /**
- * Category creation page
+ * Page to select the category to modify
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_category_select_modify extends page_view {
+
+    /**
+     * page_admin_category_select_modify constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_category_select_modify content
+     */
+    function display_content() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Modify a category
+        echo $this->lipsoutput->display_h2(get_string('administration_category_modify_title', 'lips'));
+
+        $modifySelectCategoryForm = new mod_lips_category_modify_select_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
+
+        if($modifySelectCategoryForm->is_submitted()) {
+            $modifySelectCategoryForm->handle();
+            $modifySelectCategoryForm->display();
+        } else {
+            $modifySelectCategoryForm->display();
+        }
+    }
+}
+
+/**
+ * Category modification page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_category_modify extends page_view {
+
+    /**
+     * page_admin_category_modify constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_category_modify content
+     */
+    function display_content() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Modify a category
+        echo $this->lipsoutput->display_h2(get_string('administration_category_modify_title', 'lips'));
+        echo $this->lipsoutput->display_p(get_string('administration_category_msg', 'lips'));
+
+        $modifyCategoryForm = new mod_lips_category_modify_form();
+
+        if($modifyCategoryForm->is_submitted()) {
+            $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
+
+            $modifyCategoryForm->handle();
+            $modifyCategoryForm->display();
+        } else {
+            $categoryid = optional_param('category_id', null, PARAM_INT);
+
+            if($categoryid == null) {
+                $modifySelectCategoryForm = new mod_lips_category_modify_select_form();
+                $data = $modifySelectCategoryForm->get_submitted_data();
+                $categorydetails = get_category_details($data->selectCategory);
+
+                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array) $categorydetails, 'post');
+
+                $modifyCategoryForm->display();
+            } else {
+                $categorydetails = get_category_details($categoryid);
+
+                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array) $categorydetails, 'post');
+
+                $modifyCategoryForm->display();
+            }
+
+        }
+    }
+}
+
+/**
+ * Category delete page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_category_delete extends page_view {
+
+    /**
+     * page_admin_category_delete constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_category_delete content
+     */
+    function display_content() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Delete a category
+        echo $this->lipsoutput->display_h2(get_string('administration_category_delete_title', 'lips'));
+
+        $deleteCategoryForm = new mod_lips_category_delete_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'deleteCategory', 'originV' => $this->view, 'originAction' => 'category_delete')), null, 'post');
+        $deleteCategoryForm->display();
+    }
+}
+
+/**
+ * Problem creation page
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
@@ -385,7 +543,7 @@ class page_admin_category_create extends page_view {
 class page_admin_problem_create extends page_view {
 
     /**
-     * page_admin constructor
+     * page_admin_problem_create constructor
      *
      * @param object $cm Moodle context
      */
@@ -394,7 +552,7 @@ class page_admin_problem_create extends page_view {
     }
 
     /**
-     * Display the page_admin content
+     * Display the page_admin_problem_create content
      */
     function display_content() {
         global $CFG;
@@ -417,22 +575,6 @@ class page_admin_problem_create extends page_view {
         } else {
             $createProblemForm->display();
         }
-        /*//Form processing and displaying is done here
-        if ($mform->is_cancelled()) {
-            //Handle form cancel operation, if cancel button is present on form
-        } else if ($fromform = $mform->get_data()) {
-            global $DB;
-            unset($fromform->submitbutton);
-            $DB->insert_record("lips_category", $fromform);
-            echo "Category created";
-        } else {
-            // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-            // or on the first display of the form.
-
-            //Set default data (if any)
-            //displays the form
-            $mform->display();
-        }*/
     }
 }
 
@@ -582,10 +724,15 @@ class page_category_documentation extends page_view {
  */
 class page_delete_category extends page_view {
     private $id;
+    private $originv;
+    private $originaction;
 
-    function  __construct($cm, $id) {
+    function  __construct($cm, $id, $originv, $originaction) {
         parent::__construct($cm, "deleteCategory");
+
         $this->id = $id;
+        $this->originv = $originv;
+        $this->originaction = $originaction;
     }
 
     /**
@@ -594,6 +741,7 @@ class page_delete_category extends page_view {
     function display_content() {
         $details = get_category_details($this->id);
         $message = $this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips') . " " . $details->category_name . " ?");
+
         $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view, 'originV' => $this->originv, 'originAction' => $this->originaction, 'categoryId' => $this->id));
         if($this->originaction != null)
             $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv, 'action' => $this->originaction));
