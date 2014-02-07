@@ -94,7 +94,7 @@ class mod_lips_category_create_form extends moodleform {
         $category_documentation_type = (empty($data->inputCategoryDocumentation)) ? 'TEXT' : 'LINK';
 
         // Insert the data
-        $lips = $DB->get_record('lips', array('id' => $instance), '*', MUST_EXIST);
+        $lips = get_current_instance();
         insert_category($lips->id, $category_name, $category_documentation, $category_documentation_type);
 
         // Success message
