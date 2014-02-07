@@ -10,7 +10,6 @@ $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
 $n = optional_param('n', 0, PARAM_INT); // lips instance ID - it should be named as the first character of the module
 $action = optional_param('action', 0, PARAM_TEXT); // lips instance ID - it should be named as the first character of the module
 $originv = optional_param('originV', "index", PARAM_TEXT); // lips instance ID - it should be named as the first character of the module
-$originaction = optional_param('originAction', null, PARAM_TEXT);
 
 if ($id) {
     $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
@@ -36,13 +35,8 @@ add_to_log($course->id, 'lips', 'action', "action.php?id={$cm->id}", $lips->name
 switch ($action) {
     case "deleteCategory":
         $categoryid = optional_param('categoryId', 0, PARAM_INT);
-
         delete_category($categoryid);
-
-       if($originaction == null)
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
-        else
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+        redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
         break;
 }
 

@@ -30,6 +30,11 @@
  * @see upgrade_plugins_modules()
  */
 function xmldb_lips_install() {
+    global $DB;
+    $DB->insert_record("lips_difficulty", array("difficulty_label" => "difficulty_label_elementary", "difficulty_points" => "1"));
+    $DB->insert_record("lips_difficulty", array("difficulty_label" => "difficulty_label_easy", "difficulty_points" => "5"));
+    $DB->insert_record("lips_difficulty", array("difficulty_label" => "difficulty_label_medium", "difficulty_points" => "10"));
+    $DB->insert_record("lips_difficulty", array("difficulty_label" => "difficulty_label_difficult", "difficulty_points" => "15"));
 }
 
 /**

@@ -135,7 +135,7 @@ function is_author($idproblem, $iduser) {
 function category_exists($conditions) {
     global $DB;
 
-    if($DB->count_records('lips_category', $conditions) > 0)
+    if ($DB->count_records('lips_category', $conditions) > 0)
         return true;
     return false;
 }
@@ -166,4 +166,12 @@ function update_category($id, $category_name, $category_documentation, $category
     global $DB;
 
     $DB->update_record('lips_category', array('id' => $id, 'category_name' => $category_name, 'category_documentation' => $category_documentation, 'category_documentation_type' => $category_documentation_type));
+}
+
+function has_documentation($idcategory) {
+    $cat = get_category_details($idcategory);
+    if ($cat->category_documentation) {
+        return true;
+    }
+    return false;
 }

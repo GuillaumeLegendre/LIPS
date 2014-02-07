@@ -32,8 +32,9 @@ class problems_table extends table_sql {
         global $OUTPUT, $PAGE, $USER;
         if ($colname == "problem_date") {
             return date('d/m/Y', $attempt->problem_date);
-        }
-        if ($colname == "actions") {
+        } else if ($colname == "difficulty_label") {
+            return get_string($attempt->difficulty_label, "lips");
+        } else if ($colname == "actions") {
             $context = context_module::instance($this->cm->id);
             $a = "";
             if (has_capability('mod/lips:administration', $context) && is_author($attempt->id, $USER->id)) {

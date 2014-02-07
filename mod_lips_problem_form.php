@@ -25,7 +25,7 @@ class mod_lips_problem_create_form extends moodleform {
 
         $difficulties = array();
         foreach (fetch_all_difficulties() as $difficulty) {
-            $difficulties[$difficulty->id] = $difficulty->difficulty_label;
+            $difficulties[$difficulty->id] = get_string($difficulty->difficulty_label, "lips");
         }
         $output = $PAGE->get_renderer('mod_lips');
 
