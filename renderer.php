@@ -83,7 +83,13 @@ class mod_lips_renderer extends plugin_renderer_base {
         $view = optional_param('view', 0, PARAM_TEXT);
 
         return '<ul id="administration_menu">
-            <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=langage">' . get_string('language', 'lips') . '</a></li>
+            <li><a href="#">' . get_string('language', 'lips') . '</a>
+                <ul>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=language_configure">' . get_string('configure', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=language_picture">' . get_string('picture', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=language_base">' . get_string('base', 'lips') . '</a></li>
+                </ul>
+            </li>
             <li><a href="#">Badges</a>
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_create">' . get_string('create', 'lips') . '</a></li>
@@ -141,5 +147,17 @@ class mod_lips_renderer extends plugin_renderer_base {
 
     public function display_button($moodleurl, $label) {
         return $this->render(new single_button($moodleurl, $label));
+    }
+
+    /**
+     * Display the ace form
+     *
+     * @param string $editorid Ace editor ID
+     * @param string $areaid Area ID. Use to replic the data on the textarea
+     * @param string $mode Ace mode for the syntax highlightning
+     * @param string $theme Ace theme
+     */
+    public function display_ace_form($editorid, $areaid, $mode, $theme = 'eclipse') {
+        echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '")</script>';
     }
 }

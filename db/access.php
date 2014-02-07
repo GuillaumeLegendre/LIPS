@@ -70,6 +70,15 @@ $capabilities = array(
         )
     ),
 
+    'mod/lips:adminplugin' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
+        'legacy' => array(
+            'editingteacher' => CAP_ALLOW,
+            'admin' => CAP_ALLOW
+        )
+    ),
+
     'mod/lips:submit' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'write',
