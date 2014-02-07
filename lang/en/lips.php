@@ -50,6 +50,9 @@ $string['delete'] = 'Delete';
 $string['category'] = 'Category';
 $string['documentation'] = 'Documentation';
 $string['name'] = 'Name';
+$string['subject'] = 'Subject';
+$string['tips'] = 'Tips';
+
 $string['error_impossible'] = 'You shouldn\'t have access this page';
 $string['language'] = 'Language';
 
@@ -93,10 +96,6 @@ $string['administration_language_form_file_error'] = 'You must select a picture'
 // Category
 $string['administration_category_create_title'] = 'Create a category';
 $string['administration_category_create_success'] = 'The category has been created';
-$string['administration_category_modify_title'] = 'Modify a category';
-$string['administration_category_modify_select'] = 'Select the category';
-$string['administration_category_modify_select_error'] = 'You must select a category';
-$string['administration_category_modify_success'] = 'The category has been modified';
 $string['administration_category_msg'] = 'Choose either a link to an external documentation or a textual documentation. <strong>You can\'t choose both</strong>.';
 $string['administration_category_name_error'] = 'You must enter a category name';
 $string['administration_category_already_exists'] = 'This category name already exists, please choose an other';
@@ -106,6 +105,34 @@ $string['administration_category_documentation_link'] = 'Documentation (Link)';
 $string['administration_category_documentation_text'] = 'Documentation (Text)';
 $string['administration_category_documentation_error'] = 'You can\'t have both documentations, please choose either a link to an external documentation or a textual documentation.';
 $string['administration_delete_category_confirmation'] = "Confirm the deletion of the category";
+
+// Problem
+$string['administration_problem_create_title'] = 'Create a problem';
+$string['administration_problem_informations_msg'] = 'Select the category of the problem.<br/>Enter the name, the difficulty, the conditions need to resolve the problem.';
+$string['prerequisite'] = "Prerequisite";
+$string['difficulty'] = "Difficulty";
+$string['administration_problem_create_preconfig_subtitle'] = '1. Pre-configuration';
+$string['administration_problem_create_informations_subtitle'] = "2. Informations about the problem";
+$string['administration_problem_create_informations_msg'] = 'Select the category of the problem.<br/>Enter the name, the difficulty, the conditions need to resolve the problem.';
+$string['administration_problem_create_subject_subtitle'] = '3. Subject';
+$string['administration_problem_create_subject_msg'] = 'Write a subject and tips';
+$string['administration_problem_create_code_subtitle'] = '4. Code';
+$string['administration_problem_create_code_msg'] = 'Start to import all the librairies need for the resolution of the problem.<br/>Next write the unit tests that the user will complete.<br/>To define editable areas, use the tag <span style="color: red;">&lt;lips-code/&gt;</span>.';
+
+$string['administration_problem_create_code_import_label'] = 'Import librairies';
+$string['administration_problem_create_code_complete_label'] = 'Code to complete';
+$string['administration_problem_create_code_unittest_label'] = 'Unit tests';
+
+$string['administration_language_form_select_category_error'] = 'You must select a category';
+$string['administration_language_form_select_difficulty_error'] = 'You must select a difficulty';
+$string['administration_language_form_select_name_error'] = 'You must enter a name';
+$string['administration_language_form_select_subject_error'] = 'You must enter a subject';
+$string['administration_language_form_select_unittests_error'] = 'You must enter unit tests';
+$string['administration_problem_create_success'] = 'The problem has been created';
+
+
+
+
 
 /*--------------------------------------------------
  * Web services

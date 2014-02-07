@@ -52,6 +52,20 @@ class mod_lips_renderer extends plugin_renderer_base {
     }
 
     /**
+     * Display an H3 title
+     *
+     * @param string $title Title content
+     * @param array $attributes Title attributes
+     * @return string H3 tag
+     */
+    public function display_h3($title, array $attributes = null) {
+        $html = html_writer::tag('h3', format_string($title), $attributes);
+        $html .= html_writer::tag('div', null, array('class' => 'h2_sub'));
+
+        return $html;
+    }
+
+    /**
      * Display a "p" tag
      *
      * @param string $content Text content
@@ -93,9 +107,9 @@ class mod_lips_renderer extends plugin_renderer_base {
             </li>
             <li><a href="#">Catégories</a>
                 <ul>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_create">Créer</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_select_modify">Modifier</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_delete">Supprimer</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_create">' . get_string('create', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_modify">' . get_string('modify', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_delete">' . get_string('delete', 'lips') . '</a></li>
                 </ul>
             </li>
             <li><a href="#">Problèmes</a>
