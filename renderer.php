@@ -136,22 +136,22 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @return string The notification message
      */
     public function display_notification($msg, $type) {
-        switch($type) {
+        switch ($type) {
             case 'INFO':
                 return '<div id="notify" class="notifyInfo">' . $msg . '</div>';
-            break;
+                break;
 
             case 'SUCCESS':
                 return '<div id="notify" class="notifySuccess">' . $msg . '</div>';
-            break;
+                break;
 
             case 'WARNING':
                 return '<div id="notify" class="notifyWarning">' . $msg . '</div>';
-            break;
+                break;
 
             case 'ERROR':
                 return '<div id="notify" class="notifyError">' . $msg . '</div>';
-            break;
+                break;
         }
     }
 
@@ -173,5 +173,11 @@ class mod_lips_renderer extends plugin_renderer_base {
      */
     public function display_ace_form($editorid, $areaid, $mode, $theme = 'eclipse') {
         echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '")</script>';
+    }
+
+    public function display_top_page_category($categoryname, $categoryid) {
+        $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categoryid)), get_string("documentation", "lips"));
+        return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float:right;")) . $this->display_h1($categoryname));
+
     }
 }

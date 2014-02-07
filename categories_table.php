@@ -29,7 +29,6 @@ class categories_table extends table_sql {
 
         if ($colname == "category_name") {
             $url = new action_link(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'category', 'categoryId' => $attempt->id)), $attempt->category_name);
-
             return $OUTPUT->render($url);
         }
 
