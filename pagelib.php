@@ -326,6 +326,7 @@ class page_admin_langage_base extends page_view {
     }
 }
 
+
 /**
  * Category creation page
  *
@@ -337,7 +338,7 @@ class page_admin_langage_base extends page_view {
 class page_admin_category_create extends page_view {
 
     /**
-     * page_admin_category_create constructor
+     * page_admin constructor
      *
      * @param object $cm Moodle context
      */
@@ -346,7 +347,7 @@ class page_admin_category_create extends page_view {
     }
 
     /**
-     * Display the page_admin_category_create content
+     * Display the page_admin content
      */
     function display_content() {
         global $CFG;
@@ -365,7 +366,7 @@ class page_admin_category_create extends page_view {
         $createCategoryForm = new mod_lips_category_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_create')), null, 'post');
 
         if($createCategoryForm->is_submitted()) {
-            $createCategoryForm->handle();
+            $createCategoryForm->handle($this->cm->instance);
             $createCategoryForm->display();
         } else {
             $createCategoryForm->display();
@@ -374,17 +375,17 @@ class page_admin_category_create extends page_view {
 }
 
 /**
- * Page to select the category to modify
+ * Category creation page
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
  * @author     Valentin Got
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class page_admin_category_select_modify extends page_view {
+class page_admin_problem_create extends page_view {
 
     /**
-     * page_admin_category_select_modify constructor
+     * page_admin constructor
      *
      * @param object $cm Moodle context
      */
@@ -393,11 +394,11 @@ class page_admin_category_select_modify extends page_view {
     }
 
     /**
-     * Display the page_admin_category_select_modify content
+     * Display the page_admin content
      */
     function display_content() {
         global $CFG;
-        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+        require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
 
         // Administration title
         echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
@@ -405,66 +406,33 @@ class page_admin_category_select_modify extends page_view {
         // Administration menu
         echo $this->lipsoutput->display_administration_menu();
 
-        // Modify a category
-        echo $this->lipsoutput->display_h2(get_string('administration_category_modify_title', 'lips'));
+        // Create a category
+        echo $this->lipsoutput->display_h2(get_string('administration_problem_create_title', 'lips'));
 
-        $modifySelectCategoryForm = new mod_lips_category_modify_select_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
-        $modifySelectCategoryForm->display();
-    }
-}
+        $createProblemForm = new mod_lips_problem_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_create')), null, 'post');
 
-/**
- * Category modification page
- *
- * @package    mod_lips
- * @copyright  2014 LIPS
- * @author     Valentin Got
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class page_admin_category_modify extends page_view {
-
-    /**
-     * page_admin_category_modify constructor
-     *
-     * @param object $cm Moodle context
-     */
-    function  __construct($cm) {
-        parent::__construct($cm, "administration");
-    }
-
-    /**
-     * Display the page_admin_category_modify content
-     */
-    function display_content() {
-        global $CFG;
-        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
-
-        // Administration title
-        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
-
-        // Administration menu
-        echo $this->lipsoutput->display_administration_menu();
-
-        // Modify a category
-        echo $this->lipsoutput->display_h2(get_string('administration_category_modify_title', 'lips'));
-        echo $this->lipsoutput->display_p(get_string('administration_category_msg', 'lips'));
-
-        $modifiyCategoryForm = new mod_lips_category_modify_form();
-
-        if($modifiyCategoryForm->is_submitted()) {
-            $modifiyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
-
-            $modifiyCategoryForm->handle();
-            $modifiyCategoryForm->display();
+        if($createProblemForm->is_submitted()) {
+            $createProblemForm->handle($this->cm->instance);
+            $createProblemForm->display();
         } else {
-            $modifySelectCategoryForm = new mod_lips_category_modify_select_form();
-            $category = $modifySelectCategoryForm->get_submitted_data();
-            $categoryDetails = get_category_details($category->selectCategory);
-
-            $modifiyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array) $categoryDetails, 'post');
-
-            $modifiyCategoryForm->display();
+            $createProblemForm->display();
         }
+        /*//Form processing and displaying is done here
+        if ($mform->is_cancelled()) {
+            //Handle form cancel operation, if cancel button is present on form
+        } else if ($fromform = $mform->get_data()) {
+            global $DB;
+            unset($fromform->submitbutton);
+            $DB->insert_record("lips_category", $fromform);
+            echo "Category created";
+        } else {
+            // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
+            // or on the first display of the form.
+
+            //Set default data (if any)
+            //displays the form
+            $mform->display();
+        }*/
     }
 }
 

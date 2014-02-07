@@ -30,6 +30,9 @@ class problems_table extends table_sql {
 
     function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE, $USER;
+        if ($colname == "problem_date") {
+            return date('d/m/Y', $attempt->problem_date);
+        }
         if ($colname == "actions") {
             $context = context_module::instance($this->cm->id);
             $a = "";

@@ -52,6 +52,8 @@ $string['documentation'] = 'Documentation';
 $string['name'] = 'Nom';
 $string['error_impossible'] = 'Vous ne devriez pas avoir accès à cette page';
 $string['language'] = 'Langage';
+$string['subject'] = 'Enoncé';
+$string['tips'] = 'Astuces';
 
 /*--------------------------------------------------
  * Tabs
@@ -117,6 +119,24 @@ $string['administration_category_documentation_link'] = 'Documentation (Lien)';
 $string['administration_category_documentation_text'] = 'Documentation (Texte)';
 $string['administration_category_documentation_error'] = 'Vous ne pouvez pas avoir les deux types de documentation, choisissez soit un lien vers une documentation externe soit une documentation textuelle.';
 $string['administration_delete_category_confirmation'] = "Confirmez-vous la suppression de la catégorie ?";
+
+// Problem
+$string['administration_problem_create_title'] = 'Créer un probleme';
+$string['prerequisite'] = "Prérequis";
+$string['administration_problem_informations_msg'] = 'Select the category of the problem.<br/>Enter the name, the difficulty, the conditions need to resolve the problem.';
+$string['difficulty'] = "Difficulty";
+$string['administration_problem_create_preconfig_subtitle'] = '1. Pré-configuration';
+$string['administration_problem_create_informations_subtitle'] = "2. Informations sur le problème";
+$string['administration_problem_create_informations_msg'] = 'Select the category of the problem.<br/>Enter the name, the difficulty, the conditions need to resolve the problem.';
+$string['administration_problem_create_subject_subtitle'] = '3. Enoncé';
+$string['administration_problem_create_subject_msg'] = "Rédigez l'énoncé et les astuces du problème";
+$string['administration_problem_create_code_subtitle'] = '4. Code';
+$string['administration_problem_create_code_msg'] = 'Start to import all the librairies need for the resolution of the problem.<br/>Next write the unit tests that the user will complete.<br/>To define editable areas, use the tag <span style="color: red;">&lt;lips-code/&gt;</span>.';
+
+$string['administration_problem_create_code_import_label'] = 'Importer des librairies';
+$string['administration_problem_create_code_complete_label'] = 'Code à completer';
+$string['administration_problem_create_code_unittest_label'] = 'Tests unitaires';
+$string['administration_problem_create_success'] = 'Le problème a été créé';
 
 /*--------------------------------------------------
  * Web services

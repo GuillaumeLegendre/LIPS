@@ -75,14 +75,23 @@ function convert_active_tab($view) {
 
 /**
  * Fetch all categories of the current instance
- * 
+ *
  * @param int Id the the current instance
  * @return object List of all categories of the current instance
  */
-function fetch_all_categories($id_language) {
+function fetch_all_categories($idlanguage) {
     global $DB;
+    return $DB->get_records('lips_category', array('id_language' => $idlanguage));
+}
 
-    return $DB->get_records('lips_category', array('id_language' => $id_language));
+/**
+ * Fetch all difficulties.
+ *
+ * @return object List of all difficulties
+ */
+function fetch_all_difficulties() {
+    global $DB;
+    return $DB->get_records('lips_difficulty');
 }
 
 /**
@@ -117,7 +126,7 @@ function get_language_picture() {
  */
 function delete_category($id) {
     global $DB;
-    
+
     $DB->delete_records("lips_category", array("id" => $id));
 }
 

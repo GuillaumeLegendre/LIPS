@@ -45,12 +45,12 @@ class mod_lips_category_create_form extends moodleform {
         $errors = parent::validation($data, $files);
         $errors = array();
 
-        if(isset($data->inputCategoryName) && isset($data->inputCategoryDocumentation) && isset($data->areaCategoryDocumentation)) {
-            if(!empty($data->inputCategoryName)) {
-                if(category_exists(array('category_name' => $data->inputCategoryName)))
+        if (isset($data->inputCategoryName) && isset($data->inputCategoryDocumentation) && isset($data->areaCategoryDocumentation)) {
+            if (!empty($data->inputCategoryName)) {
+                if (category_exists(array('category_name' => $data->inputCategoryName)))
                     $errors['alreadyExists'] = get_string('administration_category_already_exists', 'lips');
 
-                if(!empty($data->inputCategoryDocumentation) && $data->areaCategoryDocumentation != "")
+                if (!empty($data->inputCategoryDocumentation) && $data->areaCategoryDocumentation != "")
                     $errors['bothLinkAndText'] = get_string('administration_category_documentation_error', 'lips');
             } else {
                 $errors['emptyCategoryName'] = get_string('administration_category_name_error', 'lips');
@@ -72,7 +72,7 @@ class mod_lips_category_create_form extends moodleform {
         global $PAGE;
 
         // Do nothing if not submitted or cancelled
-        if(!$this->is_submitted() || $this->is_cancelled())
+        if (!$this->is_submitted() || $this->is_cancelled())
             return;
 
         // Form data
@@ -80,8 +80,8 @@ class mod_lips_category_create_form extends moodleform {
 
         // The validation failed
         $errors = $this->validation($data, null);
-        if(count($errors) > 0) {
-            foreach($errors as $error) {
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
                 echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
             }
 
@@ -94,7 +94,7 @@ class mod_lips_category_create_form extends moodleform {
         $category_documentation_type = (empty($data->inputCategoryDocumentation)) ? 'TEXT' : 'LINK';
 
         // Insert the data
-        $lips = get_current_instance();
+        $lips = $DB->get_record('lips', array('id' => $instance), '*', MUST_EXIST);
         insert_category($lips->id, $category_name, $category_documentation, $category_documentation_type);
 
         // Success message
