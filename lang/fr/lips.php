@@ -95,6 +95,11 @@ $string['administration_language_form_file_error'] = 'Vous devez sélectionner u
 // Category
 $string['administration_category_create_title'] = 'Créer une catégorie';
 $string['administration_category_create_success'] = 'La catégorie a été créée';
+$string['administration_category_modify_title'] = 'Modifier une catégorie';
+$string['administration_category_modify_select'] = 'Sélection de la catégorie';
+$string['administration_category_modify_select_error'] = 'Vous devez sélectionner une catégorie';
+$string['administration_category_modify_success'] = 'La catégorie a été modifiée';
+$string['administration_category_delete_title'] = 'Supprimer une catégorie';
 $string['administration_category_msg'] = 'Choisissez soit un lien vers une documentation externe soit une documentation textuelle. <strong>Vous ne pouvez pas choisir les deux</strong>.';
 $string['administration_category_name_error'] = 'Vous devez saisir le nom de la catégorie';
 $string['administration_category_already_exists'] = 'Ce nom de catégorie est déjà utilisé, merci d\'en choisir un autre';

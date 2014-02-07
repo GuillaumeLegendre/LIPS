@@ -96,6 +96,11 @@ $string['administration_language_form_file_error'] = 'You must select a picture'
 // Category
 $string['administration_category_create_title'] = 'Create a category';
 $string['administration_category_create_success'] = 'The category has been created';
+$string['administration_category_modify_title'] = 'Modify a category';
+$string['administration_category_modify_select'] = 'Select the category';
+$string['administration_category_modify_select_error'] = 'You must select a category';
+$string['administration_category_modify_success'] = 'The category has been modified';
+$string['administration_category_delete_title'] = 'Delete a category';
 $string['administration_category_msg'] = 'Choose either a link to an external documentation or a textual documentation. <strong>You can\'t choose both</strong>.';
 $string['administration_category_name_error'] = 'You must enter a category name';
 $string['administration_category_already_exists'] = 'This category name already exists, please choose an other';
