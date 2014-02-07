@@ -69,12 +69,15 @@ $string['administration'] = 'Administration';
  * Tables
  *------------------------------------------------*/
 $string['number_of_problems'] = 'Nombre de problèmes';
-+$string['problem'] = 'Problème';
-+$string['level'] = 'Niveau';
-+$string['date'] = 'Date';
-+$string['author'] = 'Auteur';
-+$string['number_of_resolutions'] = 'Nombre de résolutions';
-+$string['resolved'] = 'Résolu';
+$string['problem'] = 'Problème';
+$string['level'] = 'Niveau';
+$string['date'] = 'Date';
+$string['author'] = 'Auteur';
+$string['number_of_resolutions'] = 'Nombre de résolutions';
+$string['resolved'] = 'Résolu';
+$string['configure'] = 'Configurer';
+$string['picture'] = 'Image';
+$string['base'] = 'Base';
 
 /*--------------------------------------------------
  * Administration
@@ -82,15 +85,22 @@ $string['number_of_problems'] = 'Nombre de problèmes';
 
 // Language
 $string['administration_language_configure_title'] = 'Configurer le langage';
-$string['administration_language_configure_msg'] = 'Selectionnez le langage dans lequel vous souhaitez compiler.';
+$string['administration_language_configure_msg'] = 'Sélectionnez le langage dans lequel vous souhaitez compiler.';
 $string['administration_language_image_title'] = 'Image';
 $string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.';
 $string['administration_language_code_title'] = 'Base du code';
 $string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisé à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
+$string['administration_language_code_success'] = 'La préparation du code a été modifiée';
+$string['administration_language_code_imports_error'] = 'Vous ne pouvez mettre qu\'une seule balise &lt;lips-preconfig-import/&gt;';
+$string['administration_language_code_code_error'] = 'Vous ne pouvez mettre qu\'une seule balise &lt;lips-preconfig-code/&gt;';
+$string['administration_language_code_tests_error'] = 'Vous ne pouvez mettre qu\'une seule balise &lt;lips-preconfig-tests/&gt;';
 $string['administration_language_form_select'] = 'Langage de programmation';
 $string['administration_language_form_select_error'] = 'Vous devez sélectionner un langage';
+$string['administration_language_form_highlighting_select'] = 'Coloration syntaxique';
+$string['administration_language_form_highlighting_select_error'] = 'Vous devez sélectionner une coloration syntaxique';
 $string['administration_language_form_file'] = 'Sélectionner l\'image';
 $string['administration_language_form_file_error'] = 'Vous devez sélectionner une image';
+$string['administration_no_syntax_highlighting'] = 'Aucun langage de coloration syntaxique n\'a été définie. Allez le configurer dans <strong>Administration > Langage > Configurer le langage</strong>.';
 
 // Category
 $string['administration_category_create_title'] = 'Créer une catégorie';
@@ -126,4 +136,4 @@ $string['administration_problem_create_success'] = 'Le problème a été créé'
 /*--------------------------------------------------
  * Web services
  *------------------------------------------------*/
-$string['web_service_communication_error'] = 'Une erreur est survenue lors de la communication avec le service web';
+$string['web_service_communication_error'] = 'Une erreur est survenue lors de la communication avec le service web.<br/>Vous ne pouvez pas sélectionner un langage de programmation.';

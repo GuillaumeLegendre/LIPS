@@ -42,6 +42,19 @@ function get_current_instance() {
 }
 
 /**
+ * Test if the current user has the requested role
+ *
+ * @param string $role Role to test
+ * @return bool Return true if the current user has the requested role, otherwise return false
+ */
+function has_role($role) {
+    $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);
+    $context = context_module::instance($cm->id);
+
+    return has_capability('mod/lips:' . $role, $context);
+}
+
+/**
  * Get the tab name corresponding to the view name in parameter.
  *
  * @return array The tab name corresponding to the view name in parameter.
@@ -174,4 +187,37 @@ function has_documentation($idcategory) {
         return true;
     }
     return false;
+}
+/**
+ * Update a language
+ *
+ * @param int $id Language id
+ * @param array $data Data to update
+ */
+function update_language($id, $data) {
+    global $DB;
+
+    $DB->update_record('lips', array_merge(array('id' => $id), (array) $data));
+}
+
+/**
+ * Get the available languages for the ace plugin
+ *
+ * @return array An array of available languages
+ */
+function ace_available_languages() {
+    $dir  = './ace/ace-builds/src-noconflict';
+    $files = scandir($dir, 1);
+    $languages = array();
+
+    foreach ($files as $value) {
+        if (preg_match('/^mode-.*/', $value) === 1){
+            $language = preg_replace(array('/mode-/', '/\.js/'), array('', ''), $value);
+            $languages[$language] = $language;
+        }
+    }
+
+    asort($languages);
+    
+    return $languages;
 }

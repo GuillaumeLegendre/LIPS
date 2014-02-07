@@ -70,12 +70,15 @@ $string['administration'] = 'Administration';
  * Tables
  *------------------------------------------------*/
 $string['number_of_problems'] = 'Number of problems';
-+$string['problem'] = 'Problem';
-+$string['level'] = 'Level';
-+$string['date'] = 'Date';
-+$string['author'] = 'Author';
-+$string['number_of_resolutions'] = 'Number of resolutions';
-+$string['resolved'] = 'Resoled';
+$string['problem'] = 'Problem';
+$string['level'] = 'Level';
+$string['date'] = 'Date';
+$string['author'] = 'Author';
+$string['number_of_resolutions'] = 'Number of resolutions';
+$string['resolved'] = 'Resoled';
+$string['configure'] = 'Configure';
+$string['picture'] = 'Picture';
+$string['base'] = 'Base';
 
 /*--------------------------------------------------
  * Administration
@@ -84,14 +87,23 @@ $string['number_of_problems'] = 'Number of problems';
 // Language
 $string['administration_language_configure_title'] = 'Configure language';
 $string['administration_language_configure_msg'] = 'Select the language in which you want to compile.';
+$string['administration_language_configure_success'] = 'The language has been configured';
 $string['administration_language_image_title'] = 'Picture';
 $string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.';
+$string['administration_language_image_success'] = 'The picture has been modified';
 $string['administration_language_code_title'] = 'Base code';
 $string['administration_language_code_msg'] = 'Enter the base used for each compilation.<br/>Before the compilation :<ul><li>The <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> tag will be replaced by the "<strong>Import libaries</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> tag will be replace by the "<strong>Code complete</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> tag will be replaced by the "<strong>Unit tests</strong>" content.</li></ul>';
+$string['administration_language_code_success'] = 'The base code has been modified';
+$string['administration_language_code_imports_error'] = 'You can put only one &lt;lips-preconfig-import/&gt; tag';
+$string['administration_language_code_code_error'] = 'You can put only one &lt;lips-preconfig-code/&gt; tag';
+$string['administration_language_code_tests_error'] = 'You can put only one &lt;lips-preconfig-tests/&gt; tag';
 $string['administration_language_form_select'] = 'Programming language';
 $string['administration_language_form_select_error'] = 'You must select a language';
+$string['administration_language_form_highlighting_select'] = 'Syntax highlighting';
+$string['administration_language_form_highlighting_select_error'] = 'You must select a syntax highlighting';
 $string['administration_language_form_file'] = 'Select the picture';
 $string['administration_language_form_file_error'] = 'You must select a picture';
+$string['administration_no_syntax_highlighting'] = 'There is no syntax highlighting defined. Go to <strong>Administration > Language > Configure language</strong>.';
 
 // Category
 $string['administration_category_create_title'] = 'Create a category';
@@ -138,4 +150,4 @@ $string['difficulty_label_difficult'] = 'difficult';
 /*--------------------------------------------------
  * Web services
  *------------------------------------------------*/
-$string['web_service_communication_error'] = 'An error occured when contacting the web service';
+$string['web_service_communication_error'] = 'An error occured when contacting the web service.<br/>You can\'t select a programming language.';

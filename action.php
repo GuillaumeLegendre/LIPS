@@ -24,9 +24,8 @@ if ($id) {
 }
 
 require_login($course, true, $cm);
-$context = context_module::instance($cm->id);
 
-if (!has_capability('mod/lips:administration', $context)) {
+if (!has_role('administration')) {
     redirect(new moodle_url('view.php', array('id' => $cm->id)));
 }
 

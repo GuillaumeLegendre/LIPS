@@ -39,7 +39,6 @@ if (!$view) {
     $view = "index";
 }
 
-
 if ($id) {
     $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
@@ -70,8 +69,14 @@ switch ($view) {
             $action = optional_param('action', null, PARAM_TEXT);
 
             switch ($action) {
-                case "langage":
-                    $viewpage = new page_admin_langage($cm);
+                case "language_configure":
+                    $viewpage = new page_admin_langage_configure($cm);
+                    break;
+                case "language_picture":
+                    $viewpage = new page_admin_langage_picture($cm);
+                    break;
+                case "language_base":
+                    $viewpage = new page_admin_langage_base($cm);
                     break;
                 case "category_create":
                     $viewpage = new page_admin_category_create($cm);

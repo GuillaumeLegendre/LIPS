@@ -45,6 +45,11 @@ abstract class page_view {
 
         echo $OUTPUT->header();
         echo $this->lipsoutput->tabs($this->view);
+
+        // Add scripts
+        $this->add_script_tag('./js/jquery.js');
+        $this->add_script_tag('./scripts.js');
+        $this->add_script_tag('./ace/ace-builds/src-noconflict/ace.js');
     }
 
     /**
@@ -59,9 +64,15 @@ abstract class page_view {
         global $OUTPUT;
 
         echo $OUTPUT->footer();
+    }
 
-        // Add the custom stylesheet
-        echo '<script type="text/javascript" src="js/jquery.js"></script><script type="text/javascript">$(document).ready(function () {$(\'head\').append(\'<link rel="stylesheet" type="text/css" href="styles.css">\');});</script>';
+    /**
+     * Add a script tag to the header
+     *
+     * @param string $script Script to add
+     */
+    function add_script_tag($script) {
+        echo '<script src="' . $script . '" type="text/javascript" charset="utf-8"></script>';
     }
 }
 
@@ -91,6 +102,7 @@ class page_list_categories extends page_view {
         global $CFG;
         require_once("$CFG->libdir/tablelib.php");
         require_once(dirname(__FILE__) . '/categories_table.php');
+
         $table = new categories_table($this->cm);
         $table->out(10, true);
     }
@@ -120,6 +132,7 @@ class page_index extends page_view {
      */
     function display_content() {
         global $USER;
+
         echo $this->lipsoutput->display_h1('Bienvenue ' . $USER->username);
     }
 }
@@ -166,10 +179,10 @@ class page_admin extends page_view {
  * @author     Valentin Got
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class page_admin_langage extends page_view {
+class page_admin_langage_configure extends page_view {
 
     /**
-     * page_admin constructor
+     * page_admin_langage_configure constructor
      *
      * @param object $cm Moodle context
      */
@@ -178,10 +191,10 @@ class page_admin_langage extends page_view {
     }
 
     /**
-     * Display the page_admin content
+     * Display the page_admin_langage_configure content
      */
     function display_content() {
-        global $CFG;
+        global $CFG, $PAGE;
         require_once(dirname(__FILE__) . '/mod_lips_configure_form.php');
 
         // Administration title
@@ -194,23 +207,122 @@ class page_admin_langage extends page_view {
         echo $this->lipsoutput->display_h2(get_string('administration_language_configure_title', 'lips'));
         echo $this->lipsoutput->display_p(get_string('administration_language_configure_msg', 'lips'));
 
-        $configureLanguageForm = new mod_lips_configure_language_form("test.html", null, 'post');
-        $configureLanguageForm->display();
+        $configureLanguageForm = new mod_lips_configure_language_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_configure')), null, 'post');
+
+        if($configureLanguageForm->is_submitted()) {
+            $configureLanguageForm->handle();
+            $configureLanguageForm->display();
+        } else {
+            $configureLanguageForm->display();
+        }
+    }
+}
+
+/**
+ * Page to modify the language picture
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_langage_picture extends page_view {
+
+    /**
+     * page_admin_langage_picture constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_langage_picture content
+     */
+    function display_content() {
+        global $CFG, $PAGE;
+        require_once(dirname(__FILE__) . '/mod_lips_configure_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
 
         // Modify language picture
-        $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'));
-        $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips'));
+        echo $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'), array('id' => 'picture'));
+        echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips'));
         echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('id' => 'testimg', 'width' => '64px', 'height' => '64px')) . '</center>';
 
         $configurePictureForm = new mod_lips_configure_picture_form("test.html", null, 'post');
-        $configurePictureForm->display();
+
+        //$configureLanguageForm = new mod_lips_configure_language_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_configure')), null, 'post');
+
+        if($configurePictureForm->is_submitted()) {
+            $configurePictureForm->handle();
+            $configurePictureForm->display();
+        } else {
+            $configurePictureForm->display();
+        }
+    }
+}
+
+/**
+ * Page to modify the language base code
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_langage_base extends page_view {
+
+    /**
+     * page_admin_langage_base constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_langage_base content
+     */
+    function display_content() {
+        global $CFG, $PAGE;
+        require_once(dirname(__FILE__) . '/mod_lips_configure_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
 
         // Language base code
-        $this->lipsoutput->display_h2(get_string('administration_language_code_title', 'lips'));
-        $this->lipsoutput->display_p(get_string('administration_language_code_msg', 'lips'));
+        echo $this->lipsoutput->display_h2(get_string('administration_language_code_title', 'lips'), array('id' => 'code'));
+        echo $this->lipsoutput->display_p(get_string('administration_language_code_msg', 'lips'));
 
-        $configureCodeForm = new mod_lips_configure_code_form("test.html", null, 'post');
-        $configureCodeForm->display();
+        $lips = get_current_instance();
+        if($lips->coloration_language == null && has_role('adminplugin'))
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_no_syntax_highlighting', 'lips'), 'WARNING');
+
+        $lips = get_current_instance();
+        $configureCodeForm = new mod_lips_configure_code_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_base')), (array) $lips, 'post');
+
+        if($configureCodeForm->is_submitted()) {
+            $configureCodeForm->handle();
+
+            // /!\ Do no remove. Used to refresh the Ace code with the updated data
+            $lips = get_current_instance();
+            $configureCodeForm = new mod_lips_configure_code_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_base')), (array) $lips, 'post');
+            $configureCodeForm->display();
+        } else {
+            $configureCodeForm->display();
+        }
+
+        $this->lipsoutput->display_ace_form('configEditor', 'id_areaBaseCode', $lips->coloration_language);
     }
 }
 
@@ -259,22 +371,6 @@ class page_admin_category_create extends page_view {
         } else {
             $createCategoryForm->display();
         }
-        /*//Form processing and displaying is done here
-        if ($mform->is_cancelled()) {
-            //Handle form cancel operation, if cancel button is present on form
-        } else if ($fromform = $mform->get_data()) {
-            global $DB;
-            unset($fromform->submitbutton);
-            $DB->insert_record("lips_category", $fromform);
-            echo "Category created";
-        } else {
-            // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-            // or on the first display of the form.
-
-            //Set default data (if any)
-            //displays the form
-            $mform->display();
-        }*/
     }
 }
 
@@ -497,7 +593,13 @@ class page_delete_category extends page_view {
      */
     function display_content() {
         $details = get_category_details($this->id);
-        $message = $this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips') . " " . $details->category_name . "?");
-        echo $this->lipsoutput->confirm($message, new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view, "originV" => "problems", 'categoryId' => $this->id)), new moodle_url('view.php', array('id' => $this->cm->id, 'action' => $this->view, "view" => "problems", 'categoryId' => $this->id)));
+        $message = $this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips') . " " . $details->category_name . " ?");
+        $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view, 'originV' => $this->originv, 'originAction' => $this->originaction, 'categoryId' => $this->id));
+        if($this->originaction != null)
+            $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv, 'action' => $this->originaction));
+        else
+            $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv));
+
+        echo $this->lipsoutput->confirm($message, $continueurl, $cancelurl);
     }
 }

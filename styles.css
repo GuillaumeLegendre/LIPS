@@ -2,7 +2,7 @@
  *  Title styles
  *-------------------------------*/
 
-h1, h2 {
+h1, h2, h3 {
     text-align: left;
     margin-top: 0;
 }
@@ -16,6 +16,12 @@ h2 {
     margin-bottom: 1px;
 }
 
+h3 {
+    font-size: 1.1em;
+    margin-bottom: 1px;
+}
+
+
 .h2_sub {
     border: 1px solid #555555;
     width: 90%;
@@ -28,6 +34,41 @@ h2 {
 
 .mform .fitem .fitemtitle {
     width: auto;
+}
+
+/*---------------------------------
+ *  Ace
+ *-------------------------------*/
+
+.acepanel {
+    width: 90%;
+    background-color: #EBEBEB;
+    border: 1px solid #000000;
+    border-bottom: none;
+    line-height: 35px;
+}
+
+.acepanel a {
+    margin: 0 5px 0 5px;
+    padding: 5px;
+    color: #000000;
+    background-color: #F1F1F1;
+    border: 1px solid #999999;
+}
+
+.acepanel a:hover {
+    text-decoration: none;
+    color: #0000FF;
+}
+
+.ace { 
+    width: 90%;
+    height: 400px;
+    border: 1px solid #000000;
+}
+
+.editorCode {
+    display: none;
 }
 
 /*---------------------------------
