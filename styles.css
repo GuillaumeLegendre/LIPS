@@ -2,7 +2,7 @@
  *  Title styles
  *-------------------------------*/
 
-h1, h2 {
+h1, h2, h3 {
     text-align: left;
     margin-top: 0;
 }
@@ -15,6 +15,12 @@ h2 {
     font-size: 1.3em;
     margin-bottom: 1px;
 }
+
+h3 {
+    font-size: 1.1em;
+    margin-bottom: 1px;
+}
+
 
 .h2_sub {
     border: 1px solid #555555;
