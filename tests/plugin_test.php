@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/../../../lib/phpunit/classes/advanced_testcase.php');
+require_once('/var/www/moodle/lib/phpunit/classes/advanced_testcase.php');
 require_once(dirname(__FILE__) . '/../locallib.php');
 
 class mod_myplugin_testcase extends advanced_testcase {
