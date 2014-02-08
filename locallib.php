@@ -94,7 +94,8 @@ function fetch_all_categories($idlanguage) {
 function count_languages_number($idlanguage) {
     global $DB;
 
-    return $DB->count_records_sql('SELECT count(*) 
+    return $DB->count_records_sql('
+        SELECT count(*)
         FROM mdl_lips_category mlc, mdl_lips_problem mlp
         WHERE mlc.id = mlp.problem_category_id
         AND id_language = ' . $idlanguage);
@@ -174,37 +175,37 @@ function category_exists($conditions) {
 /**
  * Insert a category to the database
  *
- * @param int $id_language Language id
- * @param string $category_name Category name
- * @param string $category_documentation Category documentation
- * @param string $category_documentation_type Category documentation type (LINK or TEXT)
+ * @param int $idlanguage Language id
+ * @param string $categoryname Category name
+ * @param string $categorydocumentation Category documentation
+ * @param string $categorydocumentationtype Category documentation type (LINK or TEXT)
  */
-function insert_category($id_language, $category_name, $category_documentation, $category_documentation_type) {
+function insert_category($idlanguage, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
 
     $DB->insert_record('lips_category', array(
-        'id_language' => $id_language,
-        'category_name' => $category_name,
-        'category_documentation' => $category_documentation,
-        'category_documentation_type' => $category_documentation_type));
+        'id_language' => $idlanguage,
+        'category_name' => $categoryname,
+        'category_documentation' => $categorydocumentation,
+        'category_documentation_type' => $categorydocumentationtype));
 }
 
 /**
  * Update a category
  *
  * @param int $id Category id
- * @param string $category_name Category name
- * @param string $category_documentation Category documentation
- * @param string $category_documentation_type Category documentation type (LINK or TEXT)
+ * @param string $categoryname Category name
+ * @param string $categorydocumentation Category documentation
+ * @param string $categorydocumentationtype Category documentation type (LINK or TEXT)
  */
-function update_category($id, $category_name, $category_documentation, $category_documentation_type) {
+function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
 
     $DB->update_record('lips_category', array(
         'id' => $id,
-        'category_name' => $category_name,
-        'category_documentation' => $category_documentation,
-        'category_documentation_type' => $category_documentation_type));
+        'category_name' => $categoryname,
+        'category_documentation' => $categorydocumentation,
+        'category_documentation_type' => $categorydocumentationtype));
 }
 
 function has_documentation($idcategory) {
