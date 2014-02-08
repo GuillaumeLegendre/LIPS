@@ -94,7 +94,10 @@ function fetch_all_categories($idlanguage) {
 function count_languages_number($idlanguage) {
     global $DB;
 
-    return $DB->count_records_sql('SELECT count(*) FROM mdl_lips_category mlc, mdl_lips_problem mlp WHERE mlc.id = mlp.problem_category_id AND id_language = ' . $idlanguage);
+    return $DB->count_records_sql('SELECT count(*) 
+        FROM mdl_lips_category mlc, mdl_lips_problem mlp
+        WHERE mlc.id = mlp.problem_category_id
+        AND id_language = ' . $idlanguage);
 }
 
 
@@ -179,7 +182,11 @@ function category_exists($conditions) {
 function insert_category($id_language, $category_name, $category_documentation, $category_documentation_type) {
     global $DB;
 
-    $DB->insert_record('lips_category', array('id_language' => $id_language, 'category_name' => $category_name, 'category_documentation' => $category_documentation, 'category_documentation_type' => $category_documentation_type));
+    $DB->insert_record('lips_category', array(
+        'id_language' => $id_language,
+        'category_name' => $category_name,
+        'category_documentation' => $category_documentation,
+        'category_documentation_type' => $category_documentation_type));
 }
 
 /**
@@ -193,7 +200,11 @@ function insert_category($id_language, $category_name, $category_documentation, 
 function update_category($id, $category_name, $category_documentation, $category_documentation_type) {
     global $DB;
 
-    $DB->update_record('lips_category', array('id' => $id, 'category_name' => $category_name, 'category_documentation' => $category_documentation, 'category_documentation_type' => $category_documentation_type));
+    $DB->update_record('lips_category', array(
+        'id' => $id,
+        'category_name' => $category_name,
+        'category_documentation' => $category_documentation,
+        'category_documentation_type' => $category_documentation_type));
 }
 
 function has_documentation($idcategory) {
