@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -167,8 +166,9 @@ function is_author($idproblem, $iduser) {
 function category_exists($conditions) {
     global $DB;
 
-    if($DB->count_records('lips_category', $conditions) > 0)
+    if($DB->count_records('lips_category', $conditions) > 0) {
         return true;
+    }
     return false;
 }
 
@@ -210,7 +210,7 @@ function update_category($id, $categoryname, $categorydocumentation, $categorydo
 
 function has_documentation($idcategory) {
     $cat = get_category_details($idcategory);
-    
+
     if ($cat->category_documentation) {
         return true;
     }
@@ -248,6 +248,6 @@ function ace_available_languages() {
     }
 
     asort($languages);
-    
+
     return $languages;
 }
