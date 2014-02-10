@@ -54,6 +54,12 @@ $string['error_impossible'] = 'Vous ne devriez pas avoir accès à cette page';
 $string['language'] = 'Langage';
 $string['subject'] = 'Enoncé';
 $string['tips'] = 'Astuces';
+$string['none'] = 'Aucun';
+$string['search'] = 'Rechercher';
+$string['answer'] = 'Réponse';
+$string['edit'] = 'Modifier';
+$string['solutions'] = 'Solutions';
+
 
 /*--------------------------------------------------
  * Tabs
@@ -126,7 +132,7 @@ $string['administration_delete_category_confirmation'] = "Confirmez-vous la supp
 $string['administration_problem_create_title'] = 'Créer un probleme';
 $string['prerequisite'] = "Prérequis";
 $string['administration_problem_informations_msg'] = 'Select the category of the problem.<br/>Enter the name, the difficulty, the conditions need to resolve the problem.';
-$string['difficulty'] = "Difficulty";
+$string['difficulty'] = "Difficulté";
 $string['administration_problem_create_preconfig_subtitle'] = '1. Pré-configuration';
 $string['administration_problem_create_informations_subtitle'] = "2. Informations sur le problème";
 $string['administration_problem_create_informations_msg'] = 'Select the category of the problem.<br/>Enter the name, the difficulty, the conditions need to resolve the problem.';
@@ -140,7 +146,21 @@ $string['administration_problem_create_code_complete_label'] = 'Code à complete
 $string['administration_problem_create_code_unittest_label'] = 'Tests unitaires';
 $string['administration_problem_create_success'] = 'Le problème a été créé';
 
+
+
+$string['difficulty_label_elementary'] = 'élementaire';
+$string['difficulty_label_easy'] = 'facile';
+$string['difficulty_label_medium'] = 'intermediaire';
+$string['difficulty_label_difficult'] = 'difficile';
 /*--------------------------------------------------
  * Web services
  *------------------------------------------------*/
 $string['web_service_communication_error'] = 'Une erreur est survenue lors de la communication avec le service web.<br/>Vous ne pouvez pas sélectionner un langage de programmation.';
+
+/*--------------------------------------------------
+ * Problems
+ *------------------------------------------------*/
+
+$string['problem_author'] = 'Rédacteur';
+$string['problem_date_creation'] = 'Date de création';
+$string['problem_nb_resolutions'] = 'Nombre de résolutions';

@@ -208,12 +208,12 @@ class page_admin_langage_configure extends page_view {
         echo $this->lipsoutput->display_p(get_string('administration_language_configure_msg', 'lips'));
 
         $lips = get_current_instance();
-        if(count_languages_number($lips->id) > 0)
+        if (count_languages_number($lips->id) > 0)
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_existing_problems', 'lips'), 'ERROR');
 
         $configureLanguageForm = new mod_lips_configure_language_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_configure')), null, 'post');
 
-        if($configureLanguageForm->is_submitted()) {
+        if ($configureLanguageForm->is_submitted()) {
             $configureLanguageForm->handle();
             $configureLanguageForm->display();
         } else {
@@ -263,7 +263,7 @@ class page_admin_langage_picture extends page_view {
 
         //$configureLanguageForm = new mod_lips_configure_language_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_configure')), null, 'post');
 
-        if($configurePictureForm->is_submitted()) {
+        if ($configurePictureForm->is_submitted()) {
             $configurePictureForm->handle();
             $configurePictureForm->display();
         } else {
@@ -309,20 +309,20 @@ class page_admin_langage_base extends page_view {
         echo $this->lipsoutput->display_p(get_string('administration_language_code_msg', 'lips'));
 
         $lips = get_current_instance();
-        if($lips->compile_language == null && has_role('adminplugin'))
+        if ($lips->compile_language == null && has_role('adminplugin'))
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_no_compile_language', 'lips'), 'ERROR');
-        if($lips->coloration_language == null && has_role('adminplugin'))
+        if ($lips->coloration_language == null && has_role('adminplugin'))
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_no_syntax_highlighting', 'lips'), 'WARNING');
 
         $lips = get_current_instance();
-        $configureCodeForm = new mod_lips_configure_code_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_base')), (array) $lips, 'post');
+        $configureCodeForm = new mod_lips_configure_code_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_base')), (array)$lips, 'post');
 
-        if($configureCodeForm->is_submitted()) {
+        if ($configureCodeForm->is_submitted()) {
             $configureCodeForm->handle();
 
             // /!\ Do no remove. Used to refresh the Ace code with the updated data
             $lips = get_current_instance();
-            $configureCodeForm = new mod_lips_configure_code_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_base')), (array) $lips, 'post');
+            $configureCodeForm = new mod_lips_configure_code_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_base')), (array)$lips, 'post');
             $configureCodeForm->display();
         } else {
             $configureCodeForm->display();
@@ -371,7 +371,7 @@ class page_admin_category_create extends page_view {
 
         $createCategoryForm = new mod_lips_category_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_create')), null, 'post');
 
-        if($createCategoryForm->is_submitted()) {
+        if ($createCategoryForm->is_submitted()) {
             $createCategoryForm->handle();
             $createCategoryForm->display();
         } else {
@@ -417,7 +417,7 @@ class page_admin_category_select_modify extends page_view {
 
         $modifySelectCategoryForm = new mod_lips_category_modify_select_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
 
-        if($modifySelectCategoryForm->is_submitted()) {
+        if ($modifySelectCategoryForm->is_submitted()) {
             $modifySelectCategoryForm->handle();
             $modifySelectCategoryForm->display();
         } else {
@@ -464,7 +464,7 @@ class page_admin_category_modify extends page_view {
 
         $modifyCategoryForm = new mod_lips_category_modify_form();
 
-        if($modifyCategoryForm->is_submitted()) {
+        if ($modifyCategoryForm->is_submitted()) {
             $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
 
             $modifyCategoryForm->handle();
@@ -472,18 +472,18 @@ class page_admin_category_modify extends page_view {
         } else {
             $categoryid = optional_param('category_id', null, PARAM_INT);
 
-            if($categoryid == null) {
+            if ($categoryid == null) {
                 $modifySelectCategoryForm = new mod_lips_category_modify_select_form();
                 $data = $modifySelectCategoryForm->get_submitted_data();
                 $categorydetails = get_category_details($data->selectCategory);
 
-                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array) $categorydetails, 'post');
+                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array)$categorydetails, 'post');
 
                 $modifyCategoryForm->display();
             } else {
                 $categorydetails = get_category_details($categoryid);
 
-                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array) $categorydetails, 'post');
+                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array)$categorydetails, 'post');
 
                 $modifyCategoryForm->display();
             }
@@ -569,7 +569,7 @@ class page_admin_problem_create extends page_view {
 
         $createProblemForm = new mod_lips_problem_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_create')), null, 'post');
 
-        if($createProblemForm->is_submitted()) {
+        if ($createProblemForm->is_submitted()) {
             $createProblemForm->handle($this->cm->instance);
             $createProblemForm->display();
         } else {
@@ -676,7 +676,7 @@ class page_category extends page_view {
      * Display the page_category content
      */
     function display_content() {
-        $details=get_category_details($this->id);
+        $details = get_category_details($this->id);
         echo $this->lipsoutput->display_top_page_category($details->category_name, $this->id);
         require_once(dirname(__FILE__) . '/problems_table.php');
         $table = new problems_table($this->cm, $this->id);
@@ -744,11 +744,118 @@ class page_delete_category extends page_view {
         $message = $this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips') . " " . $details->category_name . " ?");
 
         $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view, 'originV' => $this->originv, 'originAction' => $this->originaction, 'categoryId' => $this->id));
-        if($this->originaction != null)
+        if ($this->originaction != null)
             $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv, 'action' => $this->originaction));
         else
             $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv));
 
         echo $this->lipsoutput->confirm($message, $continueurl, $cancelurl);
+    }
+}
+
+/**
+ * Display solutions of a problem.
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickaël Ohlen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_solutions extends page_view {
+    private $id;
+
+    function  __construct($cm, $id) {
+        parent::__construct($cm, "problem");
+        $this->id = $id;
+    }
+
+    /**
+     * Display the message of confirmation.
+     */
+    function display_content() {
+        require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
+
+        $details = get_problem_details($this->id);
+        echo $this->lipsoutput->display_h2($details[1]->problem_label);
+        $author = $this->lipsoutput->display_p(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_creator_id);
+        echo $this->lipsoutput->display_div($author, array("class" => "field_page_problem"));
+
+        $datecreation = $this->lipsoutput->display_p(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(date("d/m/y", $details[1]->problem_date));
+        echo $this->lipsoutput->display_div($datecreation, array("class" => "field_page_problem"));
+        $nbresolutions = $this->lipsoutput->display_p(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_attempts);
+        echo $this->lipsoutput->display_div($nbresolutions, array("class" => "field_page_problem"));
+
+        $difficulty = $this->lipsoutput->display_p(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(get_string($details[1]->difficulty_label, "lips"));
+        echo $this->lipsoutput->display_div($difficulty, array("class" => "field_page_problem"));
+        $prerequisite = $details[1]->problem_preconditions;
+        if (empty($prerequisite)) {
+            $prerequisite = get_string("none", "lips");
+        }
+        $prerequisite = $this->lipsoutput->display_p(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($prerequisite);
+        echo $this->lipsoutput->display_div($prerequisite, array("class" => "field_page_problem"));
+
+        $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'search_solution')), array('width' => '60%'));
+        $searchForm->display();
+
+    }
+}
+
+/**
+ * Display solutions of a problem.
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickaël Ohlen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_problem extends page_view {
+    private $id;
+
+    function  __construct($cm, $id) {
+        parent::__construct($cm, "problem");
+        $this->id = $id;
+    }
+
+    /**
+     * Display the message of confirmation.
+     */
+    function display_content() {
+        require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
+        global $USER;
+        $buttonsolutions = "";
+        $buttonedit = "";
+        $buttondelete = "";
+        if (nb_resolutions_problem($USER->id, $this->id) > 0) {
+            $buttonsolutions = $this->lipsoutput->action_link(new moodle_url(""), "Solutions", null, array("class" => "lips-button"));
+        }
+        if (has_role("administration")) {
+            $buttonedit = $this->lipsoutput->action_link(new moodle_url(""), get_string("edit", "lips"), null, array("class" => "lips-button"));
+            $buttondelete = $this->lipsoutput->action_link(new moodle_url(""), get_string("delete", "lips"), null, array("class" => "lips-button"));
+        }
+        $buttondefie = $this->lipsoutput->action_link(new moodle_url(""), "Défier", null, array("class" => "lips-button"));
+        $buttons = $this->lipsoutput->display_p($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("style" => "float:right"));
+        $details = get_problem_details($this->id);
+        echo $this->lipsoutput->display_top_page_problem($details[1]->problem_label, $this->id);
+        $author = $this->lipsoutput->display_p(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_creator_id);
+        echo $this->lipsoutput->display_div($buttons . $author, array("class" => "field_page_problem"));
+        $datecreation = $this->lipsoutput->display_p(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(date("d/m/y", $details[1]->problem_date));
+        echo $this->lipsoutput->display_div($datecreation, array("class" => "field_page_problem"));
+        $nbresolutions = $this->lipsoutput->display_p(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_attempts);
+        echo $this->lipsoutput->display_div($nbresolutions, array("class" => "field_page_problem"));
+        $difficulty = $this->lipsoutput->display_p(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(get_string($details[1]->difficulty_label, "lips"));
+        echo $this->lipsoutput->display_div($difficulty, array("class" => "field_page_problem"));
+        $prerequisite = $details[1]->problem_preconditions;
+        if (empty($prerequisite)) {
+            $prerequisite = get_string("none", "lips");
+        }
+        $prerequisite = $this->lipsoutput->display_p(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($prerequisite);
+        echo $this->lipsoutput->display_div($prerequisite, array("class" => "field_page_problem"))
+        echo $this->lipsoutput->display_h3(get_string("subject", "lips"));
+        echo $this->lipsoutput->display_p($details[1]->problem_statement);
+        echo $this->lipsoutput->display_h3(get_string("tips", "lips"));
+        echo $this->lipsoutput->display_p($details[1]->problem_tips);
+        echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"));
+        echo $this->lipsoutput->display_p($details[1]->problem_unit_tests);
+        echo $this->lipsoutput->display_h3(get_string("answer", "lips"));
     }
 }

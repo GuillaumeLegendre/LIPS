@@ -49,10 +49,15 @@ $string['modify'] = 'Modify';
 $string['delete'] = 'Delete';
 $string['category'] = 'Category';
 $string['documentation'] = 'Documentation';
+$string['documentation'] = 'Documentation';
 $string['name'] = 'Name';
+$string['solutions'] = 'Solutions';
 $string['subject'] = 'Subject';
 $string['tips'] = 'Tips';
-
+$string['none'] = 'None';
+$string['search'] = 'Search';
+$string['answer'] = 'Answer';
+$string['edit'] = 'Edit';
 $string['error_impossible'] = 'You shouldn\'t have access this page';
 $string['language'] = 'Language';
 
@@ -75,7 +80,7 @@ $string['level'] = 'Level';
 $string['date'] = 'Date';
 $string['author'] = 'Author';
 $string['number_of_resolutions'] = 'Number of resolutions';
-$string['resolved'] = 'Resoled';
+$string['resolved'] = 'Resolved';
 $string['configure'] = 'Configure';
 $string['picture'] = 'Picture';
 $string['base'] = 'Base';
@@ -158,3 +163,14 @@ $string['difficulty_label_difficult'] = 'difficult';
  * Web services
  *------------------------------------------------*/
 $string['web_service_communication_error'] = 'An error occured when contacting the web service.<br/>You can\'t select a programming language.';
+
+/*--------------------------------------------------
+ * Problems
+ *------------------------------------------------*/
+
+$string['problem_author'] = 'Author';
+$string['problem_date_creation'] = 'Date of creation';
+$string['problem_nb_resolutions'] = 'Number of resolutions';
+
+
+

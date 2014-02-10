@@ -68,7 +68,8 @@ function convert_active_tab($view) {
         "users" => "users",
         "category" => "problems",
         "categoryDocumentation" => "problems",
-        "deleteCategory" => "problems"
+        "deleteCategory" => "problems",
+        "problem" => "problems",
     );
     return $tabs[$view];
 }
@@ -121,6 +122,16 @@ function get_category_details($id) {
 }
 
 /**
+ * Get details of a specific category.
+ *
+ * @return object An array containing the details of a category.
+ */
+function get_problem_details($id) {
+    global $DB;
+    return $DB->get_records_sql("select mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id where mlp.id=" . $id);
+}
+
+/**
  * Get the language picture
  *
  * @return string The language picture
@@ -163,7 +174,7 @@ function is_author($idproblem, $iduser) {
 function category_exists($conditions) {
     global $DB;
 
-    if($DB->count_records('lips_category', $conditions) > 0)
+    if ($DB->count_records('lips_category', $conditions) > 0)
         return true;
     return false;
 }
@@ -198,7 +209,7 @@ function update_category($id, $category_name, $category_documentation, $category
 
 function has_documentation($idcategory) {
     $cat = get_category_details($idcategory);
-    
+
     if ($cat->category_documentation) {
         return true;
     }
@@ -215,7 +226,7 @@ function has_documentation($idcategory) {
 function update_language($id, $data) {
     global $DB;
 
-    $DB->update_record('lips', array_merge(array('id' => $id), (array) $data));
+    $DB->update_record('lips', array_merge(array('id' => $id), (array)$data));
 }
 
 /**
@@ -224,18 +235,30 @@ function update_language($id, $data) {
  * @return array An array of available languages
  */
 function ace_available_languages() {
-    $dir  = './ace/ace-builds/src-noconflict';
+    $dir = './ace/ace-builds/src-noconflict';
     $files = scandir($dir, 1);
     $languages = array();
 
     foreach ($files as $value) {
-        if (preg_match('/^mode-.*/', $value) === 1){
+        if (preg_match('/^mode-.*/', $value) === 1) {
             $language = preg_replace(array('/mode-/', '/\.js/'), array('', ''), $value);
             $languages[$language] = $language;
         }
     }
 
     asort($languages);
-    
+
     return $languages;
+}
+
+/**
+ * Returns the number of resolutions of a user.
+ *
+ * @param int $idproblem Problem id
+ * @param int $iduser User id
+ * @param int number of resolutions
+ */
+function nb_resolutions_problem($iduser, $idproblem) {
+    global $DB;
+    return $DB->count_records("lips_problem_solved", array('problem_solved_problem' => $idproblem, 'problem_solved_user' => $iduser));
 }

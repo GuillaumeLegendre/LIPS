@@ -155,10 +155,6 @@ class mod_lips_renderer extends plugin_renderer_base {
         }
     }
 
-    public function display_documentation($documentation) {
-
-    }
-
     public function display_button($moodleurl, $label) {
         return $this->render(new single_button($moodleurl, $label));
     }
@@ -175,9 +171,41 @@ class mod_lips_renderer extends plugin_renderer_base {
         echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '")</script>';
     }
 
+    /**
+     * Display the top of the page representing a category.
+     *
+     * @param string $categoryname Name of the problem
+     * @param int $categoryid id of the category
+     * @return string div tag
+     */
     public function display_top_page_category($categoryname, $categoryid) {
         $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categoryid)), get_string("documentation", "lips"));
         return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float:right;")) . $this->display_h1($categoryname));
+    }
 
+    /**
+     * Display the top of the page representing a problem.
+     *
+     * @param string $problemname Name of the problem
+     * @param int $problemid id of the problem
+     * @return string div tag
+     */
+    public function display_top_page_problem($problemname, $problemid) {
+        $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $problemid)), get_string("documentation", "lips"));
+        return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float:right;")) . $this->display_h2($problemname));
+    }
+    /**
+     * Display a div
+     *
+     * @param string $content Text content
+     * @param array $attributes Attributes
+     * @return string div tag
+     */
+    public function display_div($content, array $attributes = null) {
+        return html_writer::tag('div', $content, $attributes);
+    }
+
+    public function display_search_form() {
+        return html_writer::tag("html", "<input type='text' name='search'><input type='submit' value='Rechercher'>");
     }
 }

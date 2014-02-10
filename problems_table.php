@@ -16,7 +16,6 @@ class problems_table extends table_sql {
         $this->set_sql("mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label", "mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id", "problem_category_id=" . $id);
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'category', "categoryId" => $id)));
 
-
         $context = context_module::instance($cm->id);
         if (has_capability('mod/lips:administration', $context)) {
             $this->define_headers(array("Problème", "Difficulté", "Date", "Rédacteur", "Nombre de résolutions", ""));
@@ -30,7 +29,10 @@ class problems_table extends table_sql {
 
     function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE, $USER;
-        if ($colname == "problem_date") {
+        if ($colname == "problem_label") {
+            $url = new action_link(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $attempt->id)), $attempt->problem_label);
+            return $OUTPUT->render($url);
+        } else if ($colname == "problem_date") {
             return date('d/m/Y', $attempt->problem_date);
         } else if ($colname == "difficulty_label") {
             return get_string($attempt->difficulty_label, "lips");

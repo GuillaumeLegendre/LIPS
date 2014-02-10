@@ -49,23 +49,27 @@ class mod_lips_problem_create_form extends moodleform {
 
         $mform->addElement('text', 'problem_preconditions', get_string('prerequisite', 'lips'), array('size' => '64', 'maxlength' => '255'));
         $mform->setType('problem_preconditions', PARAM_TEXT);
+        $mform->addElement('html', "</div>");
 
         // Subject.
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_subject_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_subject_msg", "lips"));
+        $mform->addElement('html', "<div>");
 
         $mform->addElement('editor', 'problem_statement', get_string("subject", "lips"));
         $mform->addRule('problem_statement', get_string('administration_language_form_select_subject_error', 'lips'), 'required', null, 'client');
-
         $mform->addElement('editor', 'problem_tips', get_string("tips", "lips"));
+        $mform->addElement('html', "</div>");
 
         // Code.
+        $mform->addElement('html', "<div>");
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_code_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_code_msg", "lips"));
         $mform->addElement('textarea', 'textAreaImports', get_string("administration_problem_create_code_import_label", "lips"), 'rows="15" cols="100"');
         $mform->addElement('textarea', 'problem_code', get_string("administration_problem_create_code_complete_label", "lips"), 'rows="15" cols="100"');
         $mform->addElement('textarea', 'problem_unit_tests', get_string("administration_problem_create_code_unittest_label", "lips"), 'rows = "15" cols = "100"');
         $mform->addRule('problem_unit_tests', get_string('administration_language_form_select_unittests_error', 'lips'), 'required', null, 'client');
+        $mform->addElement('html', "</div>");
 
         // Create button
         $mform->addElement('submit', 'submit', get_string('create', 'lips'));
