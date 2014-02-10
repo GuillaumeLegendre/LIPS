@@ -33,7 +33,7 @@ function xmldb_lips_install() {
     global $DB;
 
     // Parse the config file
-    $config = parse_ini_file("config.ini", true);
+    $config = parse_ini_file("../config.ini", true);
 
     // Insert difficulties
     foreach($config['difficulties'] as $key => $value) {
