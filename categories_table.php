@@ -71,7 +71,9 @@ class categories_table extends table_sql {
 
             if (has_capability('mod/lips:administration', $context)) {
                 $a = $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'category_modify', 'category_id' => $attempt->id)), new pix_icon("t/edit", "edit"));
-                $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'deleteCategory', 'categoryId' => $attempt->id, 'originV' => 'problems')), new pix_icon("t/delete", "delete"));
+                if (is_removable($attempt->id)) {
+                    $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'deleteCategory', 'categoryId' => $attempt->id, 'originV' => 'problems')), new pix_icon("t/delete", "delete"));
+                }
             }
 
             $category = get_category_details($attempt->id);

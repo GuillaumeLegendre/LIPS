@@ -217,6 +217,25 @@ function category_exists($conditions) {
     return false;
 }
 
+/* Test if a category is removable, ie category is empty
+ *
+ * @param int $id Category id
+ * @return bool True if the category is removable, otherwise false
+ */
+function is_removable($id) {
+    global $DB;
+
+    $sql = "SELECT mlc.id, category_name
+        FROM mdl_lips_category mlc
+        LEFT JOIN mdl_lips_problem mlp
+        ON mlc.id = mlp.problem_category_id
+        WHERE mlc.id = ".$id."
+        AND mlc.id_language = 1
+        GROUP BY mlc.id HAVING COUNT(mlp.id) = 0";
+
+    return $DB->record_exists_sql($sql);
+}
+
 /**
  * Insert a category to the database
  *
