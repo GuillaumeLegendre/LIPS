@@ -1,4 +1,19 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
 require_once(dirname(__FILE__) . '/locallib.php');
@@ -21,27 +36,34 @@ class mod_lips_configure_language_form extends moodleform {
 
         $mform =& $this->_form;
 
-        // Current language informations
+        // Current language informations.
         $lips = get_current_instance();
 
-        // Select the language
+        // Select the language.
         $languages = lips_rest_interface_impl::get_list_languages();
         if (!$languages) {
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('web_service_communication_error', 'lips'), 'ERROR');
+            echo $PAGE->get_renderer('mod_lips')->display_notification(
+                get_string('web_service_communication_error', 'lips'), 'ERROR');
         } else {
-            $mform->addElement('select', 'selectLanguage', get_string('administration_language_form_select', 'lips'), $languages);
-            $mform->addRule('selectLanguage', get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
-            if($lips->compile_language != null)
+            $mform->addElement('select', 'selectLanguage',
+                get_string('administration_language_form_select', 'lips'), $languages);
+            $mform->addRule('selectLanguage',
+                get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
+            if ($lips->compile_language != null) {
                 $mform->setDefault('selectLanguage', $lips->compile_language);
+            }
         }
 
-        // Select the syntax highlighting
-        $mform->addElement('select', 'selectSyntaxHighlighting', get_string('administration_language_form_highlighting_select', 'lips'), ace_available_languages());
-        $mform->addRule('selectSyntaxHighlighting', get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
-        if($lips->coloration_language != null)
+        // Select the syntax highlighting.
+        $mform->addElement('select', 'selectSyntaxHighlighting',
+            get_string('administration_language_form_highlighting_select', 'lips'), ace_available_languages());
+        $mform->addRule('selectSyntaxHighlighting',
+            get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
+        if ($lips->coloration_language != null) {
             $mform->setDefault('selectSyntaxHighlighting', $lips->coloration_language);
+        }
 
-        // Modify button
+        // Modify button.
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
     }
 
@@ -56,12 +78,14 @@ class mod_lips_configure_language_form extends moodleform {
         $errors = parent::validation($data, $files);
         $errors = array();
 
-        if(isset($data->selectSyntaxHighlighting)) {
-            if(isset($data->selectLanguage) && empty($data->selectLanguage))
+        if (isset($data->selectSyntaxHighlighting)) {
+            if (isset($data->selectLanguage) && empty($data->selectLanguage)) {
                 $errors['emptySelectLanguage'] = get_string('administration_language_form_select_error', 'lips');
+            }
 
-            if(empty($data->selectSyntaxHighlighting))
+            if (empty($data->selectSyntaxHighlighting)) {
                 $errors['emptySelectLanguage'] = get_string('administration_language_form_highlighting_select_error', 'lips');
+            }
         } else {
             $errors['impossibleError'] = get_string('error_impossible', 'lips');
         }
@@ -78,32 +102,37 @@ class mod_lips_configure_language_form extends moodleform {
     public function handle() {
         global $PAGE;
 
-        // Do nothing if not submitted or cancelled
-        if(!$this->is_submitted() || $this->is_cancelled())
+        // Do nothing if not submitted or cancelled.
+        if (!$this->is_submitted() || $this->is_cancelled()) {
             return;
+        }
 
-        // Form data
+        // Form data.
         $data = $this->get_submitted_data();
 
-        // The validation failed
+        // The validation failed.
         $errors = $this->validation($data, null);
-        if(count($errors) > 0) {
-            foreach($errors as $error) {
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
                 echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
             }
 
             return;
         }
 
-        // Update the data
+        // Update the data.
         $lips = get_current_instance();
-        if(isset($data->selectLanguage))
-            update_language($lips->id, array('compile_language' => $data->selectLanguage, 'coloration_language' => $data->selectSyntaxHighlighting));
-        else
+        if (isset($data->selectLanguage)) {update_language($lips->id, array(
+                'compile_language' => $data->selectLanguage,
+                'coloration_language' => $data->selectSyntaxHighlighting));
+        }
+        else {
             update_language($lips->id, array('coloration_language' => $data->selectSyntaxHighlighting));
+        }
 
-        // Success message
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_configure_success', 'lips'), 'SUCCESS');
+        // Success message.
+        echo $PAGE->get_renderer('mod_lips')->display_notification(
+            get_string('administration_language_configure_success', 'lips'), 'SUCCESS');
     }
 }
 
@@ -129,7 +158,7 @@ class mod_lips_configure_picture_form extends moodleform {
         //$mform->addElement('file', 'filePicture', get_string('administration_language_form_file', 'lips'));
         //$mform->addRule('filePicture', get_string('administration_language_form_file_error', 'lips'), 'required');
 
-        // Modify button
+        // Modify button.
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
     }
 
@@ -225,12 +254,14 @@ class mod_lips_configure_code_form extends moodleform {
         $mform =& $this->_form;
         $mcustomdata = $this->_customdata;
 
-        // Textarea for base code
-        $mform->addElement('html', '<div id="configEditor" class="ace">' . (($mcustomdata['base_code'] == null || $mcustomdata['base_code'] == '') ? '' : htmlspecialchars($mcustomdata['base_code'])) . '</div>');
+        // Textarea for base code.
+        $mform->addElement('html', '<div id="configEditor" class="ace">' .
+            (($mcustomdata['base_code'] == null || $mcustomdata['base_code'] == '') ?
+                '' : htmlspecialchars($mcustomdata['base_code'])) . '</div>');
         $mform->addElement('textarea', 'areaBaseCode', null, array('rows' => 15, 'cols' => 100, 'class' => 'editorCode'));
         $mform->setDefault('areaBaseCode', $mcustomdata['base_code']);
 
-        // Modify button
+        // Modify button.
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
     }
 
@@ -245,17 +276,20 @@ class mod_lips_configure_code_form extends moodleform {
         $errors = parent::validation($data, $files);
         $errors = array();
 
-        if(isset($data->areaBaseCode)) {
+        if (isset($data->areaBaseCode)) {
             preg_match_all('/<lips-preconfig-import\/>/', $data->areaBaseCode, $import);
             preg_match_all('/<lips-preconfig-code\/>/', $data->areaBaseCode, $code);
             preg_match_all('/<lips-preconfig-tests\/>/', $data->areaBaseCode, $tests);
 
-            if(count($import[0]) > 1)
+            if (count($import[0]) > 1) {
                 $errors['tooManyImports'] = get_string('administration_language_code_imports_error', 'lips');
-            if(count($code[0]) > 1)
+            }
+            if (count($code[0]) > 1) {
                 $errors['tooManyCode'] = get_string('administration_language_code_code_error', 'lips');
-            if(count($tests[0]) > 1)
+            }
+            if (count($tests[0]) > 1) {
                 $errors['tooManyTests'] = get_string('administration_language_code_tests_error', 'lips');
+            }
         } else {
             $errors['impossibleError'] = get_string('error_impossible', 'lips');
         }
@@ -272,28 +306,30 @@ class mod_lips_configure_code_form extends moodleform {
     public function handle() {
         global $PAGE;
 
-        // Do nothing if not submitted or cancelled
-        if(!$this->is_submitted() || $this->is_cancelled())
+        // Do nothing if not submitted or cancelled.
+        if (!$this->is_submitted() || $this->is_cancelled()) {
             return;
+        }
 
-        // Form data
+        // Form data.
         $data = $this->get_submitted_data();
 
-        // The validation failed
+        // The validation failed.
         $errors = $this->validation($data, null);
-        if(count($errors) > 0) {
-            foreach($errors as $error) {
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
                 echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
             }
 
             return;
         }
 
-        // Update the data
+        // Update the data.
         $lips = get_current_instance();
         update_language($lips->id, array('base_code' => $data->areaBaseCode));
 
-        // Success message
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_code_success', 'lips'), 'SUCCESS');
+        // Success message.
+        echo $PAGE->get_renderer('mod_lips')->display_notification(
+            get_string('administration_language_code_success', 'lips'), 'SUCCESS');
     }
 }

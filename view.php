@@ -106,7 +106,6 @@ switch ($view) {
     case "profil" :
         $viewpage = new page_profil($cm, $id);
         break;
-
     case "users" :
         $viewpage = new page_users($cm);
         break;
@@ -122,7 +121,6 @@ switch ($view) {
         $idcategory = optional_param('categoryId', 0, PARAM_INT);
         $originV = optional_param('originV', 0, PARAM_TEXT);
         $originAction = optional_param('originAction', 0, PARAM_TEXT);
-
         $viewpage = new page_delete_category($cm, $idcategory, $originV, $originAction);
         break;
     default :

@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -42,11 +41,10 @@ class mod_lips_mod_form extends moodleform_mod
 
         $mform = $this->_form;
 
-        //-------------------------------------------------------------------------------
-        // Adding the "general" fieldset, where all the common settings are showed
+        // Adding the "general" fieldset, where all the common settings are showed.
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
-        // Adding the standard "name" field
+        // Adding the standard "name" field.
         $mform->addElement('text', 'name', get_string('lipsname', 'lips'), array('size' => '64'));
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
@@ -57,22 +55,20 @@ class mod_lips_mod_form extends moodleform_mod
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('name', 'lipsname', 'lips');
 
-        // Adding the standard "intro" and "introformat" fields
+        // Adding the standard "intro" and "introformat" fields.
         $this->add_intro_editor();
 
-        //-------------------------------------------------------------------------------
-        // Adding the rest of lips settings, spreeading all them into this fieldset
-        // or adding more fieldsets ('header' elements) if needed for better logic
+        // Adding the rest of lips settings, spreeading all them into this fieldset,
+        // Or adding more fieldsets ('header' elements) if needed for better logic.
         $mform->addElement('static', 'label1', 'lipssetting1', 'Your lips fields go here. Replace me!');
 
         $mform->addElement('header', 'lipsfieldset', get_string('lipsfieldset', 'lips'));
         $mform->addElement('static', 'label2', 'lipssetting2', 'Your lips fields go here. Replace me!');
 
-        //-------------------------------------------------------------------------------
-        // add standard elements, common to all modules
+        // Add standard elements, common to all modules.
         $this->standard_coursemodule_elements();
-        //-------------------------------------------------------------------------------
-        // add standard buttons, common to all modules
+
+        // Add standard buttons, common to all modules.
         $this->add_action_buttons();
     }
 }

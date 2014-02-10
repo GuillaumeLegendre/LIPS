@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -32,7 +31,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /** example constant */
-//define('NEWMODULE_ULTIMATE_ANSWER', 42);
+// define('NEWMODULE_ULTIMATE_ANSWER', 42);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Moodle core API                                                            //
@@ -74,7 +73,7 @@ function lips_add_instance(stdClass $lips, mod_lips_mod_form $mform = null) {
 
     $lips->timecreated = time();
 
-    # You may have to add extra stuff in here #
+    // You may have to add extra stuff in here.
 
     return $DB->insert_record('lips', $lips);
 }
@@ -96,7 +95,7 @@ function lips_update_instance(stdClass $lips, mod_lips_mod_form $mform = null) {
     $lips->timemodified = time();
     $lips->id = $lips->instance;
 
-    # You may have to add extra stuff in here #
+    // You may have to add extra stuff in here.
 
     return $DB->update_record('lips', $lips);
 }
@@ -118,7 +117,7 @@ function lips_delete_instance($id) {
         return false;
     }
 
-    # Delete any dependent records here #
+    // Delete any dependent records here.
 
     $DB->delete_records('lips', array('id' => $lips->id));
 
@@ -167,7 +166,7 @@ function lips_print_recent_activity($course, $viewfullnames, $timestart) {
 }
 
 /**
- * Prepares the recent activity data
+ * Prepares the recent activity data.
  *
  * This callback function is supposed to populate the passed array with
  * custom activity records. These records are then rendered into HTML via
@@ -296,7 +295,7 @@ function lips_update_grades(stdClass $lips, $userid = 0) {
     require_once($CFG->libdir . '/gradelib.php');
 
     /** @example */
-    $grades = array(); // populate array of grade objects indexed by userid
+    $grades = array(); // Populate array of grade objects indexed by userid.
 
     grade_update('mod/lips', $lips->course, 'mod', 'lips', $lips->id, 0, $grades);
 }

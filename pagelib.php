@@ -674,7 +674,8 @@ class page_category extends page_view {
      * Display the page_category content
      */
     function display_content() {
-        echo "<h1>" . get_category_details($this->id)->category_name . "</h1>";
+        $details=get_category_details($this->id);
+        echo $this->lipsoutput->display_top_page_category($details->category_name, $this->id);
         require_once(dirname(__FILE__) . '/problems_table.php');
         $table = new problems_table($this->cm, $this->id);
         $table->out(10, true);
