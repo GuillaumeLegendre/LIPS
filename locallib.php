@@ -73,13 +73,13 @@ function get_highest_role() {
     }
 
     foreach($roles as $role) {
-        if(in_array('editingteacher', $roles) || in_array('teacher', $roles)) {
+        if(in_array('editingteacher', $role) || in_array('teacher', $role)) {
             return 'teacher';
         }
     }
 
     foreach($roles as $role) {
-        if(in_array('student', $roles)) {
+        if(in_array('student', $role)) {
             return 'student';
         }
     }
@@ -128,7 +128,10 @@ function insert_user_if_not_exists() {
 
     $user = get_user_details(array('id_user_moodle' => $USER->id));
     if($user == null) {
-        insert_user($USER->id, get_highest_role(), 1, 0);
+        $role = get_highest_role();
+        if($role != null) {
+            insert_user($USER->id, get_highest_role(), 1, 0);
+        }
     }
 }
 
