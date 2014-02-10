@@ -103,8 +103,8 @@ switch ($view) {
     case "problems" :
         $viewpage = new page_list_categories($cm);
         break;
-    case "profil" :
-        $viewpage = new page_profil($cm, $id);
+    case "profile" :
+        $viewpage = new page_profile($cm, $id);
         break;
     case "users" :
         $viewpage = new page_users($cm);
@@ -124,6 +124,8 @@ switch ($view) {
         $viewpage = new page_delete_category($cm, $idcategory, $originV, $originAction);
         break;
     default :
+        insert_user_if_not_exists();
+
         $viewpage = new page_index($cm);
 }
 

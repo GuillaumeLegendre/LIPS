@@ -42,6 +42,13 @@ $string['pluginadministration'] = 'lips administration';
 $string['pluginname'] = 'LIPS';
 
 /*--------------------------------------------------
+ * Status
+ *------------------------------------------------*/
+$string['coursecreator'] = 'Course creator';
+$string['teacher'] = 'Teacher';
+$string['student'] = 'Student';
+
+/*--------------------------------------------------
  * Constants
  *------------------------------------------------*/
 $string['create'] = 'Create';
@@ -78,6 +85,11 @@ $string['resolved'] = 'Resoled';
 $string['configure'] = 'Configure';
 $string['picture'] = 'Picture';
 $string['base'] = 'Base';
+
+/*--------------------------------------------------
+ * Profile
+ *------------------------------------------------*/
+
 
 /*--------------------------------------------------
  * Administration

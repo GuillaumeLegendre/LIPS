@@ -53,6 +53,8 @@ h3 {
 
 .lips-button:hover {
     background-color: #7E9CC5;
+    color: #FFFFFF;
+    text-decoration: none;
 }
 
 /*---------------------------------
@@ -87,7 +89,7 @@ h3 {
 }
 
 .editorCode {
-    display: none;
+    /*display: none;*/
 }
 
 /*---------------------------------

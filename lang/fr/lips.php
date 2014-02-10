@@ -56,6 +56,13 @@ $string['subject'] = 'Enoncé';
 $string['tips'] = 'Astuces';
 
 /*--------------------------------------------------
+ * Status
+ *------------------------------------------------*/
+$string['coursecreator'] = 'Créateur du cours';
+$string['teacher'] = 'Enseignant';
+$string['student'] = 'Etudiant';
+
+/*--------------------------------------------------
  * Tabs
  *------------------------------------------------*/
 $string['index'] = 'Accueil';

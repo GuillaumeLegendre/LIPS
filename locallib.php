@@ -54,6 +54,40 @@ function has_role($role) {
 }
 
 /**
+ * Return the user highest role
+ *
+ * @return string Highest role of the user
+ */
+function get_highest_role() {
+    global $USER;
+
+    $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);
+    $context = context_module::instance($cm->id);
+
+    $roles = get_user_roles($context, $USER->id);
+
+    foreach($roles as $role) {
+        if(in_array('manager', (array) $role) || in_array('coursecreator', (array) $role)) {
+            return 'coursecreator';
+        }
+    }
+
+    foreach($roles as $role) {
+        if(in_array('editingteacher', $roles) || in_array('teacher', $roles)) {
+            return 'teacher';
+        }
+    }
+
+    foreach($roles as $role) {
+        if(in_array('student', $roles)) {
+            return 'student';
+        }
+    }
+
+    return null;
+}
+
+/**
  * Get the tab name corresponding to the view name in parameter.
  *
  * @return array The tab name corresponding to the view name in parameter.
@@ -63,13 +97,69 @@ function convert_active_tab($view) {
         "index" => "index",
         "administration" => "administration",
         "problems" => "problems",
-        "profil" => "profil",
+        "profile" => "profile",
         "users" => "users",
         "category" => "problems",
         "categoryDocumentation" => "problems",
         "deleteCategory" => "problems"
     );
+    
     return $tabs[$view];
+}
+
+/**
+ * Get details of a specific user.
+ *
+ * @param array $conditions Conditions to match the user.
+ * @return object An array containing the details of the requested user.
+ */
+function get_user_details(array $conditions = null) {
+    global $DB;
+
+    return $DB->get_record('lips_user', $conditions, '*');
+}
+
+/**
+ * Insert the user in the database if not already present
+ */
+function insert_user_if_not_exists() {
+    global $USER;
+
+    $user = get_user_details(array('id_user_moodle' => $USER->id));
+    if($user == null) {
+        insert_user($USER->id, get_highest_role(), 1, 0);
+    }
+}
+
+/**
+ * Insert a new user
+ *
+ * @param int $idusermoodle ID of the user on moodle
+ * @param string $userstatus User status
+ * @param int $userrankid User rank id
+ * @param int $userscore
+ */
+function insert_user($idusermoodle, $userstatus, $userrankid, $userscore) {
+    global $DB;
+
+    $DB->insert_record('lips_user', array(
+        'id_user_moodle' => $idusermoodle,
+        'user_status' => $userstatus,
+        'user_rank_id' => $userrankid,
+        'user_score' => $userscore
+    ));    
+}
+
+/**
+ * Get details of a specific rank.
+ *
+ * @param array $conditions Conditions to match the rank.
+ * @return object An array containing the details of the requested rank.
+ */
+function get_rank_details(array $conditions = null) {
+    global $DB;
+
+    return $DB->get_record('lips_rank', $conditions, '*');
 }
 
 /**
@@ -122,10 +212,10 @@ function fetch_all_categories($idlanguage) {
 }
 
 /**
- * Count the number of languages present on the current instance
+ * Count the number of problems present on the current instance
  *
  * @param int Id of the current instance
- * @return object List of all languages of the current instance
+ * @return int Number of problems present on the current instance
  */
 function count_languages_number($idlanguage) {
     global $DB;

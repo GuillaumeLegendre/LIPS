@@ -613,40 +613,40 @@ class page_users extends page_view {
 }
 
 /**
- * Profil page
+ * Profile page
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
  * @author     Mickaël Ohlen
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class page_profil extends page_view {
+class page_profile extends page_view {
     private $cmid;
 
     /**
-     * page_profil constructor
+     * page_profile constructor
      *
      * @param object $cm Moodle context
      */
     function  __construct($cm, $cmid) {
-        parent::__construct($cm, "profil");
+        parent::__construct($cm, "profile");
         $this->cmid = $cmid;
     }
 
     /**
-     * Display the page_profil content
+     * Display the page_profile content
      */
     function display_content() {
-        global $OUTPUT, $USER, $DB;
+        echo $this->lipsoutput->display_profile_menu('profile') . '<br/>';
 
-        $id = $DB->get_record('course', array('id' => $this->cm->course), '*', MUST_EXIST);
+        /*$id = $DB->get_record('course', array('id' => $this->cm->course), '*', MUST_EXIST);
         $avatar = new user_picture($USER);
         $avatar->courseid = $this->cmid;
         $avatar->link = true;
         echo $OUTPUT->render($avatar) . " ";
         echo $USER->firstname . " " . $USER->lastname;
+        print_r($USER);*/
     }
-
 }
 
 /**

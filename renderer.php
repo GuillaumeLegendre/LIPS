@@ -17,7 +17,7 @@ class mod_lips_renderer extends plugin_renderer_base {
         $tabs[] = new tabobject('problems', "view.php?id={$id}&amp;view=problems", get_string('problems', 'lips'));
         $tabs[] = new tabobject('users', "view.php?id={$id}&amp;view=users", get_string('users', 'lips'));
         $tabs[] = new tabobject('rank', "view.php?id={$id}&amp;view=rank", get_string('rank', 'lips'));
-        $tabs[] = new tabobject('profil', "view.php?id={$id}&amp;view=profil", get_string('profile', 'lips'));
+        $tabs[] = new tabobject('profile', "view.php?id={$id}&amp;view=profile", get_string('profile', 'lips'));
 
         if (has_capability('mod/lips:administration', $context)) {
             $tabs[] = new tabobject('administration', "view.php?id={$id}&amp;view=administration", get_string('administration', 'lips'));
@@ -126,6 +126,48 @@ class mod_lips_renderer extends plugin_renderer_base {
                 </ul>
             </li>
         </ul>';
+    }
+
+    /**
+     * Display the profile menu
+     *
+     * @param string $current Current action
+     * @return string Profile menu
+     */
+    public function display_profile_menu($current) {
+        global $USER, $PAGE;
+
+        $id = $this->page->cm->id;
+        $view = optional_param('view', null, PARAM_TEXT);
+        $action = optional_param('action', 'profile', PARAM_TEXT);
+
+        // Infos
+        $firstname = ucfirst($USER->firstname);
+        $lastname = strtoupper($USER->lastname);
+        $userpicture = new user_picture($USER);
+        $user = get_user_details(array('id_user_moodle' => $USER->id));
+        $rank = get_rank_details(array('id' => $user->user_rank_id));
+
+        $menu = '<div id="profile-menu">
+            <img src="' . str_replace('f2', 'f1', $userpicture->get_url($PAGE)) . '" id="picture"/>
+            <a href="#" id="follow" class="lips-button">S\'abonner</a>
+            <div id="background">
+                <div id="infos">
+                    <div id="role">' . get_string($user->user_status, 'lips') . '</div>
+                    <div id="rank">' . $rank->rank_label . '</div>
+                </div>
+                <div id="user">' . $firstname . ' ' . $lastname . '</div>
+            </div>
+            <ul id="links">';
+
+        $menu .= ($action == 'profile') ? '<li><p class="current">Profil</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=profile">Profil</a></li>';
+        $menu .= ($action == 'rank') ? '<li><p class="current">Classements</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=rank">Classements</a></li>';
+        $menu .= ($action == 'solved_problems') ? '<li><p class="current">Problèmes résolus</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=solved_problems">Problèmes résolus</a></li>';
+        $menu .= ($action == 'challenges') ? '<li><p class="current">Défis reçus</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=challenges">Défis reçus</a></li>';
+        $menu .= ($action == 'followed_users') ? '<li><p class="current">Utilisateurs suivis</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=followed_users">Utilisateurs suivis</a></li>';
+        $menu .= '</ul></div>';
+
+        return $menu;
     }
 
     /**
