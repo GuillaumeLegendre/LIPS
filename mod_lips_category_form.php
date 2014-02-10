@@ -308,15 +308,20 @@ class mod_lips_category_delete_form extends moodleform {
      * Form definition
      */
     public function definition() {
+        global $PAGE;
         $mform =& $this->_form;
 
         // Select the category.
         $lips = get_current_instance();
         $categories = array();
-        foreach (fetch_all_categories($lips->id) as $category) {
+
+        foreach (fetch_removable_categories($lips->id) as $category) {
             $categories[$category->id] = $category->category_name;
         }
 
+        $error = get_string("administration_category_delete_info", "lips");
+        echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'WARNING');
+        
         $mform->addElement('select', 'categoryId', get_string('administration_category_modify_select', 'lips'), $categories);
         $mform->addRule('categoryId',
             get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');

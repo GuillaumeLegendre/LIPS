@@ -101,7 +101,8 @@ function convert_active_tab($view) {
         "users" => "users",
         "category" => "problems",
         "categoryDocumentation" => "problems",
-        "deleteCategory" => "problems"
+        "deleteCategory" => "problems",
+        "problem" => "problems",
     );
     
     return $tabs[$view];
@@ -163,6 +164,23 @@ function get_rank_details(array $conditions = null) {
 }
 
 /**
+ * Fetch all removable categories of the current instance (no problem is linked to the category)
+ *
+ * @param int $idlanguage Id of the current instance
+ * @return object List of all removable categories of the current instance
+ */
+function fetch_removable_categories($idlanguage) {
+    global $DB;
+
+    return $DB->get_records_sql('
+        SELECT mlc.id, category_name
+        FROM mdl_lips_category mlc
+        LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id
+        WHERE mlc.id_language = 1
+        GROUP BY mlc.id HAVING COUNT(mlp.id) = 0');
+}
+
+/**
  * Get the language picture
  *
  * @return string The language picture
@@ -170,10 +188,10 @@ function get_rank_details(array $conditions = null) {
 function get_language_picture() {
     global $DB;
 
-    // Current instance
-    $lips = get_current_instance();
+    $id = optional_param('id', 0, PARAM_INT);
+    $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
 
-    return $DB->get_record('lips', array('id' => $lips->id), 'language_picture', MUST_EXIST)->language_picture;
+    return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
 }
 
 /**
@@ -251,6 +269,16 @@ function get_category_details($id) {
 }
 
 /**
+ * Get details of a specific category.
+ *
+ * @return object An array containing the details of a category.
+ */
+function get_problem_details($id) {
+    global $DB;
+    return $DB->get_records_sql("select mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id where mlp.id=" . $id);
+}
+
+/**
  * Remove from the Database the category with the id in parameter.
  *
  * @param int $id Id the of the category to delete
@@ -285,6 +313,25 @@ function category_exists($conditions) {
     return false;
 }
 
+/* Test if a category is removable, ie category is empty
+ *
+ * @param int $id Category id
+ * @return bool True if the category is removable, otherwise false
+ */
+function is_removable($id) {
+    global $DB;
+
+    $sql = "SELECT mlc.id, category_name
+        FROM mdl_lips_category mlc
+        LEFT JOIN mdl_lips_problem mlp
+        ON mlc.id = mlp.problem_category_id
+        WHERE mlc.id = ".$id."
+        AND mlc.id_language = 1
+        GROUP BY mlc.id HAVING COUNT(mlp.id) = 0";
+
+    return $DB->record_exists_sql($sql);
+}
+
 /**
  * Insert a category to the database
  *
@@ -313,12 +360,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
  */
 function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
-
-    $DB->update_record('lips_category', array(
-        'id' => $id,
-        'category_name' => $categoryname,
-        'category_documentation' => $categorydocumentation,
-        'category_documentation_type' => $categorydocumentationtype));
+    $DB->update_record('lips_category', array('id' => $id, 'category_name' => $categoryname, 'category_documentation' => $categorydocumentation, 'category_documentation_type' => $categorydocumentationtype));
 }
 
 /**
@@ -330,7 +372,7 @@ function update_category($id, $categoryname, $categorydocumentation, $categorydo
 function update_language($id, $data) {
     global $DB;
 
-    $DB->update_record('lips', array_merge(array('id' => $id), (array) $data));
+    $DB->update_record('lips', array_merge(array('id' => $id), (array)$data));
 }
 
 /**
@@ -339,12 +381,12 @@ function update_language($id, $data) {
  * @return array An array of available languages
  */
 function ace_available_languages() {
-    $dir  = './ace/ace-builds/src-noconflict';
+    $dir = './ace/ace-builds/src-noconflict';
     $files = scandir($dir, 1);
     $languages = array();
 
     foreach ($files as $value) {
-        if (preg_match('/^mode-.*/', $value) === 1){
+        if (preg_match('/^mode-.*/', $value) === 1) {
             $language = preg_replace(array('/mode-/', '/\.js/'), array('', ''), $value);
             $languages[$language] = $language;
         }
@@ -353,4 +395,16 @@ function ace_available_languages() {
     asort($languages);
 
     return $languages;
+}
+
+/**
+ * Returns the number of resolutions of a user.
+ *
+ * @param int $idproblem Problem id
+ * @param int $iduser User id
+ * @param int number of resolutions
+ */
+function nb_resolutions_problem($iduser, $idproblem) {
+    global $DB;
+    return $DB->count_records("lips_problem_solved", array('problem_solved_problem' => $idproblem, 'problem_solved_user' => $iduser));
 }

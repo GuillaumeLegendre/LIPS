@@ -56,9 +56,15 @@ $string['modify'] = 'Modify';
 $string['delete'] = 'Delete';
 $string['category'] = 'Category';
 $string['documentation'] = 'Documentation';
+$string['documentation'] = 'Documentation';
 $string['name'] = 'Name';
+$string['solutions'] = 'Solutions';
 $string['subject'] = 'Subject';
 $string['tips'] = 'Tips';
+$string['none'] = 'None';
+$string['search'] = 'Search';
+$string['answer'] = 'Answer';
+$string['edit'] = 'Edit';
 $string['error_impossible'] = 'You shouldn\'t have access this page';
 $string['language'] = 'Language';
 
@@ -81,7 +87,7 @@ $string['level'] = 'Level';
 $string['date'] = 'Date';
 $string['author'] = 'Author';
 $string['number_of_resolutions'] = 'Number of resolutions';
-$string['resolved'] = 'Resoled';
+$string['resolved'] = 'Resolved';
 $string['configure'] = 'Configure';
 $string['picture'] = 'Picture';
 $string['base'] = 'Base';
@@ -127,6 +133,7 @@ $string['administration_category_modify_select'] = 'Select the category';
 $string['administration_category_modify_select_error'] = 'You must select a category';
 $string['administration_category_modify_success'] = 'The category has been modified';
 $string['administration_category_delete_title'] = 'Delete a category';
+$string['administration_category_delete_info'] = 'Only empty categories can be deleted';
 $string['administration_category_msg'] = 'Choose either a link to an external documentation or a textual documentation. <strong>You can\'t choose both</strong>.';
 $string['administration_category_name_error'] = 'You must enter a category name';
 $string['administration_category_already_exists'] = 'This category name already exists, please choose an other';
@@ -170,3 +177,14 @@ $string['difficulty_label_difficult'] = 'difficult';
  * Web services
  *------------------------------------------------*/
 $string['web_service_communication_error'] = 'An error occured when contacting the web service.<br/>You can\'t select a programming language.';
+
+/*--------------------------------------------------
+ * Problems
+ *------------------------------------------------*/
+
+$string['problem_author'] = 'Author';
+$string['problem_date_creation'] = 'Date of creation';
+$string['problem_nb_resolutions'] = 'Number of resolutions';
+
+
+

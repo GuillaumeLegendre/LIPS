@@ -1,4 +1,20 @@
 <?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 require_once(dirname(__FILE__) . '/locallib.php');
 
 class mod_lips_renderer extends plugin_renderer_base {
@@ -197,10 +213,6 @@ class mod_lips_renderer extends plugin_renderer_base {
         }
     }
 
-    public function display_documentation($documentation) {
-
-    }
-
     public function display_button($moodleurl, $label) {
         return $this->render(new single_button($moodleurl, $label));
     }
@@ -217,9 +229,42 @@ class mod_lips_renderer extends plugin_renderer_base {
         echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '")</script>';
     }
 
+    /**
+     * Display the top of the page representing a category.
+     *
+     * @param string $categoryname Name of the problem
+     * @param int $categoryid id of the category
+     * @return string div tag
+     */
     public function display_top_page_category($categoryname, $categoryid) {
         $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categoryid)), get_string("documentation", "lips"));
         return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float:right;")) . $this->display_h1($categoryname));
+    }
 
+    /**
+     * Display the top of the page representing a problem.
+     *
+     * @param string $problemname Name of the problem
+     * @param int $problemid id of the problem
+     * @return string div tag
+     */
+    public function display_top_page_problem($problemname, $problemid) {
+        $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $problemid)), get_string("documentation", "lips"));
+        return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float:right;")) . $this->display_h2($problemname));
+    }
+
+    /**
+     * Display a div
+     *
+     * @param string $content Text content
+     * @param array $attributes Attributes
+     * @return string div tag
+     */
+    public function display_div($content, array $attributes = null) {
+        return html_writer::tag('div', $content, $attributes);
+    }
+
+    public function display_search_form() {
+        return html_writer::tag("html", "<input type='text' name='search'><input type='submit' value='Rechercher'>");
     }
 }

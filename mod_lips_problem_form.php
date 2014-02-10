@@ -1,4 +1,21 @@
 <?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
@@ -49,23 +66,27 @@ class mod_lips_problem_create_form extends moodleform {
 
         $mform->addElement('text', 'problem_preconditions', get_string('prerequisite', 'lips'), array('size' => '64', 'maxlength' => '255'));
         $mform->setType('problem_preconditions', PARAM_TEXT);
+        $mform->addElement('html', "</div>");
 
         // Subject.
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_subject_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_subject_msg", "lips"));
+        $mform->addElement('html', "<div>");
 
         $mform->addElement('editor', 'problem_statement', get_string("subject", "lips"));
         $mform->addRule('problem_statement', get_string('administration_language_form_select_subject_error', 'lips'), 'required', null, 'client');
-
         $mform->addElement('editor', 'problem_tips', get_string("tips", "lips"));
+        $mform->addElement('html', "</div>");
 
         // Code.
+        $mform->addElement('html', "<div>");
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_code_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_code_msg", "lips"));
         $mform->addElement('textarea', 'textAreaImports', get_string("administration_problem_create_code_import_label", "lips"), 'rows="15" cols="100"');
         $mform->addElement('textarea', 'problem_code', get_string("administration_problem_create_code_complete_label", "lips"), 'rows="15" cols="100"');
         $mform->addElement('textarea', 'problem_unit_tests', get_string("administration_problem_create_code_unittest_label", "lips"), 'rows = "15" cols = "100"');
         $mform->addRule('problem_unit_tests', get_string('administration_language_form_select_unittests_error', 'lips'), 'required', null, 'client');
+        $mform->addElement('html', "</div>");
 
         // Create button
         $mform->addElement('submit', 'submit', get_string('create', 'lips'));

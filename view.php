@@ -109,6 +109,10 @@ switch ($view) {
     case "users" :
         $viewpage = new page_users($cm);
         break;
+    case "problem" :
+        $idproblem = optional_param('problemId', 0, PARAM_INT);
+        $viewpage = new page_problem($cm, $idproblem);
+        break;
     case "category" :
         $idcategory = optional_param('categoryId', 0, PARAM_INT);
         $viewpage = new page_category($cm, $idcategory);
