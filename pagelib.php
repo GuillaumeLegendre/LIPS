@@ -277,7 +277,7 @@ class page_admin_langage_picture extends page_view {
 
         $configurePictureForm = new mod_lips_configure_picture_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_picture')), null, 'post');
 
-        if($configurePictureForm->is_submitted()) {        
+        if ($configurePictureForm->is_submitted()) {
             $configurePictureForm->handle();
             $configurePictureForm->display();
         } else {
@@ -760,8 +760,7 @@ class page_delete_category extends page_view {
         $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view, 'originV' => $this->originv, 'originAction' => $this->originaction, 'categoryId' => $this->id));
         if ($this->originaction != null) {
             $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv, 'action' => $this->originaction));
-        }
-        else {
+        } else {
             $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv));
         }
         echo $this->lipsoutput->confirm($message, $continueurl, $cancelurl);
@@ -791,7 +790,7 @@ class page_solutions extends page_view {
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
         $details = get_problem_details($this->id);
-        echo $this->lipsoutput->display_h2($details[1]->problem_label);
+        echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
         $author = $this->lipsoutput->display_p(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_creator_id);
         echo $this->lipsoutput->display_div($author, array("class" => "field_page_problem"));
 
@@ -802,7 +801,7 @@ class page_solutions extends page_view {
 
         $difficulty = $this->lipsoutput->display_p(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(get_string($details[1]->difficulty_label, "lips"));
         echo $this->lipsoutput->display_div($difficulty, array("class" => "field_page_problem"));
-        $prerequisite = $details[1]->problem_preconditions;
+        $prerequisite = $details[$this->id]->problem_preconditions;
         if (empty($prerequisite)) {
             $prerequisite = get_string("none", "lips");
         }
@@ -850,28 +849,27 @@ class page_problem extends page_view {
         $buttondefie = $this->lipsoutput->action_link(new moodle_url(""), "Défier", null, array("class" => "lips-button"));
         $buttons = $this->lipsoutput->display_p($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("style" => "float:right"));
         $details = get_problem_details($this->id);
-        print_object($details);
-        echo $this->lipsoutput->display_top_page_problem($details[1]->problem_label, $this->id);
-        $author = $this->lipsoutput->display_p(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_creator_id);
+        echo $this->lipsoutput->display_top_page_problem($details[$this->id]->problem_label, $this->id);
+        $author = $this->lipsoutput->display_p(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[$this->id]->problem_creator_id);
         echo $this->lipsoutput->display_div($buttons . $author, array("class" => "field_page_problem"));
-        $datecreation = $this->lipsoutput->display_p(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(date("d/m/y", $details[1]->problem_date));
+        $datecreation = $this->lipsoutput->display_p(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(date("d/m/y", $details[$this->id]->problem_date));
         echo $this->lipsoutput->display_div($datecreation, array("class" => "field_page_problem"));
-        $nbresolutions = $this->lipsoutput->display_p(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_attempts);
+        $nbresolutions = $this->lipsoutput->display_p(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[$this->id]->problem_attempts);
         echo $this->lipsoutput->display_div($nbresolutions, array("class" => "field_page_problem"));
-        $difficulty = $this->lipsoutput->display_p(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(get_string($details[1]->difficulty_label, "lips"));
+        $difficulty = $this->lipsoutput->display_p(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(get_string($details[$this->id]->difficulty_label, "lips"));
         echo $this->lipsoutput->display_div($difficulty, array("class" => "field_page_problem"));
-        $prerequisite = $details[1]->problem_preconditions;
+        $prerequisite = $details[$this->id]->problem_preconditions;
         if (empty($prerequisite)) {
             $prerequisite = get_string("none", "lips");
         }
         $prerequisite = $this->lipsoutput->display_p(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($prerequisite);
         echo $this->lipsoutput->display_div($prerequisite, array("class" => "field_page_problem"));
         echo $this->lipsoutput->display_h3(get_string("subject", "lips"));
-        echo $this->lipsoutput->display_p($details[1]->problem_statement);
+        echo $this->lipsoutput->display_p($details[$this->id]->problem_statement);
         echo $this->lipsoutput->display_h3(get_string("tips", "lips"));
-        echo $this->lipsoutput->display_p($details[1]->problem_tips);
+        echo $this->lipsoutput->display_p($details[$this->id]->problem_tips);
         echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"));
-        echo $this->lipsoutput->display_p($details[1]->problem_unit_tests);
+        echo $this->lipsoutput->display_p($details[$this->id]->problem_unit_tests);
         echo $this->lipsoutput->display_h3(get_string("answer", "lips"));
     }
 }
