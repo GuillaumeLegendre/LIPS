@@ -30,10 +30,10 @@
  * @see upgrade_plugins_modules()
  */
 function xmldb_lips_install() {
-    global $DB;
+    global $DB, $CFG;
 
     // Parse the config file
-    $config = parse_ini_file("../config.ini", true);
+    $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
 
     // Insert difficulties
     foreach($config['difficulties'] as $key => $value) {
@@ -47,7 +47,7 @@ function xmldb_lips_install() {
     foreach($config['ranks'] as $key => $value) {
     	$DB->insert_record("lips_rank", array(
     		"rank_label" => $key,
-    		"ank_percentage" => $value
+    		"rank_percentage" => $value
     	));
     }
 }
