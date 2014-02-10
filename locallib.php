@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -75,6 +74,66 @@ function convert_active_tab($view) {
 }
 
 /**
+ * Fetch all removable categories of the current instance (no problem is linked to the category)
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Anaïs Picoreau
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param      int Id of the current instance
+ * @return     object List of all removable categories of the current instance
+
+ */
+function fetch_removable_categories($idlanguage) {
+    global $DB;
+
+    return $DB->get_records_sql('
+        SELECT mlc.id, category_name
+        FROM mdl_lips_category mlc
+        LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id
+        WHERE mlc.id_language = 1
+        GROUP BY mlc.id HAVING COUNT(mlp.id) = 0');
+}
+
+
+/**
+ * Get the language picture
+ *
+ * @return string The language picture
+ */
+function get_language_picture() {
+    global $DB;
+
+    $id = optional_param('id', 0, PARAM_INT);
+    $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
+
+    return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
+}
+
+/**
+ * Update the language picture
+ *
+ * @param string $picture New picture
+ */
+function update_language_picture($picture) {
+    global $DB;
+
+    // Current instance
+    $lips = get_current_instance();
+
+    $DB->update_record('lips', array('id' => $lips->id, 'language_picture' => $picture));
+}
+
+/**
+ * Delete a picture
+ *
+ * @param string $picture Picture to delete
+ */
+function delete_picture_file($picture) {
+    unlink('./images/' . $picture);
+}
+
+/**
  * Fetch all categories of the current instance
  *
  * @param int Id of the current instance
@@ -95,7 +154,11 @@ function fetch_all_categories($idlanguage) {
 function count_languages_number($idlanguage) {
     global $DB;
 
-    return $DB->count_records_sql('SELECT count(*) FROM mdl_lips_category mlc, mdl_lips_problem mlp WHERE mlc.id = mlp.problem_category_id AND id_language = ' . $idlanguage);
+    return $DB->count_records_sql('
+        SELECT count(*)
+        FROM mdl_lips_category mlc, mdl_lips_problem mlp
+        WHERE mlc.id = mlp.problem_category_id
+        AND id_language = ' . $idlanguage);
 }
 
 
@@ -132,20 +195,6 @@ function get_problem_details($id) {
 }
 
 /**
- * Get the language picture
- *
- * @return string The language picture
- */
-function get_language_picture() {
-    global $DB;
-
-    $id = optional_param('id', 0, PARAM_INT);
-    $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
-
-    return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
-}
-
-/**
  * Remove from the Database the category with the id in parameter.
  *
  * @param int $id Id the of the category to delete
@@ -174,47 +223,60 @@ function is_author($idproblem, $iduser) {
 function category_exists($conditions) {
     global $DB;
 
-    if ($DB->count_records('lips_category', $conditions) > 0)
+    if($DB->count_records('lips_category', $conditions) > 0) {
         return true;
+    }
     return false;
+}
+
+/* Test if a category is removable, ie category is empty
+ *
+ * @param int $id Category id
+ * @return bool True if the category is removable, otherwise false
+ */
+function is_removable($id) {
+    global $DB;
+
+    $sql = "SELECT mlc.id, category_name
+        FROM mdl_lips_category mlc
+        LEFT JOIN mdl_lips_problem mlp
+        ON mlc.id = mlp.problem_category_id
+        WHERE mlc.id = ".$id."
+        AND mlc.id_language = 1
+        GROUP BY mlc.id HAVING COUNT(mlp.id) = 0";
+
+    return $DB->record_exists_sql($sql);
 }
 
 /**
  * Insert a category to the database
  *
- * @param int $id_language Language id
- * @param string $category_name Category name
- * @param string $category_documentation Category documentation
- * @param string $category_documentation_type Category documentation type (LINK or TEXT)
+ * @param int $idlanguage Language id
+ * @param string $categoryname Category name
+ * @param string $categorydocumentation Category documentation
+ * @param string $categorydocumentationtype Category documentation type (LINK or TEXT)
  */
-function insert_category($id_language, $category_name, $category_documentation, $category_documentation_type) {
+function insert_category($idlanguage, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
 
-    $DB->insert_record('lips_category', array('id_language' => $id_language, 'category_name' => $category_name, 'category_documentation' => $category_documentation, 'category_documentation_type' => $category_documentation_type));
+    $DB->insert_record('lips_category', array(
+        'id_language' => $idlanguage,
+        'category_name' => $categoryname,
+        'category_documentation' => $categorydocumentation,
+        'category_documentation_type' => $categorydocumentationtype));
 }
 
 /**
  * Update a category
  *
  * @param int $id Category id
- * @param string $category_name Category name
- * @param string $category_documentation Category documentation
- * @param string $category_documentation_type Category documentation type (LINK or TEXT)
+ * @param string $categoryname Category name
+ * @param string $categorydocumentation Category documentation
+ * @param string $categorydocumentationtype Category documentation type (LINK or TEXT)
  */
-function update_category($id, $category_name, $category_documentation, $category_documentation_type) {
+function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
-
-    $DB->update_record('lips_category', array('id' => $id, 'category_name' => $category_name, 'category_documentation' => $category_documentation, 'category_documentation_type' => $category_documentation_type));
-}
-
-function has_documentation($idcategory) {
-    $cat = get_category_details($idcategory);
-
-    if ($cat->category_documentation) {
-        return true;
-    }
-
-    return false;
+    $DB->update_record('lips_category', array('id' => $id, 'category_name' => $categoryname, 'category_documentation' => $categorydocumentation, 'category_documentation_type' => $categorydocumentationtype));
 }
 
 /**

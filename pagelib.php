@@ -1,4 +1,20 @@
 <?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 require_once($CFG->dirroot . '/tag/lib.php');
 
 /**
@@ -257,13 +273,11 @@ class page_admin_langage_picture extends page_view {
         // Modify language picture
         echo $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'), array('id' => 'picture'));
         echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips'));
-        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('id' => 'testimg', 'width' => '64px', 'height' => '64px')) . '</center>';
+        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('width' => '64px', 'height' => '64px')) . '</center>';
 
-        $configurePictureForm = new mod_lips_configure_picture_form("test.html", null, 'post');
+        $configurePictureForm = new mod_lips_configure_picture_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_picture')), null, 'post');
 
-        //$configureLanguageForm = new mod_lips_configure_language_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_configure')), null, 'post');
-
-        if ($configurePictureForm->is_submitted()) {
+        if($configurePictureForm->is_submitted()) {        
             $configurePictureForm->handle();
             $configurePictureForm->display();
         } else {
@@ -744,11 +758,12 @@ class page_delete_category extends page_view {
         $message = $this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips') . " " . $details->category_name . " ?");
 
         $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view, 'originV' => $this->originv, 'originAction' => $this->originaction, 'categoryId' => $this->id));
-        if ($this->originaction != null)
+        if ($this->originaction != null) {
             $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv, 'action' => $this->originaction));
-        else
+        }
+        else {
             $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv));
-
+        }
         echo $this->lipsoutput->confirm($message, $continueurl, $cancelurl);
     }
 }
@@ -849,7 +864,7 @@ class page_problem extends page_view {
             $prerequisite = get_string("none", "lips");
         }
         $prerequisite = $this->lipsoutput->display_p(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($prerequisite);
-        echo $this->lipsoutput->display_div($prerequisite, array("class" => "field_page_problem"))
+        echo $this->lipsoutput->display_div($prerequisite, array("class" => "field_page_problem"));
         echo $this->lipsoutput->display_h3(get_string("subject", "lips"));
         echo $this->lipsoutput->display_p($details[1]->problem_statement);
         echo $this->lipsoutput->display_h3(get_string("tips", "lips"));

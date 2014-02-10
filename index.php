@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -31,7 +30,7 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 
-$id = required_param('id', PARAM_INT); // course.
+$id = required_param('id', PARAM_INT); // Course.
 
 $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 

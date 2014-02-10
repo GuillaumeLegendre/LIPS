@@ -94,6 +94,8 @@ $string['administration_language_configure_title'] = 'Configurer le langage';
 $string['administration_language_configure_msg'] = 'Sélectionnez le langage dans lequel vous souhaitez compiler.';
 $string['administration_language_image_title'] = 'Image';
 $string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.';
+$string['administration_language_image_success'] = 'L\'image a été modifiée';
+$string['administration_language_image_save_error'] = 'Une erreur est survenue lors de l\'enregistrement de l\'image';
 $string['administration_language_code_title'] = 'Base du code';
 $string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisé à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
 $string['administration_language_code_success'] = 'La préparation du code a été modifiée';
@@ -118,6 +120,7 @@ $string['administration_category_modify_select'] = 'Sélection de la catégorie'
 $string['administration_category_modify_select_error'] = 'Vous devez sélectionner une catégorie';
 $string['administration_category_modify_success'] = 'La catégorie a été modifiée';
 $string['administration_category_delete_title'] = 'Supprimer une catégorie';
+$string['administration_category_delete_info'] = 'Seules les catégories vides peuvent être supprimées';
 $string['administration_category_msg'] = 'Choisissez soit un lien vers une documentation externe soit une documentation textuelle. <strong>Vous ne pouvez pas choisir les deux</strong>.';
 $string['administration_category_name_error'] = 'Vous devez saisir le nom de la catégorie';
 $string['administration_category_already_exists'] = 'Ce nom de catégorie est déjà utilisé, merci d\'en choisir un autre';

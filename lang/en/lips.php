@@ -96,6 +96,7 @@ $string['administration_language_configure_success'] = 'The language has been co
 $string['administration_language_image_title'] = 'Picture';
 $string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.';
 $string['administration_language_image_success'] = 'The picture has been modified';
+$string['administration_language_image_save_error'] = 'An error occured when saving the file. Please try again.';
 $string['administration_language_code_title'] = 'Base code';
 $string['administration_language_code_msg'] = 'Enter the base used for each compilation.<br/>Before the compilation :<ul><li>The <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> tag will be replaced by the "<strong>Import libaries</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> tag will be replace by the "<strong>Code complete</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> tag will be replaced by the "<strong>Unit tests</strong>" content.</li></ul>';
 $string['administration_language_code_success'] = 'The base code has been modified';
@@ -120,6 +121,7 @@ $string['administration_category_modify_select'] = 'Select the category';
 $string['administration_category_modify_select_error'] = 'You must select a category';
 $string['administration_category_modify_success'] = 'The category has been modified';
 $string['administration_category_delete_title'] = 'Delete a category';
+$string['administration_category_delete_info'] = 'Only empty categories can be deleted';
 $string['administration_category_msg'] = 'Choose either a link to an external documentation or a textual documentation. <strong>You can\'t choose both</strong>.';
 $string['administration_category_name_error'] = 'You must enter a category name';
 $string['administration_category_already_exists'] = 'This category name already exists, please choose an other';
