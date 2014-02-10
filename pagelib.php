@@ -257,13 +257,11 @@ class page_admin_langage_picture extends page_view {
         // Modify language picture
         echo $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'), array('id' => 'picture'));
         echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips'));
-        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('id' => 'testimg', 'width' => '64px', 'height' => '64px')) . '</center>';
+        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('width' => '64px', 'height' => '64px')) . '</center>';
 
-        $configurePictureForm = new mod_lips_configure_picture_form("test.html", null, 'post');
+        $configurePictureForm = new mod_lips_configure_picture_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_picture')), null, 'post');
 
-        //$configureLanguageForm = new mod_lips_configure_language_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_configure')), null, 'post');
-
-        if($configurePictureForm->is_submitted()) {
+        if($configurePictureForm->is_submitted()) {        
             $configurePictureForm->handle();
             $configurePictureForm->display();
         } else {

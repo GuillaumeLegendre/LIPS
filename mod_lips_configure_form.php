@@ -121,14 +121,88 @@ class mod_lips_configure_picture_form extends moodleform {
      * Form definition
      */
     public function definition() {
+        global $CFG;
         $mform =& $this->_form;
 
         // Select the image
-        $mform->addElement('filepicker', 'filePicture', get_string('administration_language_form_file', 'lips'), null, array('maxbytes' => '3000000', 'accepted_types' => array('image')));
-        $mform->addRule('filePicture', get_string('administration_language_form_file_error', 'lips'), 'required');
+        $mform->addElement('filepicker', 'filePicture', get_string('administration_language_form_file', 'lips'), null, array('subdirs' => 0, 'maxbytes'=> $CFG->maxbytes, 'maxfiles' => 1, 'accepted_types' => '*'));
+        //$mform->addElement('file', 'filePicture', get_string('administration_language_form_file', 'lips'));
+        //$mform->addRule('filePicture', get_string('administration_language_form_file_error', 'lips'), 'required');
 
         // Modify button
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+    }
+
+    /**
+     * Form custom validation
+     *
+     * @param array $data Form data
+     * @param array $files Form uploaded files
+     * @return array Errors array
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        $errors = array();
+
+        if(!isset($data->filePicture))
+            $errors['impossibleError'] = get_string('error_impossible', 'lips');
+
+        return $errors;
+    }
+
+    /**
+     * Handle the form
+     *
+     * @param array $data Form data
+     * @param array $files Form uploaded files
+     */
+    public function handle() {
+        global $PAGE;
+
+        // Do nothing if not submitted or cancelled
+        if(!$this->is_submitted() || $this->is_cancelled())
+            return;
+
+        // Form data
+        $formdata = $this->get_submitted_data();
+        $newfilename = $this->get_new_filename('filePicture');
+        print_object($_FILES);
+        echo 'filename : ' . $newfilename;
+
+        /*// The validation failed
+        $errors = $this->validation($data, null);
+        if(count($errors) > 0) {
+            foreach($errors as $error) {
+                echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
+            }
+
+            return;
+        }*/
+
+        // Save the picture
+        /*$picture = $this->get_new_filename('filePicture');
+        echo 'Picture : ' . $picture . '<br/>';
+        $success = $this->save_file('filePicture', '/home/valentin/www/moodle/mod/lips/images/' . $picture);
+
+        // In case of error
+        if(!$success) {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_save_error', 'lips'), 'ERROR');
+
+            return;
+        }
+
+        // Current instance
+        $lips = get_current_instance();
+
+        // Delete the old image
+        if($lips->language_picture != $picture && $lips->language_picture != 'default-language.png')
+            delete_picture_file($lips->language_picture);
+
+        // Update the picture on the database
+        update_language_picture($picture);
+
+        // Success message
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_success', 'lips'), 'SUCCESS');*/
     }
 }
 
