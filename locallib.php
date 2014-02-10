@@ -73,6 +73,23 @@ function convert_active_tab($view) {
 }
 
 /**
+ * Fetch all removable categories of the current instance (no problem is linked to the category)
+ *
+ * @param int Id of the current instance
+ * @return object List of all removable categories of the current instance
+ */
+function fetch_removable_categories($idlanguage) {
+    global $DB;
+
+    return $DB->get_records_sql('
+        SELECT mlc.id, category_name
+        FROM mdl_lips_category mlc
+        LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id
+        WHERE mlc.id_language = 1
+        GROUP BY mlc.id HAVING COUNT(mlp.id) = 0');
+}
+
+/**
  * Fetch all categories of the current instance
  *
  * @param int Id of the current instance

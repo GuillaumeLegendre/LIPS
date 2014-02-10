@@ -321,7 +321,8 @@ class mod_lips_category_delete_form extends moodleform {
         // Select the category.
         $lips = get_current_instance();
         $categories = array();
-        foreach (fetch_all_categories($lips->id) as $category) {
+
+        foreach (fetch_removable_categories($lips->id) as $category) {
             $categories[$category->id] = $category->category_name;
         }
 
