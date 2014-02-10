@@ -52,7 +52,6 @@ $string['documentation'] = 'Documentation';
 $string['name'] = 'Name';
 $string['subject'] = 'Subject';
 $string['tips'] = 'Tips';
-
 $string['error_impossible'] = 'You shouldn\'t have access this page';
 $string['language'] = 'Language';
 
@@ -91,6 +90,7 @@ $string['administration_language_configure_success'] = 'The language has been co
 $string['administration_language_image_title'] = 'Picture';
 $string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.';
 $string['administration_language_image_success'] = 'The picture has been modified';
+$string['administration_language_image_save_error'] = 'An error occured when saving the file. Please try again.';
 $string['administration_language_code_title'] = 'Base code';
 $string['administration_language_code_msg'] = 'Enter the base used for each compilation.<br/>Before the compilation :<ul><li>The <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> tag will be replaced by the "<strong>Import libaries</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> tag will be replace by the "<strong>Code complete</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> tag will be replaced by the "<strong>Unit tests</strong>" content.</li></ul>';
 $string['administration_language_code_success'] = 'The base code has been modified';

@@ -90,6 +90,43 @@ function fetch_removable_categories($idlanguage) {
 }
 
 /**
+ * Get the language picture
+ *
+ * @return string The language picture
+ */
+function get_language_picture() {
+    global $DB;
+
+    // Current instance
+    $lips = get_current_instance();
+
+    return $DB->get_record('lips', array('id' => $lips->id), 'language_picture', MUST_EXIST)->language_picture;
+}
+
+/**
+ * Update the language picture
+ *
+ * @param string $picture New picture
+ */
+function update_language_picture($picture) {
+    global $DB;
+
+    // Current instance
+    $lips = get_current_instance();
+
+    $DB->update_record('lips', array('id' => $lips->id, 'language_picture' => $picture));
+}
+
+/**
+ * Delete a picture
+ *
+ * @param string $picture Picture to delete
+ */
+function delete_picture_file($picture) {
+    unlink('./images/' . $picture);
+}
+
+/**
  * Fetch all categories of the current instance
  *
  * @param int Id of the current instance
@@ -138,20 +175,6 @@ function get_category_details($id) {
     global $DB;
 
     return $DB->get_record('lips_category', array('id' => $id), '*', MUST_EXIST);
-}
-
-/**
- * Get the language picture
- *
- * @return string The language picture
- */
-function get_language_picture() {
-    global $DB;
-
-    $id = optional_param('id', 0, PARAM_INT);
-    $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
-
-    return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
 }
 
 /**
@@ -223,16 +246,6 @@ function update_category($id, $categoryname, $categorydocumentation, $categorydo
         'category_name' => $categoryname,
         'category_documentation' => $categorydocumentation,
         'category_documentation_type' => $categorydocumentationtype));
-}
-
-function has_documentation($idcategory) {
-    $cat = get_category_details($idcategory);
-
-    if ($cat->category_documentation) {
-        return true;
-    }
-
-    return false;
 }
 
 /**

@@ -38,7 +38,9 @@ class mod_lips_category_create_form extends moodleform {
             array(
                 'size' => '64',
                 'maxlength' => '255',
-                'placeholder' => get_string('name', 'lips')));
+                'placeholder' => get_string('name', 'lips')
+            )
+        );
         $mform->setType('inputCategoryName', PARAM_TEXT);
         $mform->addRule('inputCategoryName', get_string('administration_category_name_error', 'lips'), 'required', null, 'client');
 
@@ -49,9 +51,8 @@ class mod_lips_category_create_form extends moodleform {
                 'placeholder' => get_string('administration_category_documentation_link_placeholder', 'lips')));
         $mform->setType('inputCategoryDocumentation', PARAM_TEXT);
 
-        // Category documentation (TEXT).
-        $mform->addElement('textarea', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'),
-            'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
+        // Category documentation (TEXT)
+        $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
 
         // Create button.
         $mform->addElement('submit', 'submit', get_string('create', 'lips'));
@@ -74,7 +75,7 @@ class mod_lips_category_create_form extends moodleform {
                     $errors['alreadyExists'] = get_string('administration_category_already_exists', 'lips');
                 }
 
-                if (!empty($data->inputCategoryDocumentation) && $data->areaCategoryDocumentation != "") {
+                if (!empty($data->inputCategoryDocumentation) && $data->areaCategoryDocumentation['text'] != "") {
                     $errors['bothLinkAndText'] = get_string('administration_category_documentation_error', 'lips');
                 }
             } else {
@@ -114,21 +115,17 @@ class mod_lips_category_create_form extends moodleform {
             return;
         }
 
-        // Params.
+        // Params
         $categoryname = $data->inputCategoryName;
-        $categorydocumentation =
-            (empty($data->inputCategoryDocumentation)) ?
-            $data->areaCategoryDocumentation :
-            $data->inputCategoryDocumentation;
-        $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ? 'TEXT' : 'LINK';
+        $categorydocumentation = (empty($data->inputCategoryDocumentation)) ? $data->areaCategoryDocumentation['text'] : $data->inputCategoryDocumentation;
+        $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ? ((!empty($data->areaCategoryDocumentation['text'])) ? 'TEXT' : null) : 'LINK';
 
         // Insert the data.
         $lips = get_current_instance();
         insert_category($lips->id, $categoryname, $categorydocumentation, $categorydocumentationtype);
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->
-            display_notification(get_string('administration_category_create_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_create_success', 'lips'), 'SUCCESS');
     }
 }
 
@@ -213,12 +210,10 @@ class mod_lips_category_modify_form extends moodleform {
         }
         $mform->setType('inputCategoryDocumentation', PARAM_TEXT);
 
-        // Category documentation (TEXT).
-        $mform->addElement('textarea', 'areaCategoryDocumentation',
-            get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' .
-            get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
-        if ($mcustomdata['category_documentation_type'] == 'TEXT') {
-            $mform->setDefault('inputCategoryDocumentation', $mcustomdata['category_documentation']);
+        // Category documentation (TEXT)
+        $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
+        if($mcustomdata['category_documentation_type'] == 'TEXT') {
+            $mform->setDefault('areaCategoryDocumentation', $mcustomdata['category_documentation']);
         }
 
         // Modify button.
@@ -245,7 +240,7 @@ class mod_lips_category_modify_form extends moodleform {
                     $errors['alreadyExists'] = get_string('administration_category_already_exists', 'lips');
                 }
 
-                if(!empty($data->inputCategoryDocumentation) && $data->areaCategoryDocumentation != "") {
+                if(!empty($data->inputCategoryDocumentation) && $data->areaCategoryDocumentation['text'] != "") {
                     $errors['bothLinkAndText'] = get_string('administration_category_documentation_error', 'lips');
                 }
             } else {
@@ -285,20 +280,17 @@ class mod_lips_category_modify_form extends moodleform {
             return;
         }
 
-        // Params.
+        // Params
         $categoryid = $data->inputCategoryID;
         $categoryname = $data->inputCategoryName;
-        $categorydocumentation = (empty($data->inputCategoryDocumentation)) ?
-            $data->areaCategoryDocumentation :
-            $data->inputCategoryDocumentation;
-        $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ? 'TEXT' : 'LINK';
+        $categorydocumentation = (empty($data->inputCategoryDocumentation)) ? $data->areaCategoryDocumentation['text'] : $data->inputCategoryDocumentation;
+        $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ? ((!empty($data->areaCategoryDocumentation['text'])) ? 'TEXT' : null) : 'LINK';
 
         // Update the data.
         update_category($categoryid, $categoryname, $categorydocumentation, $categorydocumentationtype);
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(
-            get_string('administration_category_modify_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_modify_success', 'lips'), 'SUCCESS');
     }
 }
 

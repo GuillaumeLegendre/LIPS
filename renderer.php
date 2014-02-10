@@ -100,7 +100,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @return string Img tag
      */
     public function display_img($src, array $attributes = null) {
-        return html_writer::tag('img', null, array_merge(array('src' => $src), $attributes));
+        return html_writer::tag('img', null, array_merge(array('src' => './images/' . $src), $attributes));
     }
 
     /**
