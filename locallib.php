@@ -73,13 +73,13 @@ function get_highest_role() {
     }
 
     foreach($roles as $role) {
-        if(in_array('editingteacher', $role) || in_array('teacher', $role)) {
+        if(in_array('editingteacher', (array) $role) || in_array('teacher', (array) $role)) {
             return 'teacher';
         }
     }
 
     foreach($roles as $role) {
-        if(in_array('student', $role)) {
+        if(in_array('student', (array) $role)) {
             return 'student';
         }
     }
