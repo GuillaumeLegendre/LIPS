@@ -210,6 +210,7 @@ class mod_lips_renderer extends plugin_renderer_base {
         $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $problemid)), get_string("documentation", "lips"));
         return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float:right;")) . $this->display_h2($problemname));
     }
+
     /**
      * Display a div
      *

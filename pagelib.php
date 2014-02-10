@@ -850,6 +850,7 @@ class page_problem extends page_view {
         $buttondefie = $this->lipsoutput->action_link(new moodle_url(""), "Défier", null, array("class" => "lips-button"));
         $buttons = $this->lipsoutput->display_p($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("style" => "float:right"));
         $details = get_problem_details($this->id);
+        print_object($details);
         echo $this->lipsoutput->display_top_page_problem($details[1]->problem_label, $this->id);
         $author = $this->lipsoutput->display_p(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_creator_id);
         echo $this->lipsoutput->display_div($buttons . $author, array("class" => "field_page_problem"));
