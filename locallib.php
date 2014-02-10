@@ -75,8 +75,13 @@ function convert_active_tab($view) {
 /**
  * Fetch all removable categories of the current instance (no problem is linked to the category)
  *
- * @param int Id of the current instance
- * @return object List of all removable categories of the current instance
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Anaïs Picoreau
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param      int Id of the current instance
+ * @return     object List of all removable categories of the current instance
+
  */
 function fetch_removable_categories($idlanguage) {
     global $DB;

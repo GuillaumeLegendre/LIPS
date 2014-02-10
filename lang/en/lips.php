@@ -115,6 +115,7 @@ $string['administration_category_modify_select'] = 'Select the category';
 $string['administration_category_modify_select_error'] = 'You must select a category';
 $string['administration_category_modify_success'] = 'The category has been modified';
 $string['administration_category_delete_title'] = 'Delete a category';
+$string['administration_category_delete_info'] = 'Only empty categories can be deleted';
 $string['administration_category_msg'] = 'Choose either a link to an external documentation or a textual documentation. <strong>You can\'t choose both</strong>.';
 $string['administration_category_name_error'] = 'You must enter a category name';
 $string['administration_category_already_exists'] = 'This category name already exists, please choose an other';
