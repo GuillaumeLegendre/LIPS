@@ -979,25 +979,29 @@ class page_solutions extends page_view {
 
         $details = get_problem_details($this->id);
         echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
-        $author = $this->lipsoutput->display_p(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_creator_id);
-        echo $this->lipsoutput->display_div($author, array("class" => "field_page_problem"));
-
-        $datecreation = $this->lipsoutput->display_p(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(date("d/m/y", $details[1]->problem_date));
-        echo $this->lipsoutput->display_div($datecreation, array("class" => "field_page_problem"));
-        $nbresolutions = $this->lipsoutput->display_p(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($details[1]->problem_attempts);
-        echo $this->lipsoutput->display_div($nbresolutions, array("class" => "field_page_problem"));
-
-        $difficulty = $this->lipsoutput->display_p(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p(get_string($details[1]->difficulty_label, "lips"));
-        echo $this->lipsoutput->display_div($difficulty, array("class" => "field_page_problem"));
+        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_creator_id;
+        echo $this->lipsoutput->display_p($author, array("class" => "field_page_problem"));
+        $datecreation = $this->lipsoutput->display_span(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . date("d/m/y", $details[$this->id]->problem_date);
+        echo $this->lipsoutput->display_p($datecreation, array("class" => "field_page_problem"));
+        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions." / ".$details[$this->id]->problem_attempts." ".get_string("attempts", "lips");
+        echo $this->lipsoutput->display_p($nbresolutions, array("class" => "field_page_problem"));
+        $difficulty = $this->lipsoutput->display_span(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . get_string($details[$this->id]->difficulty_label, "lips");
+        echo $this->lipsoutput->display_p($difficulty, array("class" => "field_page_problem"));
         $prerequisite = $details[$this->id]->problem_preconditions;
         if (empty($prerequisite)) {
             $prerequisite = get_string("none", "lips");
         }
-        $prerequisite = $this->lipsoutput->display_p(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_p($prerequisite);
-        echo $this->lipsoutput->display_div($prerequisite, array("class" => "field_page_problem"));
+        $prerequisite = $this->lipsoutput->display_span(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $prerequisite;
+        echo $this->lipsoutput->display_p($prerequisite, array("class" => "field_page_problem"));
 
         $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'search_solution')), array('width' => '60%'));
         $searchForm->display();
+
+        $solutions = get_solutions($this->id);
+        foreach ($solutions as $solution) {
+            echo $this->lipsoutput->display_solution($solution);
+        }
+
 
     }
 }
@@ -1024,8 +1028,8 @@ class page_problem extends page_view {
         $buttonsolutions = "";
         $buttonedit = "";
         $buttondelete = "";
-        if (nb_resolutions_problem($USER->id, $this->id) > 0) {
-            $buttonsolutions = $this->lipsoutput->action_link(new moodle_url(""), "Solutions", null, array("class" => "lips-button"));
+        if (nb_resolutions_problem($USER->id, $this->id) || is_author($this->id, $USER->id) > 0) {
+            $buttonsolutions = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => $this->view, 'view' => 'solutions', "problemId" => $this->id)), "Solutions", null, array("class" => "lips-button"));
         }
         if (has_role("administration")) {
             $buttonedit = $this->lipsoutput->action_link(new moodle_url(""), get_string("edit", "lips"), null, array("class" => "lips-button"));
@@ -1039,7 +1043,7 @@ class page_problem extends page_view {
         echo $this->lipsoutput->display_p($buttons . $author, array("class" => "field_page_problem"));
         $datecreation = $this->lipsoutput->display_span(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . date("d/m/y", $details[$this->id]->problem_date);
         echo $this->lipsoutput->display_p($datecreation, array("class" => "field_page_problem"));
-        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_attempts;
+        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions." / ".$details[$this->id]->problem_attempts." ".get_string("attempts", "lips");
         echo $this->lipsoutput->display_p($nbresolutions, array("class" => "field_page_problem"));
         $difficulty = $this->lipsoutput->display_span(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . get_string($details[$this->id]->difficulty_label, "lips");
         echo $this->lipsoutput->display_p($difficulty, array("class" => "field_page_problem"));

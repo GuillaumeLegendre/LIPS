@@ -155,6 +155,10 @@ switch ($view) {
         $categoryid = optional_param('categoryId', 0, PARAM_TEXT);
         $viewpage = new page_delete_problem($cm, $idcategory, $originv, $originaction, $categoryid);
         break;
+    case "solutions" :
+        $idproblem = optional_param('problemId', 0, PARAM_INT);
+        $viewpage = new page_solutions($cm, $idproblem);
+        break;
     default :
         insert_user_if_not_exists();
 

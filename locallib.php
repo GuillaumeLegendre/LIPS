@@ -308,7 +308,7 @@ function get_category_details($id) {
  */
 function get_problem_details($id) {
     global $DB;
-    return $DB->get_records_sql("select mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id where mlp.id=" . $id);
+    return $DB->get_records_sql("select mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id, count(mls.id) as problem_resolutions from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id where mlp.id=" . $id);
 }
 
 /**
@@ -486,4 +486,15 @@ function get_unitest_picture() {
 function fetch_problems($userid) {
     global $DB;
     return $DB->get_records('lips_problem', array('problem_creator_id' => $userid));
+}
+
+/**
+ * Return all resolutions of a specific problem
+ *
+ * @param int Id of the problem
+ * @return object List of all solutions of the problem
+ * */
+function get_solutions($problemid) {
+    global $DB;
+    return $DB->get_records('lips_problem_solved', array('problem_solved_problem' => $problemid));
 }
