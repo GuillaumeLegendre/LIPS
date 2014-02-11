@@ -47,13 +47,13 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
         $problems->add_child($problem);
 
         // Define sources
-        $lips->set_source_table('mdl_lips', array('id' => backup::VAR_ACTIVITYID));
+        $lips->set_source_table('lips', array('id' => backup::VAR_ACTIVITYID));
 
- 		$difficulty->set_source_table('mdl_lips_difficulty', array('id' => backup::VAR_ACTIVITYID));
+ 		$difficulty->set_source_table('lips_difficulty', array('id' => backup::VAR_ACTIVITYID));
 
- 		$category->set_source_table('mdl_lips_category', array('id' => backup::VAR_ACTIVITYID));
+ 		$category->set_source_table('lips_category', array('id' => backup::VAR_ACTIVITYID));
 
- 		$problem->set_source_table('mdl_lips_problem', array('id' => backup::VAR_ACTIVITYID));
+ 		$problem->set_source_table('lips_problem', array('id' => backup::VAR_ACTIVITYID));
  
         // All the rest of elements only happen if we are including user info
        /* if ($userinfo) {
@@ -63,7 +63,7 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
         // Define id annotations
  
         // Define file annotations
-        $lips->annotate_files('mdl_lips', 'intro', null); // This file area hasn't itemid
+        $lips->annotate_files('lips', 'intro', null); // This file area hasn't itemid
 
         // Return the root element (lips), wrapped into standard activity structure
         return $this->prepare_activity_structure($lips);
