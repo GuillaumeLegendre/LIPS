@@ -43,12 +43,13 @@ class users_table extends table_sql {
             $this->set_sql("mlu.id, firstname, lastname, user_status, rank_label",
                 "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",
                 "mlu.id_user_moodle = mu.id AND mlu.user_rank_id = mlr.id");
+            $this->set_count_sql('SELECT COUNT(*) FROM mdl_lips_user');
         } else {
             $this->set_sql("mlu.id, firstname, lastname, user_status, rank_label",
                 "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",
                 "mlu.id_user_moodle = mu.id AND mlu.user_rank_id = mlr.id AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
+            $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_user mlu, mdl_user mu WHERE mlu.id_user_moodle = mu.id AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
         }
-        $this->set_count_sql('SELECT COUNT(*) FROM mdl_lips_user');
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "users")));
         $context = context_module::instance($cm->id);
 
