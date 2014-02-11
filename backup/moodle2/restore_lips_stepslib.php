@@ -5,7 +5,7 @@
  */
 class restore_lips_activity_structure_step extends restore_activity_structure_step {
 
-    private mod_id;
+    private $mod_id;
  
     protected function define_structure() {
  
