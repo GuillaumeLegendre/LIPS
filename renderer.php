@@ -278,10 +278,13 @@ class mod_lips_renderer extends plugin_renderer_base {
         return html_writer::tag('div', $content, $attributes);
     }
 
-    public function display_search_form() {
-        return html_writer::tag("html", "<input type='text' name='search'><input type='submit' value='Rechercher'>");
-    }
-
+    /**
+     * Display a span tag
+     *
+     * @param string $content Text content
+     * @param array $attributes Attributes
+     * @return string span tag
+     */
     public function display_span($content, array $attributes = null) {
         return html_writer::tag("span", $content, $attributes);
     }

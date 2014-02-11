@@ -48,7 +48,9 @@ class mod_lips_category_create_form extends moodleform {
         $mform->addElement('text', 'inputCategoryDocumentation', get_string('administration_category_documentation_link', 'lips'),
             array(
                 'size' => '64',
-                'placeholder' => get_string('administration_category_documentation_link_placeholder', 'lips')));
+                'placeholder' => get_string('administration_category_documentation_link_placeholder', 'lips')
+            )
+        );
         $mform->setType('inputCategoryDocumentation', PARAM_TEXT);
 
         // Category documentation (TEXT)

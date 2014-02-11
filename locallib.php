@@ -343,7 +343,8 @@ function is_author($idproblem, $iduser) {
     return $DB->get_record("lips_problem", array('id' => $idproblem))->problem_creator_id == $iduser;
 }
 
-/* Test if the category already exists
+/**
+ * Test if the category already exists
  *
  * @param array $conditions Category fields
  * @return bool True if the category already exists, otherwise false
@@ -357,7 +358,8 @@ function category_exists($conditions) {
     return false;
 }
 
-/* Test if a category is removable, ie category is empty
+/**
+ * Test if a category is removable, ie category is empty
  *
  * @param int $id Category id
  * @return bool True if the category is removable, otherwise false
@@ -404,6 +406,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
  */
 function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
+    
     $DB->update_record('lips_category', array('id' => $id, 'category_name' => $categoryname, 'category_documentation' => $categorydocumentation, 'category_documentation_type' => $categorydocumentationtype));
 }
 

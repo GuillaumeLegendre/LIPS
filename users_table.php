@@ -33,14 +33,21 @@ class users_table extends table_sql {
      * users_table constructor
      *
      * @param object $cm Moodle context
+     * @param string $search User to search
      */
-    public function  __construct($cm) {
+    public function  __construct($cm, $search = null) {
         parent::__construct("mdl_lips_user");
 
         $this->cm = $cm;
-        $this->set_sql("mlu.id, firstname, lastname, user_status, rank_label",
-            "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",
-            "mlu.id_user_moodle = mu.id AND mlu.user_rank_id = mlr.id");
+        if($search == null) {
+            $this->set_sql("mlu.id, firstname, lastname, user_status, rank_label",
+                "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",
+                "mlu.id_user_moodle = mu.id AND mlu.user_rank_id = mlr.id");
+        } else {
+            $this->set_sql("mlu.id, firstname, lastname, user_status, rank_label",
+                "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",
+                "mlu.id_user_moodle = mu.id AND mlu.user_rank_id = mlr.id AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
+        }
         $this->set_count_sql('SELECT COUNT(*) FROM mdl_lips_user');
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "users")));
         $context = context_module::instance($cm->id);

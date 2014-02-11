@@ -54,6 +54,14 @@ $string['teacher'] = 'Teacher';
 $string['student'] = 'Student';
 
 /*--------------------------------------------------
+ * Difficulties
+ *------------------------------------------------*/
+$string['difficulty_label_elementary'] = 'elementary';
+$string['difficulty_label_easy'] = 'easy';
+$string['difficulty_label_medium'] = 'medium';
+$string['difficulty_label_difficult'] = 'difficult';
+
+/*--------------------------------------------------
  * Constants
  *------------------------------------------------*/
 $string['create'] = 'Create';
@@ -105,11 +113,6 @@ $string['resolved'] = 'Resolved';
 $string['configure'] = 'Configure';
 $string['picture'] = 'Picture';
 $string['base'] = 'Base';
-
-/*--------------------------------------------------
- * Profile
- *------------------------------------------------*/
-
 
 /*--------------------------------------------------
  * Administration
@@ -185,12 +188,6 @@ $string['administration_language_form_select_unittests_error'] = 'You must enter
 $string['administration_problem_create_success'] = 'The problem has been created';
 $string['administration_problem_modify_select'] = 'Select the problem';
 $string['administration_problem_delete_title'] = 'Delete a problem';
-
-
-$string['difficulty_label_elementary'] = 'elementary';
-$string['difficulty_label_easy'] = 'easy';
-$string['difficulty_label_medium'] = 'medium';
-$string['difficulty_label_difficult'] = 'difficult';
 
 /*--------------------------------------------------
  * Web services

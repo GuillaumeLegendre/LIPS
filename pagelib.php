@@ -727,8 +727,23 @@ class page_users extends page_view {
 
         require_once("$CFG->libdir/tablelib.php");
         require_once(dirname(__FILE__) . '/users_table.php');
+        require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
-        $table = new users_table($this->cm);
+        // Users title
+        echo $this->lipsoutput->display_h1(get_string('users', 'lips'));
+
+        $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null, 'post', '', array('class' => 'search-form'));
+        $searchForm->display();
+
+        $search = null;
+        if ($searchForm->is_submitted()) {
+            $data = $searchForm->get_submitted_data();
+            if(!empty($data->inputSearch)) {
+                $search = $data->inputSearch;
+            }
+        }
+
+        $table = new users_table($this->cm, $search);
         $table->out(get_string('users_table', 'lips'), true);
     }
 }
