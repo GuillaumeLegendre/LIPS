@@ -546,6 +546,73 @@ class page_admin_category_delete extends page_view {
     }
 }
 
+/**
+ * Problemmodification page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickael OHLEN
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_problem_modify extends page_view {
+
+    /**
+     * page_admin_problem_modify constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_problem
+     * _modify content
+     */
+    function display_content() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Modify a category
+        echo $this->lipsoutput->display_h2(get_string('administration_category_modify_title', 'lips'));
+        echo $this->lipsoutput->display_p(get_string('administration_category_msg', 'lips'));
+
+        $modifyCategoryForm = new mod_lips_category_modify_form();
+
+        if ($modifyCategoryForm->is_submitted()) {
+            $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
+
+            $modifyCategoryForm->handle();
+            $modifyCategoryForm->display();
+        } else {
+            $categoryid = optional_param('category_id', null, PARAM_INT);
+
+            if ($categoryid == null) {
+                $modifySelectCategoryForm = new mod_lips_category_modify_select_form();
+                $data = $modifySelectCategoryForm->get_submitted_data();
+                $categorydetails = get_category_details($data->selectCategory);
+
+                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array)$categorydetails, 'post');
+
+                $modifyCategoryForm->display();
+            } else {
+                $categorydetails = get_category_details($categoryid);
+
+                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array)$categorydetails, 'post');
+
+                $modifyCategoryForm->display();
+            }
+
+        }
+    }
+}
+
 
 /**
  * Problem delete page
