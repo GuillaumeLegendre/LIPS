@@ -1062,7 +1062,8 @@ class page_problem extends page_view {
         echo $this->lipsoutput->display_p($tips);
         echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"));
         $hastest = false;
-        foreach (get_displayable_unittests($this->id)[1] as $unittest) {
+        $unittests = get_displayable_unittests($this->id);
+        foreach ($unittests[1] as $unittest) {
             $img = $this->lipsoutput->display_img(get_unitest_picture(), array('width' => '20px', 'height' => '20px'));
             echo $this->lipsoutput->display_p($img . " " . $unittest);
             $hastest = true;

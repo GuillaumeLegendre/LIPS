@@ -238,11 +238,14 @@ class mod_lips_renderer extends plugin_renderer_base {
     public function display_top_page_category($categorydetails) {
         if ($categorydetails->category_documentation_type == 'LINK') {
             $link = new action_link(new moodle_url($categorydetails->category_documentation), get_string("documentation", "lips"));
-        } else if($categorydetails->category_documentation_type == 'TEXT') {
+        } else if ($categorydetails->category_documentation_type == 'TEXT') {
             $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categorydetails->id)), get_string("documentation", "lips"));
         }
-
-        return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float: right;")) . $this->display_h1($categorydetails->category_name));
+        $renderlink = "";
+        if (isset($link)) {
+            $renderlink = $this->render($link);
+        }
+        return html_writer::tag('div', $this->display_p($renderlink, array("style" => "float: right;")) . $this->display_h1($categorydetails->category_name));
     }
 
     /**
