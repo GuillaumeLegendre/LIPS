@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Document sans nom</title>
+<style type="text/css" media="screen">
+	.acepanel {
+    width: 90%;
+    background-color: #EBEBEB;
+    border: 1px solid #000000;
+    border-bottom: none;
+    line-height: 35px;
+}
+
+.acepanel a {
+    margin: 0 5px 0 5px;
+    padding: 5px;
+    color: #000000;
+    background-color: #F1F1F1;
+    border: 1px solid #999999;
+}
+
+.acepanel a:hover {
+    text-decoration: none;
+    color: #0000FF;
+}
+
+.ace {
+    width: 90%;
+    height: 400px;
+    border: 1px solid #000000;
+}
+
+.editorCode {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="editor" class="ace">var f = function(){alert("alert"); }</div>
+<textarea id="area" class="editorCode"></textarea>
+
+<script src="./ace/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="./ace/ace-builds/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	
+	//createAce("editor", "area",  "javascript", "eclipse", "configure");
+	//createAce("editor", "area",  "javascript", "eclipse", "code");
+	createAce("editor", "area",  "javascript", "eclipse", "unit-test");
+	//createAce("editor", "area",  "javascript", "eclipse", "normal");
+
+</script>
+</body>
+</html>
