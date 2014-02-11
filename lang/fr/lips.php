@@ -151,10 +151,10 @@ $string['administration_problem_create_success'] = 'Le problème a été créé'
 
 
 
-$string['difficulty_label_elementary'] = 'élementaire';
-$string['difficulty_label_easy'] = 'facile';
-$string['difficulty_label_medium'] = 'intermediaire';
-$string['difficulty_label_difficult'] = 'difficile';
+$string['difficulty_label_elementary'] = 'Elementaire';
+$string['difficulty_label_easy'] = 'Facile';
+$string['difficulty_label_medium'] = 'Intermediaire';
+$string['difficulty_label_difficult'] = 'Difficile';
 /*--------------------------------------------------
  * Web services
  *------------------------------------------------*/

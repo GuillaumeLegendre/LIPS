@@ -69,6 +69,7 @@ function convert_active_tab($view) {
         "categoryDocumentation" => "problems",
         "deleteCategory" => "problems",
         "problem" => "problems",
+        "deleteProblem" => "problems"
     );
     return $tabs[$view];
 }
@@ -82,7 +83,6 @@ function convert_active_tab($view) {
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @param      int Id of the current instance
  * @return     object List of all removable categories of the current instance
-
  */
 function fetch_removable_categories($idlanguage) {
     global $DB;
@@ -109,6 +109,7 @@ function get_language_picture() {
 
     return $DB->get_record('lips', array('id' => $cm->instance), 'language_picture', MUST_EXIST)->language_picture;
 }
+
 
 /**
  * Update the language picture
@@ -191,7 +192,7 @@ function get_category_details($id) {
  */
 function get_problem_details($id) {
     global $DB;
-    return $DB->get_records_sql("select mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id where mlp.id=" . $id);
+    return $DB->get_records_sql("select mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id where mlp.id=" . $id);
 }
 
 /**
@@ -203,6 +204,17 @@ function delete_category($id) {
     global $DB;
 
     $DB->delete_records("lips_category", array("id" => $id));
+}
+
+/**
+ * Remove from the Database the problem with the id in parameter.
+ *
+ * @param int $id Id the of the category to delete
+ */
+function delete_problem($id) {
+    global $DB;
+
+    $DB->delete_records("lips_problem", array("id" => $id));
 }
 
 /**
@@ -223,7 +235,7 @@ function is_author($idproblem, $iduser) {
 function category_exists($conditions) {
     global $DB;
 
-    if($DB->count_records('lips_category', $conditions) > 0) {
+    if ($DB->count_records('lips_category', $conditions) > 0) {
         return true;
     }
     return false;
@@ -241,7 +253,7 @@ function is_removable($id) {
         FROM mdl_lips_category mlc
         LEFT JOIN mdl_lips_problem mlp
         ON mlc.id = mlp.problem_category_id
-        WHERE mlc.id = ".$id."
+        WHERE mlc.id = " . $id . "
         AND mlc.id_language = 1
         GROUP BY mlc.id HAVING COUNT(mlp.id) = 0";
 
@@ -323,4 +335,39 @@ function ace_available_languages() {
 function nb_resolutions_problem($iduser, $idproblem) {
     global $DB;
     return $DB->count_records("lips_problem_solved", array('problem_solved_problem' => $idproblem, 'problem_solved_user' => $iduser));
+}
+
+
+/**
+ * Get the available languages for the ace plugin
+ *
+ * @return array An array of available languages
+ */
+function get_displayable_unittests($idproblem) {
+    $details = get_problem_details($idproblem);
+    $unittests = $details[$idproblem]->problem_unit_tests;
+    preg_match_all("|<lips-unit-tests>(.*?)</lips-unit-tests>|U",
+        $unittests,
+        $out);
+    return $out;
+}
+
+/**
+ * Get the test picture
+ *
+ * @return string The test picture
+ */
+function get_unitest_picture() {
+    return "test.png";
+}
+
+/**
+ * Fetch all problems of a user
+ *
+ * @param int Id of the user
+ * @return object List of all problems of the user
+ * */
+function fetch_problems($userid) {
+    global $DB;
+    return $DB->get_records('lips_problem', array('problem_creator_id' => $userid));
 }

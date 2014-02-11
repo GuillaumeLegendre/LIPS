@@ -135,3 +135,29 @@ class mod_lips_problem_create_form extends moodleform {
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_create_success', 'lips'), 'SUCCESS');
     }
 }
+
+/**
+ * Form to delete a problem
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickael OHLEN
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class mod_lips_problem_delete_form extends moodleform {
+
+    /**
+     * Form definition
+     */
+    public function definition() {
+        global $PAGE, $USER;
+        $mform =& $this->_form;
+        $problems="";
+        foreach (fetch_problems($USER->id) as $problem) {
+            $problems[$problem->id] = $problem->problem_label;
+        }
+        $mform->addElement('select', 'problemId', get_string('administration_problem_modify_select', 'lips'), $problems);
+        // Delete button.
+        $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
+    }
+}

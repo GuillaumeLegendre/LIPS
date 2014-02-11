@@ -20,11 +20,13 @@ require_once(dirname(__FILE__) . '/pagelib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
 
-$id = optional_param('id', 0, PARAM_INT); // course_module ID, or
-$n = optional_param('n', 0, PARAM_INT); // lips instance ID - it should be named as the first character of the module
-$action = optional_param('action', 0, PARAM_TEXT); // lips instance ID - it should be named as the first character of the module
-$originv = optional_param('originV', "index", PARAM_TEXT); // lips instance ID - it should be named as the first character of the module
+$id = optional_param('id', 0, PARAM_INT);
+$n = optional_param('n', 0, PARAM_INT);
+$action = optional_param('action', 0, PARAM_TEXT);
+$originv = optional_param('originV', "index", PARAM_TEXT);
 $originaction = optional_param('originAction', null, PARAM_TEXT);
+
+global $USER;
 
 if ($id) {
     $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
@@ -52,10 +54,24 @@ switch ($action) {
 
         delete_category($categoryid);
 
-       if($originaction == null) {
+        if ($originaction == null) {
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
-       }
-        else {
+        } else {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+        }
+        break;
+    case "deleteProblem":
+        $problemid = optional_param('problemId', null, PARAM_INT);
+        $categoryid = optional_param('categoryId', null, PARAM_INT);
+        if (is_author($problemid, $USER->id)) {
+            delete_problem($problemid);
+        }
+        if ($categoryid != null && !empty($categoryid)) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'categoryId' => $categoryid)));
+        }
+        if ($originaction == null) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+        } else {
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
         }
         break;

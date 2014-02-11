@@ -148,6 +148,8 @@ $string['administration_problem_create_code_msg'] = 'Start to import all the lib
 $string['administration_problem_create_code_import_label'] = 'Import librairies';
 $string['administration_problem_create_code_complete_label'] = 'Code to complete';
 $string['administration_problem_create_code_unittest_label'] = 'Unit tests';
+$string['administration_delete_problem_confirmation'] = "Confirm the deletion of the problem";
+
 
 $string['administration_language_form_select_category_error'] = 'You must select a category';
 $string['administration_language_form_select_difficulty_error'] = 'You must select a difficulty';
@@ -155,6 +157,11 @@ $string['administration_language_form_select_name_error'] = 'You must enter a na
 $string['administration_language_form_select_subject_error'] = 'You must enter a subject';
 $string['administration_language_form_select_unittests_error'] = 'You must enter unit tests';
 $string['administration_problem_create_success'] = 'The problem has been created';
+$string['administration_problem_modify_select'] = 'Select the problem';
+$string['administration_problem_delete_title'] = 'Delete a problem';
+
+
+
 
 $string['difficulty_label_elementary'] = 'elementary';
 $string['difficulty_label_easy'] = 'easy';

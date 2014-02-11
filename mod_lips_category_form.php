@@ -321,7 +321,6 @@ class mod_lips_category_delete_form extends moodleform {
 
         $error = get_string("administration_category_delete_info", "lips");
         echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'WARNING');
-        
         $mform->addElement('select', 'categoryId', get_string('administration_category_modify_select', 'lips'), $categories);
         $mform->addRule('categoryId',
             get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');

@@ -30,7 +30,7 @@ class categories_table extends table_sql {
             mlc.id, category_name, category_documentation, count(mlp.id)
             AS category_problems", "mdl_lips_category mlc
             LEFT JOIN mdl_lips_problem mlp
-            ON mlc.id = mlp.problem_category_id" , "mlc.id_language=".get_current_instance()->id."
+            ON mlc.id = mlp.problem_category_id", "mlc.id_language=" . get_current_instance()->id . "
             GROUP BY mlc.id HAVING COUNT( mlc.id ) >0");
         $this->set_count_sql("
             SELECT COUNT(*)
@@ -61,7 +61,7 @@ class categories_table extends table_sql {
                     'view' => 'category',
                     'categoryId' => $attempt->id)),
                 $attempt->category_name);
-            
+
             return $OUTPUT->render($url);
         }
 
@@ -79,7 +79,7 @@ class categories_table extends table_sql {
             $category = get_category_details($attempt->id);
             if ($category->category_documentation_type == 'LINK') {
                 $a .= " " . $OUTPUT->action_icon($category->category_documentation, new pix_icon("i/manual_item", "documentation"));
-            } else if($category->category_documentation_type == 'TEXT') {
+            } else if ($category->category_documentation_type == 'TEXT') {
                 $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $attempt->id)), new pix_icon("i/manual_item", "documentation"));
             }
 
