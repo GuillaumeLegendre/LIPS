@@ -65,6 +65,7 @@ $capabilities = array(
         'legacy' => array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
@@ -73,7 +74,7 @@ $capabilities = array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
-            'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
