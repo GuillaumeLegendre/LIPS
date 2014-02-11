@@ -176,11 +176,11 @@ class mod_lips_renderer extends plugin_renderer_base {
             </div>
             <ul id="links">';
 
-        $menu .= ($action == 'profile') ? '<li><p class="current">Profil</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=profile">Profil</a></li>';
-        $menu .= ($action == 'rank') ? '<li><p class="current">Classements</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=rank">Classements</a></li>';
-        $menu .= ($action == 'solved_problems') ? '<li><p class="current">Problèmes résolus</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=solved_problems">Problèmes résolus</a></li>';
-        $menu .= ($action == 'challenges') ? '<li><p class="current">Défis reçus</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=challenges">Défis reçus</a></li>';
-        $menu .= ($action == 'followed_users') ? '<li><p class="current">Utilisateurs suivis</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=followed_users">Utilisateurs suivis</a></li>';
+        $menu .= ($action == 'profile') ? '<li><p class="current">Profil</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;">' . get_string('profile', 'lips') . '</a></li>';
+        $menu .= ($action == 'ranks') ? '<li><p class="current">Classements</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=ranks">' . get_string('ranks', 'lips') . '</a></li>';
+        $menu .= ($action == 'solved_problems') ? '<li><p class="current">Problèmes résolus</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=solved_problems">' . get_string('solved_problems', 'lips') . '</a></li>';
+        $menu .= ($action == 'challenges') ? '<li><p class="current">Défis reçus</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=challenges">' . get_string('challenges', 'lips') . '</a></li>';
+        $menu .= ($action == 'followed_users') ? '<li><p class="current">Utilisateurs suivis</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=followed_users">' . get_string('followed_users', 'lips') . '</a></li>';
         $menu .= '</ul></div>';
 
         return $menu;
@@ -232,13 +232,17 @@ class mod_lips_renderer extends plugin_renderer_base {
     /**
      * Display the top of the page representing a category.
      *
-     * @param string $categoryname Name of the problem
-     * @param int $categoryid id of the category
+     * @param object $categorydetails Category details
      * @return string div tag
      */
-    public function display_top_page_category($categoryname, $categoryid) {
-        $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categoryid)), get_string("documentation", "lips"));
-        return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float:right;")) . $this->display_h1($categoryname));
+    public function display_top_page_category($categorydetails) {
+        if ($categorydetails->category_documentation_type == 'LINK') {
+            $link = new action_link(new moodle_url($categorydetails->category_documentation), get_string("documentation", "lips"));
+        } else if($categorydetails->category_documentation_type == 'TEXT') {
+            $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categorydetails->id)), get_string("documentation", "lips"));
+        }
+
+        return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float: right;")) . $this->display_h1($categorydetails->category_name));
     }
 
     /**

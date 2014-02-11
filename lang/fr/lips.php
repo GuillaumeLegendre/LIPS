@@ -59,7 +59,10 @@ $string['search'] = 'Rechercher';
 $string['answer'] = 'Réponse';
 $string['edit'] = 'Modifier';
 $string['solutions'] = 'Solutions';
-
+$string['ranks'] = 'Classements';
+$string['solved_problems'] = 'Problèmes résolus';
+$string['challenges'] = 'Défis reçus';
+$string['followed_users'] = 'Utilisateurs suivis';
 
 /*--------------------------------------------------
  * Status

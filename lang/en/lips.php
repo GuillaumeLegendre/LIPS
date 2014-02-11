@@ -67,6 +67,10 @@ $string['answer'] = 'Answer';
 $string['edit'] = 'Edit';
 $string['error_impossible'] = 'You shouldn\'t have access this page';
 $string['language'] = 'Language';
+$string['ranks'] = 'Ranks';
+$string['solved_problems'] = 'Solved problems';
+$string['challenges'] = 'Challenges';
+$string['followed_users'] = 'Followed users';
 
 /*--------------------------------------------------
  * Tabs

@@ -104,7 +104,25 @@ switch ($view) {
         $viewpage = new page_list_categories($cm);
         break;
     case "profile" :
-        $viewpage = new page_profile($cm, $id);
+        $action = optional_param('action', null, PARAM_TEXT);
+
+        switch ($action) {
+            case "ranks":
+                $viewpage = new page_profile_ranks($cm);
+                break;
+            case "solved_problems":
+                $viewpage = new page_profile_solved_problems($cm);
+                break;
+            case "challenges":
+                $viewpage = new page_profile_challenges($cm);
+                break;
+            case "followed_users":
+                $viewpage = new page_profile_followed_users($cm);
+                break;
+            default:
+                $viewpage = new page_profile($cm);
+                break;
+        }
         break;
     case "users" :
         $viewpage = new page_users($cm);
