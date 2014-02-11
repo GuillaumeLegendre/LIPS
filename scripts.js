@@ -1,8 +1,15 @@
 // JavaScript Document
 
-// Create a ace editor
+/**
+ * Create an ace editor
+ *
+ * @param string editorid Editor ID
+ * @param string areaid Text area ID
+ * @param string mode Ace language
+ * @param string theme Ace theme
+ * @param string flag Ace flag (configure, code or unit-test)
+ */
 window.createAce = function(editorid, areaid, mode, theme, flag){
-	
 	// Create ace
 	var editor = ace.edit(editorid);
 
@@ -14,13 +21,11 @@ window.createAce = function(editorid, areaid, mode, theme, flag){
 		editor.getSession().setMode("ace/mode/" + mode);
 
 
-	/*switch to call different Ace editor Mode
-		"configure"
-	*/
-   switch(flag){
-	   case "configure":
-	   		createConfigure(editorid, areaid);
-	   		break;
+	// Switch to call different Ace editor Mode
+	switch(flag) {
+		case "configure":
+			createConfigure(editorid, areaid);
+			break;
 		case "code":
 			createCode(editorid, areaid);
 			break;
@@ -29,18 +34,22 @@ window.createAce = function(editorid, areaid, mode, theme, flag){
 			break;
 		default:
 			break;
-   }
+	}
 
-    // Copy the ace content on the area
-    editor.getSession().on("change", function() {
-    	$("#" + areaid).val(editor.getSession().getValue());
-    });
+	// Copy the ace content on the area
+	editor.getSession().on("change", function() {
+		$("#" + areaid).val(editor.getSession().getValue());
+	});
 }
 
-
-//Create an ace editor in Language configuration mode
+/**
+ * Create the ace panel in configure mode
+ *
+ * @param string editorid Editor ID
+ * @param string areaid Text area ID
+ */
 window.createConfigure = function(editorid, areaid){
-	
+
 	// Create ace
 	var editor = ace.edit(editorid);
 	
@@ -80,7 +89,12 @@ window.createConfigure = function(editorid, areaid){
 }
 
 
-//Create an ace editor in code mode
+/**
+ * Create the ace panel in code mode
+ *
+ * @param string editorid Editor ID
+ * @param string areaid Text area ID
+ */
 window.createCode = function(editorid, areaid){
 	
 	// Create ace
@@ -100,6 +114,12 @@ window.createCode = function(editorid, areaid){
 	});
 }
 
+/**
+ * Create the ace panel in unit test mode
+ *
+ * @param string editorid Editor ID
+ * @param string areaid Text area ID
+ */
 window.createUnitTest = function(editorid, areaid){
 	
 	// Create ace
@@ -117,8 +137,9 @@ window.createUnitTest = function(editorid, areaid){
 		}else{
 			var currentText = editor.getCopyText();
 			editor.remove(editor.getSelectionRange());
-			editor.insert("<lips-unit-test>" + currentText + "</lips-unit-test>");			
+			editor.insert("<lips-unit-test>" + currentText + "</lips-unit-test>");
 		}
+		editor.focus();
 		
 		return false;
 	});

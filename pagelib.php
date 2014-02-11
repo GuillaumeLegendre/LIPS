@@ -342,7 +342,7 @@ class page_admin_langage_base extends page_view {
             $configureCodeForm->display();
         }
 
-        $this->lipsoutput->display_ace_form('configEditor', 'id_areaBaseCode', $lips->coloration_language);
+        $this->lipsoutput->display_ace_form('configEditor', 'id_areaBaseCode', $lips->coloration_language, 'configure');
     }
 }
 
@@ -656,16 +656,13 @@ class page_users extends page_view {
      * Display the page_users content
      */
     function display_content() {
-        global $CFG, $OUTPUT;
-        require "$CFG->libdir/tablelib.php";
+        global $CFG, $PAGE;
 
-        $table = new table_sql("mdl_lips_user");
-        $table->set_sql("*", "mdl_lips_user", "1");
-        $table->define_baseurl(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)));
-        $table->define_headers(array("Nom", "Prenom"));
-        $table->define_columns(array("user_name", "user_first_name"));
-        $table->sortable(true);
-        $table->out(10, true);
+        require_once("$CFG->libdir/tablelib.php");
+        require_once(dirname(__FILE__) . '/users_table.php');
+
+        $table = new users_table($this->cm);
+        $table->out(get_string('users_table', 'lips'), true);
     }
 }
 
@@ -750,7 +747,7 @@ class page_profile_solved_problems extends page_view {
      * Display the page_profile_solved_problems content
      */
     function display_content() {
-        echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
+        echo $this->lipsoutput->display_profile_menu('solved_problems') . '<br/>';
         echo 'Solved problems';
     }
 }
@@ -779,7 +776,7 @@ class page_profile_challenges extends page_view {
      * Display the page_profile_challenges content
      */
     function display_content() {
-        echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
+        echo $this->lipsoutput->display_profile_menu('challenges') . '<br/>';
         echo 'Challenges';
     }
 }
@@ -808,7 +805,7 @@ class page_profile_followed_users extends page_view {
      * Display the page_profile_followed_users content
      */
     function display_content() {
-        echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
+        echo $this->lipsoutput->display_profile_menu('followed_users') . '<br/>';
         echo 'Followed users';
     }
 }

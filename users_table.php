@@ -1,0 +1,88 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+global $CFG;
+require_once("$CFG->libdir/tablelib.php");
+require_once("$CFG->libdir/outputrenderers.php");
+
+/**
+ * Users table
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin GOT
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class users_table extends table_sql {
+    private $cm;
+
+    /**
+     * users_table constructor
+     *
+     * @param object $cm Moodle context
+     */
+    public function  __construct($cm) {
+        parent::__construct("mdl_lips_user");
+
+        $this->cm = $cm;
+        $this->set_sql("mlu.id, firstname, lastname, user_status, rank_label",
+            "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",
+            "mlu.id_user_moodle = mu.id AND mlu.user_rank_id = mlr.id");
+        $this->set_count_sql('SELECT COUNT(*) FROM mdl_lips_user');
+        $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "users")));
+        $context = context_module::instance($cm->id);
+
+        $this->define_headers(array(get_string('user', 'lips'), get_string('status', 'lips'), get_string('grade', 'lips'), ''));
+        $this->define_columns(array("user_name", "user_status", "rank_label", "user_follow"));
+        $this->sortable(true);
+    }
+
+    /**
+     * Other columns of the table
+     *
+     * @param string $colname Column name
+     */
+    public function other_cols($colname, $attempt) {
+        global $OUTPUT, $PAGE;
+
+        switch($colname) {
+            case 'user_name':
+                $url = new action_link(new moodle_url('view.php', array(
+                    'id' => $this->cm->id,
+                    'view' => 'profile',
+                    'id_user' => $attempt->id)),
+                ucfirst($attempt->firstname) . ' ' . strtoupper($attempt->lastname));
+
+                return '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $attempt->id)) . '"/>' . $OUTPUT->render($url) . '</div>';
+                break;
+
+            case 'user_status':
+                return get_string($attempt->user_status, 'lips');
+                break;
+
+            case 'user_follow':
+                $url = new action_link(new moodle_url('view.php', array(
+                    'id' => $this->cm->id,
+                    'view' => 'users')),
+                get_string('follow', 'lips'), null, array("class" => "lips-button"));
+
+                return $OUTPUT->render($url);
+                break;
+        }
+
+        return null;
+    }
+} 
