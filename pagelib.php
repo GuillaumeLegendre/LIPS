@@ -546,6 +546,73 @@ class page_admin_category_delete extends page_view {
     }
 }
 
+/**
+ * Problemmodification page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickael OHLEN
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_problem_modify extends page_view {
+
+    /**
+     * page_admin_problem_modify constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_problem
+     * _modify content
+     */
+    function display_content() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Modify a category
+        echo $this->lipsoutput->display_h2(get_string('administration_category_modify_title', 'lips'));
+        echo $this->lipsoutput->display_p(get_string('administration_category_msg', 'lips'));
+
+        $modifyCategoryForm = new mod_lips_category_modify_form();
+
+        if ($modifyCategoryForm->is_submitted()) {
+            $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
+
+            $modifyCategoryForm->handle();
+            $modifyCategoryForm->display();
+        } else {
+            $categoryid = optional_param('category_id', null, PARAM_INT);
+
+            if ($categoryid == null) {
+                $modifySelectCategoryForm = new mod_lips_category_modify_select_form();
+                $data = $modifySelectCategoryForm->get_submitted_data();
+                $categorydetails = get_category_details($data->selectCategory);
+
+                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array)$categorydetails, 'post');
+
+                $modifyCategoryForm->display();
+            } else {
+                $categorydetails = get_category_details($categoryid);
+
+                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array)$categorydetails, 'post');
+
+                $modifyCategoryForm->display();
+            }
+
+        }
+    }
+}
+
 
 /**
  * Problem delete page
@@ -660,8 +727,23 @@ class page_users extends page_view {
 
         require_once("$CFG->libdir/tablelib.php");
         require_once(dirname(__FILE__) . '/users_table.php');
+        require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
-        $table = new users_table($this->cm);
+        // Users title
+        echo $this->lipsoutput->display_h1(get_string('users', 'lips'));
+
+        $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null, 'post', '', array('class' => 'search-form'));
+        $searchForm->display();
+
+        $search = null;
+        if ($searchForm->is_submitted()) {
+            $data = $searchForm->get_submitted_data();
+            if (!empty($data->inputSearch)) {
+                $search = $data->inputSearch;
+            }
+        }
+
+        $table = new users_table($this->cm, $search);
         $table->out(get_string('users_table', 'lips'), true);
     }
 }
@@ -837,11 +919,21 @@ class page_category extends page_view {
      */
     function display_content() {
         require_once(dirname(__FILE__) . '/problems_table.php');
+        require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
         $categorydetails = get_category_details($this->id);
         echo $this->lipsoutput->display_top_page_category($categorydetails);
+        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'categoryId' => $this->id)), null, 'post', '', array('class' => 'search-form'));
+        $searchform->display();
 
-        $table = new problems_table($this->cm, $categorydetails->id);
+        $search = null;
+        if ($searchform->is_submitted()) {
+            $data = $searchform->get_submitted_data();
+            if (!empty($data->inputSearch)) {
+                $search = $data->inputSearch;
+            }
+        }
+        $table = new problems_table($this->cm, $categorydetails->id, $search);
         $table->out(10, true);
     }
 }
@@ -979,11 +1071,12 @@ class page_solutions extends page_view {
 
         $details = get_problem_details($this->id);
         echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
-        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_creator_id;
+        $author_link = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . strtoupper($details[$this->id]->lastname));
+        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $author_link;
         echo $this->lipsoutput->display_p($author, array("class" => "field_page_problem"));
         $datecreation = $this->lipsoutput->display_span(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . date("d/m/y", $details[$this->id]->problem_date);
         echo $this->lipsoutput->display_p($datecreation, array("class" => "field_page_problem"));
-        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions." / ".$details[$this->id]->problem_attempts." ".get_string("attempts", "lips");
+        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions . " / " . $details[$this->id]->problem_attempts . " " . get_string("attempts", "lips");
         echo $this->lipsoutput->display_p($nbresolutions, array("class" => "field_page_problem"));
         $difficulty = $this->lipsoutput->display_span(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . get_string($details[$this->id]->difficulty_label, "lips");
         echo $this->lipsoutput->display_p($difficulty, array("class" => "field_page_problem"));
@@ -1039,11 +1132,12 @@ class page_problem extends page_view {
         $buttons = $this->lipsoutput->display_p($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("style" => "float:right"));
         $details = get_problem_details($this->id);
         echo $this->lipsoutput->display_top_page_problem($details[$this->id]->problem_label, $details[$this->id]->problem_category_id);
-        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_creator_id;
+        $author_link = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . strtoupper($details[$this->id]->lastname));
+        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $author_link;
         echo $this->lipsoutput->display_p($buttons . $author, array("class" => "field_page_problem"));
         $datecreation = $this->lipsoutput->display_span(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . date("d/m/y", $details[$this->id]->problem_date);
         echo $this->lipsoutput->display_p($datecreation, array("class" => "field_page_problem"));
-        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions." / ".$details[$this->id]->problem_attempts." ".get_string("attempts", "lips");
+        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions . " / " . $details[$this->id]->problem_attempts . " " . get_string("attempts", "lips");
         echo $this->lipsoutput->display_p($nbresolutions, array("class" => "field_page_problem"));
         $difficulty = $this->lipsoutput->display_span(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . get_string($details[$this->id]->difficulty_label, "lips");
         echo $this->lipsoutput->display_p($difficulty, array("class" => "field_page_problem"));

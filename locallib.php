@@ -308,7 +308,7 @@ function get_category_details($id) {
  */
 function get_problem_details($id) {
     global $DB;
-    return $DB->get_records_sql("select mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id, count(mls.id) as problem_resolutions from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id where mlp.id=" . $id);
+    return $DB->get_records_sql("select mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id join mdl_user mu on mu.id=problem_creator_id JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id where mlp.id=" . $id);
 }
 
 /**
@@ -343,7 +343,8 @@ function is_author($idproblem, $iduser) {
     return $DB->get_record("lips_problem", array('id' => $idproblem))->problem_creator_id == $iduser;
 }
 
-/* Test if the category already exists
+/**
+ * Test if the category already exists
  *
  * @param array $conditions Category fields
  * @return bool True if the category already exists, otherwise false
@@ -357,7 +358,8 @@ function category_exists($conditions) {
     return false;
 }
 
-/* Test if a category is removable, ie category is empty
+/**
+ * Test if a category is removable, ie category is empty
  *
  * @param int $id Category id
  * @return bool True if the category is removable, otherwise false
@@ -404,6 +406,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
  */
 function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
+    
     $DB->update_record('lips_category', array('id' => $id, 'category_name' => $categoryname, 'category_documentation' => $categorydocumentation, 'category_documentation_type' => $categorydocumentationtype));
 }
 

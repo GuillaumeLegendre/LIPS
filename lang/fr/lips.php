@@ -77,6 +77,14 @@ $string['teacher'] = 'Enseignant';
 $string['student'] = 'Etudiant';
 
 /*--------------------------------------------------
+ * Difficulties
+ *------------------------------------------------*/
+$string['difficulty_label_elementary'] = 'Elementaire';
+$string['difficulty_label_easy'] = 'Facile';
+$string['difficulty_label_medium'] = 'Intermediaire';
+$string['difficulty_label_difficult'] = 'Difficile';
+
+/*--------------------------------------------------
  * Tabs
  *------------------------------------------------*/
 $string['index'] = 'Accueil';
@@ -164,12 +172,6 @@ $string['administration_problem_create_code_complete_label'] = 'Code à complete
 $string['administration_problem_create_code_unittest_label'] = 'Tests unitaires';
 $string['administration_problem_create_success'] = 'Le problème a été créé';
 
-
-
-$string['difficulty_label_elementary'] = 'Elementaire';
-$string['difficulty_label_easy'] = 'Facile';
-$string['difficulty_label_medium'] = 'Intermediaire';
-$string['difficulty_label_difficult'] = 'Difficile';
 /*--------------------------------------------------
  * Web services
  *------------------------------------------------*/
@@ -178,7 +180,6 @@ $string['web_service_communication_error'] = 'Une erreur est survenue lors de la
 /*--------------------------------------------------
  * Problems
  *------------------------------------------------*/
-
 $string['problem_author'] = 'Rédacteur';
 $string['problem_date_creation'] = 'Date de création';
 $string['problem_nb_resolutions'] = 'Nombre de résolutions';

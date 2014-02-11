@@ -48,7 +48,9 @@ class mod_lips_category_create_form extends moodleform {
         $mform->addElement('text', 'inputCategoryDocumentation', get_string('administration_category_documentation_link', 'lips'),
             array(
                 'size' => '64',
-                'placeholder' => get_string('administration_category_documentation_link_placeholder', 'lips')));
+                'placeholder' => get_string('administration_category_documentation_link_placeholder', 'lips')
+            )
+        );
         $mform->setType('inputCategoryDocumentation', PARAM_TEXT);
 
         // Category documentation (TEXT)
@@ -71,7 +73,8 @@ class mod_lips_category_create_form extends moodleform {
 
         if (isset($data->inputCategoryName) && isset($data->inputCategoryDocumentation) && isset($data->areaCategoryDocumentation)) {
             if (!empty($data->inputCategoryName)) {
-                if (category_exists(array('category_name' => $data->inputCategoryName))) {
+                $lips = get_current_instance();
+                if (category_exists(array('id_language' => $lips->id, 'category_name' => $data->inputCategoryName))) {
                     $errors['alreadyExists'] = get_string('administration_category_already_exists', 'lips');
                 }
 
@@ -152,10 +155,8 @@ class mod_lips_category_modify_select_form extends moodleform {
             $categories[$category->id] = $category->category_name;
         }
 
-        $mform->addElement('select', 'selectCategory',
-            get_string('administration_category_modify_select', 'lips'), $categories);
-        $mform->addRule('selectCategory',
-            get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+        $mform->addElement('select', 'selectCategory', get_string('administration_category_modify_select', 'lips'), $categories);
+        $mform->addRule('selectCategory', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
         // Modify button.
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
@@ -190,21 +191,24 @@ class mod_lips_category_modify_form extends moodleform {
         $mform->setDefault('inputCategoryCurrentName', $mcustomdata['category_name']);
 
         // Category name.
-        $mform->addElement('text', 'inputCategoryName',
-            get_string('category', 'lips'), array(
+        $mform->addElement('text', 'inputCategoryName', get_string('category', 'lips'),
+            array(
                 'size' => '64',
                 'maxlength' => '255',
-                'placeholder' => get_string('name', 'lips')));
+                'placeholder' => get_string('name', 'lips')
+            )
+        );
         $mform->setType('inputCategoryName', PARAM_TEXT);
         $mform->setDefault('inputCategoryName', $mcustomdata['category_name']);
-        $mform->addRule('inputCategoryName',
-            get_string('administration_category_name_error', 'lips'), 'required', null, 'client');
+        $mform->addRule('inputCategoryName', get_string('administration_category_name_error', 'lips'), 'required', null, 'client');
 
         // Category documentation (LINK).
-        $mform->addElement('text', 'inputCategoryDocumentation',
-            get_string('administration_category_documentation_link', 'lips'), array(
+        $mform->addElement('text', 'inputCategoryDocumentation', get_string('administration_category_documentation_link', 'lips'),
+            array(
                 'size' => '64',
-                'placeholder' => get_string('administration_category_documentation_link_placeholder', 'lips')));
+                'placeholder' => get_string('administration_category_documentation_link_placeholder', 'lips')
+            )
+        );
         if ($mcustomdata['category_documentation_type'] == 'LINK') {
             $mform->setDefault('inputCategoryDocumentation', $mcustomdata['category_documentation']);
         }
@@ -231,12 +235,10 @@ class mod_lips_category_modify_form extends moodleform {
         $errors = parent::validation($data, $files);
         $errors = array();
 
-        if(isset($data->inputCategoryName) &&
-            isset($data->inputCategoryDocumentation) &&
-            isset($data->areaCategoryDocumentation)) {
+        if(isset($data->inputCategoryName) && isset($data->inputCategoryDocumentation) && isset($data->areaCategoryDocumentation)) {
             if(!empty($data->inputCategoryName)) {
-                if($data->inputCategoryCurrentName != $data->inputCategoryName &&
-                    category_exists(array('category_name' => $data->inputCategoryName))) {
+                $lips = get_current_instance();
+                if($data->inputCategoryCurrentName != $data->inputCategoryName && category_exists(array('id_language' => $lips->id, 'category_name' => $data->inputCategoryName))) {
                     $errors['alreadyExists'] = get_string('administration_category_already_exists', 'lips');
                 }
 
