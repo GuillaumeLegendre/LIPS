@@ -36,6 +36,27 @@ h3 {
 }
 
 /*---------------------------------
+ *  Button
+ *-------------------------------*/
+.lips-button, .lips-button:visited {
+    display: inline-block;
+    padding: 5px 10px 6px;
+    text-decoration: none;
+    background-color: #9DC3F6;
+    color: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.lips-button:hover {
+    background-color: #7E9CC5;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+/*---------------------------------
  *  Ace
  *-------------------------------*/
 
@@ -67,7 +88,82 @@ h3 {
 }
 
 .editorCode {
-    display: none;
+    /*display: none;*/
+}
+
+/*---------------------------------
+ *  Profile menu
+ *-------------------------------*/
+#profile-menu {
+    width: 100%;
+    height: 120px;
+}
+
+#profile-menu #picture {
+    position: relative;
+    z-index: 5;
+    width: 120px;
+    height: 120px;
+    border: 1px solid #555555;
+}
+
+#profile-menu #follow {
+    float: right;
+    margin-top: 10px;
+}
+
+#profile-menu #background {
+    position: relative;
+    z-index: 3;
+    bottom: 80px;
+    line-height: 60px;
+    background-color: #555555;
+    padding-left: 130px;
+}
+
+#profile-menu #background #user {
+    font-size: 1.7em;
+    color: #FFFFFF;
+}
+
+#profile-menu #background #infos {
+    float: right;
+}
+
+#profile-menu #background #infos #role, #profile-menu #background #infos #rank {
+    line-height: 29px;
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: right;
+}
+
+#profile-menu #links {
+    position: relative;
+    display: inline-block;
+    left: 95px;
+    bottom: 91px;
+    list-style: none;
+}
+
+#profile-menu #links li {
+    float: left;
+    display: block;
+    padding: 0 5px 0 5px;
+    border-right: 1px solid #000000;
+}
+
+#profile-menu #links li:last-child {
+    border: none;
+}
+
+#profile-menu #links li a {
+    text-decoration: none;
+}
+
+#profile-menu #links li p.current {
+    color: #000000;
+    margin: 0;
 }
 
 /*---------------------------------

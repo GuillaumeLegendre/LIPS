@@ -106,8 +106,26 @@ switch ($view) {
     case "problems" :
         $viewpage = new page_list_categories($cm);
         break;
-    case "profil" :
-        $viewpage = new page_profil($cm, $id);
+    case "profile" :
+        $action = optional_param('action', null, PARAM_TEXT);
+
+        switch ($action) {
+            case "ranks":
+                $viewpage = new page_profile_ranks($cm);
+                break;
+            case "solved_problems":
+                $viewpage = new page_profile_solved_problems($cm);
+                break;
+            case "challenges":
+                $viewpage = new page_profile_challenges($cm);
+                break;
+            case "followed_users":
+                $viewpage = new page_profile_followed_users($cm);
+                break;
+            default:
+                $viewpage = new page_profile($cm);
+                break;
+        }
         break;
     case "users" :
         $viewpage = new page_users($cm);
@@ -138,6 +156,8 @@ switch ($view) {
         $viewpage = new page_delete_problem($cm, $idcategory, $originv, $originaction, $categoryid);
         break;
     default :
+        insert_user_if_not_exists();
+
         $viewpage = new page_index($cm);
 }
 

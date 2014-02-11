@@ -670,40 +670,147 @@ class page_users extends page_view {
 }
 
 /**
- * Profil page
+ * Profile page
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
  * @author     Mickaël Ohlen
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class page_profil extends page_view {
-    private $cmid;
+class page_profile extends page_view {
 
     /**
-     * page_profil constructor
+     * page_profile constructor
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm, $cmid) {
-        parent::__construct($cm, "profil");
-        $this->cmid = $cmid;
+    function  __construct($cm) {
+        parent::__construct($cm, "profile");
     }
 
     /**
-     * Display the page_profil content
+     * Display the page_profile content
      */
     function display_content() {
-        global $OUTPUT, $USER, $DB;
+        echo $this->lipsoutput->display_profile_menu('profile') . '<br/>';
+        echo 'Profile';
+    }
+}
 
-        $id = $DB->get_record('course', array('id' => $this->cm->course), '*', MUST_EXIST);
-        $avatar = new user_picture($USER);
-        $avatar->courseid = $this->cmid;
-        $avatar->link = true;
-        echo $OUTPUT->render($avatar) . " ";
-        echo $USER->firstname . " " . $USER->lastname;
+/**
+ * Profile ranks page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_profile_ranks extends page_view {
+    private $cmid;
+
+    /**
+     * page_profile_ranks constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "profile");
     }
 
+    /**
+     * Display the page_profile_ranks content
+     */
+    function display_content() {
+        echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
+        echo 'Ranks';
+    }
+}
+
+/**
+ * Profile solved problems page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_profile_solved_problems extends page_view {
+    private $cmid;
+
+    /**
+     * page_profile_solved_problems constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "profile");
+    }
+
+    /**
+     * Display the page_profile_solved_problems content
+     */
+    function display_content() {
+        echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
+        echo 'Solved problems';
+    }
+}
+
+/**
+ * Profile challenges page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_profile_challenges extends page_view {
+    private $cmid;
+
+    /**
+     * page_profile_challenges constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "profile");
+    }
+
+    /**
+     * Display the page_profile_challenges content
+     */
+    function display_content() {
+        echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
+        echo 'Challenges';
+    }
+}
+
+/**
+ * Profile followed users page
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_profile_followed_users extends page_view {
+    private $cmid;
+
+    /**
+     * page_profile_followed_users constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "profile");
+    }
+
+    /**
+     * Display the page_profile_followed_users content
+     */
+    function display_content() {
+        echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
+        echo 'Followed users';
+    }
 }
 
 /**
@@ -724,6 +831,7 @@ class page_category extends page_view {
      */
     function  __construct($cm, $id) {
         parent::__construct($cm, "category");
+
         $this->id = $id;
     }
 
@@ -731,10 +839,12 @@ class page_category extends page_view {
      * Display the page_category content
      */
     function display_content() {
-        $details = get_category_details($this->id);
-        echo $this->lipsoutput->display_top_page_category($details->category_name, $this->id);
         require_once(dirname(__FILE__) . '/problems_table.php');
-        $table = new problems_table($this->cm, $this->id);
+
+        $categorydetails = get_category_details($this->id);
+        echo $this->lipsoutput->display_top_page_category($categorydetails);
+
+        $table = new problems_table($this->cm, $categorydetails->id);
         $table->out(10, true);
     }
 }

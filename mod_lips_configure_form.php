@@ -299,8 +299,7 @@ class mod_lips_configure_code_form extends moodleform {
         update_language($lips->id, array('base_code' => $data->areaBaseCode));
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(
-            get_string('administration_language_code_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_code_success', 'lips'), 'SUCCESS');
     }
 
     /**

@@ -42,6 +42,13 @@ $string['pluginadministration'] = 'lips administration';
 $string['pluginname'] = 'LIPS';
 
 /*--------------------------------------------------
+ * Status
+ *------------------------------------------------*/
+$string['coursecreator'] = 'Course creator';
+$string['teacher'] = 'Teacher';
+$string['student'] = 'Student';
+
+/*--------------------------------------------------
  * Constants
  *------------------------------------------------*/
 $string['create'] = 'Create';
@@ -60,6 +67,10 @@ $string['answer'] = 'Answer';
 $string['edit'] = 'Edit';
 $string['error_impossible'] = 'You shouldn\'t have access this page';
 $string['language'] = 'Language';
+$string['ranks'] = 'Ranks';
+$string['solved_problems'] = 'Solved problems';
+$string['challenges'] = 'Challenges';
+$string['followed_users'] = 'Followed users';
 
 /*--------------------------------------------------
  * Tabs
@@ -84,6 +95,11 @@ $string['resolved'] = 'Resolved';
 $string['configure'] = 'Configure';
 $string['picture'] = 'Picture';
 $string['base'] = 'Base';
+
+/*--------------------------------------------------
+ * Profile
+ *------------------------------------------------*/
+
 
 /*--------------------------------------------------
  * Administration

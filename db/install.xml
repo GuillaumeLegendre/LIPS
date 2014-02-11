@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/lips/db" VERSION="20140207" COMMENT="XMLDB file for Moodle LIPS module"
+<XMLDB PATH="mod/lips/db" VERSION="20140210" COMMENT="XMLDB file for Moodle LIPS module"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -89,8 +89,7 @@
     <TABLE NAME="lips_user" COMMENT="User list">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="user_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User name"/>
-        <FIELD NAME="user_first_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User first name"/>
+        <FIELD NAME="id_user_moodle" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the moodle user"/>
         <FIELD NAME="user_status" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User status"/>
         <FIELD NAME="user_rank_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="User rank id"/>
         <FIELD NAME="user_score" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="User score"/>
@@ -98,6 +97,7 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="user_rank_id" TYPE="foreign" FIELDS="user_rank_id" REFTABLE="lips_rank" REFFIELDS="id"/>
+        <KEY NAME="id_user_moodle" TYPE="foreign" FIELDS="id_user_moodle" REFTABLE="mdl_user" REFFIELDS="id" COMMENT="Foreign key to the moodle user id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="lips_follow" COMMENT="The followed users">
