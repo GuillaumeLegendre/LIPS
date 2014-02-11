@@ -71,6 +71,7 @@ $string['ranks'] = 'Ranks';
 $string['solved_problems'] = 'Solved problems';
 $string['challenges'] = 'Challenges';
 $string['followed_users'] = 'Followed users';
+$string['attempts'] = "attempts";
 
 /*--------------------------------------------------
  * Tabs
@@ -177,8 +178,6 @@ $string['administration_problem_modify_select'] = 'Select the problem';
 $string['administration_problem_delete_title'] = 'Delete a problem';
 
 
-
-
 $string['difficulty_label_elementary'] = 'elementary';
 $string['difficulty_label_easy'] = 'easy';
 $string['difficulty_label_medium'] = 'medium';
@@ -196,6 +195,4 @@ $string['web_service_communication_error'] = 'An error occured when contacting t
 $string['problem_author'] = 'Author';
 $string['problem_date_creation'] = 'Date of creation';
 $string['problem_nb_resolutions'] = 'Number of resolutions';
-
-
-
+$string['problem_resolved_by'] = 'Resolved by';

@@ -279,4 +279,16 @@ class mod_lips_renderer extends plugin_renderer_base {
         return html_writer::tag("span", $content, $attributes);
     }
 
+    /**
+     * Display a solution
+     *
+     * @param array $data
+     * @return string div tag
+     */
+    public function display_solution($data) {
+        $header = html_writer::tag('div', get_string("problem_resolved_by","lips") ." ". $data->problem_solved_user."<br/> Le ".date('d/m/Y',$data->problem_solved_date), array("id" => "header"));
+        $content = html_writer::tag('div', $data->problem_solved_solution,  array("id" => "content"));
+        return html_writer::tag('div', $header . $content, array("class" => "solution"));
+    }
+
 }

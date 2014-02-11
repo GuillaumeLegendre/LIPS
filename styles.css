@@ -342,16 +342,35 @@ h3 {
     color: #8A1F11;
 }
 
-
 .label_field_page_problem {
     color: #0066CC;
 }
 
 .search_bar {
-    width:80%;
+    width: 80%;
     border: 1;
 }
 
 .search_bar button {
-    float : right;
+    float: right;
+}
+
+.solution {
+    width:40%;
+    margin-bottom: 10px;
+}
+
+.solution #header {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    padding:5px;
+    background-color: #9fc5f8;
+}
+
+.solution #content {
+    padding:5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
 }

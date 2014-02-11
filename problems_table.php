@@ -28,16 +28,16 @@ class problems_table extends table_sql {
     function  __construct($cm, $id) {
         parent::__construct("mdl_lips_problem");
         $this->cm = $cm;
-        $this->set_sql("mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label", "mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id", "problem_category_id=" . $id);
+        $this->set_sql("mlp.id,problem_label,problem_date,problem_creator_id, difficulty_label, count(mls.id) as problem_resolutions", "mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls on mls.problem_solved_problem=mlp.id", "problem_category_id=" . $id. " GROUP BY mlp.id");
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'category', "categoryId" => $id)));
-
+        $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_problem where problem_category_id=".$id);
         $context = context_module::instance($cm->id);
         if (has_capability('mod/lips:administration', $context)) {
             $this->define_headers(array("Problème", "Difficulté", "Date", "Rédacteur", "Nombre de résolutions", ""));
-            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_creator_id", "problem_attempts", "actions"));
+            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_creator_id", "problem_resolutions", "actions"));
         } else {
             $this->define_headers(array("Problème", "Difficulté", "Date", "Rédacteur", "Nombre de résolutions"));
-            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_creator_id", "problem_attempts"));
+            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_creator_id", "problem_resolutions"));
         }
         $this->sortable(true);
     }

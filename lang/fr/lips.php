@@ -63,6 +63,7 @@ $string['ranks'] = 'Classements';
 $string['solved_problems'] = 'Problèmes résolus';
 $string['challenges'] = 'Défis reçus';
 $string['followed_users'] = 'Utilisateurs suivis';
+$string['attempts'] = "tentatives";
 
 /*--------------------------------------------------
  * Status
@@ -177,3 +178,4 @@ $string['web_service_communication_error'] = 'Une erreur est survenue lors de la
 $string['problem_author'] = 'Rédacteur';
 $string['problem_date_creation'] = 'Date de création';
 $string['problem_nb_resolutions'] = 'Nombre de résolutions';
+$string['problem_resolved_by'] = 'Résolu par';
