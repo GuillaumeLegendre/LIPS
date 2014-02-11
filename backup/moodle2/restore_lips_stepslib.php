@@ -33,8 +33,7 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
 
         // insert the lips record
         $newitemid = $DB->insert_record('lips', $data);
-        print_object($newitemid);
-        $this->mod_id = $newitemid->id;
+        $this->mod_id = $newitemid;
         $this->apply_activity_instance($newitemid);
     }
  
