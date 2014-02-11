@@ -17,8 +17,8 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
         // Define each element separated
 
         $lips = new backup_nested_element('lips', array('id'), array(
-        	'name', 'intro', 'introformat', 'compile_language', 'coloration_language',
-        	'language_picture', 'base_code'));
+        	'name', 'intro', 'introformat', 'timecreated', 'timemodified', 'compile_language',
+        	'coloration_language', 'language_picture', 'base_code'));
 
         $difficulties = new backup_nested_element('difficulties');
 
@@ -31,10 +31,10 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
             'category_name', 'category_documentation', 'category_documentation_type'));
  
         $problems = new backup_nested_element('problems');
- 
+
         $problem = new backup_nested_element('problem', array('id'), array(
             'problem_creator_id', 'problem_category_id', 'problem_label', 'problem_difficulty_id',
-            'problem_preconditions', 'problem_statement', 'problem_tips', 'problem_code', 'problem_unit_tests'));
+            'problem_preconditions', 'problem_statement', 'problem_tips', 'problem_code', 'problem_unit_tests', 'problem_date'));
  
         // Build the tree
  		$lips->add_child($difficulties);

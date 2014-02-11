@@ -112,15 +112,18 @@ class mod_lips_renderer extends plugin_renderer_base {
         $id = $this->page->cm->id;
         $view = optional_param('view', 0, PARAM_TEXT);
 
-        return '<ul id="administration_menu">
-            <li><a href="#">' . get_string('language', 'lips') . '</a>
+        $administrationmenu = '<ul id="administration_menu">';
+        if(has_role('adminplugin')) {
+            $administrationmenu .= '<li><a href="#">' . get_string('language', 'lips') . '</a>
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=language_configure">' . get_string('configure', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=language_picture">' . get_string('picture', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=language_base">' . get_string('base', 'lips') . '</a></li>
                 </ul>
-            </li>
-            <li><a href="#">Badges</a>
+            </li>';
+        }
+
+        $administrationmenu .= '<li><a href="#">Badges</a>
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_create">' . get_string('create', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_modify">' . get_string('modify', 'lips') . '</a></li>
@@ -142,6 +145,8 @@ class mod_lips_renderer extends plugin_renderer_base {
                 </ul>
             </li>
         </ul>';
+
+        return $administrationmenu;
     }
 
     /**
