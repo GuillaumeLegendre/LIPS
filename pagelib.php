@@ -323,9 +323,9 @@ class page_admin_langage_base extends page_view {
         echo $this->lipsoutput->display_p(get_string('administration_language_code_msg', 'lips'));
 
         $lips = get_current_instance();
-        if ($lips->compile_language == null && has_role('adminplugin'))
+        if ($lips->compile_language == null && has_role('administration'))
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_no_compile_language', 'lips'), 'ERROR');
-        if ($lips->coloration_language == null && has_role('adminplugin'))
+        if ($lips->coloration_language == null && has_role('administration'))
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_no_syntax_highlighting', 'lips'), 'WARNING');
 
         $lips = get_current_instance();
