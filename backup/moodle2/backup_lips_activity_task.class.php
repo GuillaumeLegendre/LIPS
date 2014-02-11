@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/mod/lips/backup/moodle2/backup_lips_stepslib.php'
 require_once($CFG->dirroot . '/mod/lips/backup/moodle2/backup_lips_settingslib.php');
  
 /**
- * choice backup task that provides all the settings and steps to perform one
+ * Lips backup task that provides all the settings and steps to perform one
  * complete backup of the activity
  */
 class backup_lips_activity_task extends backup_activity_task {
@@ -44,7 +44,7 @@ class backup_lips_activity_task extends backup_activity_task {
      * Define (add) particular steps this activity can have
      */
     protected function define_my_steps() {
-        // Choice only has one structure step
+        // Lips only has one structure step
         $this->add_step(new backup_lips_activity_structure_step('lips_structure', 'lips.xml'));
     }
  
