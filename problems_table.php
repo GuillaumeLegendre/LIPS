@@ -28,9 +28,11 @@ class problems_table extends table_sql {
     function  __construct($cm, $id) {
         parent::__construct("mdl_lips_problem");
         $this->cm = $cm;
-        $this->set_sql("mlp.id,problem_label,problem_date,problem_creator_id, difficulty_label, count(mls.id) as problem_resolutions", "mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls on mls.problem_solved_problem=mlp.id", "problem_category_id=" . $id. " GROUP BY mlp.id");
+        $this->set_sql("mlp.id,problem_label,problem_date,problem_creator_id, difficulty_label, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id",
+            "mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls on mls.problem_solved_problem=mlp.id join mdl_user mu on mu.id=problem_creator_id JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id",
+            "problem_category_id=" . $id . " GROUP BY mlp.id");
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'category', "categoryId" => $id)));
-        $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_problem where problem_category_id=".$id);
+        $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_problem where problem_category_id=" . $id);
         $context = context_module::instance($cm->id);
         if (has_capability('mod/lips:administration', $context)) {
             $this->define_headers(array("Problème", "Difficulté", "Date", "Rédacteur", "Nombre de résolutions", ""));
@@ -59,6 +61,8 @@ class problems_table extends table_sql {
                 $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'deleteProblem', 'problemId' => $attempt->id, 'originV' => "category", "categoryId" => $attempt->id)), new pix_icon("t/delete", "delete"));
             }
             return $a;
+        } else if ($colname == "problem_creator_id") {
+            return $OUTPUT->action_link(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'profile', 'id_user' => $attempt->user_id)), ucfirst($attempt->firstname) . ' ' . strtoupper($attempt->lastname));
         }
         return null;
     }

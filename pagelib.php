@@ -979,11 +979,12 @@ class page_solutions extends page_view {
 
         $details = get_problem_details($this->id);
         echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
-        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_creator_id;
+        $author_link = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . strtoupper($details[$this->id]->lastname));
+        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $author_link;
         echo $this->lipsoutput->display_p($author, array("class" => "field_page_problem"));
         $datecreation = $this->lipsoutput->display_span(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . date("d/m/y", $details[$this->id]->problem_date);
         echo $this->lipsoutput->display_p($datecreation, array("class" => "field_page_problem"));
-        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions." / ".$details[$this->id]->problem_attempts." ".get_string("attempts", "lips");
+        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions . " / " . $details[$this->id]->problem_attempts . " " . get_string("attempts", "lips");
         echo $this->lipsoutput->display_p($nbresolutions, array("class" => "field_page_problem"));
         $difficulty = $this->lipsoutput->display_span(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . get_string($details[$this->id]->difficulty_label, "lips");
         echo $this->lipsoutput->display_p($difficulty, array("class" => "field_page_problem"));
@@ -1039,11 +1040,12 @@ class page_problem extends page_view {
         $buttons = $this->lipsoutput->display_p($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("style" => "float:right"));
         $details = get_problem_details($this->id);
         echo $this->lipsoutput->display_top_page_problem($details[$this->id]->problem_label, $details[$this->id]->problem_category_id);
-        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_creator_id;
+        $author_link = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . strtoupper($details[$this->id]->lastname));
+        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $author_link;
         echo $this->lipsoutput->display_p($buttons . $author, array("class" => "field_page_problem"));
         $datecreation = $this->lipsoutput->display_span(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . date("d/m/y", $details[$this->id]->problem_date);
         echo $this->lipsoutput->display_p($datecreation, array("class" => "field_page_problem"));
-        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions." / ".$details[$this->id]->problem_attempts." ".get_string("attempts", "lips");
+        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions . " / " . $details[$this->id]->problem_attempts . " " . get_string("attempts", "lips");
         echo $this->lipsoutput->display_p($nbresolutions, array("class" => "field_page_problem"));
         $difficulty = $this->lipsoutput->display_span(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . get_string($details[$this->id]->difficulty_label, "lips");
         echo $this->lipsoutput->display_p($difficulty, array("class" => "field_page_problem"));
