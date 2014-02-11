@@ -404,6 +404,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
  */
 function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
+    
     $DB->update_record('lips_category', array('id' => $id, 'category_name' => $categoryname, 'category_documentation' => $categorydocumentation, 'category_documentation_type' => $categorydocumentationtype));
 }
 

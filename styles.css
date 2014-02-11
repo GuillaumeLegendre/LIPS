@@ -58,22 +58,47 @@ h3 {
     width: auto;
 }
 
+.search-form .fcontainer {
+    margin: 0 10px 0 10px;
+}
+
+.search-form .fitem_ftext, .search-form .fitem_ftext .fitemtitle, .search-form .fitem_ftext .ftext {
+    display: inline;
+    margin: 0;
+}
+
+.search-form .fitem_fsubmit, .search-form .fitem_fsubmit .fsubmit {
+    display: inline;
+    margin: 0;
+}
+
+.search-form input[type=text] {
+    height: 20px;
+    width: 30%;
+}
+
+.search-form input[type=submit] {
+    float: right;
+}
+
 /*---------------------------------
  *  Button
  *-------------------------------*/
-.lips-button, .lips-button:visited {
+.lips-button, .lips-button:visited, input[type=submit] {
     display: inline-block;
     padding: 5px 10px 6px;
     text-decoration: none;
     background-color: #9DC3F6;
     color: #FFFFFF;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    cursor: pointer;
 }
 
-.lips-button:hover {
+.lips-button:hover, input[type=submit]:hover {
     background-color: #7E9CC5;
     color: #FFFFFF;
     text-decoration: none;
