@@ -10,7 +10,6 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
     protected function define_structure() {
  
         $paths = array();
-        $userinfo = $this->get_setting_value('userinfo');
  
         $paths[] = new restore_path_element('lips', '/activity/lips');
         $paths[] = new restore_path_element('lips_difficulty', '/activity/lips/difficulties/difficulty');
@@ -64,14 +63,18 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         global $USER;
  
         $data = (object)$data;
-
-        // if pas user_info, problem_creator_id = user courant et problem_date = today
-        $data->problem_creator_id = $USER->id;
-
+        $userinfo = $this->get_setting_value('userinfo');
+        
         $data->problem_category_id = $this->get_mappingid('lips_category', $data->problem_category_id);
         $data->problem_difficulty_id = $this->get_mappingid('lips_difficulty', $data->problem_difficulty_id);
         $data->problem_date = $this->apply_date_offset($data->problem_date);
         $date->problem_attempts = 0;
+
+        // We are not including user info, so don't restore the old creator, use the current user.
+        if (!$userinfo) {
+            $data->problem_creator_id = $USER->id;
+            $data->problem_date = time();
+        }
  
         $newitemid = $DB->insert_record('lips_problem', $data);
     }
