@@ -29,7 +29,7 @@ require_once("$CFG->libdir/outputrenderers.php");
 class categories_table extends table_sql {
     private $cm;
 
-    public function  __construct($cm) {
+    public function  __construct($cm, $search = null) {
         parent::__construct("mdl_lips_category");
 
         $this->cm = $cm;

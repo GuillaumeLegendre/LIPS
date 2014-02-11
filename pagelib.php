@@ -738,7 +738,7 @@ class page_users extends page_view {
         $search = null;
         if ($searchForm->is_submitted()) {
             $data = $searchForm->get_submitted_data();
-            if(!empty($data->inputSearch)) {
+            if (!empty($data->inputSearch)) {
                 $search = $data->inputSearch;
             }
         }
@@ -919,11 +919,21 @@ class page_category extends page_view {
      */
     function display_content() {
         require_once(dirname(__FILE__) . '/problems_table.php');
+        require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
         $categorydetails = get_category_details($this->id);
         echo $this->lipsoutput->display_top_page_category($categorydetails);
+        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'categoryId' => $this->id)), null, 'post', '', array('class' => 'search-form'));
+        $searchform->display();
 
-        $table = new problems_table($this->cm, $categorydetails->id);
+        $search = null;
+        if ($searchform->is_submitted()) {
+            $data = $searchform->get_submitted_data();
+            if (!empty($data->inputSearch)) {
+                $search = $data->inputSearch;
+            }
+        }
+        $table = new problems_table($this->cm, $categorydetails->id, $search);
         $table->out(10, true);
     }
 }
