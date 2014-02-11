@@ -50,7 +50,7 @@ function lips_supports($feature) {
             return true;
         case FEATURE_SHOW_DESCRIPTION:
             return true;
-	case FEATURE_BACKUP_MOODLE2:
+        case FEATURE_BACKUP_MOODLE2:
         	return true;
         default:
             return null;
