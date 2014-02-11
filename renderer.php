@@ -156,25 +156,26 @@ class mod_lips_renderer extends plugin_renderer_base {
         $id = $this->page->cm->id;
         $view = optional_param('view', null, PARAM_TEXT);
         $action = optional_param('action', 'profile', PARAM_TEXT);
+        $iduser = optional_param('id_user', null, PARAM_TEXT);
 
         // Infos
-        $firstname = ucfirst($USER->firstname);
-        $lastname = strtoupper($USER->lastname);
-        $userpicture = new user_picture($USER);
-        $user = get_user_details(array('id_user_moodle' => $USER->id));
-        $rank = get_rank_details(array('id' => $user->user_rank_id));
+        $userdetails = ($iduser == null) ? get_user_details(array('id_user_moodle' => $USER->id)) : get_user_details(array('id' => $iduser));
+        $moodleuserdetails = get_moodle_user_details(array('id' => $userdetails->id_user_moodle));
+        $rank = get_rank_details(array('id' => $userdetails->user_rank_id));
+        $userpicture = get_user_picture_url(array('id_user_moodle' => $moodleuserdetails->id), 'f1');
 
-        $menu = '<div id="profile-menu">
-            <img src="' . str_replace('f2', 'f1', $userpicture->get_url($PAGE)) . '" id="picture"/>
-            <a href="#" id="follow" class="lips-button">S\'abonner</a>
-            <div id="background">
-                <div id="infos">
-                    <div id="role">' . get_string($user->user_status, 'lips') . '</div>
-                    <div id="rank">' . $rank->rank_label . '</div>
-                </div>
-                <div id="user">' . $firstname . ' ' . $lastname . '</div>
+        $menu = '<div id="profile-menu"><img src="' . $userpicture . '" id="picture"/>';
+        if($iduser != null)
+            $menu .= '<a href="#" id="follow" class="lips-button">S\'abonner</a>';
+        
+        $menu .= '<div id="background">
+            <div id="infos">
+                <div id="role">' . get_string($userdetails->user_status, 'lips') . '</div>
+                <div id="rank">' . $rank->rank_label . '</div>
             </div>
-            <ul id="links">';
+            <div id="user">' . ucfirst($moodleuserdetails->firstname) . ' ' . strtoupper($moodleuserdetails->lastname) . '</div>
+        </div>
+        <ul id="links">';
 
         $menu .= ($action == 'profile') ? '<li><p class="current">Profil</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;">' . get_string('profile', 'lips') . '</a></li>';
         $menu .= ($action == 'ranks') ? '<li><p class="current">Classements</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=ranks">' . get_string('ranks', 'lips') . '</a></li>';
@@ -223,10 +224,11 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param string $editorid Ace editor ID
      * @param string $areaid Area ID. Use to replic the data on the textarea
      * @param string $mode Ace mode for the syntax highlightning
+     * @param string $flag Ace flag (configure, code or unit-test)
      * @param string $theme Ace theme
      */
-    public function display_ace_form($editorid, $areaid, $mode, $theme = 'eclipse') {
-        echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '")</script>';
+    public function display_ace_form($editorid, $areaid, $mode, $flag = '', $theme = 'eclipse') {
+        echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '", "' . $flag . '")</script>';
     }
 
     /**

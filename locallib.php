@@ -122,6 +122,18 @@ function get_user_details(array $conditions = null) {
 }
 
 /**
+ * Get details of a specific moodle user.
+ *
+ * @param array $conditions Conditions to match the user.
+ * @return object An array containing the details of the requested user.
+ */
+function get_moodle_user_details(array $conditions = null) {
+    global $DB;
+
+    return $DB->get_record('user', $conditions, '*');
+}
+
+/**
  * Insert the user in the database if not already present
  */
 function insert_user_if_not_exists() {
@@ -153,6 +165,22 @@ function insert_user($idusermoodle, $userstatus, $userrankid, $userscore) {
         'user_rank_id' => $userrankid,
         'user_score' => $userscore
     ));
+}
+
+/**
+ * Get the user picture url
+ *
+ * @param array $conditions Conditions to match the user
+ * @param string $size Base picture size (f1, f2 or f3)
+ * @return string URL of the user picture
+ */
+function get_user_picture_url($conditions, $size = 'f2') {
+    global $PAGE;
+
+    $user = get_moodle_user_details(array('id' => get_user_details($conditions)->id_user_moodle));
+
+    $userpicture = new user_picture($user);
+    return str_replace('f2', $size, $userpicture->get_url($PAGE));
 }
 
 /**

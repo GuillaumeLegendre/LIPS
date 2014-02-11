@@ -18,7 +18,14 @@ global $CFG;
 require_once("$CFG->libdir/tablelib.php");
 require_once("$CFG->libdir/outputrenderers.php");
 
-
+/**
+ * Categories table
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickaël Ohlen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class categories_table extends table_sql {
     private $cm;
 
@@ -32,11 +39,7 @@ class categories_table extends table_sql {
             LEFT JOIN mdl_lips_problem mlp
             ON mlc.id = mlp.problem_category_id", "mlc.id_language=" . get_current_instance()->id . "
             GROUP BY mlc.id HAVING COUNT( mlc.id ) >0");
-        $this->set_count_sql("
-            SELECT COUNT(*)
-            FROM mdl_lips_category mlc
-            LEFT JOIN mdl_lips_problem mlp
-            ON mlc.id = mlp.problem_category_id");
+        $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_category WHERE id_language = " . get_current_instance()->id);
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "problems")));
         $context = context_module::instance($cm->id);
 

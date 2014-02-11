@@ -256,9 +256,7 @@ class mod_lips_configure_code_form extends moodleform {
         $mcustomdata = $this->_customdata;
 
         // Textarea for base code.
-        $mform->addElement('html', '<div id="configEditor" class="ace">' .
-            (($mcustomdata['base_code'] == null || $mcustomdata['base_code'] == '') ?
-                '' : htmlspecialchars($mcustomdata['base_code'])) . '</div>');
+        $mform->addElement('html', '<div id="configEditor" class="ace">' . (($mcustomdata['base_code'] == null || $mcustomdata['base_code'] == '') ? '' : htmlspecialchars($mcustomdata['base_code'])) . '</div>');
         $mform->addElement('textarea', 'areaBaseCode', null, array('rows' => 15, 'cols' => 100, 'class' => 'editorCode'));
         $mform->setDefault('areaBaseCode', $mcustomdata['base_code']);
 

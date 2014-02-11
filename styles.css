@@ -28,6 +28,29 @@ h3 {
 }
 
 /*---------------------------------
+ *  Table
+ *-------------------------------*/
+
+.generaltable {
+    width: 100%;
+    margin: auto;
+}
+
+.generaltable td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.generaltable td .user-picture img {
+    float: left;
+}
+
+.generaltable td .user-picture a {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/*---------------------------------
  *  Forms
  *-------------------------------*/
 
@@ -88,7 +111,7 @@ h3 {
 }
 
 .editorCode {
-    /*display: none;*/
+    display: none;
 }
 
 /*---------------------------------
@@ -128,10 +151,10 @@ h3 {
 
 #profile-menu #background #infos {
     float: right;
+    line-height: 30px;
 }
 
 #profile-menu #background #infos #role, #profile-menu #background #infos #rank {
-    line-height: 29px;
     color: #FFFFFF;
     font-weight: bold;
     margin-right: 10px;
@@ -286,15 +309,6 @@ h3 {
 
     border: none;
     border-bottom: 1px solid #353539;
-}
-
-.generaltable {
-    width: 100%;
-    margin: auto;
-}
-
-.generaltable td {
-    text-align: center;
 }
 
 #administration_menu ul li:last-child a {
