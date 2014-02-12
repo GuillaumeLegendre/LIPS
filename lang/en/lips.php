@@ -181,13 +181,10 @@ $string['administration_problem_create_subject_subtitle'] = '3. Subject';
 $string['administration_problem_create_subject_msg'] = 'Write the problem subject and tips';
 $string['administration_problem_create_code_subtitle'] = '4. Code';
 $string['administration_problem_create_code_msg'] = 'Start to import all the librairies needed for the problem resolution.<br/><br/>Then write the code that the user will complete.<br/>To define editable areas, use the tag <span style="color: red;">&lt;lips-code/&gt;</span>.<br/><br/>To finish, ';
-<<<<<<< HEAD
 $string['administration_problem_create_code_import_label'] = 'Import librairies';
 $string['administration_problem_create_code_complete_label'] = 'Code to complete';
 $string['administration_problem_create_code_unittest_label'] = 'Unit tests';
 $string['administration_delete_problem_confirmation'] = "Confirm the deletion of the problem";
-=======
->>>>>>> 417a85c3466af567660fa74b329371065c20226a
 $string['administration_language_form_select_category_error'] = 'You must select a category';
 $string['administration_language_form_select_difficulty_error'] = 'You must select a difficulty';
 $string['administration_language_form_select_name_error'] = 'You must enter a name';
