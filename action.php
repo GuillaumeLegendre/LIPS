@@ -75,6 +75,36 @@ switch ($action) {
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
         }
         break;
+
+    case 'follow':
+        $tofollow = optional_param('to_follow', 0, PARAM_INT);
+        $originuser = optional_param('originUser', null, PARAM_TEXT);
+
+        // Follow the user
+        $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+        follow($userdetails->id, $tofollow);
+
+        if ($originuser == null) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+        } else {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'id_user' => $originuser)));
+        }
+        break;
+
+    case 'unfollow':
+        $tounfollow = optional_param('to_unfollow', 0, PARAM_INT);
+        $originuser = optional_param('originUser', null, PARAM_TEXT);
+
+        // Unfollow the user
+        $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+        unfollow($userdetails->id, $tounfollow);
+
+        if ($originuser == null) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+        } else {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'id_user' => $originuser)));
+        }
+        break;
 }
 
 redirect(new moodle_url('view.php', array('id' => $cm->id)));

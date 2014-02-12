@@ -101,7 +101,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param array $attributes Image attributes
      * @return string Img tag
      */
-    public function display_img($src, array $attributes = null) {
+    public function display_img($src, array $attributes = array()) {
         return html_writer::tag('img', null, array_merge(array('src' => './images/' . $src), $attributes));
     }
 
@@ -144,6 +144,9 @@ class mod_lips_renderer extends plugin_renderer_base {
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_create">' . get_string('create', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_select_modify">' . get_string('modify', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_delete">' . get_string('delete', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problems_import">' . get_string('import', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problems_export">' . get_string('export', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=my_problems">' . get_string('administration_my_problems_title', 'lips') . '</a></li>
                 </ul>
             </li>
         </ul>';
@@ -166,14 +169,34 @@ class mod_lips_renderer extends plugin_renderer_base {
         $iduser = optional_param('id_user', null, PARAM_TEXT);
 
         // Infos
-        $userdetails = ($iduser == null) ? get_user_details(array('id_user_moodle' => $USER->id)) : get_user_details(array('id' => $iduser));
+        $currentuserdetails = get_user_details(array('id_user_moodle' => $USER->id));
+        $userdetails = ($iduser == null) ? $currentuserdetails : get_user_details(array('id' => $iduser));
         $moodleuserdetails = get_moodle_user_details(array('id' => $userdetails->id_user_moodle));
         $rank = get_rank_details(array('id' => $userdetails->user_rank_id));
         $userpicture = get_user_picture_url(array('id_user_moodle' => $moodleuserdetails->id), 'f1');
 
         $menu = '<div id="profile-menu"><img src="' . $userpicture . '" id="picture"/>';
-        if ($iduser != null)
-            $menu .= '<a href="#" id="follow" class="lips-button">S\'abonner</a>';
+        if ($iduser != null && $iduser != $currentuserdetails->id) {
+            if(is_following($currentuserdetails->id, $userdetails->id)) {
+                $menu .= $this->render(new action_link(new moodle_url('action.php', array(
+                    'id' => $this->page->cm->id,
+                    'action' => 'unfollow',
+                    'originV' => 'profile',
+                    'originUser' => $userdetails->id,
+                    'to_unfollow' => $userdetails->id
+                )),
+                get_string('unfollow', 'lips'), null, array("id" => "follow", "class" => "lips-button")));
+            } else {
+                $menu .= $this->render(new action_link(new moodle_url('action.php', array(
+                    'id' => $this->page->cm->id,
+                    'action' => 'follow',
+                    'originV' => 'profile',
+                    'originUser' => $userdetails->id,
+                    'to_follow' => $userdetails->id
+                )),
+                get_string('follow', 'lips'), null, array("id" => "follow", "class" => "lips-button")));
+            }
+        }
 
         $menu .= '<div id="background">
             <div id="infos">
@@ -246,37 +269,6 @@ class mod_lips_renderer extends plugin_renderer_base {
     }
 
     /**
-     * Display the top of the page representing a category.
-     *
-     * @param object $categorydetails Category details
-     * @return string div tag
-     */
-    public function display_top_page_category($categorydetails) {
-        if ($categorydetails->category_documentation_type == 'LINK') {
-            $link = new action_link(new moodle_url($categorydetails->category_documentation), get_string("documentation", "lips"));
-        } else if ($categorydetails->category_documentation_type == 'TEXT') {
-            $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categorydetails->id)), get_string("documentation", "lips"));
-        }
-        $renderlink = "";
-        if (isset($link)) {
-            $renderlink = $this->render($link);
-        }
-        return html_writer::tag('div', $this->display_p($renderlink, array("style" => "float: right;")) . $this->display_h1($categorydetails->category_name));
-    }
-
-    /**
-     * Display the top of the page representing a problem.
-     *
-     * @param string $problemname Name of the problem
-     * @param int $problemid id of the problem
-     * @return string div tag
-     */
-    public function display_top_page_problem($problemname, $problemid) {
-        $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $problemid)), get_string("documentation", "lips"));
-        return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float:right;")) . $this->display_h2($problemname));
-    }
-
-    /**
      * Display a div
      *
      * @param string $content Text content
@@ -312,5 +304,35 @@ class mod_lips_renderer extends plugin_renderer_base {
         return html_writer::tag('div', $header . $content, array("class" => "solution"));
     }
 
+    /**
+     * Display the documentation
+     *
+     * @param object $categorydetails Category details
+     * @return object|null Link to the category or null if no category
+     */
+    public function display_documentation($categorydetails) {
+        $url = null;
+        if ($categorydetails->category_documentation_type == 'LINK') {
+            $url = new moodle_url($categorydetails->category_documentation);
+        } else if ($categorydetails->category_documentation_type == 'TEXT') {
+            $url = new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categorydetails->id));
+        }
 
+        if($url != null) {
+            return $this->display_div($this->render(new action_link($url, get_string("documentation", "lips"))), array("style" => "float: right;"));
+        }
+
+        return null;
+    }
+
+    /**
+     * Display a problem information
+     *
+     * @param string $info Information title
+     * @param string $text Information text
+     * @return string The problem information
+     */
+    public function display_problem_information($info, $text) {
+        return $this->display_p($this->display_span($info, array("class" => "label_field_page_problem")) . " " . $text);
+    }
 }

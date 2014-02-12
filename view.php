@@ -103,6 +103,14 @@ switch ($view) {
                     break;
                 case "problem_delete":
                     $viewpage = new page_admin_problem_delete($cm);
+                case "problems_import" :
+                    $viewpage = new page_import_problems($cm);
+                break;
+                case "problems_export" :
+                    $viewpage = new page_export_problems($cm);
+                break;
+                case "my_problems":
+                    $viewpage = new page_admin_my_problems($cm);
                     break;
                 default:
                     $viewpage = new page_admin($cm);
@@ -151,9 +159,9 @@ switch ($view) {
         break;
     case "deleteCategory" :
         $idcategory = optional_param('categoryId', 0, PARAM_INT);
-        $originV = optional_param('originV', 0, PARAM_TEXT);
-        $originAction = optional_param('originAction', 0, PARAM_TEXT);
-        $viewpage = new page_delete_category($cm, $idcategory, $originV, $originAction);
+        $originv = optional_param('originV', 0, PARAM_TEXT);
+        $originaction = optional_param('originAction', 0, PARAM_TEXT);
+        $viewpage = new page_delete_category($cm, $idcategory, $originv, $originaction);
         break;
     case "deleteProblem" :
         $idcategory = optional_param('problemId', 0, PARAM_INT);

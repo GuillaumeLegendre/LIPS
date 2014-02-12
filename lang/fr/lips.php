@@ -47,6 +47,8 @@ $string['pluginname'] = 'LIPS';
 $string['create'] = 'Créer';
 $string['modify'] = 'Modifier';
 $string['delete'] = 'Supprimer';
+$string['import'] = 'Import';
+$string['export'] = 'Export';
 $string['category'] = 'Catégorie';
 $string['documentation'] = 'Documentation';
 $string['name'] = 'Nom';
@@ -59,7 +61,8 @@ $string['search'] = 'Rechercher';
 $string['answer'] = 'Réponse';
 $string['edit'] = 'Modifier';
 $string['solutions'] = 'Solutions';
-$string['follow'] = 'Suivre';
+$string['follow'] = 'S\'abonner';
+$string['unfollow'] = 'Se désabonner';
 $string['user'] = 'Utilisateur';
 $string['grade'] = 'Grade';
 $string['status'] = 'Statut';
@@ -69,8 +72,11 @@ $string['challenges'] = 'Défis reçus';
 $string['followed_users'] = 'Utilisateurs suivis';
 $string['attempts'] = "tentatives";
 $string['The'] = "Le";
+$string['from'] = "de";
 $string['prerequisite'] = "Prérequis";
 $string['difficulty'] = "Difficulté";
+$string['send_response'] = "Envoyer la réponse";
+$string['similar_problems'] = 'Essayez aussi';
 
 /*--------------------------------------------------
  * Status
@@ -167,12 +173,17 @@ $string['administration_problem_create_subject_subtitle'] = '3. Enoncé';
 $string['administration_problem_create_subject_msg'] = "Rédigez l'énoncé et les astuces du problème";
 $string['administration_problem_create_code_subtitle'] = '4. Code';
 $string['administration_problem_create_code_msg'] = 'Commencez par importer les libraires utiles à la résolution du problème.<br/><br/>Ensuite, écrivez le code que l\'utilisateur devra complèter.<br/>Pour définir les zones éditables, utilisez la balise <span style="color: red">&lt;lips-code&gt;</span><br/><br/>Pour finir, rédigez la partie <strong>Tests unitaires</strong> qui correspond à la liste des tests effectués pour valider ou non le problème. Le contenu de cette zone correspond au <strong>main</strong> du programme.</br/>Le programme doit retourner <strong>True</strong> en cas de réussite et <strong>False</strong> dans le cas contraire.<br/>Vous pouvez définir la liste des tests unitaires qui seront affichés lors de la consultation du problème. Pour cela, entourez le test unitaire à afficher d\'une balise <span style="color: red">&lt;lips-unit-test&gt;&lt;/lips-unit-test&gt;.</span>';
-
 $string['administration_problem_create_code_import_label'] = 'Importer des librairies';
 $string['administration_problem_create_code_complete_label'] = 'Code à completer';
 $string['administration_problem_create_code_unittest_label'] = 'Tests unitaires';
 $string['administration_problem_create_success'] = 'Le problème a été créé';
 $string['administration_problem_modify_success'] = 'Le problème a été modifié';
+
+$string['administration_problems_import_title'] = 'Importer des problèmes dans LIPS';
+$string['administration_problems_export_title'] = 'Exporter des problèmes dans LIPS';
+
+// My problems
+$string['administration_my_problems_title'] = "Mes problèmes";
 
 /*--------------------------------------------------
  * Web services

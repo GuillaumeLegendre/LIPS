@@ -53,9 +53,12 @@ class problems_table extends table_sql {
 
     function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE, $USER;
+
         if ($colname == "problem_label") {
+            $star = ($USER->id == $attempt->problem_creator_id) ? ' <span style="color :red">*</span>' : '';
+
             $url = new action_link(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $attempt->id)), $attempt->problem_label);
-            return $OUTPUT->render($url);
+            return $OUTPUT->render($url) . $star;
         } else if ($colname == "problem_date") {
             return date('d/m/Y', $attempt->problem_date);
         } else if ($colname == "difficulty_label") {

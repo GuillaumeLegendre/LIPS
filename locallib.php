@@ -118,6 +118,7 @@ function convert_active_tab($view) {
  */
 function get_user_details(array $conditions = null) {
     global $DB;
+
     return $DB->get_record('lips_user', $conditions, '*');
 }
 
@@ -304,11 +305,24 @@ function get_category_details($id) {
 /**
  * Get details of a specific category.
  *
+ * @param int $id Problem ID
  * @return object An array containing the details of a category.
  */
 function get_problem_details($id) {
     global $DB;
     return $DB->get_records_sql("select mlp.id,problem_label, mld.id as difficulty_id, problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_code, problem_imports from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id join mdl_user mu on mu.id=problem_creator_id JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id where mlp.id=" . $id);
+}
+
+/**
+ * Get the similar problems of a problem
+ *
+ * @param int $mainproblemid Main problem ID
+ * @return object The similar problems of a problem
+ */
+function get_similar_problems($mainproblemid) {
+    global $DB;
+
+    return $DB->get_records('lips_problem_similar', array('problem_similar_main_id' => $mainproblemid));
 }
 
 /**
@@ -340,6 +354,7 @@ function delete_problem($id) {
  */
 function is_author($idproblem, $iduser) {
     global $DB;
+    
     return $DB->get_record("lips_problem", array('id' => $idproblem))->problem_creator_id == $iduser;
 }
 
@@ -407,7 +422,8 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
 function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
 
-    $DB->update_record('lips_category', array('id' => $id, 'category_name' => $categoryname, 'category_documentation' => $categorydocumentation, 'category_documentation_type' => $categorydocumentationtype));
+    $DB->update_record('lips_category', array('id' => $id, 'category_name' => $categoryname,
+        'category_documentation' => $categorydocumentation, 'category_documentation_type' => $categorydocumentationtype));
 }
 
 /**
@@ -445,29 +461,29 @@ function ace_available_languages() {
 }
 
 /**
- * Returns the number of resolutions of a user.
+ * Returns the number of solutions of a user.
  *
  * @param int $idproblem Problem id
  * @param int $iduser User id
  * @param int number of resolutions
+ * @return object The number of resolutions of a user
  */
 function nb_resolutions_problem($iduser, $idproblem) {
     global $DB;
+
     return $DB->count_records("lips_problem_solved", array('problem_solved_problem' => $idproblem, 'problem_solved_user' => $iduser));
 }
 
 
 /**
- * Get the available languages for the ace plugin
+ * Get the displayable unit tests
  *
- * @return array An array of available languages
+ * @param string $unittests Problem unit tests
+ * @return array The displayable unit tests
  */
-function get_displayable_unittests($idproblem) {
-    $details = get_problem_details($idproblem);
-    $unittests = $details[$idproblem]->problem_unit_tests;
-    preg_match_all("|<lips-unit-tests>(.*?)</lips-unit-tests>|U",
-        $unittests,
-        $out);
+function get_displayable_unittests($unittests) {
+    preg_match_all("|<lips-unit-test>(.*?)</lips-unit-test>|U", $unittests, $out);
+
     return $out;
 }
 
@@ -516,7 +532,50 @@ function get_solutions($problemid, $search = null) {
     }
 }
 
+/**
+ * Update a problem with specified parameters.
+ *
+ * @param array $data New datas
+ */
 function update_problem($data) {
     global $DB;
     $DB->update_record('lips_problem', $data);
+}
+
+/**
+ * Test if $followed if following $followed
+ *
+ * @param int $follower User who follow the other user
+ * @param int $followed User followed by the other user
+ * @return bool True if $follower is following $followed, otherwise false
+ */
+function is_following($follower, $followed) {
+    global $DB;
+
+    $result = $DB->count_records('lips_follow', array('follower' => $follower, 'followed' => $followed), '*');
+    return $result >= 1;
+}
+
+/**
+ * Follow a user
+ *
+ * @param int $follower Follower
+ * @param int $followed Followed user
+ */
+function follow($follower, $followed) {
+    global $DB;
+
+    $DB->insert_record('lips_follow', array('follower' => $follower, 'followed' => $followed));
+}
+
+/**
+ * Unfollow a user
+ *
+ * @param int $follower Follower
+ * @param int $followed Followed user
+ */
+function unfollow($follower, $followed) {
+    global $DB;
+
+    $DB->delete_records('lips_follow', array('follower' => $follower, 'followed' => $followed));
 }

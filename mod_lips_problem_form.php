@@ -18,6 +18,8 @@
 
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once(dirname(__FILE__) . '/locallib.php');
+require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
+require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php' );
 
 /**
  * Form to create a problem
@@ -38,13 +40,13 @@ class mod_lips_problem_create_form extends moodleform {
         $mform =& $this->_form;
         $output = $PAGE->get_renderer('mod_lips');
 
-        // Fetch all categories
+        // Fetch all categories.
         $categories = array();
         foreach (fetch_all_categories(get_current_instance()->id) as $category) {
             $categories[$category->id] = $category->category_name;
         }
 
-        // Fetch all difficulties
+        // Fetch all difficulties.
         $difficulties = array();
         foreach (fetch_all_difficulties() as $difficulty) {
             $difficulties[$difficulty->id] = get_string($difficulty->difficulty_label, "lips");
@@ -53,11 +55,11 @@ class mod_lips_problem_create_form extends moodleform {
         // /!\ DO NOT DELETE.
         $mform->addElement('select', 'correction', null);
 
-        // Preconfig
+        // Preconfig.
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_preconfig_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_language_code_msg", "lips"));
 
-        // Global Informations
+        // Global Informations.
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_informations_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_informations_msg", "lips"));
 
@@ -74,7 +76,7 @@ class mod_lips_problem_create_form extends moodleform {
         $mform->addElement('text', 'problem_preconditions', get_string('prerequisite', 'lips'), array('size' => '64', 'maxlength' => '255'));
         $mform->setType('problem_preconditions', PARAM_TEXT);
 
-        // Subject
+        // Subject.
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_subject_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_subject_msg", "lips"));
 
@@ -82,11 +84,11 @@ class mod_lips_problem_create_form extends moodleform {
         $mform->addRule('problem_statement', get_string('administration_language_form_select_subject_error', 'lips'), 'required', null, 'client');
         $mform->addElement('editor', 'problem_tips', get_string("tips", "lips"));
 
-        // Code
+        // Code.
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_code_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_code_msg", "lips"));
 
-        // Textarea for the imports
+        // Textarea for the imports.
         $mform->addElement('html', '<p class="acetitle">' . get_string("administration_problem_create_code_import_label", "lips") . '</p>');
         $mform->addElement('html', '<div id="importsEditor" class="ace"></div>');
         $mform->addElement('textarea', 'problem_imports', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
@@ -288,9 +290,9 @@ class mod_lips_problem_modify_form extends moodleform {
     public function handle($instance) {
         global $USER, $PAGE;
         // Do nothing if not submitted or cancelled.
-        if (!$this->is_submitted() || $this->is_cancelled())
+        if (!$this->is_submitted() || $this->is_cancelled()) {
             return;
-
+        }
         // Form data.
         $data = $this->get_submitted_data();
         // The validation failed.
@@ -342,5 +344,182 @@ class mod_lips_problem_modify_select_form extends moodleform {
 
         // Modify button.
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+    }
+}
+
+/**
+ * Form to import problems
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Anaïs PICOREAU
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class mod_lips_problems_import_form extends moodleform {
+
+    /**
+     * Form definition
+     */
+    public function definition() {
+        global $PAGE, $USER;
+        $mform =& $this->_form;
+        $context = $PAGE->context;
+        $coursecontext = $context->get_course_context();
+        $courseid = $coursecontext->instanceid;
+
+        // Import button.
+        $mform->addElement('submit', 'submit', get_string('import', 'lips'));
+    }
+
+     /**
+     * Form custom validation
+     *
+     * @param array $data Form data
+     * @param array $files Form uploaded files
+     * @return array Errors array
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        return $errors;
+    }
+
+    /**
+     * Handle the form
+     *
+     * @param array $data Form data
+     * @param array $files Form uploaded files
+     */
+    public function handle($instance) {
+        global $DB, $USER, $PAGE;
+
+        // Do nothing if not submitted or cancelled.
+        if (!$this->is_submitted() || $this->is_cancelled()) {
+            return;
+        }
+
+        // Form data.
+        // $data = $this->get_submitted_data();
+
+        // The validation failed.
+        // $errors = $this->validation($data, null);
+        // if (count($errors) > 0) {
+        //     foreach ($errors as $error) {
+        //         echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
+        //     }
+        //     return;
+        // }
+
+        //require_login($course, null, $cm);
+        // require_capability('moodle/restore:restorecourse', $context);
+
+        // Transaction.
+        // $transaction = $DB->start_delegated_transaction( );
+
+        // Get current course id. 
+        $context = $PAGE->context;
+        $coursecontext = $context->get_course_context();
+        $courseid = $coursecontext->instanceid;
+
+        // Get current user.
+        $userid = $USER->id;
+
+        // A file from $CFG->dataroot . '/temp/backup/'
+        $folder = "15b7aebfeda81a60750cd8bbf6e6ab0e";
+
+        // Restore backup into course.
+        $controller = new restore_controller($folder, $courseid, 
+            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $userid, backup::TARGET_CURRENT_ADDING);
+        $controller->execute_precheck();
+        $controller->execute_plan();
+
+        // Commit
+        // $transaction->allow_commit();
+
+        // Success message.
+        // echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_create_success', 'lips'), 'SUCCESS');
+    }
+}
+
+/**
+ * Form to export problems
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Anaïs PICOREAU
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class mod_lips_problems_export_form extends moodleform {
+
+    /**
+     * Form definition
+     */
+    public function definition() {
+        global $PAGE, $USER;
+        $mform =& $this->_form;
+
+        // Export button.
+        $mform->addElement('submit', 'submit', get_string('export', 'lips'));
+    }
+
+     /**
+     * Form custom validation
+     *
+     * @param array $data Form data
+     * @param array $files Form uploaded files
+     * @return array Errors array
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        return $errors;
+    }
+
+    /**
+     * Handle the form
+     *
+     * @param array $data Form data
+     * @param array $files Form uploaded files
+     */
+    public function handle($instance) {
+        global $DB, $USER, $PAGE;
+
+        // Do nothing if not submitted or cancelled.
+        if (!$this->is_submitted() || $this->is_cancelled())
+            return;
+
+        // Form data.
+        // $data = $this->get_submitted_data();
+
+        // The validation failed.
+        // $errors = $this->validation($data, null);
+        // if (count($errors) > 0) {
+        //     foreach ($errors as $error) {
+        //         echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
+        //     }
+        //     return;
+        // }
+        // $data->problem_date = time();
+        // $data->problem_creator_id = $USER->id;
+        // $data->problem_statement = $data->problem_statement['text'];
+        // $data->problem_tips = $data->problem_tips['text'];
+        // $DB->insert_record('lips_problem', $data);
+
+        //require_login($course, null, $cm);
+        // require_capability('moodle/backup:backupactivity', context_module::instance($cm->id));
+
+        // Get current module id. 
+        $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);
+        $moduleid = $cm->id;
+
+        // Get current user.
+        $userid = $USER->id;
+
+        $bc = new backup_controller(backup::TYPE_1ACTIVITY, $moduleid, backup::FORMAT_MOODLE,
+                            backup::INTERACTIVE_YES, backup::MODE_GENERAL, $userid);
+        $bc->finish_ui();
+        $bc->execute_plan();
+        $bc->get_results();
+
+        // Success message.
+        // echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_create_success', 'lips'), 'SUCCESS');
     }
 }

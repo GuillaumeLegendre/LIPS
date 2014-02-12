@@ -1,8 +1,17 @@
+Complèter la fonction isPalindrome(word) qui reconnaît si le mot est un palindrome ou non.
+La fonction doit retourner true si le mot est un palindrome et false dans le cas contraire.
+
+------------------------------------------------------------------------------------------------
+
 import java.util.*;
+
+------------------------------------------------------------------------------------------------
 
 public static boolean isPalindrome(String word) {
     return <lips-code/>;
 }
+
+------------------------------------------------------------------------------------------------
 
 boolean test1 = <lips-unit-test>isPalindrome("radar") == true</lips-unit-test>;
 boolean test2 = <lips-unit-test>isPalindrome("kayak") == true</lips-unit-test>;

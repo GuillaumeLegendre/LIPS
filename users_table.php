@@ -37,10 +37,10 @@ class users_table extends table_sql {
      */
     public function  __construct($cm, $search = null) {
         parent::__construct("mdl_lips_user");
-
         $this->cm = $cm;
+
         if($search == null) {
-            $this->set_sql("mlu.id, firstname, lastname, user_status, rank_label",
+            $this->set_sql("mlu.id, mlu.id_user_moodle, firstname, lastname, user_status, rank_label",
                 "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",
                 "mlu.id_user_moodle = mu.id AND mlu.user_rank_id = mlr.id");
             $this->set_count_sql('SELECT COUNT(*) FROM mdl_lips_user');
@@ -64,7 +64,7 @@ class users_table extends table_sql {
      * @param string $colname Column name
      */
     public function other_cols($colname, $attempt) {
-        global $OUTPUT, $PAGE;
+        global $OUTPUT, $PAGE, $USER;
 
         switch($colname) {
             case 'user_name':
@@ -82,12 +82,32 @@ class users_table extends table_sql {
                 break;
 
             case 'user_follow':
-                $url = new action_link(new moodle_url('view.php', array(
-                    'id' => $this->cm->id,
-                    'view' => 'users')),
-                get_string('follow', 'lips'), null, array("class" => "lips-button"));
+                $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
 
-                return $OUTPUT->render($url);
+                if(is_following($userdetails->id, $attempt->id)) {
+                    $url = new action_link(new moodle_url('action.php', array(
+                        'id' => $this->cm->id,
+                        'action' => 'unfollow',
+                        'originV' => 'users',
+                        'to_unfollow' => $attempt->id
+                    )),
+                    get_string('unfollow', 'lips'), null, array("class" => "lips-button"));
+                } else {
+                    $url = new action_link(new moodle_url('action.php', array(
+                        'id' => $this->cm->id,
+                        'action' => 'follow',
+                        'originV' => 'users',
+                        'to_follow' => $attempt->id
+                    )),
+                    get_string('follow', 'lips'), null, array("class" => "lips-button"));
+                }
+
+                // You can't follow yourself
+                if($attempt->id_user_moodle != $USER->id) {
+                    return $OUTPUT->render($url);
+                } else {
+                    return '';
+                }
                 break;
         }
 
