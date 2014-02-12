@@ -97,6 +97,9 @@ switch ($view) {
                 case "problem_create":
                     $viewpage = new page_admin_problem_create($cm);
                     break;
+                case "my_problems":
+                    $viewpage = new page_admin_my_problems($cm);
+                    break;
                 default:
                     $viewpage = new page_admin($cm);
                     break;

@@ -37,8 +37,8 @@ class users_table extends table_sql {
      */
     public function  __construct($cm, $search = null) {
         parent::__construct("mdl_lips_user");
-
         $this->cm = $cm;
+
         if($search == null) {
             $this->set_sql("mlu.id, firstname, lastname, user_status, rank_label",
                 "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",

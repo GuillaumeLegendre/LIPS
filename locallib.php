@@ -118,6 +118,7 @@ function convert_active_tab($view) {
  */
 function get_user_details(array $conditions = null) {
     global $DB;
+    
     return $DB->get_record('lips_user', $conditions, '*');
 }
 

@@ -183,7 +183,7 @@ class page_admin extends page_view {
 
         // Administration menu
         echo $this->lipsoutput->display_administration_menu();
-        echo '<br/><br/><br/><br/>';
+        echo '<br/><br/><br/><br/><br/>';
     }
 }
 
@@ -714,6 +714,48 @@ class page_admin_problem_create extends page_view {
 }
 
 /**
+ * Teacher problems
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin Got
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_my_problems extends page_view {
+
+    /**
+     * page_admin_my_problems constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_my_problems content
+     */
+    function display_content() {
+        global $CFG, $USER;
+
+        require_once(dirname(__FILE__) . '/my_problems_table.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // My problems
+        echo $this->lipsoutput->display_h2(get_string('administration_my_problems_title', 'lips'));
+
+        $lips = get_current_instance();
+        $table = new my_problems_table($this->cm, $lips->id, $USER->id);
+        $table->out(get_string('my_problems_table', 'lips'), true);
+    }
+}
+
+/**
  * Page to list the users
  *
  * @package    mod_lips
@@ -738,7 +780,6 @@ class page_users extends page_view {
     function display_content() {
         global $CFG, $PAGE;
 
-        require_once("$CFG->libdir/tablelib.php");
         require_once(dirname(__FILE__) . '/users_table.php');
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
@@ -1198,6 +1239,10 @@ class page_problem extends page_view {
             $prerequisite = get_string("none", "lips");
         }
         echo $this->lipsoutput->display_problem_information(get_string("prerequisite", "lips"), $prerequisite);
+
+       /*--------------------------------
+        *   Core informations
+        *------------------------------*/
 
         // Subject
         echo $this->lipsoutput->display_h3(get_string("subject", "lips"), array("style" => "margin-bottom: 10px;"), false);
