@@ -4,7 +4,7 @@
 
 h1, h2, h3 {
     text-align: left;
-    margin-top: 0;
+    margin-top: 5px;
 }
 
 h1 {
@@ -22,9 +22,17 @@ h3 {
 }
 
 .h2_sub {
-    border: 1px solid #555555;
+    border-top: 1px solid #555555;
     width: 100%;
-    margin-bottom: 15px;
+    margin: 0;
+    padding-bottom: 15px;
+}
+
+.h3_sub {
+    border-top: 1px dashed #555555;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 15px;
 }
 
 /*---------------------------------
@@ -81,6 +89,20 @@ h3 {
     float: right;
 }
 
+.problem-form fieldset {
+    margin: 0;
+    padding: 0;
+}
+
+.problem-form #fitem_id_correction {
+    margin: 0;
+    height: 0px;
+}
+
+.problem-form #id_correction {
+    display: none;
+}
+
 /*---------------------------------
  *  Button
  *-------------------------------*/
@@ -107,6 +129,15 @@ h3 {
 /*---------------------------------
  *  Ace
  *-------------------------------*/
+
+.acetitle {
+    margin: 0;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.acetitle.required {
+}
 
 .acepanel {
     width: 90%;

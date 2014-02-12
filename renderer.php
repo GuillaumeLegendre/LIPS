@@ -76,7 +76,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      */
     public function display_h3($title, array $attributes = null) {
         $html = html_writer::tag('h3', format_string($title), $attributes);
-        $html .= html_writer::tag('div', null, array('class' => 'h2_sub'));
+        $html .= html_writer::tag('div', null, array('class' => 'h3_sub'));
 
         return $html;
     }
@@ -219,6 +219,13 @@ class mod_lips_renderer extends plugin_renderer_base {
         }
     }
 
+    /**
+     * Display a button
+     *
+     * @param object $moodleurl Moodle url
+     * @param string $label Button label
+     * @return object Button renderer
+     */
     public function display_button($moodleurl, $label) {
         return $this->render(new single_button($moodleurl, $label));
     }

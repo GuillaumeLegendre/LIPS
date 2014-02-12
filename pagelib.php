@@ -309,7 +309,7 @@ class page_admin_langage_base extends page_view {
      * Display the page_admin_langage_base content
      */
     function display_content() {
-        global $CFG, $PAGE;
+        global $CFG;
         require_once(dirname(__FILE__) . '/mod_lips_configure_form.php');
 
         // Administration title
@@ -324,9 +324,9 @@ class page_admin_langage_base extends page_view {
 
         $lips = get_current_instance();
         if ($lips->compile_language == null && has_role('administration'))
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_no_compile_language', 'lips'), 'ERROR');
+            echo $this->lipsoutput->display_notification(get_string('administration_no_compile_language', 'lips'), 'ERROR');
         if ($lips->coloration_language == null && has_role('administration'))
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_no_syntax_highlighting', 'lips'), 'WARNING');
+            echo $this->lipsoutput->display_notification(get_string('administration_no_syntax_highlighting', 'lips'), 'WARNING');
 
         $lips = get_current_instance();
         $configureCodeForm = new mod_lips_configure_code_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_base')), (array)$lips, 'post');
@@ -342,6 +342,7 @@ class page_admin_langage_base extends page_view {
             $configureCodeForm->display();
         }
 
+        // Create ace
         $this->lipsoutput->display_ace_form('configEditor', 'id_areaBaseCode', $lips->coloration_language, 'configure');
     }
 }
@@ -689,7 +690,14 @@ class page_admin_problem_create extends page_view {
         // Create a category
         echo $this->lipsoutput->display_h2(get_string('administration_problem_create_title', 'lips'));
 
-        $createProblemForm = new mod_lips_problem_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_create')), null, 'post');
+        // Language issues
+        $lips = get_current_instance();
+        if ($lips->compile_language == null && has_role('administration'))
+            echo $this->lipsoutput->display_notification(get_string('administration_no_compile_language', 'lips'), 'ERROR');
+        if ($lips->coloration_language == null && has_role('administration'))
+            echo $this->lipsoutput->display_notification(get_string('administration_no_syntax_highlighting', 'lips'), 'WARNING');
+
+        $createProblemForm = new mod_lips_problem_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_create')), null, 'post', '', array('class' => 'problem-form'));
 
         if ($createProblemForm->is_submitted()) {
             $createProblemForm->handle($this->cm->instance);
@@ -697,6 +705,11 @@ class page_admin_problem_create extends page_view {
         } else {
             $createProblemForm->display();
         }
+
+        // Create ace
+        $this->lipsoutput->display_ace_form('importsEditor', 'id_problem_imports', $lips->coloration_language, '');
+        $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code');
+        $this->lipsoutput->display_ace_form('unitTestsEditor', 'id_problem_unit_tests', $lips->coloration_language, 'unit-test');
     }
 }
 

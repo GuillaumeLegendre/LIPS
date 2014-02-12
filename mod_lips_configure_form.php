@@ -55,10 +55,8 @@ class mod_lips_configure_language_form extends moodleform {
             }
         }
         // Select the syntax highlighting.
-        $mform->addElement('select', 'selectSyntaxHighlighting',
-            get_string('administration_language_form_highlighting_select', 'lips'), ace_available_languages());
-        $mform->addRule('selectSyntaxHighlighting',
-            get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
+        $mform->addElement('select', 'selectSyntaxHighlighting', get_string('administration_language_form_highlighting_select', 'lips'), ace_available_languages());
+        $mform->addRule('selectSyntaxHighlighting', get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
         if ($lips->coloration_language != null) {
             $mform->setDefault('selectSyntaxHighlighting', $lips->coloration_language);
         }
@@ -257,7 +255,7 @@ class mod_lips_configure_code_form extends moodleform {
 
         // Textarea for base code.
         $mform->addElement('html', '<div id="configEditor" class="ace">' . (($mcustomdata['base_code'] == null || $mcustomdata['base_code'] == '') ? '' : htmlspecialchars($mcustomdata['base_code'])) . '</div>');
-        $mform->addElement('textarea', 'areaBaseCode', null, array('rows' => 15, 'cols' => 100, 'class' => 'editorCode'));
+        $mform->addElement('textarea', 'areaBaseCode', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
         $mform->setDefault('areaBaseCode', $mcustomdata['base_code']);
 
         // Modify button.

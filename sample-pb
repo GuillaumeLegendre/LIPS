@@ -1,0 +1,11 @@
+import java.util.*;
+
+public static boolean isPalindrome(String word) {
+    return <lips-code/>;
+}
+
+boolean test1 = <lips-unit-test>isPalindrome("radar") == true</lips-unit-test>;
+boolean test2 = <lips-unit-test>isPalindrome("kayak") == true</lips-unit-test>;
+boolean test3 = isPalindrome("bonjour") == false;
+
+System.out.println(test1 == test2 == test3);

@@ -20,7 +20,6 @@ window.createAce = function(editorid, areaid, mode, theme, flag){
 	if(mode != null && mode != '')
 		editor.getSession().setMode("ace/mode/" + mode);
 
-
 	// Switch to call different Ace editor Mode
 	switch(flag) {
 		case "configure":
@@ -54,7 +53,7 @@ window.createConfigure = function(editorid, areaid){
 	var editor = ace.edit(editorid);
 	
 	 // Tag editor
-	$(".ace").before('<div class="acepanel">' +
+	$("#" + editorid).before('<div class="acepanel">' +
 		'<a href="#" id="' + editorid + '_tagImport">Import</a>' +
 		'<a href="#" id="' + editorid + '_tagCode">Code</a>' +
 		'<a href="#" id="' + editorid + '_tagTests">Tests</a>' +
@@ -100,7 +99,7 @@ window.createCode = function(editorid, areaid){
 	// Create ace
 	var editor = ace.edit(editorid);
 	
-	$(".ace").before('<div class="acepanel">' +
+	$("#" + editorid).before('<div class="acepanel">' +
 		'<a href="#" id="' + editorid + '_tagCode">Code</a>' + 
 	'</div>');
 	
@@ -125,7 +124,7 @@ window.createUnitTest = function(editorid, areaid){
 	// Create ace
 	var editor = ace.edit(editorid);
 	
-	$(".ace").before('<div class="acepanel">' +
+	$("#" + editorid).before('<div class="acepanel">' +
 		'<a href="#" id="' + editorid + '_tagUnit">Unit Test</a>' + 
 	'</div>');
 	
@@ -134,7 +133,7 @@ window.createUnitTest = function(editorid, areaid){
 		
 		if (editor.getCopyText().length == 0) {
 			editor.insert("<lips-unit-test></lips-unit-test>");	
-		}else{
+		} else {
 			var currentText = editor.getCopyText();
 			editor.remove(editor.getSelectionRange());
 			editor.insert("<lips-unit-test>" + currentText + "</lips-unit-test>");
