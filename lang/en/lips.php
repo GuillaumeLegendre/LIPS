@@ -68,6 +68,8 @@ $string['difficulty_label_difficult'] = 'difficult';
 $string['create'] = 'Create';
 $string['modify'] = 'Modify';
 $string['delete'] = 'Delete';
+$string['import'] = 'Import';
+$string['export'] = 'Export';
 $string['category'] = 'Category';
 $string['documentation'] = 'Documentation';
 $string['documentation'] = 'Documentation';
@@ -190,6 +192,9 @@ $string['administration_delete_problem_confirmation'] = "Confirm the deletion of
 $string['administration_problem_create_success'] = 'The problem has been created';
 $string['administration_problem_modify_select'] = 'Select the problem';
 $string['administration_problem_delete_title'] = 'Delete a problem';
+
+$string['administration_problems_import_title'] = 'Import problems into LIPS';
+$string['administration_problems_export_title'] = 'Export problems into LIPS';
 
 // My problems
 $string['administration_my_problems_title'] = "My problems";
