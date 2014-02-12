@@ -588,8 +588,8 @@ class page_admin_problem_modify extends page_view {
             $modifyproblemform = new mod_lips_problem_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify', 'problemId' => $this->id)), null, "post");
             $modifyproblemform->handle($this->cm->instance);
         }
-
-        $modifyproblemform = new mod_lips_problem_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify', 'problemId' => $this->id)), (array)get_problem_details($this->id)[$this->id], 'post', '', array('class' => 'problem-form'));
+        $problem_details = get_problem_details($this->id);
+        $modifyproblemform = new mod_lips_problem_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify', 'problemId' => $this->id)), (array)$problem_details[$this->id], 'post', '', array('class' => 'problem-form'));
 
         $modifyproblemform->display();
 
@@ -1213,9 +1213,9 @@ class page_problem extends page_view {
         global $USER;
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
-       /*--------------------------------
-        *   Right buttons
-        *------------------------------*/
+        /*--------------------------------
+         *   Right buttons
+         *------------------------------*/
 
         // Challenge button
         $buttondefie = $this->lipsoutput->action_link(new moodle_url(""), "Défier", null, array("class" => "lips-button"));
@@ -1235,9 +1235,9 @@ class page_problem extends page_view {
         }
         $buttons = $this->lipsoutput->display_div($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("id" => "problem-right-buttons"));
 
-       /*--------------------------------
-        *   Left informations
-        *------------------------------*/
+        /*--------------------------------
+         *   Left informations
+         *------------------------------*/
         $details = get_problem_details($this->id);
         $categorydetails = get_category_details($details[$this->id]->problem_category_id);
 
@@ -1267,9 +1267,9 @@ class page_problem extends page_view {
         }
         echo $this->lipsoutput->display_problem_information(get_string("prerequisite", "lips"), $prerequisite);
 
-       /*--------------------------------
-        *   Core informations
-        *------------------------------*/
+        /*--------------------------------
+         *   Core informations
+         *------------------------------*/
 
         // Subject
         echo $this->lipsoutput->display_h3(get_string("subject", "lips"), array("style" => "margin-bottom: 10px;"), false);
@@ -1284,9 +1284,9 @@ class page_problem extends page_view {
         // Unit tests
         $hastest = false;
         $unittests = get_displayable_unittests($details[$this->id]->problem_unit_tests);
-        if(count($unittests[1]) > 0) {
+        if (count($unittests[1]) > 0) {
             echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"), array("style" => "margin-bottom: 10px;"), false);
-            
+
             foreach ($unittests[1] as $unittest) {
                 $img = $this->lipsoutput->display_img(get_unitest_picture());
                 echo $this->lipsoutput->display_p($img . $this->lipsoutput->display_span($unittest), array('class' => 'unit-test'));
@@ -1301,10 +1301,10 @@ class page_problem extends page_view {
 
         // Similar problems
         $similarproblems = get_similar_problems($this->id);
-        if(count($similarproblems) > 0) {
+        if (count($similarproblems) > 0) {
             echo $this->lipsoutput->display_h3(get_string("similar_problems", "lips"), array("style" => "margin-bottom: 10px;"), false);
 
-            foreach($similarproblems as $similarproblem) {
+            foreach ($similarproblems as $similarproblem) {
                 $problemdetails = get_problem_details($similarproblem->problem_similar_id);
 
                 $problemlink = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $similarproblem->problem_similar_id)), $problemdetails[$similarproblem->problem_similar_id]->problem_label);
