@@ -1165,15 +1165,15 @@ class page_problem extends page_view {
         }
         $prerequisite = $this->lipsoutput->display_span(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $prerequisite;
         echo $this->lipsoutput->display_p($prerequisite, array("class" => "field_page_problem"));
-        echo $this->lipsoutput->display_h3(get_string("subject", "lips"));
+        echo $this->lipsoutput->display_h3(get_string("subject", "lips"), array("style"=>"margin-bottom:10px;"), false);
         echo $this->lipsoutput->display_p($details[$this->id]->problem_statement);
-        echo $this->lipsoutput->display_h3(get_string("tips", "lips"));
+        echo $this->lipsoutput->display_h3(get_string("tips", "lips"), array("style"=>"margin-bottom:10px;"), false);
         $tips = $details[$this->id]->problem_tips;
         if (empty($tips)) {
             $tips = get_string("none", "lips");
         }
         echo $this->lipsoutput->display_p($tips);
-        echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"));
+        echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"), array("style"=>"margin-bottom:10px;"), false);
         $hastest = false;
         $unittests = get_displayable_unittests($this->id);
         foreach ($unittests[1] as $unittest) {
@@ -1184,8 +1184,6 @@ class page_problem extends page_view {
         if (!$hastest) {
             echo $this->lipsoutput->display_p(get_string("none", "lips"));
         }
-        echo $this->lipsoutput->display_h3(get_string("answer", "lips"));
-
-
+        echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style"=>"margin-bottom:10px;"), false);
     }
 }

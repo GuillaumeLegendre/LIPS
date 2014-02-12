@@ -491,6 +491,7 @@ function fetch_problems($userid) {
     return $DB->get_records('lips_problem', array('problem_creator_id' => $userid));
 }
 
+
 /**
  * Return all solutions of a specific problem
  *

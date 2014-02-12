@@ -72,12 +72,14 @@ class mod_lips_renderer extends plugin_renderer_base {
      *
      * @param string $title Title content
      * @param array $attributes Title attributes
+     * @param boolean $sub Display a sub on the bottom of the title
      * @return string H3 tag
      */
-    public function display_h3($title, array $attributes = null) {
+    public function display_h3($title, array $attributes = null, $sub = true) {
         $html = html_writer::tag('h3', format_string($title), $attributes);
-        $html .= html_writer::tag('div', null, array('class' => 'h3_sub'));
-
+        if ($sub) {
+            $html .= html_writer::tag('div', null, array('class' => 'h3_sub'));
+        }
         return $html;
     }
 
@@ -304,10 +306,11 @@ class mod_lips_renderer extends plugin_renderer_base {
      */
     public function display_solution($data) {
         $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)), ucfirst($data->firstname) . ' ' . strtoupper($data->lastname));
-        $date = html_writer::tag('div', get_string("The", "lips")." ".date('d/m/Y', $data->problem_solved_date),  array("id" => "date"));
+        $date = html_writer::tag('div', get_string("The", "lips") . " " . date('d/m/Y', $data->problem_solved_date), array("id" => "date"));
         $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header"));
         $content = html_writer::tag('div', $data->problem_solved_solution, array("id" => "content"));
         return html_writer::tag('div', $header . $content, array("class" => "solution"));
     }
+
 
 }
