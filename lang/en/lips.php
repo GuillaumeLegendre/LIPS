@@ -89,6 +89,7 @@ $string['solved_problems'] = 'Solved problems';
 $string['challenges'] = 'Challenges';
 $string['followed_users'] = 'Followed users';
 $string['attempts'] = "attempts";
+$string['The'] = "The";
 
 /*--------------------------------------------------
  * Tabs

@@ -1059,7 +1059,7 @@ class page_solutions extends page_view {
     private $id;
 
     function  __construct($cm, $id) {
-        parent::__construct($cm, "problem");
+        parent::__construct($cm, "solutions");
         $this->id = $id;
     }
 
@@ -1087,15 +1087,20 @@ class page_solutions extends page_view {
         $prerequisite = $this->lipsoutput->display_span(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $prerequisite;
         echo $this->lipsoutput->display_p($prerequisite, array("class" => "field_page_problem"));
 
-        $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'search_solution')), array('width' => '60%'));
-        $searchForm->display();
+        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), null, 'post', '', array('class' => 'search-form', 'style' => 'width: 40%'));
+        $searchform->display();
 
-        $solutions = get_solutions($this->id);
+        $search = null;
+        if ($searchform->is_submitted()) {
+            $data = $searchform->get_submitted_data();
+            if (!empty($data->inputSearch)) {
+                $search = $data->inputSearch;
+            }
+        }
+        $solutions = get_solutions($this->id, $search);
         foreach ($solutions as $solution) {
             echo $this->lipsoutput->display_solution($solution);
         }
-
-
     }
 }
 

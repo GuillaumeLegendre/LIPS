@@ -103,7 +103,8 @@ function convert_active_tab($view) {
         "categoryDocumentation" => "problems",
         "deleteCategory" => "problems",
         "problem" => "problems",
-        "deleteProblem" => "problems"
+        "deleteProblem" => "problems",
+        "solutions" => "problems"
     );
 
     return $tabs[$view];
@@ -117,7 +118,6 @@ function convert_active_tab($view) {
  */
 function get_user_details(array $conditions = null) {
     global $DB;
-
     return $DB->get_record('lips_user', $conditions, '*');
 }
 
@@ -406,7 +406,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
  */
 function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB;
-    
+
     $DB->update_record('lips_category', array('id' => $id, 'category_name' => $categoryname, 'category_documentation' => $categorydocumentation, 'category_documentation_type' => $categorydocumentationtype));
 }
 
@@ -492,12 +492,25 @@ function fetch_problems($userid) {
 }
 
 /**
- * Return all resolutions of a specific problem
+ * Return all solutions of a specific problem
  *
  * @param int Id of the problem
  * @return object List of all solutions of the problem
  * */
-function get_solutions($problemid) {
+function get_solutions($problemid, $search = null) {
     global $DB;
-    return $DB->get_records('lips_problem_solved', array('problem_solved_problem' => $problemid));
+    if ($search == null) {
+        return $DB->get_records_sql("select mls.id, mlu.id as profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
+        from mdl_lips_problem_solved mls
+        join mdl_user mu on mu.id=mls.problem_solved_user
+        join mdl_lips_user mlu on mlu.id_user_moodle=mls.problem_solved_user
+        where problem_solved_problem = $problemid");
+    } else {
+        return $DB->get_records_sql("select mls.id, mlu.id as profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
+        from mdl_lips_problem_solved mls
+        join mdl_user mu on mu.id=mls.problem_solved_user
+        join mdl_lips_user mlu on mlu.id_user_moodle=mls.problem_solved_user
+        where problem_solved_problem = $problemid
+        and (mu.firstname like '%" . $search . "%' or mu.lastname like '%" . $search . "%')");
+    }
 }

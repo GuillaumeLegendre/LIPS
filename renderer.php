@@ -113,7 +113,7 @@ class mod_lips_renderer extends plugin_renderer_base {
         $view = optional_param('view', 0, PARAM_TEXT);
 
         $administrationmenu = '<ul id="administration_menu">';
-        if(has_role('adminplugin')) {
+        if (has_role('adminplugin')) {
             $administrationmenu .= '<li><a href="#">' . get_string('language', 'lips') . '</a>
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=language_configure">' . get_string('configure', 'lips') . '</a></li>
@@ -170,9 +170,9 @@ class mod_lips_renderer extends plugin_renderer_base {
         $userpicture = get_user_picture_url(array('id_user_moodle' => $moodleuserdetails->id), 'f1');
 
         $menu = '<div id="profile-menu"><img src="' . $userpicture . '" id="picture"/>';
-        if($iduser != null)
+        if ($iduser != null)
             $menu .= '<a href="#" id="follow" class="lips-button">S\'abonner</a>';
-        
+
         $menu .= '<div id="background">
             <div id="infos">
                 <div id="role">' . get_string($userdetails->user_status, 'lips') . '</div>
@@ -296,8 +296,10 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @return string div tag
      */
     public function display_solution($data) {
-        $header = html_writer::tag('div', get_string("problem_resolved_by","lips") ." ". $data->problem_solved_user."<br/> Le ".date('d/m/Y',$data->problem_solved_date), array("id" => "header"));
-        $content = html_writer::tag('div', $data->problem_solved_solution,  array("id" => "content"));
+        $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)), ucfirst($data->firstname) . ' ' . strtoupper($data->lastname));
+        $date = html_writer::tag('div', get_string("The", "lips")." ".date('d/m/Y', $data->problem_solved_date),  array("id" => "date"));
+        $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header"));
+        $content = html_writer::tag('div', $data->problem_solved_solution, array("id" => "content"));
         return html_writer::tag('div', $header . $content, array("class" => "solution"));
     }
 

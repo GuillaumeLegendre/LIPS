@@ -68,6 +68,7 @@ $string['solved_problems'] = 'Problèmes résolus';
 $string['challenges'] = 'Défis reçus';
 $string['followed_users'] = 'Utilisateurs suivis';
 $string['attempts'] = "tentatives";
+$string['The'] = "Le";
 
 /*--------------------------------------------------
  * Status

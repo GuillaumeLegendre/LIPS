@@ -413,3 +413,7 @@ h3 {
     border-style: solid;
     border-color: black;
 }
+
+.solution #date {
+    font-style: italic;
+}
