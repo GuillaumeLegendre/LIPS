@@ -101,7 +101,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param array $attributes Image attributes
      * @return string Img tag
      */
-    public function display_img($src, array $attributes = null) {
+    public function display_img($src, array $attributes = array()) {
         return html_writer::tag('img', null, array_merge(array('src' => './images/' . $src), $attributes));
     }
 
@@ -246,37 +246,6 @@ class mod_lips_renderer extends plugin_renderer_base {
     }
 
     /**
-     * Display the top of the page representing a category.
-     *
-     * @param object $categorydetails Category details
-     * @return string div tag
-     */
-    public function display_top_page_category($categorydetails) {
-        if ($categorydetails->category_documentation_type == 'LINK') {
-            $link = new action_link(new moodle_url($categorydetails->category_documentation), get_string("documentation", "lips"));
-        } else if ($categorydetails->category_documentation_type == 'TEXT') {
-            $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categorydetails->id)), get_string("documentation", "lips"));
-        }
-        $renderlink = "";
-        if (isset($link)) {
-            $renderlink = $this->render($link);
-        }
-        return html_writer::tag('div', $this->display_p($renderlink, array("style" => "float: right;")) . $this->display_h1($categorydetails->category_name));
-    }
-
-    /**
-     * Display the top of the page representing a problem.
-     *
-     * @param string $problemname Name of the problem
-     * @param int $problemid id of the problem
-     * @return string div tag
-     */
-    public function display_top_page_problem($problemname, $problemid) {
-        $link = new action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $problemid)), get_string("documentation", "lips"));
-        return html_writer::tag('div', $this->display_p($this->render($link), array("style" => "float:right;")) . $this->display_h2($problemname));
-    }
-
-    /**
      * Display a div
      *
      * @param string $content Text content
@@ -312,5 +281,35 @@ class mod_lips_renderer extends plugin_renderer_base {
         return html_writer::tag('div', $header . $content, array("class" => "solution"));
     }
 
+    /**
+     * Display the documentation
+     *
+     * @param object $categorydetails Category details
+     * @return object|null Link to the category or null if no category
+     */
+    public function display_documentation($categorydetails) {
+        $url = null;
+        if ($categorydetails->category_documentation_type == 'LINK') {
+            $url = new moodle_url($categorydetails->category_documentation);
+        } else if ($categorydetails->category_documentation_type == 'TEXT') {
+            $url = new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categorydetails->id));
+        }
 
+        if($url != null) {
+            return $this->display_div($this->render(new action_link($url, get_string("documentation", "lips"))), array("style" => "float: right;"));
+        }
+
+        return null;
+    }
+
+    /**
+     * Display a problem information
+     *
+     * @param string $info Information title
+     * @param string $text Information text
+     * @return string The problem information
+     */
+    public function display_problem_information($info, $text) {
+        return $this->display_p($this->display_span($info, array("class" => "label_field_page_problem")) . " " . $text);
+    }
 }

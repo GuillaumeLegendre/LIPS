@@ -934,8 +934,14 @@ class page_category extends page_view {
         require_once(dirname(__FILE__) . '/problems_table.php');
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
+        // Category documentation
         $categorydetails = get_category_details($this->id);
-        echo $this->lipsoutput->display_top_page_category($categorydetails);
+        echo $this->lipsoutput->display_documentation($categorydetails);
+
+        // Category name
+        echo $this->lipsoutput->display_h1($categorydetails->category_name);
+
+        // Search form
         $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'categoryId' => $this->id)), null, 'post', '', array('class' => 'search-form'));
         $searchform->display();
 
@@ -946,6 +952,8 @@ class page_category extends page_view {
                 $search = $data->inputSearch;
             }
         }
+
+        // Problems table
         $table = new problems_table($this->cm, $categorydetails->id, $search);
         $table->out(10, true);
     }
@@ -1134,56 +1142,103 @@ class page_problem extends page_view {
     }
 
     function display_content() {
-        require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
         global $USER;
+        require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
+
+       /*--------------------------------
+        *   Right buttons
+        *------------------------------*/
+
+        // Challenge button
+        $buttondefie = $this->lipsoutput->action_link(new moodle_url(""), "Défier", null, array("class" => "lips-button"));
+
+        // Solutions button
         $buttonsolutions = "";
-        $buttonedit = "";
-        $buttondelete = "";
-        if (nb_resolutions_problem($USER->id, $this->id) || is_author($this->id, $USER->id) > 0) {
+        if (nb_resolutions_problem($USER->id, $this->id) > 0 || is_author($this->id, $USER->id)) {
             $buttonsolutions = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => $this->view, 'view' => 'solutions', "problemId" => $this->id)), "Solutions", null, array("class" => "lips-button"));
         }
+
+        // Modify & Delete button
+        $buttonedit = "";
+        $buttondelete = "";
         if (has_role("administration")) {
             $buttonedit = $this->lipsoutput->action_link(new moodle_url(""), get_string("edit", "lips"), null, array("class" => "lips-button"));
             $buttondelete = $this->lipsoutput->action_link(new moodle_url(""), get_string("delete", "lips"), null, array("class" => "lips-button"));
         }
-        $buttondefie = $this->lipsoutput->action_link(new moodle_url(""), "Défier", null, array("class" => "lips-button"));
-        $buttons = $this->lipsoutput->display_p($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("style" => "float:right"));
+        $buttons = $this->lipsoutput->display_div($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("id" => "problem-right-buttons"));
+
+       /*--------------------------------
+        *   Left informations
+        *------------------------------*/
         $details = get_problem_details($this->id);
-        echo $this->lipsoutput->display_top_page_problem($details[$this->id]->problem_label, $details[$this->id]->problem_category_id);
-        $author_link = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . strtoupper($details[$this->id]->lastname));
-        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $author_link;
-        echo $this->lipsoutput->display_p($buttons . $author, array("class" => "field_page_problem"));
-        $datecreation = $this->lipsoutput->display_span(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . date("d/m/y", $details[$this->id]->problem_date);
-        echo $this->lipsoutput->display_p($datecreation, array("class" => "field_page_problem"));
-        $nbresolutions = $this->lipsoutput->display_span(get_string("problem_nb_resolutions", "lips"), array("class" => "label_field_page_problem")) . " " . $details[$this->id]->problem_resolutions . " / " . $details[$this->id]->problem_attempts . " " . get_string("attempts", "lips");
-        echo $this->lipsoutput->display_p($nbresolutions, array("class" => "field_page_problem"));
-        $difficulty = $this->lipsoutput->display_span(get_string("difficulty", "lips"), array("class" => "label_field_page_problem")) . " " . get_string($details[$this->id]->difficulty_label, "lips");
-        echo $this->lipsoutput->display_p($difficulty, array("class" => "field_page_problem"));
+        $categorydetails = get_category_details($details[$this->id]->problem_category_id);
+
+        // Category documentation
+        echo $this->lipsoutput->display_documentation($categorydetails);
+
+        // Problem title
+        echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
+
+        // Author
+        $authorlink = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . strtoupper($details[$this->id]->lastname));
+        echo $this->lipsoutput->display_problem_information(get_string("problem_author", "lips"), $authorlink);
+
+        // Creation date
+        echo $this->lipsoutput->display_problem_information(get_string("problem_date_creation", "lips"), date("d/m/y", $details[$this->id]->problem_date));
+
+        // Number of resolutions
+        echo $this->lipsoutput->display_problem_information(get_string("problem_nb_resolutions", "lips"), $details[$this->id]->problem_resolutions . " / " . $details[$this->id]->problem_attempts . " " . get_string("attempts", "lips"));
+
+        // Difficulty
+        echo $this->lipsoutput->display_problem_information(get_string("difficulty", "lips"), get_string($details[$this->id]->difficulty_label, "lips"));
+
+        // Prerequisite
         $prerequisite = $details[$this->id]->problem_preconditions;
         if (empty($prerequisite)) {
             $prerequisite = get_string("none", "lips");
         }
-        $prerequisite = $this->lipsoutput->display_span(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $prerequisite;
-        echo $this->lipsoutput->display_p($prerequisite, array("class" => "field_page_problem"));
-        echo $this->lipsoutput->display_h3(get_string("subject", "lips"), array("style"=>"margin-bottom:10px;"), false);
+        echo $this->lipsoutput->display_problem_information(get_string("prerequisite", "lips"), $prerequisite);
+
+        // Subject
+        echo $this->lipsoutput->display_h3(get_string("subject", "lips"), array("style" => "margin-bottom: 10px;"), false);
         echo $this->lipsoutput->display_p($details[$this->id]->problem_statement);
-        echo $this->lipsoutput->display_h3(get_string("tips", "lips"), array("style"=>"margin-bottom:10px;"), false);
-        $tips = $details[$this->id]->problem_tips;
-        if (empty($tips)) {
-            $tips = get_string("none", "lips");
+
+        // Tips
+        if (!empty($details[$this->id]->problem_tips)) {
+            echo $this->lipsoutput->display_h3(get_string("tips", "lips"), array("style" => "margin-bottom: 10px;"), false);
+            echo $this->lipsoutput->display_p($details[$this->id]->problem_tips);
         }
-        echo $this->lipsoutput->display_p($tips);
-        echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"), array("style"=>"margin-bottom:10px;"), false);
+
+        // Unit tests
         $hastest = false;
-        $unittests = get_displayable_unittests($this->id);
-        foreach ($unittests[1] as $unittest) {
-            $img = $this->lipsoutput->display_img(get_unitest_picture(), array('width' => '20px', 'height' => '20px'));
-            echo $this->lipsoutput->display_p($img . " " . $unittest);
-            $hastest = true;
+        $unittests = get_displayable_unittests($details[$this->id]->problem_unit_tests);
+        if(count($unittests[1]) > 0) {
+            echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"), array("style" => "margin-bottom: 10px;"), false);
+            
+            foreach ($unittests[1] as $unittest) {
+                $img = $this->lipsoutput->display_img(get_unitest_picture());
+                echo $this->lipsoutput->display_p($img . $this->lipsoutput->display_span($unittest), array('class' => 'unit-test'));
+                $hastest = true;
+            }
         }
-        if (!$hastest) {
-            echo $this->lipsoutput->display_p(get_string("none", "lips"));
+
+        // Answer
+        echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style" => "margin-bottom: 10px;"), false);
+
+        echo '<center><a href="#" class="lips-button">' . get_string('send_response', 'lips') . '</a></center>';
+
+        // Similar problems
+        $similarproblems = get_similar_problems($this->id);
+        if(count($similarproblems) > 0) {
+            echo $this->lipsoutput->display_h3(get_string("similar_problems", "lips"), array("style" => "margin-bottom: 10px;"), false);
+
+            foreach($similarproblems as $similarproblem) {
+                $problemdetails = get_problem_details($similarproblem->problem_similar_id);
+
+                $problemlink = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $similarproblem->problem_similar_id)), $problemdetails[$similarproblem->problem_similar_id]->problem_label);
+                $creatorlink = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $problemdetails[$similarproblem->problem_similar_id]->user_id)), ucfirst($problemdetails[$similarproblem->problem_similar_id]->firstname) . ' ' . strtoupper($problemdetails[$similarproblem->problem_similar_id]->lastname));
+                echo $this->lipsoutput->display_p($problemlink . ' ' . get_string('from', 'lips') . ' ' . $creatorlink);
+            }
         }
-        echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style"=>"margin-bottom:10px;"), false);
     }
 }

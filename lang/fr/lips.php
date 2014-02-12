@@ -69,8 +69,11 @@ $string['challenges'] = 'Défis reçus';
 $string['followed_users'] = 'Utilisateurs suivis';
 $string['attempts'] = "tentatives";
 $string['The'] = "Le";
+$string['from'] = "de";
 $string['prerequisite'] = "Prérequis";
 $string['difficulty'] = "Difficulté";
+$string['send_response'] = "Envoyer la réponse";
+$string['similar_problems'] = 'Essayez aussi';
 
 /*--------------------------------------------------
  * Status

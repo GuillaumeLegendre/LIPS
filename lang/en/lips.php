@@ -90,8 +90,11 @@ $string['challenges'] = 'Challenges';
 $string['followed_users'] = 'Followed users';
 $string['attempts'] = "attempts";
 $string['The'] = "The";
+$string['from'] = "from";
 $string['prerequisite'] = "Prerequisite";
 $string['difficulty'] = "Difficulty";
+$string['send_response'] = "Send reponses";
+$string['similar_problems'] = 'Similar problems';
 
 /*--------------------------------------------------
  * Tabs
