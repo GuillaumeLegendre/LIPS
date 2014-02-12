@@ -47,6 +47,8 @@ $string['pluginname'] = 'LIPS';
 $string['create'] = 'Créer';
 $string['modify'] = 'Modifier';
 $string['delete'] = 'Supprimer';
+$string['import'] = 'Import';
+$string['export'] = 'Export';
 $string['category'] = 'Catégorie';
 $string['documentation'] = 'Documentation';
 $string['name'] = 'Nom';
@@ -174,6 +176,9 @@ $string['administration_problem_create_code_import_label'] = 'Importer des libra
 $string['administration_problem_create_code_complete_label'] = 'Code à completer';
 $string['administration_problem_create_code_unittest_label'] = 'Tests unitaires';
 $string['administration_problem_create_success'] = 'Le problème a été créé';
+
+$string['administration_problems_import_title'] = 'Importer des problèmes dans LIPS';
+$string['administration_problems_export_title'] = 'Exporter des problèmes dans LIPS';
 
 // My problems
 $string['administration_my_problems_title'] = "Mes problèmes";
