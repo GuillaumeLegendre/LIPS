@@ -159,6 +159,7 @@ $string['administration_delete_category_confirmation'] = "Confirmez-vous la supp
 
 // Problem
 $string['administration_problem_create_title'] = 'Créer un probleme';
+$string['administration_problem_modify_title'] = 'Modifier un problème';
 $string['administration_problem_create_preconfig_subtitle'] = '1. Pré-configuration';
 $string['administration_problem_create_informations_subtitle'] = "2. Informations sur le problème";
 $string['administration_problem_create_informations_msg'] = 'Sélectionnez la catégorie à laquelle appartiendras votre problème.<br/>Entrez le nom, la difficulté et la liste des prérequis nécessaires à la réalisation du problème.';
@@ -171,6 +172,7 @@ $string['administration_problem_create_code_import_label'] = 'Importer des libra
 $string['administration_problem_create_code_complete_label'] = 'Code à completer';
 $string['administration_problem_create_code_unittest_label'] = 'Tests unitaires';
 $string['administration_problem_create_success'] = 'Le problème a été créé';
+$string['administration_problem_modify_success'] = 'Le problème a été modifié';
 
 /*--------------------------------------------------
  * Web services

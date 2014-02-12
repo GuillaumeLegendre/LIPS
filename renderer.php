@@ -142,7 +142,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             <li><a href="#">Problèmes</a>
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_create">' . get_string('create', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_modify">' . get_string('modify', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_select_modify">' . get_string('modify', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_delete">' . get_string('delete', 'lips') . '</a></li>
                 </ul>
             </li>

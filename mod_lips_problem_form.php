@@ -166,7 +166,7 @@ class mod_lips_problem_delete_form extends moodleform {
     public function definition() {
         global $PAGE, $USER;
         $mform =& $this->_form;
-        $problems="";
+        $problems = "";
         foreach (fetch_problems($USER->id) as $problem) {
             $problems[$problem->id] = $problem->problem_label;
         }
@@ -191,10 +191,9 @@ class mod_lips_problem_modify_form extends moodleform {
      */
     public function definition() {
         global $PAGE;
-
+        $mcustomdata = $this->_customdata;
         $mform =& $this->_form;
         $output = $PAGE->get_renderer('mod_lips');
-
         // Fetch all categories
         $categories = array();
         foreach (fetch_all_categories(get_current_instance()->id) as $category) {
@@ -206,9 +205,10 @@ class mod_lips_problem_modify_form extends moodleform {
         foreach (fetch_all_difficulties() as $difficulty) {
             $difficulties[$difficulty->id] = get_string($difficulty->difficulty_label, "lips");
         }
-
-        // /!\ DO NOT DELETE.
-        $mform->addElement('select', 'correction', null);
+        // ID.
+        $mform->addElement('hidden', 'id_problem', null, null);
+        $mform->setType('id_problem', PARAM_INT);
+        $mform->setDefault('id_problem', $mcustomdata['id']);
 
         // Preconfig
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_preconfig_subtitle", "lips")));
@@ -218,26 +218,28 @@ class mod_lips_problem_modify_form extends moodleform {
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_informations_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_informations_msg", "lips"));
 
-        $mform->addElement('select', 'problem_category_id', get_string('category', 'lips'), $categories);
+        $mform->addElement('select', 'problem_category_id', get_string('category', 'lips'), $categories)->setSelected($mcustomdata['problem_category_id']);
         $mform->addRule('problem_category_id', get_string('administration_language_form_select_category_error', 'lips'), 'required', null, 'client');
 
-        $mform->addElement('select', 'problem_difficulty_id', get_string('difficulty', 'lips'), $difficulties);
+        $mform->addElement('select', 'problem_difficulty_id', get_string('difficulty', 'lips'), $difficulties)->setSelected($mcustomdata['difficulty_id']);
         $mform->addRule('problem_difficulty_id', get_string('administration_language_form_select_difficulty_error', 'lips'), 'required');
 
         $mform->addElement('text', 'problem_label', get_string('problem', 'lips'), array('size' => '64', 'maxlength' => '255', 'placeholder' => get_string('name', 'lips')));
         $mform->addRule('problem_label', get_string('administration_language_form_select_name_error', 'lips'), 'required', null, 'client');
         $mform->setType('problem_label', PARAM_TEXT);
+        $mform->setDefault('problem_label', $mcustomdata['problem_label']);
 
         $mform->addElement('text', 'problem_preconditions', get_string('prerequisite', 'lips'), array('size' => '64', 'maxlength' => '255'));
         $mform->setType('problem_preconditions', PARAM_TEXT);
+        $mform->setDefault('problem_preconditions', $mcustomdata['problem_preconditions']);
 
         // Subject
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_subject_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_subject_msg", "lips"));
 
-        $mform->addElement('editor', 'problem_statement', get_string("subject", "lips"));
+        $mform->addElement('editor', 'problem_statement', get_string("subject", "lips"))->setValue(array('text' => $mcustomdata['problem_statement']));
         $mform->addRule('problem_statement', get_string('administration_language_form_select_subject_error', 'lips'), 'required', null, 'client');
-        $mform->addElement('editor', 'problem_tips', get_string("tips", "lips"));
+        $mform->addElement('editor', 'problem_tips', get_string("tips", "lips"))->setValue(array('text' => $mcustomdata['problem_tips']));
 
         // Code
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_code_subtitle", "lips")));
@@ -245,21 +247,24 @@ class mod_lips_problem_modify_form extends moodleform {
 
         // Textarea for the imports
         $mform->addElement('html', '<p class="acetitle">' . get_string("administration_problem_create_code_import_label", "lips") . '</p>');
-        $mform->addElement('html', '<div id="importsEditor" class="ace"></div>');
+        $mform->addElement('html', '<div id="importsEditor" class="ace">' . htmlspecialchars($mcustomdata['problem_imports']) . '</div>');
         $mform->addElement('textarea', 'problem_imports', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
+        $mform->setDefault('problem_imports', $mcustomdata['problem_imports']);
 
         // Textarea for the code to complete
         $mform->addElement('html', '<p class="acetitle required">' . get_string("administration_problem_create_code_complete_label", "lips") . '</p>');
-        $mform->addElement('html', '<div id="problemCodeEditor" class="ace"></div>');
+        $mform->addElement('html', '<div id="problemCodeEditor" class="ace">' . htmlspecialchars($mcustomdata['problem_code']) . '</div>');
         $mform->addElement('textarea', 'problem_code', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
+        $mform->setDefault('problem_code', $mcustomdata['problem_code']);
 
         // Textarea for the unit tests
         $mform->addElement('html', '<p class="acetitle required">' . get_string("administration_problem_create_code_unittest_label", "lips") . '</p>');
-        $mform->addElement('html', '<div id="unitTestsEditor" class="ace"></div>');
+        $mform->addElement('html', '<div id="unitTestsEditor" class="ace">' . htmlspecialchars($mcustomdata['problem_unit_tests']) . '</div>');
         $mform->addElement('textarea', 'problem_unit_tests', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
+        $mform->setDefault('problem_unit_tests', $mcustomdata['problem_unit_tests']);
 
         // Create button
-        $mform->addElement('submit', 'submit', get_string('create', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('edit', 'lips'));
     }
 
     /**
@@ -281,7 +286,7 @@ class mod_lips_problem_modify_form extends moodleform {
      * @param array $files Form uploaded files
      */
     public function handle($instance) {
-        global $DB, $USER, $PAGE;
+        global $USER, $PAGE;
         // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled())
             return;
@@ -289,6 +294,7 @@ class mod_lips_problem_modify_form extends moodleform {
         // Form data.
         $data = $this->get_submitted_data();
         // The validation failed.
+        $data->id = $data->id_problem;
         $errors = $this->validation($data, null);
         if (count($errors) > 0) {
             foreach ($errors as $error) {
@@ -300,9 +306,41 @@ class mod_lips_problem_modify_form extends moodleform {
         $data->problem_creator_id = $USER->id;
         $data->problem_statement = $data->problem_statement['text'];
         $data->problem_tips = $data->problem_tips['text'];
-        $DB->insert_record('lips_problem', $data);
+        update_problem($data);
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_create_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_modify_success', 'lips'), 'SUCCESS');
+    }
+}
+
+/**
+ * Form to select the category to modify
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin GOT
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class mod_lips_problem_modify_select_form extends moodleform {
+
+    /**
+     * Form definition.
+     */
+    public function definition() {
+        global $USER;
+        $mform =& $this->_form;
+
+        // Select the category.
+        $lips = get_current_instance();
+        $problems = array();
+        foreach (fetch_problems($USER->id) as $problem) {
+            $problems[$problem->id] = $problem->problem_label;
+        }
+
+        $mform->addElement('select', 'problemId', get_string('administration_problem_modify_select', 'lips'), $problems);
+        $mform->addRule('problemId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+
+        // Modify button.
+        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
     }
 }

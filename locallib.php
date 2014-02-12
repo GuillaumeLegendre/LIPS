@@ -308,7 +308,7 @@ function get_category_details($id) {
  */
 function get_problem_details($id) {
     global $DB;
-    return $DB->get_records_sql("select mlp.id,problem_label,problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id join mdl_user mu on mu.id=problem_creator_id JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id where mlp.id=" . $id);
+    return $DB->get_records_sql("select mlp.id,problem_label, mld.id as difficulty_id, problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_code, problem_imports from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id join mdl_user mu on mu.id=problem_creator_id JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id where mlp.id=" . $id);
 }
 
 /**
@@ -514,4 +514,9 @@ function get_solutions($problemid, $search = null) {
         where problem_solved_problem = $problemid
         and (mu.firstname like '%" . $search . "%' or mu.lastname like '%" . $search . "%')");
     }
+}
+
+function update_problem($data) {
+    global $DB;
+    $DB->update_record('lips_problem', $data);
 }

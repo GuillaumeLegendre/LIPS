@@ -91,11 +91,18 @@ switch ($view) {
                 case "category_delete":
                     $viewpage = new page_admin_category_delete($cm);
                     break;
-                case "problem_delete":
-                    $viewpage = new page_admin_problem_delete($cm);
-                    break;
                 case "problem_create":
                     $viewpage = new page_admin_problem_create($cm);
+                    break;
+                case "problem_select_modify":
+                    $viewpage = new page_admin_problem_select_modify($cm);
+                    break;
+                case "problem_modify":
+                    $problemid = optional_param('problemId', null, PARAM_INT);
+                    $viewpage = new page_admin_problem_modify($cm, $problemid);
+                    break;
+                case "problem_delete":
+                    $viewpage = new page_admin_problem_delete($cm);
                     break;
                 default:
                     $viewpage = new page_admin($cm);

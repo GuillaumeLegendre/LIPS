@@ -548,7 +548,7 @@ class page_admin_category_delete extends page_view {
 }
 
 /**
- * Problemmodification page
+ * Problem modification page
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
@@ -557,13 +557,16 @@ class page_admin_category_delete extends page_view {
  */
 class page_admin_problem_modify extends page_view {
 
+    private $id;
+
     /**
      * page_admin_problem_modify constructor
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    function  __construct($cm, $id) {
         parent::__construct($cm, "administration");
+        $this->id = $id;
     }
 
     /**
@@ -572,7 +575,56 @@ class page_admin_problem_modify extends page_view {
      */
     function display_content() {
         global $CFG;
-        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+        require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
+
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        echo $this->lipsoutput->display_administration_menu();
+        echo $this->lipsoutput->display_h2(get_string('administration_problem_modify_title', 'lips'));
+        $modifyproblemform = new mod_lips_problem_modify_form();
+        if ($modifyproblemform->is_submitted()) {
+            $modifyproblemform = new mod_lips_problem_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify', 'problemId' => $this->id)), null, "post");
+            $modifyproblemform->handle($this->cm->instance);
+        }
+
+
+        $modifyproblemform = new mod_lips_problem_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify', 'problemId' => $this->id)), (array)get_problem_details($this->id)[$this->id], 'post', '', array('class' => 'problem-form'));
+
+        $modifyproblemform->display();
+        $lips = get_current_instance();
+
+        // Create ace
+        $this->lipsoutput->display_ace_form('importsEditor', 'id_problem_imports', $lips->coloration_language, '');
+        $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code');
+        $this->lipsoutput->display_ace_form('unitTestsEditor', 'id_problem_unit_tests', $lips->coloration_language, 'unit-test');
+    }
+}
+
+/**
+ * Page to select the problem to modify
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickael OHLEN
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_problem_select_modify extends page_view {
+
+    /**
+     * page_admin_problem_select_modify constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_problem_select_modify content
+     */
+    function display_content() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
 
         // Administration title
         echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
@@ -581,39 +633,13 @@ class page_admin_problem_modify extends page_view {
         echo $this->lipsoutput->display_administration_menu();
 
         // Modify a category
-        echo $this->lipsoutput->display_h2(get_string('administration_category_modify_title', 'lips'));
-        echo $this->lipsoutput->display_p(get_string('administration_category_msg', 'lips'));
+        echo $this->lipsoutput->display_h2(get_string('administration_problem_modify_title', 'lips'));
 
-        $modifyCategoryForm = new mod_lips_category_modify_form();
+        $modifySelectProblemForm = new mod_lips_problem_modify_select_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify')), null, '');
+        $modifySelectProblemForm->display();
 
-        if ($modifyCategoryForm->is_submitted()) {
-            $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), null, 'post');
-
-            $modifyCategoryForm->handle();
-            $modifyCategoryForm->display();
-        } else {
-            $categoryid = optional_param('category_id', null, PARAM_INT);
-
-            if ($categoryid == null) {
-                $modifySelectCategoryForm = new mod_lips_category_modify_select_form();
-                $data = $modifySelectCategoryForm->get_submitted_data();
-                $categorydetails = get_category_details($data->selectCategory);
-
-                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array)$categorydetails, 'post');
-
-                $modifyCategoryForm->display();
-            } else {
-                $categorydetails = get_category_details($categoryid);
-
-                $modifyCategoryForm = new mod_lips_category_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_modify')), (array)$categorydetails, 'post');
-
-                $modifyCategoryForm->display();
-            }
-
-        }
     }
 }
-
 
 /**
  * Problem delete page
@@ -1165,15 +1191,15 @@ class page_problem extends page_view {
         }
         $prerequisite = $this->lipsoutput->display_span(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $prerequisite;
         echo $this->lipsoutput->display_p($prerequisite, array("class" => "field_page_problem"));
-        echo $this->lipsoutput->display_h3(get_string("subject", "lips"), array("style"=>"margin-bottom:10px;"), false);
+        echo $this->lipsoutput->display_h3(get_string("subject", "lips"), array("style" => "margin-bottom:10px;"), false);
         echo $this->lipsoutput->display_p($details[$this->id]->problem_statement);
-        echo $this->lipsoutput->display_h3(get_string("tips", "lips"), array("style"=>"margin-bottom:10px;"), false);
+        echo $this->lipsoutput->display_h3(get_string("tips", "lips"), array("style" => "margin-bottom:10px;"), false);
         $tips = $details[$this->id]->problem_tips;
         if (empty($tips)) {
             $tips = get_string("none", "lips");
         }
         echo $this->lipsoutput->display_p($tips);
-        echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"), array("style"=>"margin-bottom:10px;"), false);
+        echo $this->lipsoutput->display_h3(get_string("administration_problem_create_code_unittest_label", "lips"), array("style" => "margin-bottom:10px;"), false);
         $hastest = false;
         $unittests = get_displayable_unittests($this->id);
         foreach ($unittests[1] as $unittest) {
@@ -1184,6 +1210,6 @@ class page_problem extends page_view {
         if (!$hastest) {
             echo $this->lipsoutput->display_p(get_string("none", "lips"));
         }
-        echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style"=>"margin-bottom:10px;"), false);
+        echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style" => "margin-bottom:10px;"), false);
     }
 }

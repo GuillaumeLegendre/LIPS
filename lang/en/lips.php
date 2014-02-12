@@ -166,6 +166,7 @@ $string['administration_delete_category_confirmation'] = "Confirm the deletion o
 
 // Problem
 $string['administration_problem_create_title'] = 'Create a problem';
+$string['administration_problem_modify_title'] = 'Modify a problem';
 $string['administration_problem_create_preconfig_subtitle'] = '1. Pre-configuration';
 $string['administration_problem_create_informations_subtitle'] = "2. Informations about the problem";
 $string['administration_problem_create_informations_msg'] = 'Select the category of the problem.<br/>Enter the name, the difficulty, the conditions need to resolve the problem.';
@@ -173,13 +174,10 @@ $string['administration_problem_create_subject_subtitle'] = '3. Subject';
 $string['administration_problem_create_subject_msg'] = 'Write the problem subject and tips';
 $string['administration_problem_create_code_subtitle'] = '4. Code';
 $string['administration_problem_create_code_msg'] = 'Start to import all the librairies needed for the problem resolution.<br/><br/>Then write the code that the user will complete.<br/>To define editable areas, use the tag <span style="color: red;">&lt;lips-code/&gt;</span>.<br/><br/>To finish, ';
-
 $string['administration_problem_create_code_import_label'] = 'Import librairies';
 $string['administration_problem_create_code_complete_label'] = 'Code to complete';
 $string['administration_problem_create_code_unittest_label'] = 'Unit tests';
 $string['administration_delete_problem_confirmation'] = "Confirm the deletion of the problem";
-
-
 $string['administration_language_form_select_category_error'] = 'You must select a category';
 $string['administration_language_form_select_difficulty_error'] = 'You must select a difficulty';
 $string['administration_language_form_select_name_error'] = 'You must enter a name';
@@ -188,6 +186,8 @@ $string['administration_language_form_select_unittests_error'] = 'You must enter
 $string['administration_problem_create_success'] = 'The problem has been created';
 $string['administration_problem_modify_select'] = 'Select the problem';
 $string['administration_problem_delete_title'] = 'Delete a problem';
+$string['administration_problem_modify_success'] = 'The problem has been modified';
+
 
 /*--------------------------------------------------
  * Web services
