@@ -208,7 +208,7 @@ function fetch_removable_categories($idlanguage) {
         SELECT mlc.id, category_name
         FROM mdl_lips_category mlc
         LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id
-        WHERE mlc.id_language = 1
+        WHERE mlc.id_language = ' . $idlanguage . '
         GROUP BY mlc.id HAVING COUNT(mlp.id) = 0');
 }
 
@@ -364,7 +364,7 @@ function category_exists($conditions) {
  * @param int $id Category id
  * @return bool True if the category is removable, otherwise false
  */
-function is_removable($id) {
+function is_removable($id, $idlanguage) {
     global $DB;
 
     $sql = "SELECT mlc.id, category_name
@@ -372,7 +372,7 @@ function is_removable($id) {
         LEFT JOIN mdl_lips_problem mlp
         ON mlc.id = mlp.problem_category_id
         WHERE mlc.id = " . $id . "
-        AND mlc.id_language = 1
+        AND mlc.id_language = " . $idlanguage . "
         GROUP BY mlc.id HAVING COUNT(mlp.id) = 0";
 
     return $DB->record_exists_sql($sql);
