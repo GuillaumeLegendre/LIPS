@@ -82,6 +82,7 @@ $string['edit'] = 'Edit';
 $string['error_impossible'] = 'You shouldn\'t have access this page';
 $string['language'] = 'Language';
 $string['follow'] = 'Follow';
+$string['unfollow'] = 'Unfollow';
 $string['user'] = 'User';
 $string['grade'] = 'Grade';
 $string['ranks'] = 'Ranks';

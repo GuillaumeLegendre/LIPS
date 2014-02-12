@@ -104,13 +104,13 @@
     <TABLE NAME="lips_follow" COMMENT="The followed users">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="follow_by" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who decided to follow an other user"/>
-        <FIELD NAME="follow_user" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the followed user"/>
+        <FIELD NAME="follower" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who decided to follow an other user"/>
+        <FIELD NAME="followed" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the followed user"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="follow_by" TYPE="foreign" FIELDS="follow_by" REFTABLE="lips_user" REFFIELDS="id"/>
-        <KEY NAME="follow_user" TYPE="foreign" FIELDS="follow_user" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="follower" TYPE="foreign" FIELDS="follower" REFTABLE="lips_user" REFFIELDS="id"/>
+        <KEY NAME="followed" TYPE="foreign" FIELDS="followed" REFTABLE="lips_user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="lips_rank" COMMENT="Possible ranks">

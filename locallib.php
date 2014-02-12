@@ -118,7 +118,7 @@ function convert_active_tab($view) {
  */
 function get_user_details(array $conditions = null) {
     global $DB;
-    
+
     return $DB->get_record('lips_user', $conditions, '*');
 }
 
@@ -530,4 +530,42 @@ function get_solutions($problemid, $search = null) {
         where problem_solved_problem = $problemid
         and (mu.firstname like '%" . $search . "%' or mu.lastname like '%" . $search . "%')");
     }
+}
+
+/**
+ * Test if $followed if following $followed
+ *
+ * @param int $follower User who follow the other user
+ * @param int $followed User followed by the other user
+ * @return bool True if $follower is following $followed, otherwise false
+ */
+function is_following($follower, $followed) {
+    global $DB;
+
+    $result = $DB->count_records('lips_follow', array('follower' => $follower, 'followed' => $followed), '*');
+    return $result >= 1;
+}
+
+/**
+ * Follow a user
+ *
+ * @param int $follower Follower
+ * @param int $followed Followed user
+ */
+function follow($follower, $followed) {
+    global $DB;
+
+    $DB->insert_record('lips_follow', array('follower' => $follower, 'followed' => $followed));
+}
+
+/**
+ * Unfollow a user
+ *
+ * @param int $follower Follower
+ * @param int $followed Followed user
+ */
+function unfollow($follower, $followed) {
+    global $DB;
+
+    $DB->delete_records('lips_follow', array('follower' => $follower, 'followed' => $followed));
 }

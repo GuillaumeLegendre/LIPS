@@ -167,14 +167,34 @@ class mod_lips_renderer extends plugin_renderer_base {
         $iduser = optional_param('id_user', null, PARAM_TEXT);
 
         // Infos
-        $userdetails = ($iduser == null) ? get_user_details(array('id_user_moodle' => $USER->id)) : get_user_details(array('id' => $iduser));
+        $currentuserdetails = get_user_details(array('id_user_moodle' => $USER->id));
+        $userdetails = ($iduser == null) ? $currentuserdetails : get_user_details(array('id' => $iduser));
         $moodleuserdetails = get_moodle_user_details(array('id' => $userdetails->id_user_moodle));
         $rank = get_rank_details(array('id' => $userdetails->user_rank_id));
         $userpicture = get_user_picture_url(array('id_user_moodle' => $moodleuserdetails->id), 'f1');
 
         $menu = '<div id="profile-menu"><img src="' . $userpicture . '" id="picture"/>';
-        if ($iduser != null)
-            $menu .= '<a href="#" id="follow" class="lips-button">S\'abonner</a>';
+        if ($iduser != null && $iduser != $currentuserdetails->id) {
+            if(is_following($currentuserdetails->id, $userdetails->id)) {
+                $menu .= $this->render(new action_link(new moodle_url('action.php', array(
+                    'id' => $this->page->cm->id,
+                    'action' => 'unfollow',
+                    'originV' => 'profile',
+                    'originUser' => $userdetails->id,
+                    'to_unfollow' => $userdetails->id
+                )),
+                get_string('unfollow', 'lips'), null, array("id" => "follow", "class" => "lips-button")));
+            } else {
+                $menu .= $this->render(new action_link(new moodle_url('action.php', array(
+                    'id' => $this->page->cm->id,
+                    'action' => 'follow',
+                    'originV' => 'profile',
+                    'originUser' => $userdetails->id,
+                    'to_follow' => $userdetails->id
+                )),
+                get_string('follow', 'lips'), null, array("id" => "follow", "class" => "lips-button")));
+            }
+        }
 
         $menu .= '<div id="background">
             <div id="infos">
