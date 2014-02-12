@@ -17,13 +17,13 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
         // Define each element separated
 
         $lips = new backup_nested_element('lips', array('id'), array(
-        	'name', 'intro', 'introformat', 'timecreated', 'timemodified', 'compile_language',
-        	'coloration_language', 'language_picture', 'base_code'));
+            'name', 'intro', 'introformat', 'timecreated', 'timemodified', 'compile_language',
+            'coloration_language', 'language_picture', 'base_code'));
 
         $difficulties = new backup_nested_element('difficulties');
 
         $difficulty = new backup_nested_element('difficulty', array('id'), array(
-        	'difficulty_label', 'difficulty_points'));
+            'difficulty_label', 'difficulty_points'));
  
         $categories = new backup_nested_element('categories');
  
@@ -37,7 +37,7 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
             'problem_preconditions', 'problem_statement', 'problem_tips', 'problem_code', 'problem_unit_tests', 'problem_date'));
  
         // Build the tree
- 		$lips->add_child($difficulties);
+        $lips->add_child($difficulties);
         $difficulties->add_child($difficulty);
  
         $lips->add_child($categories);
@@ -49,11 +49,11 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
         // Define sources
         $lips->set_source_table('lips', array('id' => backup::VAR_ACTIVITYID));
 
- 		$difficulty->set_source_table('lips_difficulty', array('id' => backup::VAR_ACTIVITYID));
+        $difficulty->set_source_table('lips_difficulty', array('id' => backup::VAR_ACTIVITYID));
 
- 		$category->set_source_table('lips_category', array('id' => backup::VAR_ACTIVITYID));
+        $category->set_source_table('lips_category', array('id' => backup::VAR_ACTIVITYID));
 
- 		$problem->set_source_table('lips_problem', array('id' => backup::VAR_ACTIVITYID));
+        $problem->set_source_table('lips_problem', array('id' => backup::VAR_ACTIVITYID));
  
         // All the rest of elements only happen if we are including user info
        /* if ($userinfo) {

@@ -97,6 +97,12 @@ switch ($view) {
                 case "problem_create":
                     $viewpage = new page_admin_problem_create($cm);
                     break;
+                case "problems_import" :
+                    $viewpage = new page_import_problems($cm);
+                break;
+                case "problems_export" :
+                    $viewpage = new page_export_problems($cm);
+                break;
                 case "my_problems":
                     $viewpage = new page_admin_my_problems($cm);
                     break;

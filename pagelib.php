@@ -1287,3 +1287,95 @@ class page_problem extends page_view {
         }
     }
 }
+
+/**
+ * Page to import problems
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Anaïs Picoreau
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_import_problems extends page_view {
+
+    /**
+     * page_import_problems constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_import_problems content
+     */
+    function display_content() {
+        global $CFG, $PAGE;
+        require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Import a problem
+        echo $this->lipsoutput->display_h2(get_string('administration_problems_import_title', 'lips'));
+
+        $importProblemForm = new mod_lips_problems_import_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problems_import')), null, 'post');
+
+        if ($importProblemForm->is_submitted()) {
+            $importProblemForm->handle($this->cm->instance);
+            $importProblemForm->display();
+        } else {
+            $importProblemForm->display();
+        }
+    }
+}
+
+/**
+ * Page to export problems
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Anaïs Picoreau
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_export_problems extends page_view {
+
+    /**
+     * page_export_problems constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_export_problems content
+     */
+    function display_content() {
+        global $CFG, $PAGE;
+        require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Export a problem
+        echo $this->lipsoutput->display_h2(get_string('administration_problems_export_title', 'lips'));
+
+        $exportProblemForm = new mod_lips_problems_export_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problems_export')), null, 'post');
+
+        if ($exportProblemForm->is_submitted()) {
+            $exportProblemForm->handle($this->cm->instance);
+            $exportProblemForm->display();
+        } else {
+            $exportProblemForm->display();
+        }
+    }
+}
