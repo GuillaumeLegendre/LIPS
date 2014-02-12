@@ -217,7 +217,7 @@ class mod_lips_category_modify_form extends moodleform {
         // Category documentation (TEXT)
         $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
         if($mcustomdata['category_documentation_type'] == 'TEXT') {
-            $mform->setDefault('areaCategoryDocumentation', $mcustomdata['category_documentation']);
+            $mform->setDefault('areaCategoryDocumentation', array('text' => $mcustomdata['category_documentation'], 'format' => FORMAT_HTML));
         }
 
         // Modify button.
