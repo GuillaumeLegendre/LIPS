@@ -221,6 +221,11 @@ $string['administration_problems_import_title'] = 'Import problems into LIPS';
 $string['administration_problems_export_title'] = 'Export problems from LIPS';
 $string['administration_problem_import_success'] = 'Problems have been correctly imported';
 $string['administration_problem_export_success'] = 'Problems have been correctly exported';
+$string['administration_problem_import_empty_error'] = 'Import directory has to been specified';
+$string['administration_problem_import_directory_error'] = 'The specified file must be a directory';
+$string['administration_problem_import_notexist_error'] = "The specified directory doesn't exist";
+$string['administration_problem_import_warning_msg'] = "The directory must exist in : ";
+$string['administration_problem_export_warning_msg'] = "The exported files will be stored in directory : ";
 
 // My problems
 $string['administration_my_problems_title'] = "My problems";

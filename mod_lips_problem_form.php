@@ -369,11 +369,98 @@ class mod_lips_problems_import_form extends moodleform {
      * Form definition
      */
     public function definition() {
-        global $PAGE, $USER;
+        global $PAGE, $USER, $CFG;
         $mform =& $this->_form;
-        $context = $PAGE->context;
-        $coursecontext = $context->get_course_context();
-        $courseid = $coursecontext->instanceid;
+        // $context = $PAGE->context;
+        // $coursecontext = $context->get_course_context();
+        // $courseid = $coursecontext->instanceid;
+
+        $warning = get_string('administration_problem_import_warning_msg', 'lips') . $CFG->dataroot . "/temp/backup/";
+        echo $PAGE->get_renderer('mod_lips')->display_notification($warning, 'WARNING');
+
+        $mform->addElement('text', 'backupFile', "Choix du répertoire d'import");
+        $mform->setType('backupFile', PARAM_TEXT);
+
+        // $contextid = $context->id;
+        // $component = "user";
+        // $filearea = "draft";
+        // $itemid = 0;
+        // $filepath = "/";
+        // $filename = "Simple.txt";
+        // $filecontent = base64_encode("Let us create a nice simple file");
+        // $contextlevel = null;
+        // $instanceid = null;
+
+        // $mform->addElement('file', 'backupFile', get_string('file'), null,
+        //            array('maxbytes' => $CFG->maxbytes, 'accepted_types' => '*'));
+
+        // $mform->addElement('filepicker', 'backupFile', "Upload a Document", null, array('maxbytes' => 1024*1024, 'accepted_types' =>array('*.png', '*.jpg', '*.gif','*.jpeg', '*.doc', '*.rtf','*.pdf','*.txt')));
+
+        // $mform->addElement('filemanager', 'backupFile', "Upload a file to import", null,
+        //             array('subdirs' => 1, 'maxbytes' => $CFG->maxbytes, 'maxfiles' => 1,
+        //                   'accepted_types' => array('*.mbz')));
+
+        // $fileinfo = $browser->get_file_info($contextid, $component, "user_area", $itemid, $filepath, $filename);
+
+        // $fs = get_file_storage();
+        // $browser = get_file_browser();
+        // $fileinfo = $browser->get_file_info($contextid, $component, $filearea, $itemid, $filepath, $filename)
+        // $params = $fileinfo->get_params();
+        // $file = $fs->get_file($params['contextid'], $params['component'], $params['filearea'],
+        //                     $params['itemid'], $params['filepath'], $params['filename']);
+
+        // $fullpath = "/var/moodledata/temp/backup";
+        // if ($file = $fs->get_file_by_hash(sha1($fullpath)) and $file->is_directory()) {
+        //     echo "Directory found";
+
+        //     $viewer;
+        //     $viewer->files = array($file);
+        //     $viewer->currentcontext->id->$courseid = $courseid;
+        //     // $html = render_backup_files_viewer($viewer);
+        //     // echo $html;
+
+        //     echo "<pre>";
+        //     echo $OUTPUT->render_backup_files_viewer($viewer);
+        //     echo "<pre>";
+        // }
+
+        // $contextid = $context->id;
+        // $browser = get_file_browser();
+        // $filepath = 
+
+        // // check if tmp dir exists.
+        // $tmpdir = $CFG->tempdir . '/backup';
+        // if (!check_dir_exists($tmpdir, true, true)) {
+        //     throw new restore_controller_exception('cannot_create_backup_temp_dir');
+        // }
+
+        // // Choose the backup file from backup files tree.
+        // if ($action == 'choosebackupfile') {
+        //     if ($fileinfo = $browser->get_file_info($filecontext, $component, $filearea, $itemid, $filepath, $filename)) {
+        //         if (is_a($fileinfo, 'file_info_stored')) {
+
+        //             // Use the contenthash rather than copying the file where possible,
+        //             // to improve performance and avoid timeouts with large files.
+        //             $fs = get_file_storage();
+        //             $params = $fileinfo->get_params();
+        //             $file = $fs->get_file($params['contextid'], $params['component'], $params['filearea'],
+        //                     $params['itemid'], $params['filepath'], $params['filename']);
+        //             $restore_url = new moodle_url('/backup/restore.php', array('contextid' => $contextid,
+        //                     'pathnamehash' => $file->get_pathnamehash(), 'contenthash' => $file->get_contenthash()));
+        //         } else {
+        //             // If it's some weird other kind of file then use old code.
+        //             $filename = restore_controller::get_tempdir_name($course->id, $USER->id);
+        //             $pathname = $tmpdir . '/' . $filename;
+        //             $fileinfo->copy_to_pathname($pathname);
+        //             $restore_url = new moodle_url('/backup/restore.php', array(
+        //                     'contextid' => $contextid, 'filename' => $filename));
+        //         }
+        //         redirect($restore_url);
+        //     } else {
+        //         redirect($url, get_string('filenotfound', 'error'));
+        //     }
+        //     die;
+        // }
 
         // Import button.
         $mform->addElement('submit', 'submit', get_string('import', 'lips'));
@@ -387,7 +474,30 @@ class mod_lips_problems_import_form extends moodleform {
      * @return array Errors array
      */
     public function validation($data, $files) {
+        global $CFG;
         $errors = parent::validation($data, $files);
+
+        // Check a directory name has been specified.
+        // settype($backupFile,"string");
+        // $path = $data->backupFile;
+        // if (isset($path) && !empty($path)) {
+            
+        //     $dir = $CFG->dataroot . "/temp/backup/" . $data->backupFile;
+        //     // Check the file exists.
+        //     if (file_exists($dir)) {
+
+        //         // Check it is a directory.
+        //         if (!is_dir($dir)) {
+        //             $errors['notDirectory'] = get_string('administration_problem_import_directory_error', 'lips');
+        //         }
+        //     } else {
+        //         $errors['notExistingFile'] = get_string('administration_problem_import_notexist_error', 'lips');
+        //         echo "répertoire : " . $dir;
+        //     }
+        // } else {
+        //     $errors['emptyImportDirectoryName'] = get_string('administration_problem_import_empty_error', 'lips');
+        // }
+
         return $errors;
     }
 
@@ -407,24 +517,21 @@ class mod_lips_problems_import_form extends moodleform {
         }
 
         // Form data.
-        // $data = $this->get_submitted_data();
+        $data = $this->get_submitted_data();
 
         // The validation failed.
-        // $errors = $this->validation($data, null);
-        // if (count($errors) > 0) {
-        //     foreach ($errors as $error) {
-        //         echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
-        //     }
-        //     return;
-        // }
-
-        //require_login($course, null, $cm);
-        // require_capability('moodle/restore:restorecourse', $context);
+        $errors = $this->validation($data, null);
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
+            }
+            return;
+        }
 
         // Transaction.
-        // $transaction = $DB->start_delegated_transaction( );
+        $transaction = $DB->start_delegated_transaction( );
 
-        // Get current course id. 
+        // Get current course id.
         $context = $PAGE->context;
         $coursecontext = $context->get_course_context();
         $courseid = $coursecontext->instanceid;
@@ -432,8 +539,8 @@ class mod_lips_problems_import_form extends moodleform {
         // Get current user.
         $userid = $USER->id;
 
-        // A file from $CFG->dataroot . '/temp/backup/'
-        $folder = "1215e4296ace2e14c93878f83b9a8b3f";
+        // A directory existing in $CFG->dataroot . '/temp/backup/'
+        $folder = $data->backupFile;
 
         // Restore backup into course.
         $controller = new restore_controller($folder, $courseid, 
@@ -441,8 +548,8 @@ class mod_lips_problems_import_form extends moodleform {
         $controller->execute_precheck();
         $controller->execute_plan();
 
-        // Commit
-        // $transaction->allow_commit();
+        // Commit.
+        $transaction->allow_commit();
 
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_import_success', 'lips'), 'SUCCESS');
@@ -463,8 +570,11 @@ class mod_lips_problems_export_form extends moodleform {
      * Form definition
      */
     public function definition() {
-        global $PAGE, $USER;
+        global $PAGE, $CFG;
         $mform =& $this->_form;
+
+        $warning = get_string('administration_problem_export_warning_msg', 'lips') . $CFG->dataroot . "/temp/backup/";
+        echo $PAGE->get_renderer('mod_lips')->display_notification($warning, 'WARNING');
 
         // Export button.
         $mform->addElement('submit', 'submit', get_string('export', 'lips'));

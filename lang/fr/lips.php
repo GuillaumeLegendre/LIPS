@@ -192,6 +192,11 @@ $string['administration_problems_import_title'] = 'Importer des problèmes dans 
 $string['administration_problems_export_title'] = 'Exporter les problèmes de LIPS';
 $string['administration_problem_import_success'] = 'Les problèmes ont été correctement importés';
 $string['administration_problem_export_success'] = 'Les problèmes ont été correctement exportés';
+$string['administration_problem_import_empty_error'] = "Le répertoire d'import doit être précisé";
+$string['administration_problem_import_directory_error'] = 'Le fichier précisé doit être un répertoire';
+$string['administration_problem_import_notexist_error'] = "Le répertoire spécifié n'existe pas";
+$string['administration_problem_import_warning_msg'] = "Le répertoire doit exister dans : ";
+$string['administration_problem_export_warning_msg'] = "Les fichiers d'export seront sauvegardés dans le répertoire : ";
 
 // My problems
 $string['administration_my_problems_title'] = "Mes problèmes";
