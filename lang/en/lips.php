@@ -46,6 +46,7 @@ $string['pluginname'] = 'LIPS';
  *------------------------------------------------*/
 $string['users_table'] = 10;
 $string['my_problems_table'] = 10;
+$string['followed_users_table'] = 10;
 
 /*--------------------------------------------------
  * Status
@@ -53,6 +54,13 @@ $string['my_problems_table'] = 10;
 $string['coursecreator'] = 'Course creator';
 $string['teacher'] = 'Teacher';
 $string['student'] = 'Student';
+
+/*--------------------------------------------------
+ * Pictures
+ *------------------------------------------------*/
+$string['picture_default_language'] = 'default_language.png';
+$string['picture_test'] = 'test.png';
+$string['picture_testing'] = 'testing.png';
 
 /*--------------------------------------------------
  * Difficulties
@@ -63,17 +71,14 @@ $string['difficulty_label_medium'] = 'medium';
 $string['difficulty_label_difficult'] = 'difficult';
 
 /*--------------------------------------------------
- * Pictures
- *------------------------------------------------*/
-$string['picture_default_language'] = 'default_language.png';
-$string['picture_follow'] = 'follow.png';
-$string['picture_test'] = 'test.png';
-$string['picture_testing'] = 'testing.png';
-
-/*--------------------------------------------------
  * Notifications
  *------------------------------------------------*/
-$string['notification_follow'] = '{time} - {notification_from} is following {notification_to}';
+
+// Text
+$string['notification_follow'] = '{img} {date} - {notification_from} is following {notification_to}';
+
+// Picture
+$string['notification_follow_picture'] = 'follow.png';
 
 /*--------------------------------------------------
  * Constants
@@ -115,6 +120,36 @@ $string['similar_problems'] = 'Similar problems';
 $string['test_problem'] = 'Test the problem';
 $string['untesting'] = 'Submit';
 $string['testing'] = 'Test';
+$string['recent_activity'] = 'Recent activity';
+$string['achievements'] = 'Achievements';
+$string['at'] = 'at';
+
+/*--------------------------------------------------
+ * Dates
+ *------------------------------------------------*/
+
+// Months
+$string['Jan'] = 'January';
+$string['Feb'] = 'February';
+$string['Mar'] = 'March';
+$string['Apr'] = 'April';
+$string['May'] = 'May';
+$string['Jun'] = 'June';
+$string['Jul'] = 'July';
+$string['Aug'] = 'August';
+$string['Sep'] = 'September';
+$string['Oct'] = 'October';
+$string['Nov'] = 'November';
+$string['Dec'] = 'December';
+
+// Days
+$string['Mon'] = 'Monday';
+$string['Tue'] = 'Tuesday';
+$string['Wed'] = 'Wednesday';
+$string['Thu'] = 'Thursday';
+$string['Fri'] = 'Friday';
+$string['Sat'] = 'Saturday';
+$string['Sun'] = 'Sunday';
 
 /*--------------------------------------------------
  * Tabs

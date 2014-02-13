@@ -335,4 +335,77 @@ class mod_lips_renderer extends plugin_renderer_base {
     public function display_problem_information($info, $text) {
         return $this->display_p($this->display_span($info, array("class" => "label_field_page_problem")) . " " . $text);
     }
+
+    /**
+     * Display the notifications
+     *
+     * @param object $notifications Notifications informations
+     * @return string The rendered notifications
+     */
+    public function display_notifications($notifications) {
+        $display = '';
+
+        foreach($notifications as $notification) {
+            // Notification border
+            $display .= '<div class="notification-border"></div>';
+
+            // Notification message
+            $notification_msg = '<div class="notification-content">' . get_string($notification->notification_type, 'lips') . '</div>';
+
+            // Set the picture
+            $notification_msg = str_replace('{img}', '<img src="images/' .  get_string($notification->notification_type . '_picture', 'lips') . '"/>', $notification_msg);
+
+            // Set the date
+            $notification_msg = str_replace('{date}', '<span>' . format_date($notification->notification_date) . '</span>', $notification_msg);
+
+            // Set the notification_from
+            $notification_from = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_from))->id_user_moodle));
+            $notification_msg = str_replace('{notification_from}', $this->display_user_link($notification->notification_from, $notification_from->firstname, $notification_from->lastname), $notification_msg);            
+
+            // Set the notification_to
+            if($notification->notification_to != null) {
+                $notification_to = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_to))->id_user_moodle));
+                $notification_msg = str_replace('{notification_to}', $this->display_user_link($notification->notification_to, $notification_to->firstname, $notification_to->lastname), $notification_msg);            
+            }
+
+            // Set the notification_problem
+            if($notification->notification_problem != null) {
+                $notification_problem = get_problem_details(array('id' => $notification->notification_problem));
+                $url_problem = new action_link(new moodle_url('view.php', array(
+                    'id' => $this->page->cm->id,
+                    'view' => 'problem',
+                    'problemId' => $notification->notification_problem
+                )),
+                $notification_problem[$notification->notification_problem]->problem_label);
+                $notification_msg = str_replace('{notification_problem}', $url_problem, $notification_msg);            
+            }
+
+            $display .= $notification_msg;
+        }
+
+        if($display != '') {
+            $display .= '<div class="notification-border"></div>';
+        }
+
+        return $display;
+    }
+
+    /**
+     * Display a user link
+     *
+     * @param int $userid User ID
+     * @param string $firstname First name
+     * @param string $lastname Last name
+     * @return string User link
+     */
+    public function display_user_link($userid, $firstname, $lastname) {
+        $url = new action_link(new moodle_url('view.php', array(
+            'id' => $this->page->cm->id,
+            'view' => 'profile',
+            'id_user' => $userid
+        )),
+        ucfirst($firstname) . ' ' . strtoupper($lastname));
+
+        return $this->render($url);
+    }
 }

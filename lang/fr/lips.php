@@ -42,6 +42,26 @@ $string['pluginadministration'] = 'lips administration';
 $string['pluginname'] = 'LIPS';
 
 /*--------------------------------------------------
+ * Status
+ *------------------------------------------------*/
+$string['coursecreator'] = 'Créateur du cours';
+$string['teacher'] = 'Enseignant';
+$string['student'] = 'Etudiant';
+
+/*--------------------------------------------------
+ * Difficulties
+ *------------------------------------------------*/
+$string['difficulty_label_elementary'] = 'Elementaire';
+$string['difficulty_label_easy'] = 'Facile';
+$string['difficulty_label_medium'] = 'Intermediaire';
+$string['difficulty_label_difficult'] = 'Difficile';
+
+/*--------------------------------------------------
+ * Notifications
+ *------------------------------------------------*/
+$string['notification_follow'] = '{img} {date} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
+
+/*--------------------------------------------------
  * Constants
  *------------------------------------------------*/
 $string['create'] = 'Créer';
@@ -80,26 +100,36 @@ $string['similar_problems'] = 'Essayez aussi';
 $string['test_problem'] = 'Tester le problème';
 $string['untesting'] = 'Soumettre';
 $string['testing'] = 'Tester';
+$string['recent_activity'] = 'Activité récente';
+$string['achievements'] = 'Badges';
+$string['at'] = 'à';
 
 /*--------------------------------------------------
- * Status
+ * Dates
  *------------------------------------------------*/
-$string['coursecreator'] = 'Créateur du cours';
-$string['teacher'] = 'Enseignant';
-$string['student'] = 'Etudiant';
 
-/*--------------------------------------------------
- * Difficulties
- *------------------------------------------------*/
-$string['difficulty_label_elementary'] = 'Elementaire';
-$string['difficulty_label_easy'] = 'Facile';
-$string['difficulty_label_medium'] = 'Intermediaire';
-$string['difficulty_label_difficult'] = 'Difficile';
+// Months
+$string['Jan'] = 'Janvier';
+$string['Feb'] = 'Février';
+$string['Mar'] = 'Mars';
+$string['Apr'] = 'Avril';
+$string['May'] = 'Mai';
+$string['Jun'] = 'Juin';
+$string['Jul'] = 'Juillet';
+$string['Aug'] = 'Août';
+$string['Sep'] = 'Septembre';
+$string['Oct'] = 'Octobre';
+$string['Nov'] = 'Novembre';
+$string['Dec'] = 'Décembre';
 
-/*--------------------------------------------------
- * Notifications
- *------------------------------------------------*/
-$string['notification_follow'] = '{img} {time} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
+// Days
+$string['Mon'] = 'Lundi';
+$string['Tue'] = 'Mardi';
+$string['Wed'] = 'Mercredi';
+$string['Thu'] = 'Jeudi';
+$string['Fri'] = 'Vendredi';
+$string['Sat'] = 'Samedi';
+$string['Sun'] = 'Dimanche';
 
 /*--------------------------------------------------
  * Tabs

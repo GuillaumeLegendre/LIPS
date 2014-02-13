@@ -283,6 +283,26 @@ h3 {
 }
 
 /*---------------------------------
+ *  Notification
+ *-------------------------------*/
+
+.notification-border {
+    border: 1px dashed #AAAAAA;
+}
+
+.notification-content {
+    margin: 5px 0 5px 0;
+}
+
+.notification-content img {
+    margin-right: 2px;
+}
+
+.notification-content span {
+    color: #555555;
+}
+
+/*---------------------------------
  *	Administration menu
  *-------------------------------*/
 
