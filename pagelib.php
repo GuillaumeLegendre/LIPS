@@ -1404,6 +1404,5 @@ class page_export_problems extends page_view {
         } else {
             $exportProblemForm->display();
         }
-        echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style" => "margin-bottom:10px;"), false);
     }
 }

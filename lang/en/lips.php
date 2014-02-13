@@ -202,6 +202,8 @@ $string['administration_problem_modify_success'] = 'The problem has been modifie
 
 $string['administration_problems_import_title'] = 'Import problems into LIPS';
 $string['administration_problems_export_title'] = 'Export problems from LIPS';
+$string['administration_problem_import_success'] = 'Problems have been correctly imported';
+$string['administration_problem_export_success'] = 'Problems have been correctly exported';
 
 // My problems
 $string['administration_my_problems_title'] = "My problems";

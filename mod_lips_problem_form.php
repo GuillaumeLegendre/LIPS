@@ -15,11 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once(dirname(__FILE__) . '/locallib.php');
-require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
-require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php' );
 
 /**
  * Form to create a problem
@@ -390,7 +387,8 @@ class mod_lips_problems_import_form extends moodleform {
      * @param array $files Form uploaded files
      */
     public function handle($instance) {
-        global $DB, $USER, $PAGE;
+        global $DB, $USER, $PAGE, $CFG;
+        require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php' );
 
         // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled()) {
@@ -424,7 +422,7 @@ class mod_lips_problems_import_form extends moodleform {
         $userid = $USER->id;
 
         // A file from $CFG->dataroot . '/temp/backup/'
-        $folder = "15b7aebfeda81a60750cd8bbf6e6ab0e";
+        $folder = "c8d0570aef4c12a6b869a9d781d7d4f9";
 
         // Restore backup into course.
         $controller = new restore_controller($folder, $courseid, 
@@ -436,7 +434,7 @@ class mod_lips_problems_import_form extends moodleform {
         // $transaction->allow_commit();
 
         // Success message.
-        // echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_create_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_import_success', 'lips'), 'SUCCESS');
     }
 }
 
@@ -480,7 +478,8 @@ class mod_lips_problems_export_form extends moodleform {
      * @param array $files Form uploaded files
      */
     public function handle($instance) {
-        global $DB, $USER, $PAGE;
+        global $DB, $USER, $PAGE, $CFG;
+        require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
 
         // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled())
@@ -520,6 +519,6 @@ class mod_lips_problems_export_form extends moodleform {
         $bc->get_results();
 
         // Success message.
-        // echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_create_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_export_success', 'lips'), 'SUCCESS');
     }
 }
