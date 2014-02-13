@@ -183,7 +183,7 @@ class mod_lips_configure_picture_form extends moodleform {
         }
 
         // Save the picture
-        $success = $this->save_file('filePicture', '/home/valentin/www/moodle/mod/lips/images/' . $picture);
+        $success = $this->save_file('filePicture', 'images/' . $picture);
 
         // In case of error
         if(!$success) {
