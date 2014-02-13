@@ -1,14 +1,32 @@
 <?php
- 
-/**
- * Define all the backup steps that will be used by the backup_lips_activity_task
- */
+ // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Define the complete lips structure for backup, with file and id annotations
- */     
+ * Define all the backup steps that will be used by the backup_lips_activity_task
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Anaïs Picoreau
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class backup_lips_activity_structure_step extends backup_activity_structure_step {
  
+    /**
+     * Define the complete lips structure for backup, with file and id annotations
+     */     
     protected function define_structure() {
  
         // To know if we are including userinfo.
@@ -36,32 +54,31 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
             'problem_creator_id', 'problem_category_id', 'problem_label', 'problem_difficulty_id',
             'problem_preconditions', 'problem_statement', 'problem_tips', 'problem_code', 'problem_unit_tests', 'problem_date'));
  
-        // Build the tree
-        $lips->add_child($difficulties);
-        $difficulties->add_child($difficulty);
- 
+        // Build the tree.
         $lips->add_child($categories);
         $categories->add_child($category);
 
-        $lips->add_child($problems);
+        $category->add_child($problems);
         $problems->add_child($problem);
 
-        // Define sources
+        $problem->add_child($difficulties);
+        $difficulties->add_child($difficulty);
+
+        // Define sources.
         $lips->set_source_table('lips', array('id' => backup::VAR_ACTIVITYID));
 
-        $difficulty->set_source_table('lips_difficulty', array('id' => backup::VAR_ACTIVITYID));
+        $category->set_source_table('lips_category', array('id_language' => backup::VAR_PARENTID));
 
-        $category->set_source_table('lips_category', array('id' => backup::VAR_ACTIVITYID));
+        $problem->set_source_table('lips_problem', array('problem_category_id' => backup::VAR_PARENTID));
 
-// TODO : ne prendre que les problems définitifs (problem_testing = 0)
-        $problem->set_source_table('lips_problem', array('id' => backup::VAR_ACTIVITYID));
+        $difficulty->set_source_table('lips_difficulty', array('id' => '../../problem_difficulty_id'));
 
-        // Define id annotations
+        // Define id annotations.
  
-        // Define file annotations
-        $lips->annotate_files('lips', 'intro', null); // This file area hasn't itemid
+        // Define file annotations.
+        $lips->annotate_files('lips', 'intro', null); // This file area hasn't itemid.
 
-        // Return the root element (lips), wrapped into standard activity structure
+        // Return the root element (lips), wrapped into standard activity structure.
         return $this->prepare_activity_structure($lips);
     }
 }
