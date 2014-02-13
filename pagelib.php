@@ -1235,7 +1235,7 @@ class page_problem extends page_view {
 
         // Redirect if not allowed to see this problem
         if($details[$this->id]->problem_testing == 1 && $USER->id != $details[$this->id]->problem_creator_id) {
-            redirect(new moodle_url('view.php', array('id' => $cm->id)));
+            redirect(new moodle_url('view.php', array('id' => $this->cm->id)));
         }
 
         if($details[$this->id]->problem_testing == 1) {
@@ -1334,7 +1334,7 @@ class page_problem extends page_view {
 
             foreach ($similarproblems as $similarproblem) {
                 $problemdetails = get_problem_details($similarproblem->problem_similar_id);
-
+                print_object($similarproblem);
                 $problemlink = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $similarproblem->problem_similar_id)), $problemdetails[$similarproblem->problem_similar_id]->problem_label);
                 $creatorlink = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $problemdetails[$similarproblem->problem_similar_id]->user_id)), ucfirst($problemdetails[$similarproblem->problem_similar_id]->firstname) . ' ' . strtoupper($problemdetails[$similarproblem->problem_similar_id]->lastname));
                 echo $this->lipsoutput->display_p($problemlink . ' ' . get_string('from', 'lips') . ' ' . $creatorlink);

@@ -184,7 +184,9 @@ class mod_lips_problem_create_form extends moodleform {
         }
         $problemid = $DB->insert_record('lips_problem', $data);
         foreach ($problemssimilarid as $problemsimilar) {
-            insert_problem_similar($problemid, $problemsimilar);
+            if (!empty($problemsimilar)) {
+                insert_problem_similar($problemid, $problemsimilar);
+            }
         }
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_create_success', 'lips'), 'SUCCESS');
