@@ -77,6 +77,9 @@ $string['prerequisite'] = "Prérequis";
 $string['difficulty'] = "Difficulté";
 $string['send_response'] = "Envoyer la réponse";
 $string['similar_problems'] = 'Essayez aussi';
+$string['test_problem'] = 'Tester le problème';
+$string['untesting'] = 'Soumettre';
+$string['testing'] = 'Tester';
 
 /*--------------------------------------------------
  * Status
@@ -92,6 +95,12 @@ $string['difficulty_label_elementary'] = 'Elementaire';
 $string['difficulty_label_easy'] = 'Facile';
 $string['difficulty_label_medium'] = 'Intermediaire';
 $string['difficulty_label_difficult'] = 'Difficile';
+
+/*--------------------------------------------------
+ * Notifications
+ *------------------------------------------------*/
+$string['notification_follow'] = '{img} {time} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
+
 
 /*--------------------------------------------------
  * Tabs
@@ -199,3 +208,5 @@ $string['problem_author'] = 'Rédacteur';
 $string['problem_date_creation'] = 'Date de création';
 $string['problem_nb_resolutions'] = 'Nombre de résolutions';
 $string['problem_resolved_by'] = 'Résolu par';
+$string['problem_owner'] = 'Problème que vous avez créé';
+$string['problem_testing_picture'] = 'Problème en mode de test';

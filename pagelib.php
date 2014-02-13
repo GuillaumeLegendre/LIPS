@@ -727,7 +727,7 @@ class page_admin_problem_create extends page_view {
         $createProblemForm = new mod_lips_problem_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_create')), null, 'post', '', array('class' => 'problem-form'));
 
         if ($createProblemForm->is_submitted()) {
-            $createProblemForm->handle($this->cm->instance);
+            $createProblemForm->handle();
             $createProblemForm->display();
         } else {
             $createProblemForm->display();
@@ -999,6 +999,8 @@ class page_category extends page_view {
      * Display the page_category content
      */
     function display_content() {
+        global $USER;
+
         require_once(dirname(__FILE__) . '/problems_table.php');
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
@@ -1019,6 +1021,11 @@ class page_category extends page_view {
             if (!empty($data->inputSearch)) {
                 $search = $data->inputSearch;
             }
+        }
+
+        if(has_role('administration')) {
+            echo '<p><span style="color: red;">*</span> : ' . get_string('problem_owner', 'lips') . '.</p>';
+            echo '<img src="images/' . get_string('picture_testing', 'lips') . '" width="16px" height="16px"/> : ' . get_string('problem_testing_picture', 'lips') . '.';
         }
 
         // Problems table
@@ -1194,7 +1201,7 @@ class page_solutions extends page_view {
 }
 
 /**
- * Display solutions of a problem.
+ * Display a problem.
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
@@ -1212,6 +1219,14 @@ class page_problem extends page_view {
     function display_content() {
         global $USER;
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
+
+        // Problem details
+        $details = get_problem_details($this->id);
+
+        // Redirect if not allowed to see this problem
+        if($details[$this->id]->problem_testing == 1 && $USER->id != $details[$this->id]->problem_creator_id) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        }
 
         /*--------------------------------
          *   Right buttons
@@ -1238,7 +1253,6 @@ class page_problem extends page_view {
         /*--------------------------------
          *   Left informations
          *------------------------------*/
-        $details = get_problem_details($this->id);
         $categorydetails = get_category_details($details[$this->id]->problem_category_id);
 
         // Category documentation

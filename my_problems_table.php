@@ -42,7 +42,7 @@ class my_problems_table extends table_sql {
         parent::__construct("mdl_lips_problem");
         $this->cm = $cm;
 
-        $this->set_sql("mlp.id, problem_label, problem_date, problem_creator_id, difficulty_label, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id",
+        $this->set_sql("mlp.id, problem_label, problem_date, problem_creator_id, difficulty_label, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing",
             "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
             LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
             JOIN mdl_user mu ON mu.id = problem_creator_id 
@@ -53,8 +53,8 @@ class my_problems_table extends table_sql {
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'my_problems')));
 
         $context = context_module::instance($cm->id);
-        $this->define_headers(array(get_string('problem', 'lips'), get_string('difficulty', 'lips'), get_string('date', 'lips'), get_string('problem_author', 'lips'), get_string('problem_nb_resolutions', 'lips'), ""));
-        $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_creator_id", "problem_resolutions", "actions"));
+        $this->define_headers(array(get_string('problem', 'lips'), get_string('difficulty', 'lips'), get_string('date', 'lips'), get_string('problem_author', 'lips'), get_string('problem_nb_resolutions', 'lips'), "", ""));
+        $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_creator_id", "problem_resolutions", "testing", "actions"));
         $this->sortable(true);
     }
 
@@ -83,6 +83,30 @@ class my_problems_table extends table_sql {
 
             case 'problem_creator_id':
                 return $OUTPUT->action_link(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'profile', 'id_user' => $attempt->user_id)), ucfirst($attempt->firstname) . ' ' . strtoupper($attempt->lastname));
+                break;
+
+            case 'testing':
+                if($attempt->problem_testing == 1) {
+                    $url = new action_link(new moodle_url('action.php', array(
+                        'id' => $this->cm->id,
+                        'action' => 'untesting',
+                        'originV' => 'administration',
+                        'originAction' => 'my_problems',
+                        'to_untest' => $attempt->id
+                    )),
+                    get_string('untesting', 'lips'), null, array("class" => "lips-button"));
+                } else {
+                    $url = new action_link(new moodle_url('action.php', array(
+                        'id' => $this->cm->id,
+                        'action' => 'testing',
+                        'originV' => 'administration',
+                        'originAction' => 'my_problems',
+                        'to_test' => $attempt->id
+                    )),
+                    get_string('testing', 'lips'), null, array("class" => "lips-button"));
+                }
+
+                return $OUTPUT->render($url);
                 break;
 
             case 'actions':

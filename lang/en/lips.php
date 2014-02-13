@@ -63,6 +63,19 @@ $string['difficulty_label_medium'] = 'medium';
 $string['difficulty_label_difficult'] = 'difficult';
 
 /*--------------------------------------------------
+ * Pictures
+ *------------------------------------------------*/
+$string['picture_default_language'] = 'default_language.png';
+$string['picture_follow'] = 'follow.png';
+$string['picture_test'] = 'test.png';
+$string['picture_testing'] = 'testing.png';
+
+/*--------------------------------------------------
+ * Notifications
+ *------------------------------------------------*/
+$string['notification_follow'] = '{time} - {notification_from} is following {notification_to}';
+
+/*--------------------------------------------------
  * Constants
  *------------------------------------------------*/
 $string['create'] = 'Create';
@@ -99,6 +112,9 @@ $string['prerequisite'] = "Prerequisite";
 $string['difficulty'] = "Difficulty";
 $string['send_response'] = "Send reponses";
 $string['similar_problems'] = 'Similar problems';
+$string['test_problem'] = 'Test the problem';
+$string['untesting'] = 'Submit';
+$string['testing'] = 'Test';
 
 /*--------------------------------------------------
  * Tabs
@@ -222,3 +238,5 @@ $string['problem_author'] = 'Author';
 $string['problem_date_creation'] = 'Date of creation';
 $string['problem_nb_resolutions'] = 'Number of resolutions';
 $string['problem_resolved_by'] = 'Solved by';
+$string['problem_owner'] = 'You create this problem';
+$string['problem_testing_picture'] = 'Problem in testing mode';

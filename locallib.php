@@ -310,7 +310,13 @@ function get_category_details($id) {
  */
 function get_problem_details($id) {
     global $DB;
-    return $DB->get_records_sql("select mlp.id,problem_label, mld.id as difficulty_id, problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_code, problem_imports from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id join mdl_user mu on mu.id=problem_creator_id JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id where mlp.id=" . $id);
+    
+    return $DB->get_records_sql("SELECT mlp.id,problem_label, mld.id AS difficulty_id, problem_date, problem_creator_id, problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests, problem_category_id, COUNT(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_code, problem_imports, problem_testing 
+        FROM mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
+        LEFT join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
+        JOIN mdl_user mu ON mu.id = problem_creator_id 
+        JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id 
+        WHERE mlp.id = " . $id);
 }
 
 /**
@@ -493,7 +499,7 @@ function get_displayable_unittests($unittests) {
  * @return string The test picture
  */
 function get_unitest_picture() {
-    return "test.png";
+    return get_string('picture_test', 'lips');
 }
 
 /**
@@ -566,6 +572,13 @@ function follow($follower, $followed) {
     global $DB;
 
     $DB->insert_record('lips_follow', array('follower' => $follower, 'followed' => $followed));
+    $DB->insert_record('lips_notification', array(
+        'notification_user_id' => $follower,
+        'notification_type' => 'notification_follow',
+        'notification_date' => time(),
+        'notification_from' => $follower,
+        'notification_to' => $followed)
+    );
 }
 
 /**
@@ -578,4 +591,26 @@ function unfollow($follower, $followed) {
     global $DB;
 
     $DB->delete_records('lips_follow', array('follower' => $follower, 'followed' => $followed));
+}
+
+/**
+ * Put a problem to the testing mode
+ *
+ * @param int $problemid ID of the problem
+ */
+function to_testing_mode($problemid) {
+    global $DB;
+
+    $DB->update_record('lips_problem', array('id' => $problemid, 'problem_testing' => '1'));
+}
+
+/**
+ * Put a problem to the display mode
+ *
+ * @param int $problemid ID of the problem
+ */
+function to_display_mode($problemid) {
+    global $DB;
+
+    $DB->update_record('lips_problem', array('id' => $problemid, 'problem_testing' => '0'));
 }
