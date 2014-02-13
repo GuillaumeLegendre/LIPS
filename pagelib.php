@@ -271,19 +271,17 @@ class page_admin_langage_picture extends page_view {
         // Administration menu
         echo $this->lipsoutput->display_administration_menu();
 
-        // Modify language picture
-        echo $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'), array('id' => 'picture'));
-        echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips'));
-        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('width' => '64px', 'height' => '64px')) . '</center>';
-
         $configurepictureform = new mod_lips_configure_picture_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_picture')), null, 'post');
-
         if ($configurepictureform->is_submitted()) {
             $configurepictureform->handle();
-            $configurepictureform->display();
-        } else {
-            $configurepictureform->display();
         }
+
+        // Modify language picture
+        echo $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'), array('id' => 'picture'));
+        echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips') . formatBytes($CFG->portfolio_moderate_filesize_threshold) . '.');
+        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('width' => '64px', 'height' => '64px')) . '</center>';
+
+        $configurepictureform->display();
     }
 }
 

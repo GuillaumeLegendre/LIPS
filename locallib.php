@@ -614,3 +614,64 @@ function to_display_mode($problemid) {
 
     $DB->update_record('lips_problem', array('id' => $problemid, 'problem_testing' => '0'));
 }
+
+/**
+ * Format bytes
+ *
+ * @param int $bytes Bytes to convert
+ * @param int $precision Bytes precision
+ * @return string Converted bytes
+ */
+function formatBytes($bytes, $precision = 2) {
+    $kilobyte = 1024;
+    $megabyte = $kilobyte * 1024;
+    $gigabyte = $megabyte * 1024;
+    $terabyte = $gigabyte * 1024;
+   
+    if (($bytes >= 0) && ($bytes < $kilobyte)) {
+        return $bytes . ' B';
+ 
+    } elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
+        return round($bytes / $kilobyte, $precision) . ' KB';
+ 
+    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
+        return round($bytes / $megabyte, $precision) . ' MB';
+ 
+    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
+        return round($bytes / $gigabyte, $precision) . ' GB';
+ 
+    } elseif ($bytes >= $terabyte) {
+        return round($bytes / $terabyte, $precision) . ' TB';
+    } else {
+        return $bytes . ' B';
+    }
+}
+
+/**
+ * Test if the string ends with the given string
+ *
+ * @param string $string String to test
+ * @param string $end End string
+ * @return bool True if the string ends with the given string, otherwise false
+ */
+function ends_with($string, $end) {
+    return $end === "" || substr($string, -strlen($end)) === $end;
+}
+
+/**
+ * Test if string is a picture
+ *
+ * @param string $picture Picture
+ * @return bool True if the string is a picture, otherwise false
+ */
+function is_a_picture($picture) {
+    $extensions = array('jpg', 'jpeg', 'gif', 'png', 'ico', 'bmp');
+
+    foreach($extensions as $extension) {
+        if(ends_with($picture, $extension)) {
+            return true;
+        }
+    }
+
+    return false;
+}

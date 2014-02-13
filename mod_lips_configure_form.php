@@ -153,29 +153,10 @@ class mod_lips_configure_picture_form extends moodleform {
         $mform =& $this->_form;
 
         // Select the image
-        $mform->addElement('filepicker', 'filePicture', get_string('administration_language_form_file', 'lips'), null, array('subdirs' => 0, 'maxbytes' => $CFG->maxbytes, 'maxfiles' => 1, 'accepted_types' => '*'));
-        //$mform->addElement('file', 'filePicture', get_string('administration_language_form_file', 'lips'));
-        //$mform->addRule('filePicture', get_string('administration_language_form_file_error', 'lips'), 'required');
+        $mform->addElement('file', 'filePicture', get_string('administration_language_form_file', 'lips'));
 
         // Modify button.
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
-    }
-
-    /**
-     * Form custom validation
-     *
-     * @param array $data Form data
-     * @param array $files Form uploaded files
-     * @return array Errors array
-     */
-    public function validation($data, $files) {
-        $errors = parent::validation($data, $files);
-        $errors = array();
-
-        if (!isset($data->filePicture))
-            $errors['impossibleError'] = get_string('error_impossible', 'lips');
-
-        return $errors;
     }
 
     /**
@@ -192,24 +173,16 @@ class mod_lips_configure_picture_form extends moodleform {
             return;
 
         // Form data
-        $formdata = $this->get_submitted_data();
-        $newfilename = $this->get_new_filename('filePicture');
-        print_object($_FILES);
-        echo 'filename : ' . $newfilename;
+        $formdata = $this->get_data();
+        $picture = $this->get_new_filename('filePicture');
 
-        /*// The validation failed
-        $errors = $this->validation($data, null);
-        if(count($errors) > 0) {
-            foreach($errors as $error) {
-                echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
-            }
+        if(!is_a_picture($picture)) {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error', 'lips'), 'ERROR');
 
             return;
-        }*/
+        }
 
         // Save the picture
-        /*$picture = $this->get_new_filename('filePicture');
-        echo 'Picture : ' . $picture . '<br/>';
         $success = $this->save_file('filePicture', '/home/valentin/www/moodle/mod/lips/images/' . $picture);
 
         // In case of error
@@ -230,7 +203,7 @@ class mod_lips_configure_picture_form extends moodleform {
         update_language_picture($picture);
 
         // Success message
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_success', 'lips'), 'SUCCESS');*/
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_success', 'lips'), 'SUCCESS');
     }
 }
 
