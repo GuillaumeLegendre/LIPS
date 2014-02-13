@@ -422,7 +422,7 @@ class mod_lips_problems_import_form extends moodleform {
         $userid = $USER->id;
 
         // A file from $CFG->dataroot . '/temp/backup/'
-        $folder = "c8d0570aef4c12a6b869a9d781d7d4f9";
+        $folder = "1215e4296ace2e14c93878f83b9a8b3f";
 
         // Restore backup into course.
         $controller = new restore_controller($folder, $courseid, 
