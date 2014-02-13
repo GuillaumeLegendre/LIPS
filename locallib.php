@@ -259,7 +259,6 @@ function delete_picture_file($picture) {
  */
 function fetch_all_categories($idlanguage) {
     global $DB;
-
     return $DB->get_records('lips_category', array('id_language' => $idlanguage));
 }
 
@@ -354,7 +353,7 @@ function delete_problem($id) {
  */
 function is_author($idproblem, $iduser) {
     global $DB;
-    
+
     return $DB->get_record("lips_problem", array('id' => $idproblem))->problem_creator_id == $iduser;
 }
 
@@ -578,4 +577,37 @@ function unfollow($follower, $followed) {
     global $DB;
 
     $DB->delete_records('lips_follow', array('follower' => $follower, 'followed' => $followed));
+}
+
+/**
+ * Fetch all problems of a specific category.
+ *
+ * @param int $categoryid Id of the category
+ * @return array The problems of the category
+ */
+function fetch_problems_by_category($categoryid) {
+    global $DB;
+    return $DB->get_records('lips_problem', array('problem_category_id' => $categoryid));
+}
+
+/**
+ * Fetch all problems that have at least one problem.
+ *
+ * @return array Categories that have at least one problem.
+ */
+function fetch_all_categories_with_problems() {
+    global $DB;
+    return $DB->get_records_sql("select * from mdl_lips_category lc join mdl_lips_problem lm on problem_category_id=lc.id group by lc.id ");
+}
+
+/**
+ * Insert a similar problem to the database.
+ *
+ * @param int $problemid Id of the problem
+ * @param int $problemsimilarid Id of the similar problem
+ */
+function insert_problem_similar($problemid, $problemsimilarid) {
+    global $DB;
+    $DB->insert_record('lips_problem_similar',
+        array('problem_similar_main_id' => $problemid, 'problem_similar_id' => $problemsimilarid));
 }

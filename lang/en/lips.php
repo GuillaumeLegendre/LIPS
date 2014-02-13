@@ -198,8 +198,7 @@ $string['administration_problem_create_success'] = 'The problem has been created
 $string['administration_problem_modify_select'] = 'Select the problem';
 $string['administration_problem_delete_title'] = 'Delete a problem';
 $string['administration_problem_modify_success'] = 'The problem has been modified';
-
-
+$string['administration_problem_similar_subtitle'] = '5. Advice similar problems';
 $string['administration_problems_import_title'] = 'Import problems into LIPS';
 $string['administration_problems_export_title'] = 'Export problems into LIPS';
 

@@ -19,7 +19,7 @@
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
-require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php' );
+require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
 
 /**
  * Form to create a problem
@@ -39,7 +39,6 @@ class mod_lips_problem_create_form extends moodleform {
 
         $mform =& $this->_form;
         $output = $PAGE->get_renderer('mod_lips');
-
         // Fetch all categories.
         $categories = array();
         foreach (fetch_all_categories(get_current_instance()->id) as $category) {
@@ -103,9 +102,40 @@ class mod_lips_problem_create_form extends moodleform {
         $mform->addElement('html', '<div id="unitTestsEditor" class="ace"></div>');
         $mform->addElement('textarea', 'problem_unit_tests', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
 
-        // Create button
+
+        /*--------------------------------------------------
+        * Similar problems
+        *------------------------------------------------*/
+        $lips = get_current_instance();
+        $categorieswithproblems = array();
+        foreach (fetch_all_categories_with_problems() as $category) {
+            $categorieswithproblems[$category->id] = $category->category_name;
+        }
+        $problems = array();
+        foreach (fetch_problems_by_category(key($categorieswithproblems)) as $problem) {
+            $problems[$problem->id] = $problem->problem_label;
+        }
+        // Hidden field to store id of similar problems.
+        $mform->addElement('hidden', 'problems_similar', null, array("id" => "id_problem_similar"));
+        $mform->setType('problems_similar', PARAM_TEXT);
+        $mform->addElement('html', '<div id="dialog" title="Conseil de problèmes similaires"><h2>Conseil - ' . $lips->compile_language . '</h2>');
+        $mform->addElement('select', 'problem_category_id_js', get_string('category', 'lips'),
+            $categorieswithproblems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
+        $mform->addElement('select', 'problem_id_js', get_string('problem', 'lips'),
+            $problems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
+        $mform->addElement('html', '</div>');
+        $mform->addElement('html', $output->display_h3(get_string("administration_problem_similar_subtitle", "lips")));
+        $mform->addElement('html', '<div id="problem_similar_content">');
+        $mform->addElement('html', '</div>');
+        $mform->addElement('button', 'intro',
+            get_string("administration_problem_modify_select", "lips"), array('class' => 'problem_similar', 'id' => 'problem_similar_button'));
+
+        /*--------------------------------------------------
+        * Submit
+        *------------------------------------------------*/
         $mform->addElement('submit', 'submit', get_string('create', 'lips'));
     }
+
 
     /**
      * Form custom validation
@@ -141,12 +171,16 @@ class mod_lips_problem_create_form extends moodleform {
             }
             return;
         }
+
+        $problemssimilarid = array_unique(explode(" ", $data->problems_similar));
         $data->problem_date = time();
         $data->problem_creator_id = $USER->id;
         $data->problem_statement = $data->problem_statement['text'];
         $data->problem_tips = $data->problem_tips['text'];
-        $DB->insert_record('lips_problem', $data);
-
+        $problemid = $DB->insert_record('lips_problem', $data);
+        foreach ($problemssimilarid as $problemsimilar) {
+            insert_problem_similar($problemid, $problemsimilar);
+        }
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_create_success', 'lips'), 'SUCCESS');
     }
@@ -338,7 +372,6 @@ class mod_lips_problem_modify_select_form extends moodleform {
         foreach (fetch_problems($USER->id) as $problem) {
             $problems[$problem->id] = $problem->problem_label;
         }
-
         $mform->addElement('select', 'problemId', get_string('administration_problem_modify_select', 'lips'), $problems);
         $mform->addRule('problemId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
@@ -371,7 +404,7 @@ class mod_lips_problems_import_form extends moodleform {
         $mform->addElement('submit', 'submit', get_string('import', 'lips'));
     }
 
-     /**
+    /**
      * Form custom validation
      *
      * @param array $data Form data
@@ -427,7 +460,7 @@ class mod_lips_problems_import_form extends moodleform {
         $folder = "15b7aebfeda81a60750cd8bbf6e6ab0e";
 
         // Restore backup into course.
-        $controller = new restore_controller($folder, $courseid, 
+        $controller = new restore_controller($folder, $courseid,
             backup::INTERACTIVE_NO, backup::MODE_GENERAL, $userid, backup::TARGET_CURRENT_ADDING);
         $controller->execute_precheck();
         $controller->execute_plan();
@@ -461,7 +494,7 @@ class mod_lips_problems_export_form extends moodleform {
         $mform->addElement('submit', 'submit', get_string('export', 'lips'));
     }
 
-     /**
+    /**
      * Form custom validation
      *
      * @param array $data Form data
@@ -514,7 +547,7 @@ class mod_lips_problems_export_form extends moodleform {
         $userid = $USER->id;
 
         $bc = new backup_controller(backup::TYPE_1ACTIVITY, $moduleid, backup::FORMAT_MOODLE,
-                            backup::INTERACTIVE_YES, backup::MODE_GENERAL, $userid);
+            backup::INTERACTIVE_YES, backup::MODE_GENERAL, $userid);
         $bc->finish_ui();
         $bc->execute_plan();
         $bc->get_results();

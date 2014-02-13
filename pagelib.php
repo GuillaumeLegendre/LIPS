@@ -66,6 +66,9 @@ abstract class page_view {
         $this->add_script_tag('./js/jquery.js');
         $this->add_script_tag('./scripts.js');
         $this->add_script_tag('./ace/ace-builds/src-noconflict/ace.js');
+        $this->add_script_tag("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js");
+        $this->add_css_tag("//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css");
+
     }
 
     /**
@@ -89,6 +92,15 @@ abstract class page_view {
      */
     function add_script_tag($script) {
         echo '<script src="' . $script . '" type="text/javascript" charset="utf-8"></script>';
+    }
+
+    /**
+     * Add a css tag to the header
+     *
+     * @param string $css Scss to add
+     */
+    function add_css_tag($css) {
+        echo "<link rel='stylesheet' href='".$css."'>";
     }
 }
 

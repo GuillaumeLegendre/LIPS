@@ -178,9 +178,9 @@ $string['administration_problem_create_code_complete_label'] = 'Code à complete
 $string['administration_problem_create_code_unittest_label'] = 'Tests unitaires';
 $string['administration_problem_create_success'] = 'Le problème a été créé';
 $string['administration_problem_modify_success'] = 'Le problème a été modifié';
-
 $string['administration_problems_import_title'] = 'Importer des problèmes dans LIPS';
 $string['administration_problems_export_title'] = 'Exporter des problèmes dans LIPS';
+$string['administration_problem_similar_subtitle'] = '5. Conseil de problèmes similaires';
 
 // My problems
 $string['administration_my_problems_title'] = "Mes problèmes";
