@@ -183,7 +183,7 @@ class page_admin extends page_view {
 
         // Administration menu
         echo $this->lipsoutput->display_administration_menu();
-        echo '<br/><br/><br/><br/><br/>';
+        echo '<br/><br/><br/><br/><br/><br/><br/><br/><br/>';
     }
 }
 
