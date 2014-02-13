@@ -1228,6 +1228,10 @@ class page_problem extends page_view {
             redirect(new moodle_url('view.php', array('id' => $cm->id)));
         }
 
+        if($details[$this->id]->problem_testing == 1) {
+            echo $this->lipsoutput->display_notification(get_string('problem_testing_info', 'lips'), 'INFO');
+        }
+
         /*--------------------------------
          *   Right buttons
          *------------------------------*/

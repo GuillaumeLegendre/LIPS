@@ -101,7 +101,6 @@ $string['difficulty_label_difficult'] = 'Difficile';
  *------------------------------------------------*/
 $string['notification_follow'] = '{img} {time} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
 
-
 /*--------------------------------------------------
  * Tabs
  *------------------------------------------------*/
@@ -210,3 +209,4 @@ $string['problem_nb_resolutions'] = 'Nombre de résolutions';
 $string['problem_resolved_by'] = 'Résolu par';
 $string['problem_owner'] = 'Problème que vous avez créé';
 $string['problem_testing_picture'] = 'Problème en mode de test';
+$string['problem_testing_info'] = 'Ce problème est en mode <strong>Test</strong>. Vous pouvez le passer en mode <strong>Affichage</strong> dans <strong>Administration > Problèmes > Mes problèmes</strong>.';

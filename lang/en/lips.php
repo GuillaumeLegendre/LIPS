@@ -240,3 +240,4 @@ $string['problem_nb_resolutions'] = 'Number of resolutions';
 $string['problem_resolved_by'] = 'Solved by';
 $string['problem_owner'] = 'You create this problem';
 $string['problem_testing_picture'] = 'Problem in testing mode';
+$string['problem_testing_info'] = 'This problem is in <strong>Testing</strong> mode. You can go to <strong>Display</strong> mode by going in <strong>Administration > Problems > My problems</strong>.';
