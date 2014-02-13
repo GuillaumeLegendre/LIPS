@@ -47,6 +47,7 @@ $string['pluginname'] = 'LIPS';
 $string['users_table'] = 10;
 $string['my_problems_table'] = 10;
 $string['followed_users_table'] = 10;
+$string['notifications_limit'] = 15;
 
 /*--------------------------------------------------
  * Status
@@ -75,6 +76,7 @@ $string['difficulty_label_difficult'] = 'difficult';
  *------------------------------------------------*/
 
 // Text
+$string['notification_follow'] = '{img} {date} - {notification_from} is following {notification_to}';
 $string['notification_follow'] = '{img} {date} - {notification_from} is following {notification_to}';
 
 // Picture

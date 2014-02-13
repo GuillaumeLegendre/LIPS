@@ -719,7 +719,7 @@ function is_a_picture($picture) {
 function fetch_notifications_details(array $conditions = array()) {
     global $DB;
     
-    return $DB->get_records('lips_notification', $conditions);
+    return $DB->get_records('lips_notification', $conditions, 'notification_date DESC', '*', 0, get_string('notifications_limit', 'lips'));
 }
 
 /**
