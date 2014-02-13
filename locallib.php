@@ -309,7 +309,13 @@ function get_category_details($id) {
  */
 function get_problem_details($id) {
     global $DB;
-    return $DB->get_records_sql("select mlp.id,problem_label, mld.id as difficulty_id, problem_date,problem_creator_id,problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests,problem_category_id, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_code, problem_imports from mdl_lips_problem mlp join mdl_lips_difficulty mld on problem_difficulty_id=mld.id left join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id join mdl_user mu on mu.id=problem_creator_id JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id where mlp.id=" . $id);
+
+    return $DB->get_records_sql("SELECT mlp.id,problem_label, mld.id AS difficulty_id, problem_date, problem_creator_id, problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests, problem_category_id, COUNT(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_code, problem_imports, problem_testing 
+        FROM mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
+        LEFT join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
+        JOIN mdl_user mu ON mu.id = problem_creator_id 
+        JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id 
+        WHERE mlp.id = " . $id);
 }
 
 /**
@@ -492,7 +498,7 @@ function get_displayable_unittests($unittests) {
  * @return string The test picture
  */
 function get_unitest_picture() {
-    return "test.png";
+    return get_string('picture_test', 'lips');
 }
 
 /**
@@ -565,6 +571,13 @@ function follow($follower, $followed) {
     global $DB;
 
     $DB->insert_record('lips_follow', array('follower' => $follower, 'followed' => $followed));
+    $DB->insert_record('lips_notification', array(
+            'notification_user_id' => $follower,
+            'notification_type' => 'notification_follow',
+            'notification_date' => time(),
+            'notification_from' => $follower,
+            'notification_to' => $followed)
+    );
 }
 
 /**
@@ -610,4 +623,86 @@ function insert_problem_similar($problemid, $problemsimilarid) {
     global $DB;
     $DB->insert_record('lips_problem_similar',
         array('problem_similar_main_id' => $problemid, 'problem_similar_id' => $problemsimilarid));
+}
+
+/** Put a problem to the testing mode
+ *
+ * @param int $problemid ID of the problem
+ */
+function to_testing_mode($problemid) {
+    global $DB;
+
+    $DB->update_record('lips_problem', array('id' => $problemid, 'problem_testing' => '1'));
+}
+
+/**
+ * Put a problem to the display mode
+ *
+ * @param int $problemid ID of the problem
+ */
+function to_display_mode($problemid) {
+    global $DB;
+
+    $DB->update_record('lips_problem', array('id' => $problemid, 'problem_testing' => '0'));
+}
+
+/**
+ * Format bytes
+ *
+ * @param int $bytes Bytes to convert
+ * @param int $precision Bytes precision
+ * @return string Converted bytes
+ */
+function formatBytes($bytes, $precision = 2) {
+    $kilobyte = 1024;
+    $megabyte = $kilobyte * 1024;
+    $gigabyte = $megabyte * 1024;
+    $terabyte = $gigabyte * 1024;
+
+    if (($bytes >= 0) && ($bytes < $kilobyte)) {
+        return $bytes . ' B';
+
+    } elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
+        return round($bytes / $kilobyte, $precision) . ' KB';
+
+    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
+        return round($bytes / $megabyte, $precision) . ' MB';
+
+    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
+        return round($bytes / $gigabyte, $precision) . ' GB';
+
+    } elseif ($bytes >= $terabyte) {
+        return round($bytes / $terabyte, $precision) . ' TB';
+    } else {
+        return $bytes . ' B';
+    }
+}
+
+/**
+ * Test if the string ends with the given string
+ *
+ * @param string $string String to test
+ * @param string $end End string
+ * @return bool True if the string ends with the given string, otherwise false
+ */
+function ends_with($string, $end) {
+    return $end === "" || substr($string, -strlen($end)) === $end;
+}
+
+/**
+ * Test if string is a picture
+ *
+ * @param string $picture Picture
+ * @return bool True if the string is a picture, otherwise false
+ */
+function is_a_picture($picture) {
+    $extensions = array('jpg', 'jpeg', 'gif', 'png', 'ico', 'bmp');
+
+    foreach ($extensions as $extension) {
+        if (ends_with($picture, $extension)) {
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -77,6 +77,9 @@ $string['prerequisite'] = "Prérequis";
 $string['difficulty'] = "Difficulté";
 $string['send_response'] = "Envoyer la réponse";
 $string['similar_problems'] = 'Essayez aussi';
+$string['test_problem'] = 'Tester le problème';
+$string['untesting'] = 'Soumettre';
+$string['testing'] = 'Tester';
 
 /*--------------------------------------------------
  * Status
@@ -92,6 +95,11 @@ $string['difficulty_label_elementary'] = 'Elementaire';
 $string['difficulty_label_easy'] = 'Facile';
 $string['difficulty_label_medium'] = 'Intermediaire';
 $string['difficulty_label_difficult'] = 'Difficile';
+
+/*--------------------------------------------------
+ * Notifications
+ *------------------------------------------------*/
+$string['notification_follow'] = '{img} {time} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
 
 /*--------------------------------------------------
  * Tabs
@@ -125,8 +133,9 @@ $string['base'] = 'Base';
 $string['administration_language_configure_title'] = 'Configurer le langage';
 $string['administration_language_configure_msg'] = 'Sélectionnez le langage dans lequel vous souhaitez compiler.';
 $string['administration_language_image_title'] = 'Image';
-$string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.';
+$string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.<br/>Taille maximum de l\'image : ';
 $string['administration_language_image_success'] = 'L\'image a été modifiée';
+$string['administration_language_image_type_error'] = 'L\'image que vous avez choisie d\'uploader n\'est pas une image.';
 $string['administration_language_image_save_error'] = 'Une erreur est survenue lors de l\'enregistrement de l\'image';
 $string['administration_language_code_title'] = 'Base du code';
 $string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisé à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
@@ -181,6 +190,14 @@ $string['administration_problem_modify_success'] = 'Le problème a été modifi�
 $string['administration_problems_import_title'] = 'Importer des problèmes dans LIPS';
 $string['administration_problems_export_title'] = 'Exporter des problèmes dans LIPS';
 $string['administration_problem_similar_subtitle'] = '5. Conseil de problèmes similaires';
+$string['administration_problems_export_title'] = 'Exporter les problèmes de LIPS';
+$string['administration_problem_import_success'] = 'Les problèmes ont été correctement importés';
+$string['administration_problem_export_success'] = 'Les problèmes ont été correctement exportés';
+$string['administration_problem_import_empty_error'] = "Le répertoire d'import doit être précisé";
+$string['administration_problem_import_directory_error'] = 'Le fichier précisé doit être un répertoire';
+$string['administration_problem_import_notexist_error'] = "Le répertoire spécifié n'existe pas";
+$string['administration_problem_import_warning_msg'] = "Le répertoire doit exister dans : ";
+$string['administration_problem_export_warning_msg'] = "Les fichiers d'export seront sauvegardés dans le répertoire : ";
 
 // My problems
 $string['administration_my_problems_title'] = "Mes problèmes";
@@ -197,3 +214,6 @@ $string['problem_author'] = 'Rédacteur';
 $string['problem_date_creation'] = 'Date de création';
 $string['problem_nb_resolutions'] = 'Nombre de résolutions';
 $string['problem_resolved_by'] = 'Résolu par';
+$string['problem_owner'] = 'Problème que vous avez créé';
+$string['problem_testing_picture'] = 'Problème en mode de test';
+$string['problem_testing_info'] = 'Ce problème est en mode <strong>Test</strong>. Vous pouvez le passer en mode <strong>Affichage</strong> dans <strong>Administration > Problèmes > Mes problèmes</strong>.';

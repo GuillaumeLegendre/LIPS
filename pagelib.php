@@ -195,7 +195,7 @@ class page_admin extends page_view {
 
         // Administration menu
         echo $this->lipsoutput->display_administration_menu();
-        echo '<br/><br/><br/><br/><br/>';
+        echo '<br/><br/><br/><br/><br/><br/><br/><br/><br/>';
     }
 }
 
@@ -283,19 +283,17 @@ class page_admin_langage_picture extends page_view {
         // Administration menu
         echo $this->lipsoutput->display_administration_menu();
 
-        // Modify language picture
-        echo $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'), array('id' => 'picture'));
-        echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips'));
-        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('width' => '64px', 'height' => '64px')) . '</center>';
-
         $configurepictureform = new mod_lips_configure_picture_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'language_picture')), null, 'post');
-
         if ($configurepictureform->is_submitted()) {
             $configurepictureform->handle();
-            $configurepictureform->display();
-        } else {
-            $configurepictureform->display();
         }
+
+        // Modify language picture
+        echo $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'), array('id' => 'picture'));
+        echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips') . formatBytes($CFG->portfolio_moderate_filesize_threshold) . '.');
+        echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('width' => '64px', 'height' => '64px')) . '</center>';
+
+        $configurepictureform->display();
     }
 }
 
@@ -739,7 +737,7 @@ class page_admin_problem_create extends page_view {
         $createProblemForm = new mod_lips_problem_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_create')), null, 'post', '', array('class' => 'problem-form'));
 
         if ($createProblemForm->is_submitted()) {
-            $createProblemForm->handle($this->cm->instance);
+            $createProblemForm->handle();
             $createProblemForm->display();
         } else {
             $createProblemForm->display();
@@ -1011,6 +1009,8 @@ class page_category extends page_view {
      * Display the page_category content
      */
     function display_content() {
+        global $USER;
+
         require_once(dirname(__FILE__) . '/problems_table.php');
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
@@ -1031,6 +1031,11 @@ class page_category extends page_view {
             if (!empty($data->inputSearch)) {
                 $search = $data->inputSearch;
             }
+        }
+
+        if(has_role('administration')) {
+            echo '<p><span style="color: red;">*</span> : ' . get_string('problem_owner', 'lips') . '.</p>';
+            echo '<img src="images/' . get_string('picture_testing', 'lips') . '" width="16px" height="16px"/> : ' . get_string('problem_testing_picture', 'lips') . '.';
         }
 
         // Problems table
@@ -1206,7 +1211,7 @@ class page_solutions extends page_view {
 }
 
 /**
- * Display solutions of a problem.
+ * Display a problem.
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
@@ -1224,6 +1229,18 @@ class page_problem extends page_view {
     function display_content() {
         global $USER;
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
+
+        // Problem details
+        $details = get_problem_details($this->id);
+
+        // Redirect if not allowed to see this problem
+        if($details[$this->id]->problem_testing == 1 && $USER->id != $details[$this->id]->problem_creator_id) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        }
+
+        if($details[$this->id]->problem_testing == 1) {
+            echo $this->lipsoutput->display_notification(get_string('problem_testing_info', 'lips'), 'INFO');
+        }
 
         /*--------------------------------
          *   Right buttons
@@ -1250,7 +1267,6 @@ class page_problem extends page_view {
         /*--------------------------------
          *   Left informations
          *------------------------------*/
-        $details = get_problem_details($this->id);
         $categorydetails = get_category_details($details[$this->id]->problem_category_id);
 
         // Category documentation
@@ -1416,6 +1432,5 @@ class page_export_problems extends page_view {
         } else {
             $exportProblemForm->display();
         }
-        echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style" => "margin-bottom:10px;"), false);
     }
 }

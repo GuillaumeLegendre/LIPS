@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/lips/db" VERSION="20140212" COMMENT="XMLDB file for Moodle LIPS module"
+<XMLDB PATH="mod/lips/db" VERSION="20140213" COMMENT="XMLDB file for Moodle LIPS module"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -53,6 +53,7 @@
         <FIELD NAME="problem_unit_tests" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Problem unit tests"/>
         <FIELD NAME="problem_date" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Timestamp of the problem creation"/>
         <FIELD NAME="problem_attempts" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Number of attempts"/>
+        <FIELD NAME="problem_testing" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="1 if the problem if on testing, otherwise 0"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

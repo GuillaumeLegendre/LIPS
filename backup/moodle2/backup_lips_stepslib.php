@@ -11,10 +11,10 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
  
     protected function define_structure() {
  
-        // To know if we are including userinfo
+        // To know if we are including userinfo.
         $userinfo = $this->get_setting_value('userinfo');
  
-        // Define each element separated
+        // Define each element separated.
 
         $lips = new backup_nested_element('lips', array('id'), array(
             'name', 'intro', 'introformat', 'timecreated', 'timemodified', 'compile_language',
@@ -53,12 +53,8 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
 
         $category->set_source_table('lips_category', array('id' => backup::VAR_ACTIVITYID));
 
+// TODO : ne prendre que les problems définitifs (problem_testing = 0)
         $problem->set_source_table('lips_problem', array('id' => backup::VAR_ACTIVITYID));
- 
-        // All the rest of elements only happen if we are including user info
-       /* if ($userinfo) {
-            $answer->set_source_table('choice_answers', array('choiceid' => '../../id'));
-        }*/
 
         // Define id annotations
  

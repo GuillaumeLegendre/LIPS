@@ -63,6 +63,19 @@ $string['difficulty_label_medium'] = 'medium';
 $string['difficulty_label_difficult'] = 'difficult';
 
 /*--------------------------------------------------
+ * Pictures
+ *------------------------------------------------*/
+$string['picture_default_language'] = 'default_language.png';
+$string['picture_follow'] = 'follow.png';
+$string['picture_test'] = 'test.png';
+$string['picture_testing'] = 'testing.png';
+
+/*--------------------------------------------------
+ * Notifications
+ *------------------------------------------------*/
+$string['notification_follow'] = '{time} - {notification_from} is following {notification_to}';
+
+/*--------------------------------------------------
  * Constants
  *------------------------------------------------*/
 $string['create'] = 'Create';
@@ -99,6 +112,9 @@ $string['prerequisite'] = "Prerequisite";
 $string['difficulty'] = "Difficulty";
 $string['send_response'] = "Send reponses";
 $string['similar_problems'] = 'Similar problems';
+$string['test_problem'] = 'Test the problem';
+$string['untesting'] = 'Submit';
+$string['testing'] = 'Test';
 
 /*--------------------------------------------------
  * Tabs
@@ -133,9 +149,10 @@ $string['administration_language_configure_title'] = 'Configure language';
 $string['administration_language_configure_msg'] = 'Select the language in which you want to compile.';
 $string['administration_language_configure_success'] = 'The language has been configured';
 $string['administration_language_image_title'] = 'Picture';
-$string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.';
+$string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.<br/>Picture maximum size : ';
 $string['administration_language_image_success'] = 'The picture has been modified';
 $string['administration_language_image_save_error'] = 'An error occured when saving the file. Please try again.';
+$string['administration_language_image_type_error'] = 'The file you choosed is not a picture. Please upload a picture.';
 $string['administration_language_code_title'] = 'Base code';
 $string['administration_language_code_msg'] = 'Enter the base used for each compilation.<br/>Before the compilation :<ul><li>The <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> tag will be replaced by the "<strong>Import libaries</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> tag will be replace by the "<strong>Code complete</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> tag will be replaced by the "<strong>Unit tests</strong>" content.</li></ul>';
 $string['administration_language_code_success'] = 'The base code has been modified';
@@ -200,7 +217,14 @@ $string['administration_problem_delete_title'] = 'Delete a problem';
 $string['administration_problem_modify_success'] = 'The problem has been modified';
 $string['administration_problem_similar_subtitle'] = '5. Advice similar problems';
 $string['administration_problems_import_title'] = 'Import problems into LIPS';
-$string['administration_problems_export_title'] = 'Export problems into LIPS';
+$string['administration_problems_export_title'] = 'Export problems from LIPS';
+$string['administration_problem_import_success'] = 'Problems have been correctly imported';
+$string['administration_problem_export_success'] = 'Problems have been correctly exported';
+$string['administration_problem_import_empty_error'] = 'Import directory has to been specified';
+$string['administration_problem_import_directory_error'] = 'The specified file must be a directory';
+$string['administration_problem_import_notexist_error'] = "The specified directory doesn't exist";
+$string['administration_problem_import_warning_msg'] = "The directory must exist in : ";
+$string['administration_problem_export_warning_msg'] = "The exported files will be stored in directory : ";
 
 // My problems
 $string['administration_my_problems_title'] = "My problems";
@@ -219,3 +243,6 @@ $string['problem_author'] = 'Author';
 $string['problem_date_creation'] = 'Date of creation';
 $string['problem_nb_resolutions'] = 'Number of resolutions';
 $string['problem_resolved_by'] = 'Solved by';
+$string['problem_owner'] = 'You create this problem';
+$string['problem_testing_picture'] = 'Problem in testing mode';
+$string['problem_testing_info'] = 'This problem is in <strong>Testing</strong> mode. You can go to <strong>Display</strong> mode by going in <strong>Administration > Problems > My problems</strong>.';

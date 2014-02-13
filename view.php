@@ -103,12 +103,13 @@ switch ($view) {
                     break;
                 case "problem_delete":
                     $viewpage = new page_admin_problem_delete($cm);
+                    break;
                 case "problems_import" :
                     $viewpage = new page_import_problems($cm);
-                break;
+                    break;
                 case "problems_export" :
                     $viewpage = new page_export_problems($cm);
-                break;
+                    break;
                 case "my_problems":
                     $viewpage = new page_admin_my_problems($cm);
                     break;

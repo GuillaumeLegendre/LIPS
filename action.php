@@ -105,6 +105,32 @@ switch ($action) {
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'id_user' => $originuser)));
         }
         break;
+
+    case 'testing':
+        $totest = optional_param('to_test', 0, PARAM_INT);
+
+        // Go to testing mode
+        to_testing_mode($totest);
+
+        if ($originaction == null) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+        } else {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+        }
+        break;
+
+    case 'untesting':
+        $tountest = optional_param('to_untest', 0, PARAM_INT);
+
+        // Go to display mode
+        to_display_mode($tountest);
+
+        if ($originaction == null) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+        } else {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+        }
+        break;
 }
 
 redirect(new moodle_url('view.php', array('id' => $cm->id)));

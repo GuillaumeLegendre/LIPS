@@ -58,6 +58,12 @@ h3 {
     margin-top: 10px;
 }
 
+.testing-picture {
+    height: 16px;
+    width: 16px;
+    float: right;
+}
+
 /*---------------------------------
  *  Forms
  *-------------------------------*/
