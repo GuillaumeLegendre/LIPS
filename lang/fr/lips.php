@@ -60,6 +60,16 @@ $string['difficulty_label_difficult'] = 'Difficile';
  * Notifications
  *------------------------------------------------*/
 $string['notification_follow'] = '{img} {date} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
+$string['notification_challenge'] = '{img} {date} - {notification_from} a défié {notification_to} sur le problème {notification_problem}';
+$string['notification_challenge_accepted'] = '{img} {date} - {notification_from} a accepté de relever le défi sur le problème {notification_problem}';
+$string['notification_challenge_refused'] = '{img} {date} - {notification_from} a refusé de relever le défi sur le problème {notification_problem}';
+$string['notification_problem_solved'] = '{img} {date} - {notification_from} a résolu le problème {notification_problem}';
+$string['notification_problem_created'] = '{img} {date} - {notification_from} a créé le problème {notification_problem}';
+$string['notification_problem_modified'] = '{img} {date} - {notification_from} a modifié le problème {notification_problem}';
+$string['notification_problem_deleted'] = '{img} {date} - {notification_from} a supprimé le problème {notification_problem}';
+$string['notification_category_created'] = '{img} {date} - {notification_from} a créé la catégorie {notification_category}';
+$string['notification_category_modified'] = '{img} {date} - {notification_from} a modifié la catégorie {notification_category}';
+$string['notification_category_deleted'] = '{img} {date} - {notification_from} a supprimé la catégorie {notification_category}';
 
 /*--------------------------------------------------
  * Constants

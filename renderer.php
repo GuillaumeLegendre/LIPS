@@ -360,24 +360,36 @@ class mod_lips_renderer extends plugin_renderer_base {
 
             // Set the notification_from
             $notification_from = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_from))->id_user_moodle));
-            $notification_msg = str_replace('{notification_from}', $this->display_user_link($notification->notification_from, $notification_from->firstname, $notification_from->lastname), $notification_msg);            
+            $notification_msg = str_replace('{notification_from}', $this->display_user_link($notification->notification_from, $notification_from->firstname, $notification_from->lastname), $notification_msg);
 
             // Set the notification_to
             if($notification->notification_to != null) {
                 $notification_to = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_to))->id_user_moodle));
-                $notification_msg = str_replace('{notification_to}', $this->display_user_link($notification->notification_to, $notification_to->firstname, $notification_to->lastname), $notification_msg);            
+                $notification_msg = str_replace('{notification_to}', $this->display_user_link($notification->notification_to, $notification_to->firstname, $notification_to->lastname), $notification_msg);
             }
 
             // Set the notification_problem
             if($notification->notification_problem != null) {
-                $notification_problem = get_problem_details(array('id' => $notification->notification_problem));
+                $notification_problem = get_problem_details($notification->notification_problem);
                 $url_problem = new action_link(new moodle_url('view.php', array(
                     'id' => $this->page->cm->id,
                     'view' => 'problem',
                     'problemId' => $notification->notification_problem
                 )),
                 $notification_problem[$notification->notification_problem]->problem_label);
-                $notification_msg = str_replace('{notification_problem}', $url_problem, $notification_msg);            
+                $notification_msg = str_replace('{notification_problem}', $this->render($url_problem), $notification_msg);
+            }
+
+            // Set the notification_category
+            if($notification->notification_category != null) {
+                $notification_category = get_category_details($notification->notification_category);
+                $url_category = new action_link(new moodle_url('view.php', array(
+                    'id' => $this->page->cm->id,
+                    'view' => 'category',
+                    'categoryId' => $notification->notification_category
+                )),
+                $notification_category->category_name);
+                $notification_msg = str_replace('{notification_category}', $this->render($url_category), $notification_msg);
             }
 
             $display .= $notification_msg;
