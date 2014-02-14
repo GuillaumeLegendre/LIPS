@@ -45,9 +45,11 @@ window.createAce = function(editorid, areaid, mode, theme, flag){
    }
    
     // Copy the ace content on the area
-    editor.getSession().on("change", function() {
-    	$("#" + areaid).val(editor.getSession().getValue());
-    });
+    if(areaid != null && areaid != '') {
+	    editor.getSession().on("change", function() {
+	    	$("#" + areaid).val(editor.getSession().getValue());
+	    });
+	}
 }
 
 
@@ -293,7 +295,7 @@ window.createConfigure = function(editorid){
 	var editor = ace.edit(editorid);
 	
 	 // Tag editor
-	$(".ace").before('<div class="acepanel">' +
+	$("#" + editorid).before('<div class="acepanel">' +
 		'<a href="#" id="' + editorid + '_tagImport">Import</a>' +
 		'<a href="#" id="' + editorid + '_tagCode">Code</a>' +
 		'<a href="#" id="' + editorid + '_tagTests">Tests</a>' +
@@ -335,7 +337,7 @@ window.createCode = function(editorid){
 	// Create ace
 	var editor = ace.edit(editorid);
 	
-	$(".ace").before('<div class="acepanel">' +
+	$("#" + editorid).before('<div class="acepanel">' +
 		'<a href="#" id="' + editorid + '_tagCode">Code</a>' + 
 	'</div>');
 	
@@ -356,7 +358,7 @@ window.createUnitTest = function(editorid){
 	// Create ace
 	var editor = ace.edit(editorid);
 	
-	$(".ace").before('<div class="acepanel">' +
+	$("#" + editorid).before('<div class="acepanel">' +
 		'<a href="#" id="' + editorid + '_tagUnit">Unit Test</a>' + 
 	'</div>');
 	
@@ -387,16 +389,14 @@ window.createReadOnly = function(editorid){
 	editor.setReadOnly(true);
 	editor.renderer.setShowGutter(false);
 	
-	for (var i in allLines){
+	for (var i in allLines) {
 		if (longestLine < allLines[i].length){
 			longestLine = allLines[i].length;
 			longestIndex = i;
 		}
 	}
 	
-	for (var j in allLines[longestIndex]){
-		//console.log(allLines[longestIndex][j]);	
-		
+	for (var j in allLines[longestIndex]) {
 		if (allLines[longestIndex][j] == "\t")
 			longestLine = longestLine + 3;
 	}
@@ -406,9 +406,38 @@ window.createReadOnly = function(editorid){
 }
 
 $(document).ready(function() {
+	
+    /*---------------------------------
+     *  Ajax to populate select of similar problem
+     *-------------------------------*/
+    $('#dialog').dialog({
+        height: 250,
+        width: 400,
+        modal: true,
+        autoOpen: false,
+        draggable: false,
+        buttons: {
+            Conseiller: function () {
+                if ($.inArray($("#id_problem_id_js option:selected").val(), $("#id_problem_similar").val().split(" ")) == -1) {
+                    $("#problem_similar_content").append("<div class='fitem fitem_ftext'><div class='felement ftext'><input readonly type='text' name='select_problem_similar_" + $("#id_problem_id_js option:selected").val() + "' value='" + $("#id_problem_id_js option:selected").text() + "'></div></div><br/>");
+                    $("#id_problem_similar").val($("#id_problem_similar").val() + " " + $("#id_problem_id_js option:selected").val());
+                }
+                $(this).dialog("close");
+            }
+        }
+    });
 
-	/*---------------------------------
-	 *  Style sheets
-	 *-------------------------------*/
-	$('head').append('<link rel="stylesheet" type="text/css" href="styles.css">');
+    $("#id_problem_category_id_js").change(function () {
+        $.getJSON("./get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
+            var options = '';
+            $.each(j, function (key, val) {
+                options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
+            });
+            $("#id_problem_id_js").html(options);
+        })
+    });
+
+    $('#problem_similar_button').on('click', function () {
+    	$("#dialog").dialog("open");
+    });
 });

@@ -68,7 +68,7 @@ abstract class page_view {
         $this->add_script_tag('./ace/ace-builds/src-noconflict/ace.js');
         $this->add_script_tag("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js");
         $this->add_css_tag("//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css");
-
+        $this->add_css_tag('./styles.css');
     }
 
     /**
@@ -100,7 +100,7 @@ abstract class page_view {
      * @param string $css Scss to add
      */
     function add_css_tag($css) {
-        echo "<link rel='stylesheet' href='".$css."'>";
+        echo "<link rel='stylesheet' href='" . $css . "'>";
     }
 }
 
@@ -744,6 +744,7 @@ class page_admin_problem_create extends page_view {
         }
 
         // Create ace
+        $this->lipsoutput->display_ace_form('preconfigEditor', '', $lips->coloration_language, 'readonly');
         $this->lipsoutput->display_ace_form('importsEditor', 'id_problem_imports', $lips->coloration_language, '');
         $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code');
         $this->lipsoutput->display_ace_form('unitTestsEditor', 'id_problem_unit_tests', $lips->coloration_language, 'unit-test');

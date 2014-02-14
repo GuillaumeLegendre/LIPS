@@ -52,8 +52,13 @@ class mod_lips_problem_create_form extends moodleform {
         $mform->addElement('select', 'correction', null);
 
         // Preconfig.
+        $lips = get_current_instance();
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_preconfig_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_language_code_msg", "lips"));
+
+        if($lips->base_code != null) {
+            $mform->addElement('html', '<div id="preconfigEditor" class="ace" style="margin: auto;">' . htmlspecialchars($lips->base_code) . '</div>');
+        }
 
         // Global Informations.
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_informations_subtitle", "lips")));
@@ -102,15 +107,16 @@ class mod_lips_problem_create_form extends moodleform {
         /*--------------------------------------------------
         * Similar problems
         *------------------------------------------------*/
-        $lips = get_current_instance();
         $categorieswithproblems = array();
         foreach (fetch_all_categories_with_problems() as $category) {
             $categorieswithproblems[$category->id] = $category->category_name;
         }
+
         $problems = array();
         foreach (fetch_problems_by_category(key($categorieswithproblems)) as $problem) {
             $problems[$problem->id] = $problem->problem_label;
         }
+
         // Hidden field to store id of similar problems.
         $mform->addElement('hidden', 'problems_similar', null, array("id" => "id_problem_similar"));
         $mform->setType('problems_similar', PARAM_TEXT);
@@ -120,7 +126,9 @@ class mod_lips_problem_create_form extends moodleform {
         $mform->addElement('select', 'problem_id_js', get_string('problem', 'lips'),
             $problems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
         $mform->addElement('html', '</div>');
+
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_similar_subtitle", "lips")));
+        $mform->addElement('html', $output->display_p(get_string("administration_problem_similar_subtitle_msg", "lips")));
         $mform->addElement('html', '<div id="problem_similar_content">');
         $mform->addElement('html', '</div>');
         $mform->addElement('button', 'intro',
@@ -129,6 +137,7 @@ class mod_lips_problem_create_form extends moodleform {
         /*--------------------------------------------------
         * Submit
         *------------------------------------------------*/
+
         // Create & Test button
         $mform->addElement('submit', 'submit', get_string('create', 'lips'));
         $mform->addElement('submit', 'submit', get_string('test_problem', 'lips'));
