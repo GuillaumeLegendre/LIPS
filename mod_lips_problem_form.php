@@ -510,25 +510,24 @@ class mod_lips_problems_import_form extends moodleform {
         $errors = parent::validation($data, $files);
 
         // Check a directory name has been specified.
-        // settype($backupFile,"string");
-        // $path = $data->backupFile;
-        // if (isset($path) && !empty($path)) {
+        settype($backupFile,"string");
+        $path = $data->backupFile;
+        if (isset($path) && !empty($path)) {
 
-        //     $dir = $CFG->dataroot . "/temp/backup/" . $data->backupFile;
-        //     // Check the file exists.
-        //     if (file_exists($dir)) {
+            $dir = $CFG->dataroot . "/temp/backup/" . $data->backupFile;
+            // Check the file exists.
+            if (file_exists($dir)) {
 
-        //         // Check it is a directory.
-        //         if (!is_dir($dir)) {
-        //             $errors['notDirectory'] = get_string('administration_problem_import_directory_error', 'lips');
-        //         }
-        //     } else {
-        //         $errors['notExistingFile'] = get_string('administration_problem_import_notexist_error', 'lips');
-        //         echo "répertoire : " . $dir;
-        //     }
-        // } else {
-        //     $errors['emptyImportDirectoryName'] = get_string('administration_problem_import_empty_error', 'lips');
-        // }
+                // Check it is a directory.
+                if (!is_dir($dir)) {
+                    $errors['notDirectory'] = get_string('administration_problem_import_directory_error', 'lips');
+                }
+            } else {
+                $errors['notExistingFile'] = get_string('administration_problem_import_notexist_error', 'lips');
+            }
+        } else {
+            $errors['emptyImportDirectoryName'] = get_string('administration_problem_import_empty_error', 'lips');
+        }
 
         return $errors;
     }
@@ -637,26 +636,6 @@ class mod_lips_problems_export_form extends moodleform {
         // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled())
             return;
-
-        // Form data.
-        // $data = $this->get_submitted_data();
-
-        // The validation failed.
-        // $errors = $this->validation($data, null);
-        // if (count($errors) > 0) {
-        //     foreach ($errors as $error) {
-        //         echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
-        //     }
-        //     return;
-        // }
-        // $data->problem_date = time();
-        // $data->problem_creator_id = $USER->id;
-        // $data->problem_statement = $data->problem_statement['text'];
-        // $data->problem_tips = $data->problem_tips['text'];
-        // $DB->insert_record('lips_problem', $data);
-
-        //require_login($course, null, $cm);
-        // require_capability('moodle/backup:backupactivity', context_module::instance($cm->id));
 
         // Get current module id. 
         $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);

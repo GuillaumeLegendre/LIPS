@@ -63,8 +63,6 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
          // We create a new lips instance : the current course has no instance for lips.
         if (!$DB->count_records_sql($sql)) {
 
-            echo "create a new instance of lips";
-
             $data->course = $this->get_courseid();
 
             $data->timecreated = time();
@@ -157,29 +155,26 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         global $DB, $USER;
  
         $data = (object)$data;
+        $oldid = $data->id;
 
-//         $sql_problems = "
-//             SELECT *
-//             FROM mdl_course_modules cm, mdl_lips lips, mdl_lips_category cat, mdl_lips_problem prob
-//             WHERE cat.id_language = lips.id
-//             AND lips.id = cm.instance
-//             AND cm.id = " . $this->mod_id . "
-//             AND prob.problem_category_id = cat.id
-//             AND prob.problem_label = '" . $data->problem_label . "'";
+        $sql_problems = "
+            SELECT *
+            FROM mdl_course_modules cm, mdl_lips lips, mdl_lips_category cat, mdl_lips_problem prob
+            WHERE cat.id_language = lips.id
+            AND lips.id = cm.instance
+            AND cm.id = " . $this->mod_id . "
+            AND prob.problem_category_id = cat.id
+            AND prob.problem_label = '" . $data->problem_label . "'";
         
-//         $problems = $DB->get_records_sql($sql_problems);
+        $problems = $DB->get_records_sql($sql_problems);
 
-// echo "Dedans";
-
-//          // The problem already exists in db.
-//         if ($problems) {
-// echo "Il y a des problemes correspondants";
-//             foreach ($problems as $problem) {
-//                 $this->set_mapping('lips_problem', $oldid, $problem->id);
-//             }
-//         }
-//         else {
-echo "Il n'y a pas de problemes correspondants";
+         // The problem already exists in db.
+        if ($problems) {
+            foreach ($problems as $problem) {
+                $this->set_mapping('lips_problem', $oldid, $problem->id);
+            }
+        }
+        else {
             $data->problem_creator_id = $USER->id;
             $data->problem_category_id = $this->get_mappingid('lips_category', $data->problem_category_id);
             $data->problem_difficulty_id = $this->get_mappingid('lips_difficulty', $data->problem_difficulty_id);
@@ -188,7 +183,7 @@ echo "Il n'y a pas de problemes correspondants";
             $data->problem_testing = 0;
 
             $newitemid = $DB->insert_record('lips_problem', $data);
-        // }
+        }
     }
  
     protected function after_execute() {
