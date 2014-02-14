@@ -31,7 +31,7 @@ class problems_table extends table_sql {
         $this->cm = $cm;
 
         if ($search != null) {
-            $this->set_sql("mlp.id, problem_label, problem_date, problem_creator_id, difficulty_label, count(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing",
+            $this->set_sql("mlp.id, problem_label, problem_category_id, problem_date, problem_creator_id, difficulty_label, count(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing",
                 "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
                 LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
                 JOIN mdl_user mu ON mu.id = problem_creator_id 
@@ -41,7 +41,7 @@ class problems_table extends table_sql {
                 AND (problem_testing = 0 OR problem_testing = 1 AND problem_creator_id = " . $USER->id . ") 
                 GROUP BY mlp.id");
         } else {
-            $this->set_sql("mlp.id, problem_label, problem_date, problem_creator_id, difficulty_label, count(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing",
+            $this->set_sql("mlp.id, problem_label, problem_category_id, problem_date, problem_creator_id, difficulty_label, count(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing",
                 "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
                 LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
                 JOIN mdl_user mu ON mu.id = problem_creator_id 
@@ -65,7 +65,6 @@ class problems_table extends table_sql {
 
     function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE, $USER;
-
         switch($colname) {
             case 'problem_label':
                 $star = ($USER->id == $attempt->problem_creator_id) ? ' <span style="color :red">*</span>' : '';
@@ -89,7 +88,7 @@ class problems_table extends table_sql {
 
                 if (has_capability('mod/lips:administration', $context) && is_author($attempt->id, $USER->id)) {
                     $a = $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $this->cm->id, 'action' => 'editProblem', 'problemId' => $attempt->id, "originV" => "problems")), new pix_icon("t/edit", "edit"));
-                    $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'deleteProblem', 'problemId' => $attempt->id, 'originV' => "category", "categoryId" => $attempt->id)), new pix_icon("t/delete", "delete"));
+                    $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'deleteProblem', 'problemId' => $attempt->id, 'originV' => "category", "categoryId" => $attempt->problem_category_id)), new pix_icon("t/delete", "delete"));
                 }
 
                 return $a;
