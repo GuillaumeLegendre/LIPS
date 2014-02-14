@@ -16,34 +16,33 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
     if (mode != null && mode != '')
         editor.getSession().setMode("ace/mode/" + mode);
 
-
-    /*switch to call different Ace editor Mode
-     "configure" : used for language configuration editor, provides code, import and test tags
-     "code" : used for problem code configuration editor, provides code tag
-     "unit-test" : used for choosing the unit test to display, provides unit-test tag
-     "resolution" : used to solve problem. allows user to type only betweens <code></code> tags
-     "readonly" : used to display problem's code. not editable
-     */
-    switch (flag) {
-        case "configure":
-            createConfigure(editorid);
-            break;
-        case "code":
-            createCode(editorid);
-            break;
-        case "unit-test":
-            createUnitTest(editorid);
-            break;
-        case "resolution":
-            createResolution(editorid, areaid);
-            //matchTags(editorid);
-            break;
-        case "readonly":
-            createReadOnly(editorid);
-        default:
-            break;
-    }
-
+	/*switch to call different Ace editor Mode
+		"configure" : used for language configuration editor, provides code, import and test tags
+		"code" : used for problem code configuration editor, provides code tag
+		"unit-test" : used for choosing the unit test to display, provides unit-test tag
+		"resolution" : used to solve problem. allows user to type only betweens <code></code> tags
+		"readonly" : used to display problem's code. not editable
+	*/
+   switch(flag){
+	   case "configure":
+	   		createConfigure(editorid);
+	   		break;
+		case "code":
+			createCode(editorid);
+			break;
+		case "unit-test":
+			createUnitTest(editorid);
+			break;
+		case "resolution":
+			createResolution(editorid);
+			//matchTags(editorid);
+			break;
+		case "readonly":
+			createReadOnly(editorid);
+		default:
+			break;
+   }
+   
     // Copy the ace content on the area
     if (areaid != null && areaid != '') {
         editor.getSession().on("change", function () {
@@ -260,30 +259,30 @@ var closestTag = function (tags, row, col) {
 
 //Create an ace editor in resolution mode
 //used to solve problem. allows user to type only betweens <code></code> tags
-window.createResolution = function (editorid, areaid) {
-
-    var editor = ace.edit(editorid);
-    var selection = editor.getSession().getSelection();
-    var cursor = selection.getCursor();
-    var selectionHandler = function () {
-
-        var cursor = selection.getCursor();
-        var tags = matchTags(editorid);
-
-        if (!inTag(tags, cursor.row, cursor.column)) {
-            var tag = closestTag(tags, cursor.row, cursor.column);
-            if (tag.object.state == "opening")
-                selection.selectToPosition({row: tag.object.row, column: tag.object.end});
-            else if (tag.object.state == "ending")
-                selection.selectToPosition({row: tag.object.row, column: tag.object.start});
-
-            selection.clearSelection();
-        }
-
-
-    }
-
-    //selection.on("changeCursor", selectionHandler);
+window.createResolution = function(editorid){
+	
+	var editor = ace.edit(editorid);
+	var selection = editor.getSession().getSelection();
+	var cursor = selection.getCursor();
+	var selectionHandler = function(){
+		
+		var cursor = selection.getCursor();
+		var tags = matchTags(editorid);
+		
+		if (!inTag(tags, cursor.row, cursor.column)){
+			var tag = closestTag(tags, cursor.row, cursor.column);
+			if (tag.object.state == "opening")
+				selection.selectToPosition({row : tag.object.row, column : tag.object.end});
+			else if (tag.object.state == "ending")
+				selection.selectToPosition({row : tag.object.row, column : tag.object.start});
+				
+			selection.clearSelection();
+		}
+		
+		
+	}
+	
+	//selection.on("changeCursor", selectionHandler);
 }
 
 
@@ -412,41 +411,41 @@ $(document).ready(function () {
      *  Ajax to populate select of similar problem
      *-------------------------------*/
 
-if ($('#dialog').length > 0){
-    $('#dialog').dialog({
-        height: 250,
-        width: 400,
-        modal: true,
-        autoOpen: false,
-        draggable: false,
-        buttons: {
-            Conseiller: function () {
-                if ($.inArray($("#id_problem_id_js option:selected").val(), $("#id_problem_similar").val().split(" ")) == -1) {
-                    $("#problem_similar_content").append("<div class='fitem fitem_ftext similar_problem'><div class='felement ftext'><input readonly type='text' name='select_problem_similar_" + $("#id_problem_id_js option:selected").val() + "' value='" + $("#id_problem_id_js option:selected").text() + "'></div> <input class='delete_problem_similar_button' id='"+$("#id_problem_id_js option:selected").val()+"' src='./images/delete_similar.png' type='image'></div>");
-                    $("#id_problem_similar").val($("#id_problem_similar").val() + " " + $("#id_problem_id_js option:selected").val());
+    if ($('#dialog').length > 0){
+        $('#dialog').dialog({
+            height: 250,
+            width: 400,
+            modal: true,
+            autoOpen: false,
+            draggable: false,
+            buttons: {
+                Conseiller: function () {
+                    if ($.inArray($("#id_problem_id_js option:selected").val(), $("#id_problem_similar").val().split(" ")) == -1) {
+                        $("#problem_similar_content").append("<div class='fitem fitem_ftext similar_problem'><div class='felement ftext'><input readonly type='text' name='select_problem_similar_" + $("#id_problem_id_js option:selected").val() + "' value='" + $("#id_problem_id_js option:selected").text() + "'></div> <input class='delete_problem_similar_button' id='"+$("#id_problem_id_js option:selected").val()+"' src='./images/delete_similar.png' type='image'></div>");
+                        $("#id_problem_similar").val($("#id_problem_similar").val() + " " + $("#id_problem_id_js option:selected").val());
+                    }
+                    $(this).dialog("close");
                 }
-                $(this).dialog("close");
             }
-        }
-    });
+        });
 
-    $("#id_problem_category_id_js").change(function () {
-        $.getJSON("./get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
-            var options = '';
-            $.each(j, function (key, val) {
-                options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
-            });
-            $("#id_problem_id_js").html(options);
-        })
-    });
+        $("#id_problem_category_id_js").change(function () {
+            $.getJSON("./get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
+                var options = '';
+                $.each(j, function (key, val) {
+                    options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
+                });
+                $("#id_problem_id_js").html(options);
+            })
+        });
 
-    $('#problem_similar_button').on('click', function () {
-        $("#dialog").dialog("open");
-    });
+        $('#problem_similar_button').on('click', function () {
+            $("#dialog").dialog("open");
+        });
 
-    $('body').on('click', '.delete_problem_similar_button', function () {
-        $(this).parent().remove();
-        $("#id_problem_similar").val($("#id_problem_similar").val().replace(" "+$(this).attr("id"),""));
-    });
-}
+        $('body').on('click', '.delete_problem_similar_button', function () {
+            $(this).parent().remove();
+            $("#id_problem_similar").val($("#id_problem_similar").val().replace(" "+$(this).attr("id"),""));
+        });
+    }
 });

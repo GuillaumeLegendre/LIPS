@@ -114,6 +114,7 @@ $string['recent_activity'] = 'Activité récente';
 $string['achievements'] = 'Badges';
 $string['at'] = 'à';
 $string['notifications'] = 'Notifications';
+$string['no_notifications'] = 'Aucune notifications';
 
 /*--------------------------------------------------
  * Dates
