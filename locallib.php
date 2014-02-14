@@ -737,9 +737,9 @@ function problem_similar_exist($mainproblemid, $problemsimilarid) {
  * @param array $conditions Conditions to fetch the notifications
  * @return string The notifications details
  */
-function fetch_notifications_details($conditions ) {
+function fetch_notifications_details($conditions) {
     global $DB;
-    
+
     return $DB->get_records_sql('SELECT * FROM mdl_lips_notification 
         WHERE ' . $conditions . ' 
         ORDER BY notification_date DESC 
@@ -780,7 +780,7 @@ function delete_problems_similar($problemid) {
  */
 function fetch_followers($id) {
     global $DB;
-    
+
     return $DB->get_records('lips_follow', array('followed' => $id));
 }
 
@@ -809,4 +809,19 @@ function insert_notification($notification_user_id, $notification_type, $notific
         'notification_category' => $notification_category,
         'notification_text' => $notification_text
     ));
+}
+
+/**
+ * Test if the problem already exists
+ *
+ * @param string $problemname Problam name
+ * @return bool True if the problem already exists, otherwise false
+ */
+function problem_exists($problemname) {
+    global $DB;
+
+    if ($DB->count_records('lips_problem', array('problem_label' => $problemname)) > 0) {
+        return true;
+    }
+    return false;
 }

@@ -241,6 +241,9 @@ $string['administration_problem_import_directory_error'] = 'Le nom précisé doi
 $string['administration_problem_import_notexist_error'] = "Le répertoire spécifié n'existe pas";
 $string['administration_problem_import_warning_msg'] = "Le répertoire d'import choisi doit exister dans : ";
 $string['administration_problem_export_warning_msg'] = "Les fichiers d'export seront sauvegardés dans le répertoire : ";
+$string['administration_language_form_code_error'] = 'Vous devez renseigner du code à completer';
+$string['administration_unittests_form_code_error'] = 'You devez renseigner les tests unitaires';
+$string['administration_problem_already_exists'] = 'Ce nom de problème est déjà utilisé, merci d\'en choisir un autre';
 
 // My problems
 $string['administration_my_problems_title'] = "Mes problèmes";

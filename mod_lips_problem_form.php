@@ -153,7 +153,31 @@ class mod_lips_problem_create_form extends moodleform {
      */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
-
+        $errors = array();
+        if (isset($data->problem_label) && isset($data->problem_category_id) && isset($data->problem_statement) && isset($data->problem_difficulty_id) && isset($data->problem_unit_tests)) {
+            if (empty($data->problem_label)) {
+                $errors['emptyProblemLabel'] = get_string('administration_language_form_select_name_error', 'lips');
+            } else if (problem_exists($data->problem_label)) {
+                $errors['alreadyExists'] = get_string('administration_problem_already_exists', 'lips');
+            }
+            if (empty($data->problem_category_id)) {
+                $errors['emptyCategoryId'] = get_string('administration_language_form_select_category_error', 'lips');
+            }
+            if (empty($data->problem_statement)) {
+                $errors['emptyProblemStatement'] = get_string('administration_language_form_select_subject_error', 'lips');
+            }
+            if (empty($data->problem_difficulty_id)) {
+                $errors['emptyProblemDifficulty'] = get_string('administration_language_form_select_difficulty_error', 'lips');
+            }
+            if (empty($data->problem_code)) {
+                $errors['emptyProblemCode'] = get_string('administration_language_form_code_error', 'lips');
+            }
+            if (empty($data->problem_unit_tests)) {
+                $errors['emptyProblemUnittests'] = get_string('administration_unittests_form_code_error', 'lips');
+            }
+        } else {
+            $errors['impossibleError'] = get_string('error_impossible', 'lips');
+        }
         return $errors;
     }
 
@@ -368,6 +392,29 @@ class mod_lips_problem_modify_form extends moodleform {
      */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
+        $errors = array();
+        if (isset($data->problem_label) && isset($data->problem_category_id) && isset($data->problem_statement) && isset($data->problem_difficulty_id) && isset($data->problem_unit_tests)) {
+            if (empty($data->problem_label)) {
+                $errors['emptyProblemLabel'] = get_string('administration_language_form_select_name_error', 'lips');
+            }
+            if (empty($data->problem_category_id)) {
+                $errors['emptyCategoryId'] = get_string('administration_language_form_select_category_error', 'lips');
+            }
+            if (empty($data->problem_statement)) {
+                $errors['emptyProblemStatement'] = get_string('administration_language_form_select_subject_error', 'lips');
+            }
+            if (empty($data->problem_difficulty_id)) {
+                $errors['emptyProblemDifficulty'] = get_string('administration_language_form_select_difficulty_error', 'lips');
+            }
+            if (empty($data->problem_code)) {
+                $errors['emptyProblemCode'] = get_string('administration_language_form_code_error', 'lips');
+            }
+            if (empty($data->problem_unit_tests)) {
+                $errors['emptyProblemUnittests'] = get_string('administration_unittests_form_code_error', 'lips');
+            }
+        } else {
+            $errors['impossibleError'] = get_string('error_impossible', 'lips');
+        }
         return $errors;
     }
 

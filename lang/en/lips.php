@@ -284,6 +284,9 @@ $string['administration_problem_import_directory_error'] = 'The specified name m
 $string['administration_problem_import_notexist_error'] = "The specified directory doesn't exist";
 $string['administration_problem_import_warning_msg'] = "The specified import directory must exist in : ";
 $string['administration_problem_export_warning_msg'] = "The exported files will be stored in directory : ";
+$string['administration_language_form_code_error'] = 'You must enter the code';
+$string['administration_unittests_form_code_error'] = 'You must enter the unit tests';
+$string['administration_problem_already_exists'] = 'This problem name already exists, please choose an other';
 
 // My problems
 $string['administration_my_problems_title'] = "My problems";
