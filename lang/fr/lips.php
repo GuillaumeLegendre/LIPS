@@ -226,7 +226,7 @@ $string['administration_problem_export_success'] = 'Les problèmes ont été cor
 $string['administration_problem_import_empty_error'] = "Le répertoire d'import doit être précisé";
 $string['administration_problem_import_directory_error'] = 'Le fichier précisé doit être un répertoire';
 $string['administration_problem_import_notexist_error'] = "Le répertoire spécifié n'existe pas";
-$string['administration_problem_import_warning_msg'] = "Le répertoire doit exister dans : ";
+$string['administration_problem_import_warning_msg'] = "Le répertoire d'import choisi doit exister dans : ";
 $string['administration_problem_export_warning_msg'] = "Les fichiers d'export seront sauvegardés dans le répertoire : ";
 
 // My problems

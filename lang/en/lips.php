@@ -260,7 +260,7 @@ $string['administration_problem_export_success'] = 'Problems have been correctly
 $string['administration_problem_import_empty_error'] = 'Import directory has to been specified';
 $string['administration_problem_import_directory_error'] = 'The specified file must be a directory';
 $string['administration_problem_import_notexist_error'] = "The specified directory doesn't exist";
-$string['administration_problem_import_warning_msg'] = "The directory must exist in : ";
+$string['administration_problem_import_warning_msg'] = "The specified import directory must exist in : ";
 $string['administration_problem_export_warning_msg'] = "The exported files will be stored in directory : ";
 
 // My problems
