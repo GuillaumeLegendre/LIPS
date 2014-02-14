@@ -16,42 +16,6 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
     if (mode != null && mode != '')
         editor.getSession().setMode("ace/mode/" + mode);
 
-
-    /*switch to call different Ace editor Mode
-     "configure" : used for language configuration editor, provides code, import and test tags
-     "code" : used for problem code configuration editor, provides code tag
-     "unit-test" : used for choosing the unit test to display, provides unit-test tag
-     "resolution" : used to solve problem. allows user to type only betweens <code></code> tags
-     "readonly" : used to display problem's code. not editable
-     */
-    switch (flag) {
-        case "configure":
-            createConfigure(editorid);
-            break;
-        case "code":
-            createCode(editorid);
-            break;
-        case "unit-test":
-            createUnitTest(editorid);
-            break;
-        case "resolution":
-            createResolution(editorid, areaid);
-            //matchTags(editorid);
-            break;
-        case "readonly":
-            createReadOnly(editorid);
-        default:
-            break;
-    }
-
-	// Set the ace theme
-	editor.setTheme("ace/theme/" + theme);
-
-	// Set the ace mode
-	if(mode != null && mode != '')
-		editor.getSession().setMode("ace/mode/" + mode);
-
-
 	/*switch to call different Ace editor Mode
 		"configure" : used for language configuration editor, provides code, import and test tags
 		"code" : used for problem code configuration editor, provides code tag
