@@ -56,7 +56,7 @@ class mod_lips_problem_create_form extends moodleform {
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_preconfig_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_language_code_msg", "lips"));
 
-        if($lips->base_code != null) {
+        if ($lips->base_code != null) {
             $mform->addElement('html', '<div id="preconfigEditor" class="ace" style="margin: auto;">' . htmlspecialchars($lips->base_code) . '</div>');
         }
 
@@ -339,14 +339,16 @@ class mod_lips_problem_modify_form extends moodleform {
         $mform->addElement('html', '<div id="problem_similar_content">');
         $mform->addElement('html', '</div>');
 
+        // Display stored relation of similar problems
         $idproblem = $mcustomdata['id'];
         $valuehiddenfield = "";
         if (isset($idproblem)) {
             $similarproblems = get_similar_problems($mcustomdata['id']);
             foreach ($similarproblems as $similarproblem) {
-                $mform->addElement('text', 'problem_similar_show_'.$similarproblem->problem_similar_id, null, array('readonly'));
-                $mform->setDefault('problem_similar_show_'.$similarproblem->problem_similar_id, $similarproblem->problem_label);
-                $mform->setType('problem_similar_show_'.$similarproblem->problem_similar_id, PARAM_TEXT);
+                $mform->addElement('html', "<div class='fitem fitem_ftext similar_problem'>
+                <div class='felement ftext'><input readonly type='text' name='select_problem_similar_$similarproblem->problem_similar_id' value='$similarproblem->problem_label'></div>
+                 <input class='delete_problem_similar_button' id='$similarproblem->problem_similar_id' src='./images/delete_similar.png' type='image'></div>");
+
                 $valuehiddenfield .= " " . $similarproblem->problem_similar_id;
             }
         }
@@ -397,7 +399,7 @@ class mod_lips_problem_modify_form extends moodleform {
         $data->problem_statement = $data->problem_statement['text'];
         $data->problem_tips = $data->problem_tips['text'];
         update_problem($data);
-
+        delete_problems_similar($data->id);
         $problemssimilarid = array_unique(explode(" ", $data->problems_similar));
         foreach ($problemssimilarid as $problemsimilar) {
             if (!empty($problemsimilar)) {
@@ -567,7 +569,7 @@ class mod_lips_problems_import_form extends moodleform {
         $errors = parent::validation($data, $files);
 
         // Check a directory name has been specified.
-        settype($backupFile,"string");
+        settype($backupFile, "string");
         $path = $data->backupFile;
         if (isset($path) && !empty($path)) {
 

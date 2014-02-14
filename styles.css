@@ -485,7 +485,7 @@ h3 {
 }
 
 .solution {
-    width:40%;
+    width: 40%;
     margin-bottom: 10px;
 }
 
@@ -493,12 +493,12 @@ h3 {
     border-width: 1px;
     border-style: solid;
     border-color: black;
-    padding:5px;
+    padding: 5px;
     background-color: #9fc5f8;
 }
 
 .solution #content {
-    padding:5px;
+    padding: 5px;
     border-width: 1px;
     border-style: solid;
     border-color: black;
@@ -506,4 +506,12 @@ h3 {
 
 .solution #date {
     font-style: italic;
+}
+
+.similar_problem button {
+    display: inline;
+}
+
+.similar_problem .ftext {
+    display: inline;
 }

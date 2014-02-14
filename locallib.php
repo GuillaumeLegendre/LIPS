@@ -751,3 +751,13 @@ function format_date($timestamp) {
 
     return $date;
 }
+
+/**
+ * Delete all similar problems related to a specific problem.
+ *
+ * @param int $problemid Id of the problem
+ */
+function delete_problems_similar($problemid) {
+    global $DB;
+    $DB->delete_records("lips_problem_similar", array('problem_similar_main_id' => $problemid));
+}
