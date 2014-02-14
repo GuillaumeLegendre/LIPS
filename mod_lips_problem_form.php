@@ -306,6 +306,44 @@ class mod_lips_problem_modify_form extends moodleform {
         $mform->addElement('textarea', 'problem_unit_tests', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
         $mform->setDefault('problem_unit_tests', $mcustomdata['problem_unit_tests']);
 
+        /*--------------------------------------------------
+       * Similar problems
+       *------------------------------------------------*/
+        $lips = get_current_instance();
+        $categorieswithproblems = array();
+        foreach (fetch_all_categories_with_problems() as $category) {
+            $categorieswithproblems[$category->id] = $category->category_name;
+        }
+        $problems = array();
+        foreach (fetch_problems_by_category(key($categorieswithproblems)) as $problem) {
+            $problems[$problem->id] = $problem->problem_label;
+        }
+        // Hidden field to store id of similar problems.
+        $mform->setType('problems_similar', PARAM_TEXT);
+        $mform->addElement('html', '<div id="dialog" title="Conseil de problèmes similaires"><h2>Conseil - ' . $lips->compile_language . '</h2>');
+        $mform->addElement('select', 'problem_category_id_js', get_string('category', 'lips'),
+            $categorieswithproblems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
+        $mform->addElement('select', 'problem_id_js', get_string('problem', 'lips'),
+            $problems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
+        $mform->addElement('html', '</div>');
+        $mform->addElement('html', $output->display_h3(get_string("administration_problem_similar_subtitle", "lips")));
+        $mform->addElement('html', '<div id="problem_similar_content">');
+        $mform->addElement('html', '</div>');
+
+        $idproblem = $mcustomdata['id'];
+        $valuehiddenfield = "";
+        if (isset($idproblem)) {
+            $similarproblems = get_similar_problems($mcustomdata['id']);
+            foreach ($similarproblems as $similarproblem) {
+                $mform->addElement('text', 'problem_similar_show_'.$similarproblem->problem_similar_id, null, array('readonly'));
+                $mform->setDefault('problem_similar_show_'.$similarproblem->problem_similar_id, $similarproblem->problem_label);
+                $mform->setType('problem_similar_show_'.$similarproblem->problem_similar_id, PARAM_TEXT);
+                $valuehiddenfield .= " " . $similarproblem->problem_similar_id;
+            }
+        }
+        $mform->addElement('hidden', 'problems_similar', $valuehiddenfield, array("id" => "id_problem_similar"));
+        $mform->addElement('button', 'intro',
+            get_string("administration_problem_modify_select", "lips"), array('class' => 'problem_similar', 'id' => 'problem_similar_button'));
         // Create button
         $mform->addElement('submit', 'submit', get_string('edit', 'lips'));
     }
@@ -350,6 +388,16 @@ class mod_lips_problem_modify_form extends moodleform {
         $data->problem_statement = $data->problem_statement['text'];
         $data->problem_tips = $data->problem_tips['text'];
         update_problem($data);
+
+        $problemssimilarid = array_unique(explode(" ", $data->problems_similar));
+        foreach ($problemssimilarid as $problemsimilar) {
+            if (!empty($problemsimilar)) {
+                if (!problem_similar_exist($data->id, $problemsimilar)) {
+                    insert_problem_similar($data->id, $problemsimilar);
+                }
+            }
+        }
+
 
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_modify_success', 'lips'), 'SUCCESS');

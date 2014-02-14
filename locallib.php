@@ -326,8 +326,7 @@ function get_problem_details($id) {
  */
 function get_similar_problems($mainproblemid) {
     global $DB;
-
-    return $DB->get_records('lips_problem_similar', array('problem_similar_main_id' => $mainproblemid));
+    return $DB->get_records_sql("select * from mdl_lips_problem_similar lps join mdl_lips_problem lp on lps.problem_similar_id = lp.id where lps.problem_similar_main_id = " . $mainproblemid);
 }
 
 /**
@@ -705,4 +704,11 @@ function is_a_picture($picture) {
     }
 
     return false;
+}
+
+function problem_similar_exist($mainproblemid, $problemsimilarid) {
+    global $DB;
+
+    $result = $DB->count_records('lips_problem_similar', array('problem_similar_main_id' => $mainproblemid, 'problem_similar_id' => $problemsimilarid), '*');
+    return $result >= 1;
 }
