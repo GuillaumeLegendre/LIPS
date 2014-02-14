@@ -44,8 +44,6 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
             break;
     }
 
-<<<<<<< Updated upstream
-=======
 	// Set the ace theme
 	editor.setTheme("ace/theme/" + theme);
 
@@ -81,7 +79,6 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
 			break;
    }
    
->>>>>>> Stashed changes
     // Copy the ace content on the area
     if (areaid != null && areaid != '') {
         editor.getSession().on("change", function () {
