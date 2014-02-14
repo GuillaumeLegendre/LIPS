@@ -168,8 +168,13 @@ class page_index extends page_view {
         echo $this->lipsoutput->display_h1(get_string('challenges', 'lips'));
 
         // Notifications
+        $notificationsdetails = fetch_notifications_details('notification_user_id = ' . $userdetails->id);
         echo $this->lipsoutput->display_h1(get_string('notifications', 'lips'));
-        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $userdetails->id));
+        if(count($notificationsdetails) > 0) {
+            echo $this->lipsoutput->display_notifications($notificationsdetails);
+        } else {
+            echo $this->lipsoutput->display_p(get_string('no_notifications', 'lips'));
+        }
     }
 }
 
@@ -1290,6 +1295,7 @@ class page_problem extends page_view {
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
         // Problem details
+        $lips = get_current_instance();
         $details = get_problem_details($this->id);
 
         // Redirect if not allowed to see this problem
@@ -1321,7 +1327,6 @@ class page_problem extends page_view {
             $buttonedit = $this->lipsoutput->action_link(new moodle_url(""), get_string("edit", "lips"), null, array("class" => "lips-button"));
             $buttondelete = $this->lipsoutput->action_link(new moodle_url(""), get_string("delete", "lips"), null, array("class" => "lips-button"));
         }
-        $buttons = $this->lipsoutput->display_div($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("id" => "problem-right-buttons"));
 
         /*--------------------------------
          *   Left informations
@@ -1333,6 +1338,9 @@ class page_problem extends page_view {
 
         // Problem title
         echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
+
+        // Buttons
+        echo $this->lipsoutput->display_div($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("id" => "problem-right-buttons"));
 
         // Author
         $authorlink = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . strtoupper($details[$this->id]->lastname));
@@ -1383,8 +1391,9 @@ class page_problem extends page_view {
 
         // Answer
         echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style" => "margin-bottom: 10px;"), false);
+        echo '<div id="answerEditor" class="ace">' . htmlspecialchars($details[$this->id]->problem_code) . '</div>';
 
-        echo '<center><a href="#" class="lips-button">' . get_string('send_response', 'lips') . '</a></center>';
+        echo '<br/><center><a href="#" class="lips-button">' . get_string('send_response', 'lips') . '</a></center>';
 
         // Similar problems
         $similarproblems = get_similar_problems($this->id);
@@ -1398,6 +1407,9 @@ class page_problem extends page_view {
                 echo $this->lipsoutput->display_p($problemlink . ' ' . get_string('from', 'lips') . ' ' . $creatorlink);
             }
         }
+
+        // Create ace
+        $this->lipsoutput->display_ace_form('answerEditor', '', $lips->coloration_language, 'resolution');
     }
 }
 
