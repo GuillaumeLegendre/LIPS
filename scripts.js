@@ -388,6 +388,7 @@ window.createReadOnly = function(editorid){
 	var longestIndex = 0;
 	editor.setReadOnly(true);
 	editor.renderer.setShowGutter(false);
+	editor.setHighlightActiveLine(false);
 	
 	for (var i in allLines) {
 		if (longestLine < allLines[i].length){
@@ -403,6 +404,7 @@ window.createReadOnly = function(editorid){
 	
 	$("#" + editorid).css("height", lines * 16);
 	$("#" + editorid).css("width", (20 + (longestLine * 7)));
+	
 }
 
 $(document).ready(function() {
@@ -410,34 +412,38 @@ $(document).ready(function() {
     /*---------------------------------
      *  Ajax to populate select of similar problem
      *-------------------------------*/
-    $('#dialog').dialog({
-        height: 250,
-        width: 400,
-        modal: true,
-        autoOpen: false,
-        draggable: false,
-        buttons: {
-            Conseiller: function () {
-                if ($.inArray($("#id_problem_id_js option:selected").val(), $("#id_problem_similar").val().split(" ")) == -1) {
-                    $("#problem_similar_content").append("<div class='fitem fitem_ftext'><div class='felement ftext'><input readonly type='text' name='select_problem_similar_" + $("#id_problem_id_js option:selected").val() + "' value='" + $("#id_problem_id_js option:selected").text() + "'></div></div><br/>");
-                    $("#id_problem_similar").val($("#id_problem_similar").val() + " " + $("#id_problem_id_js option:selected").val());
-                }
-                $(this).dialog("close");
-            }
-        }
-    });
-
-    $("#id_problem_category_id_js").change(function () {
-        $.getJSON("./get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
-            var options = '';
-            $.each(j, function (key, val) {
-                options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
-            });
-            $("#id_problem_id_js").html(options);
-        })
-    });
-
-    $('#problem_similar_button').on('click', function () {
-    	$("#dialog").dialog("open");
-    });
+	 if ($('#dialog').length > 0){
+	 
+		$('#dialog').dialog({
+			height: 250,
+			width: 400,
+			modal: true,
+			autoOpen: false,
+			draggable: false,
+			buttons: {
+				Conseiller: function () {
+					if ($.inArray($("#id_problem_id_js option:selected").val(), $("#id_problem_similar").val().split(" ")) == -1) {
+						$("#problem_similar_content").append("<div class='fitem fitem_ftext'><div class='felement ftext'><input readonly type='text' name='select_problem_similar_" + $("#id_problem_id_js option:selected").val() + "' value='" + $("#id_problem_id_js option:selected").text() + "'></div></div><br/>");
+						$("#id_problem_similar").val($("#id_problem_similar").val() + " " + $("#id_problem_id_js option:selected").val());
+					}
+					$(this).dialog("close");
+				}
+			}
+		});
+	
+		$("#id_problem_category_id_js").change(function () {
+			$.getJSON("./get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
+				var options = '';
+				$.each(j, function (key, val) {
+					options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
+				});
+				$("#id_problem_id_js").html(options);
+			})
+		});
+	
+		$('#problem_similar_button').on('click', function () {
+			$("#dialog").dialog("open");
+		});
+	
+	 }
 });
