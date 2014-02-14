@@ -34,9 +34,9 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         $paths = array();
  
         $paths[] = new restore_path_element('lips', '/activity/lips');
-        $paths[] = new restore_path_element('lips_difficulty', '/activity/lips/difficulties/difficulty');
         $paths[] = new restore_path_element('lips_category', '/activity/lips/categories/category');
-        $paths[] = new restore_path_element('lips_problem', '/activity/lips/problems/problem');
+        $paths[] = new restore_path_element('lips_problem', '/activity/lips/categories/category/problems/problem');
+        $paths[] = new restore_path_element('lips_difficulty', '/activity/lips/categories/category/problems/problem/difficulties/difficulty');
  
         // Return the paths wrapped into standard activity structure.
         return $this->prepare_activity_structure($paths);
@@ -158,37 +158,41 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
  
         $data = (object)$data;
 
-        $sql_problems = "
-            SELECT *
-            FROM mdl_course_modules cm, mdl_lips lips, mdl_lips_category cat, mdl_lips_problem prob
-            WHERE cat.id_language = lips.id
-            AND lips.id = cm.instance
-            AND cm.id = " . $this->mod_id . "
-            AND prob.problem_category_id = cat.id
-            AND prob.problem_label = '" . $data->problem_label . "'";
+//         $sql_problems = "
+//             SELECT *
+//             FROM mdl_course_modules cm, mdl_lips lips, mdl_lips_category cat, mdl_lips_problem prob
+//             WHERE cat.id_language = lips.id
+//             AND lips.id = cm.instance
+//             AND cm.id = " . $this->mod_id . "
+//             AND prob.problem_category_id = cat.id
+//             AND prob.problem_label = '" . $data->problem_label . "'";
         
-        $problems = $DB->get_records_sql($sql_problems);
+//         $problems = $DB->get_records_sql($sql_problems);
 
-         // The problem already exists in db.
-        if ($problems) {
-            foreach ($problems as $problem) {
-                $this->set_mapping('lips_problem', $oldid, $problem->id);
-            }
-        }
-        else {
+// echo "Dedans";
+
+//          // The problem already exists in db.
+//         if ($problems) {
+// echo "Il y a des problemes correspondants";
+//             foreach ($problems as $problem) {
+//                 $this->set_mapping('lips_problem', $oldid, $problem->id);
+//             }
+//         }
+//         else {
+echo "Il n'y a pas de problemes correspondants";
             $data->problem_creator_id = $USER->id;
             $data->problem_category_id = $this->get_mappingid('lips_category', $data->problem_category_id);
             $data->problem_difficulty_id = $this->get_mappingid('lips_difficulty', $data->problem_difficulty_id);
             $data->problem_date = time();
             $data->problem_attempts = 0;
-            // $data->problem_testing = 0;
+            $data->problem_testing = 0;
 
             $newitemid = $DB->insert_record('lips_problem', $data);
-        }
+        // }
     }
  
     protected function after_execute() {
-        // Add lips related files, no need to match by itemname (just internally handled context)
+        // Add lips related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_lips', 'intro', null);
     }
 }
