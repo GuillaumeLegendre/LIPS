@@ -52,8 +52,13 @@ class mod_lips_problem_create_form extends moodleform {
         $mform->addElement('select', 'correction', null);
 
         // Preconfig.
+        $lips = get_current_instance();
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_preconfig_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_language_code_msg", "lips"));
+
+        if($lips->base_code != null) {
+            $mform->addElement('html', '<div id="preconfigEditor" class="ace" style="margin: auto;">' . htmlspecialchars($lips->base_code) . '</div>');
+        }
 
         // Global Informations.
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_informations_subtitle", "lips")));
@@ -102,15 +107,16 @@ class mod_lips_problem_create_form extends moodleform {
         /*--------------------------------------------------
         * Similar problems
         *------------------------------------------------*/
-        $lips = get_current_instance();
         $categorieswithproblems = array();
         foreach (fetch_all_categories_with_problems() as $category) {
             $categorieswithproblems[$category->id] = $category->category_name;
         }
+
         $problems = array();
         foreach (fetch_problems_by_category(key($categorieswithproblems)) as $problem) {
             $problems[$problem->id] = $problem->problem_label;
         }
+
         // Hidden field to store id of similar problems.
         $mform->addElement('hidden', 'problems_similar', null, array("id" => "id_problem_similar"));
         $mform->setType('problems_similar', PARAM_TEXT);
@@ -120,7 +126,9 @@ class mod_lips_problem_create_form extends moodleform {
         $mform->addElement('select', 'problem_id_js', get_string('problem', 'lips'),
             $problems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
         $mform->addElement('html', '</div>');
+
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_similar_subtitle", "lips")));
+        $mform->addElement('html', $output->display_p(get_string("administration_problem_similar_subtitle_msg", "lips")));
         $mform->addElement('html', '<div id="problem_similar_content">');
         $mform->addElement('html', '</div>');
         $mform->addElement('button', 'intro',
@@ -129,6 +137,7 @@ class mod_lips_problem_create_form extends moodleform {
         /*--------------------------------------------------
         * Submit
         *------------------------------------------------*/
+
         // Create & Test button
         $mform->addElement('submit', 'submit', get_string('create', 'lips'));
         $mform->addElement('submit', 'submit', get_string('test_problem', 'lips'));
@@ -558,25 +567,24 @@ class mod_lips_problems_import_form extends moodleform {
         $errors = parent::validation($data, $files);
 
         // Check a directory name has been specified.
-        // settype($backupFile,"string");
-        // $path = $data->backupFile;
-        // if (isset($path) && !empty($path)) {
+        settype($backupFile,"string");
+        $path = $data->backupFile;
+        if (isset($path) && !empty($path)) {
 
-        //     $dir = $CFG->dataroot . "/temp/backup/" . $data->backupFile;
-        //     // Check the file exists.
-        //     if (file_exists($dir)) {
+            $dir = $CFG->dataroot . "/temp/backup/" . $data->backupFile;
+            // Check the file exists.
+            if (file_exists($dir)) {
 
-        //         // Check it is a directory.
-        //         if (!is_dir($dir)) {
-        //             $errors['notDirectory'] = get_string('administration_problem_import_directory_error', 'lips');
-        //         }
-        //     } else {
-        //         $errors['notExistingFile'] = get_string('administration_problem_import_notexist_error', 'lips');
-        //         echo "répertoire : " . $dir;
-        //     }
-        // } else {
-        //     $errors['emptyImportDirectoryName'] = get_string('administration_problem_import_empty_error', 'lips');
-        // }
+                // Check it is a directory.
+                if (!is_dir($dir)) {
+                    $errors['notDirectory'] = get_string('administration_problem_import_directory_error', 'lips');
+                }
+            } else {
+                $errors['notExistingFile'] = get_string('administration_problem_import_notexist_error', 'lips');
+            }
+        } else {
+            $errors['emptyImportDirectoryName'] = get_string('administration_problem_import_empty_error', 'lips');
+        }
 
         return $errors;
     }
@@ -685,26 +693,6 @@ class mod_lips_problems_export_form extends moodleform {
         // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled())
             return;
-
-        // Form data.
-        // $data = $this->get_submitted_data();
-
-        // The validation failed.
-        // $errors = $this->validation($data, null);
-        // if (count($errors) > 0) {
-        //     foreach ($errors as $error) {
-        //         echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
-        //     }
-        //     return;
-        // }
-        // $data->problem_date = time();
-        // $data->problem_creator_id = $USER->id;
-        // $data->problem_statement = $data->problem_statement['text'];
-        // $data->problem_tips = $data->problem_tips['text'];
-        // $DB->insert_record('lips_problem', $data);
-
-        //require_login($course, null, $cm);
-        // require_capability('moodle/backup:backupactivity', context_module::instance($cm->id));
 
         // Get current module id. 
         $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);

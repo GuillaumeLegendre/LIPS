@@ -508,6 +508,7 @@ function get_unitest_picture() {
  * */
 function fetch_problems($userid) {
     global $DB;
+
     return $DB->get_records('lips_problem', array('problem_creator_id' => $userid));
 }
 
@@ -520,6 +521,7 @@ function fetch_problems($userid) {
  * */
 function get_solutions($problemid, $search = null) {
     global $DB;
+
     if ($search == null) {
         return $DB->get_records_sql("select mls.id, mlu.id as profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
         from mdl_lips_problem_solved mls
@@ -543,6 +545,7 @@ function get_solutions($problemid, $search = null) {
  */
 function update_problem($data) {
     global $DB;
+
     $DB->update_record('lips_problem', $data);
 }
 
@@ -706,9 +709,45 @@ function is_a_picture($picture) {
     return false;
 }
 
+
+/**
+ * Test if the problem similar exist in the database.
+ *
+ * @param int $mainproblemid Id of the problem
+ * @param int $problemsimilarid Id of the similar problem
+ * @return bool True if the association is stored in the database
+ */
 function problem_similar_exist($mainproblemid, $problemsimilarid) {
     global $DB;
 
     $result = $DB->count_records('lips_problem_similar', array('problem_similar_main_id' => $mainproblemid, 'problem_similar_id' => $problemsimilarid), '*');
     return $result >= 1;
+}
+
+/**
+ * Fetch the notifications details
+ *
+ * @param array $conditions Conditions to fetch the notifications
+ * @return object The notifications details
+ */
+function fetch_notifications_details(array $conditions = array()) {
+    global $DB;
+
+    return $DB->get_records('lips_notification', $conditions, 'notification_date DESC', '*', 0, get_string('notifications_limit', 'lips'));
+}
+
+/**
+ * Format a timestamp into a date
+ *
+ * @param int $timestamp Timestamp
+ * @return string The formatted date
+ */
+function format_date($timestamp) {
+    $date = '';
+    $date .= get_string(date('D', $timestamp), 'lips') . ' ';
+    $date .= date('d', $timestamp) . ' ';
+    $date .= get_string(date('M', $timestamp), 'lips') . ' ';
+    $date .= date('Y ' . get_string('at', 'lips') . ' H\hi', $timestamp);
+
+    return $date;
 }

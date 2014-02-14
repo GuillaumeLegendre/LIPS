@@ -34,9 +34,9 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         $paths = array();
  
         $paths[] = new restore_path_element('lips', '/activity/lips');
-        $paths[] = new restore_path_element('lips_difficulty', '/activity/lips/difficulties/difficulty');
         $paths[] = new restore_path_element('lips_category', '/activity/lips/categories/category');
-        $paths[] = new restore_path_element('lips_problem', '/activity/lips/problems/problem');
+        $paths[] = new restore_path_element('lips_problem', '/activity/lips/categories/category/problems/problem');
+        $paths[] = new restore_path_element('lips_difficulty', '/activity/lips/categories/category/problems/problem/difficulties/difficulty');
  
         // Return the paths wrapped into standard activity structure.
         return $this->prepare_activity_structure($paths);
@@ -62,8 +62,6 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
 
          // We create a new lips instance : the current course has no instance for lips.
         if (!$DB->count_records_sql($sql)) {
-
-            echo "create a new instance of lips";
 
             $data->course = $this->get_courseid();
 
@@ -157,6 +155,7 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         global $DB, $USER;
  
         $data = (object)$data;
+        $oldid = $data->id;
 
         $sql_problems = "
             SELECT *
@@ -181,14 +180,14 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
             $data->problem_difficulty_id = $this->get_mappingid('lips_difficulty', $data->problem_difficulty_id);
             $data->problem_date = time();
             $data->problem_attempts = 0;
-            // $data->problem_testing = 0;
+            $data->problem_testing = 0;
 
             $newitemid = $DB->insert_record('lips_problem', $data);
         }
     }
  
     protected function after_execute() {
-        // Add lips related files, no need to match by itemname (just internally handled context)
+        // Add lips related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_lips', 'intro', null);
     }
 }

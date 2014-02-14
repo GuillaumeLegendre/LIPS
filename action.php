@@ -87,7 +87,7 @@ switch ($action) {
         if ($originuser == null) {
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
         } else {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'id_user' => $originuser)));
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction, 'id_user' => $originuser)));
         }
         break;
 
@@ -100,7 +100,11 @@ switch ($action) {
         unfollow($userdetails->id, $tounfollow);
 
         if ($originuser == null) {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+            if($originaction == null) {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+            } else {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+            }
         } else {
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'id_user' => $originuser)));
         }

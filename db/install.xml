@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/lips/db" VERSION="20140213" COMMENT="XMLDB file for Moodle LIPS module"
+<XMLDB PATH="mod/lips/db" VERSION="20140214" COMMENT="XMLDB file for Moodle LIPS module"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -133,6 +133,7 @@
         <FIELD NAME="notification_from" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who emit the notification"/>
         <FIELD NAME="notification_to" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID of a user in relation to the notification"/>
         <FIELD NAME="notification_problem" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID of a problem in relation to the notification"/>
+        <FIELD NAME="notification_category" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Notification category ID"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -140,6 +141,7 @@
         <KEY NAME="notification_from" TYPE="foreign" FIELDS="notification_from" REFTABLE="lips_user" REFFIELDS="id"/>
         <KEY NAME="notification_to" TYPE="foreign" FIELDS="notification_to" REFTABLE="lips_user" REFFIELDS="id"/>
         <KEY NAME="notification_problem" TYPE="foreign" FIELDS="notification_problem" REFTABLE="lips_problem" REFFIELDS="id"/>
+        <KEY NAME="notification_category" TYPE="foreign" FIELDS="notification_category" REFTABLE="lips_category" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="lips_challenge" COMMENT="Challenges">

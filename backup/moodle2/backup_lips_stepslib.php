@@ -69,7 +69,15 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
 
         $category->set_source_table('lips_category', array('id_language' => backup::VAR_PARENTID));
 
-        $problem->set_source_table('lips_problem', array('problem_category_id' => backup::VAR_PARENTID));
+        // Only backup the displayable problems (problem_testing = 0).
+        $problem->set_source_sql("
+            SELECT *
+            FROM {lips_problem}
+            WHERE problem_testing = 0
+            AND problem_category_id = ?",
+            array(backup::VAR_PARENTID));
+        
+        // $problem->set_source_table('lips_problem', array('problem_category_id' => backup::VAR_PARENTID));
 
         $difficulty->set_source_table('lips_difficulty', array('id' => '../../problem_difficulty_id'));
 

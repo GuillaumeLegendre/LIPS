@@ -42,6 +42,36 @@ $string['pluginadministration'] = 'lips administration';
 $string['pluginname'] = 'LIPS';
 
 /*--------------------------------------------------
+ * Status
+ *------------------------------------------------*/
+$string['coursecreator'] = 'Créateur du cours';
+$string['teacher'] = 'Enseignant';
+$string['student'] = 'Etudiant';
+
+/*--------------------------------------------------
+ * Difficulties
+ *------------------------------------------------*/
+$string['difficulty_label_elementary'] = 'Elementaire';
+$string['difficulty_label_easy'] = 'Facile';
+$string['difficulty_label_medium'] = 'Intermediaire';
+$string['difficulty_label_difficult'] = 'Difficile';
+
+/*--------------------------------------------------
+ * Notifications
+ *------------------------------------------------*/
+$string['notification_follow'] = '{img} {date} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
+$string['notification_challenge'] = '{img} {date} - {notification_from} a défié {notification_to} sur le problème {notification_problem}';
+$string['notification_challenge_accepted'] = '{img} {date} - {notification_from} a accepté de relever le défi sur le problème {notification_problem}';
+$string['notification_challenge_refused'] = '{img} {date} - {notification_from} a refusé de relever le défi sur le problème {notification_problem}';
+$string['notification_problem_solved'] = '{img} {date} - {notification_from} a résolu le problème {notification_problem}';
+$string['notification_problem_created'] = '{img} {date} - {notification_from} a créé le problème {notification_problem}';
+$string['notification_problem_modified'] = '{img} {date} - {notification_from} a modifié le problème {notification_problem}';
+$string['notification_problem_deleted'] = '{img} {date} - {notification_from} a supprimé le problème {notification_problem}';
+$string['notification_category_created'] = '{img} {date} - {notification_from} a créé la catégorie {notification_category}';
+$string['notification_category_modified'] = '{img} {date} - {notification_from} a modifié la catégorie {notification_category}';
+$string['notification_category_deleted'] = '{img} {date} - {notification_from} a supprimé la catégorie {notification_category}';
+
+/*--------------------------------------------------
  * Constants
  *------------------------------------------------*/
 $string['create'] = 'Créer';
@@ -80,26 +110,36 @@ $string['similar_problems'] = 'Essayez aussi';
 $string['test_problem'] = 'Tester le problème';
 $string['untesting'] = 'Soumettre';
 $string['testing'] = 'Tester';
+$string['recent_activity'] = 'Activité récente';
+$string['achievements'] = 'Badges';
+$string['at'] = 'à';
 
 /*--------------------------------------------------
- * Status
+ * Dates
  *------------------------------------------------*/
-$string['coursecreator'] = 'Créateur du cours';
-$string['teacher'] = 'Enseignant';
-$string['student'] = 'Etudiant';
 
-/*--------------------------------------------------
- * Difficulties
- *------------------------------------------------*/
-$string['difficulty_label_elementary'] = 'Elementaire';
-$string['difficulty_label_easy'] = 'Facile';
-$string['difficulty_label_medium'] = 'Intermediaire';
-$string['difficulty_label_difficult'] = 'Difficile';
+// Months
+$string['Jan'] = 'Janvier';
+$string['Feb'] = 'Février';
+$string['Mar'] = 'Mars';
+$string['Apr'] = 'Avril';
+$string['May'] = 'Mai';
+$string['Jun'] = 'Juin';
+$string['Jul'] = 'Juillet';
+$string['Aug'] = 'Août';
+$string['Sep'] = 'Septembre';
+$string['Oct'] = 'Octobre';
+$string['Nov'] = 'Novembre';
+$string['Dec'] = 'Décembre';
 
-/*--------------------------------------------------
- * Notifications
- *------------------------------------------------*/
-$string['notification_follow'] = '{img} {time} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
+// Days
+$string['Mon'] = 'Lundi';
+$string['Tue'] = 'Mardi';
+$string['Wed'] = 'Mercredi';
+$string['Thu'] = 'Jeudi';
+$string['Fri'] = 'Vendredi';
+$string['Sat'] = 'Samedi';
+$string['Sun'] = 'Dimanche';
 
 /*--------------------------------------------------
  * Tabs
@@ -190,13 +230,14 @@ $string['administration_problem_modify_success'] = 'Le problème a été modifi�
 $string['administration_problems_import_title'] = 'Importer des problèmes dans LIPS';
 $string['administration_problems_export_title'] = 'Exporter des problèmes dans LIPS';
 $string['administration_problem_similar_subtitle'] = '5. Conseil de problèmes similaires';
+$string['administration_problem_similar_subtitle_msg'] = 'Conseillez des problèmes que l\'utilisateur pourrais vouloir réaliser après la réalisation de celui-ci.';
 $string['administration_problems_export_title'] = 'Exporter les problèmes de LIPS';
 $string['administration_problem_import_success'] = 'Les problèmes ont été correctement importés';
 $string['administration_problem_export_success'] = 'Les problèmes ont été correctement exportés';
 $string['administration_problem_import_empty_error'] = "Le répertoire d'import doit être précisé";
-$string['administration_problem_import_directory_error'] = 'Le fichier précisé doit être un répertoire';
+$string['administration_problem_import_directory_error'] = 'Le nom précisé doit correspondre à un répertoire';
 $string['administration_problem_import_notexist_error'] = "Le répertoire spécifié n'existe pas";
-$string['administration_problem_import_warning_msg'] = "Le répertoire doit exister dans : ";
+$string['administration_problem_import_warning_msg'] = "Le répertoire d'import choisi doit exister dans : ";
 $string['administration_problem_export_warning_msg'] = "Les fichiers d'export seront sauvegardés dans le répertoire : ";
 
 // My problems

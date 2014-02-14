@@ -68,7 +68,7 @@ abstract class page_view {
         $this->add_script_tag('./ace/ace-builds/src-noconflict/ace.js');
         $this->add_script_tag("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js");
         $this->add_css_tag("//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css");
-
+        $this->add_css_tag('./styles.css');
     }
 
     /**
@@ -100,7 +100,7 @@ abstract class page_view {
      * @param string $css Scss to add
      */
     function add_css_tag($css) {
-        echo "<link rel='stylesheet' href='".$css."'>";
+        echo "<link rel='stylesheet' href='" . $css . "'>";
     }
 }
 
@@ -744,6 +744,7 @@ class page_admin_problem_create extends page_view {
         }
 
         // Create ace
+        $this->lipsoutput->display_ace_form('preconfigEditor', '', $lips->coloration_language, 'readonly');
         $this->lipsoutput->display_ace_form('importsEditor', 'id_problem_imports', $lips->coloration_language, '');
         $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code');
         $this->lipsoutput->display_ace_form('unitTestsEditor', 'id_problem_unit_tests', $lips->coloration_language, 'unit-test');
@@ -862,8 +863,35 @@ class page_profile extends page_view {
      * Display the page_profile content
      */
     function display_content() {
+        global $USER;
+
+        $iduser = optional_param('id_user', null, PARAM_TEXT);
+        if($iduser == null) {
+            $iduser = get_user_details(array('id_user_moodle' => $USER->id))->id;
+        }
+
+        // Profile menu
         echo $this->lipsoutput->display_profile_menu('profile') . '<br/>';
-        echo 'Profile';
+
+        // Recent activity
+        echo $this->lipsoutput->display_h1(get_string('recent_activity', 'lips'));
+        echo $this->lipsoutput->display_notifications(fetch_notifications_details(array('notification_user_id' => $iduser)));
+
+        /*echo '<div class="notification-content"><img src="images/challenge-accepted.png"/> <span>Jeudi 14 Novembre 2013</span> - <a href="#">Valentin Got</a> a accepté de relevé le défi sur le problème <a href="#">RegExp</a></div>';
+        echo '<div class="notification-border"></div>';
+        echo '<div class="notification-content"><img src="images/challenge-refused.png"/> <span>Jeudi 14 Novembre 2013</span> - <a href="#">Valentin Got</a> a refusé de relevé le défi sur le problème <a href="#">EscapeIR</a></div>';
+        echo '<div class="notification-border"></div>';
+        echo '<div class="notification-content"><img src="images/solved.png"/> <span>Mercredi 13 Novembre 2013</span> - <a href="#">Valentin Got</a> a résolu le problème <a href="#">Hello World</a></div>';
+        echo '<div class="notification-border"></div>';
+        echo '<div class="notification-content"><img src="images/follow.png"/> <span>Mardi 12 Novembre 2013</span> - <a href="#">Valentin Got</a> a ajouté l\'utilisateur <a href="#">Julien Sénac</a> à sa liste de suivi</div>';
+        echo '<div class="notification-border"></div>';
+        echo '<div class="notification-content"><img src="images/challenge-accepted.png"/> <span>Mardi 12 Novembre 2013</span> - <a href="#">Valentin Got</a> a accepté de relevé le défi sur le problème <a href="#">Hello World</a></div>';
+        echo '<div class="notification-border"></div>';
+        echo '<div class="notification-content"><img src="images/challenge.png"/> <span>Dimanche 10 Novembre 2013</span> - <a href="#">Julien Sénac</a> a défié <a href="#">Valentin Got</a> sur le problème <a href="#">Hello World</a></div>';
+        echo '<div class="notification-border"></div>';*/
+
+        // Achievements
+        echo '<br/>' . $this->lipsoutput->display_h1(get_string('achievements', 'lips'));
     }
 }
 
@@ -978,8 +1006,44 @@ class page_profile_followed_users extends page_view {
      * Display the page_profile_followed_users content
      */
     function display_content() {
+        global $USER;
+
+        require_once(dirname(__FILE__) . '/followed_users_table.php');
+        require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
+
         echo $this->lipsoutput->display_profile_menu('followed_users') . '<br/>';
-        echo 'Followed users';
+        echo $this->lipsoutput->display_h1(get_string('followed_users', 'lips'));
+
+        // User details
+        $iduser = optional_param('id_user', null, PARAM_TEXT);
+        $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+
+        // Search form
+        if($iduser == null) {
+            $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'followed_users')), null, 'post', '', array('class' => 'search-form'));
+        } else {
+            $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'followed_users', 'id_user' => $iduser)), null, 'post', '', array('class' => 'search-form'));
+        }
+        $searchForm->display();
+
+        // Search result
+        $search = null;
+        if ($searchForm->is_submitted()) {
+            $data = $searchForm->get_submitted_data();
+            if (!empty($data->inputSearch)) {
+                $search = $data->inputSearch;
+            }
+        }
+
+        // Followed users table
+        if($iduser == null || $iduser == $userdetails->id) {
+            $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+            
+            $table = new followed_users_table($this->cm, $userdetails->id, true);
+        } else {
+            $table = new followed_users_table($this->cm, $iduser, false);
+        }
+        $table->out(get_string('followed_users_table', 'lips'), true);
     }
 }
 
