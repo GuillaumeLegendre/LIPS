@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Document sans nom</title>
+<title>Ace</title>
 <style type="text/css" media="screen">
 	.acepanel {
     width: 90%;
@@ -39,7 +39,25 @@
 
 <body>
 
-<div id="editor" class="ace">var f = function(){alert("alert"); }</div>
+<!--<div id="editor" class="ace">var f = function(str){
+		alert("&lt;code&gt;bonjour&lt;/code&gt;");
+		return str;
+}
+
+if (f(&lt;code&gt;&lt;/code&gt;) == "&lt;code&gt;&lt;/code&gt;")
+	alert("GOOD");</div>-->
+
+<!--<div id="editor" class="ace">var f = function(str){
+		alert("&lt;code&gt;&lt;/code&gt;");
+}
+</div>-->
+
+<div id="editor" class="ace">&lt;code&gt;&lt;/code&gt;
+
+if (f("bonjour") == "bonjour")
+	return true;
+</div>
+
 <textarea id="area" class="editorCode"></textarea>
 
 <script src="./ace/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -49,8 +67,11 @@
 	
 	//createAce("editor", "area",  "javascript", "eclipse", "configure");
 	//createAce("editor", "area",  "javascript", "eclipse", "code");
-	createAce("editor", "area",  "javascript", "eclipse", "unit-test");
+	//createAce("editor", "area",  "javascript", "eclipse", "unit-test");
 	//createAce("editor", "area",  "javascript", "eclipse", "normal");
+	//createAce("editor", "area",  "javascript", "eclipse", "readonly");
+	createAce("editor", "area",  "javascript", "eclipse", "resolution");
+	
 
 </script>
 </body>
