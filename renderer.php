@@ -392,6 +392,11 @@ class mod_lips_renderer extends plugin_renderer_base {
                 $notification_msg = str_replace('{notification_category}', $this->render($url_category), $notification_msg);
             }
 
+            // Set the notification_text
+            if($notification->notification_text != null) {
+                $notification_msg = str_replace('{notification_text}', '<strong>' . $notification->notification_text . '</strong>', $notification_msg);
+            }
+
             $display .= $notification_msg;
         }
 

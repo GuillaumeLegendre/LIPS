@@ -161,7 +161,15 @@ class page_index extends page_view {
     function display_content() {
         global $USER;
 
-        echo $this->lipsoutput->display_h1('Bienvenue ' . $USER->username);
+        // User details
+        $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+
+        // Challenge
+        echo $this->lipsoutput->display_h1(get_string('challenges', 'lips'));
+
+        // Notifications
+        echo $this->lipsoutput->display_h1(get_string('notifications', 'lips'));
+        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $userdetails->id));
     }
 }
 
@@ -875,20 +883,7 @@ class page_profile extends page_view {
 
         // Recent activity
         echo $this->lipsoutput->display_h1(get_string('recent_activity', 'lips'));
-        echo $this->lipsoutput->display_notifications(fetch_notifications_details(array('notification_user_id' => $iduser)));
-
-        /*echo '<div class="notification-content"><img src="images/challenge-accepted.png"/> <span>Jeudi 14 Novembre 2013</span> - <a href="#">Valentin Got</a> a accepté de relevé le défi sur le problème <a href="#">RegExp</a></div>';
-        echo '<div class="notification-border"></div>';
-        echo '<div class="notification-content"><img src="images/challenge-refused.png"/> <span>Jeudi 14 Novembre 2013</span> - <a href="#">Valentin Got</a> a refusé de relevé le défi sur le problème <a href="#">EscapeIR</a></div>';
-        echo '<div class="notification-border"></div>';
-        echo '<div class="notification-content"><img src="images/solved.png"/> <span>Mercredi 13 Novembre 2013</span> - <a href="#">Valentin Got</a> a résolu le problème <a href="#">Hello World</a></div>';
-        echo '<div class="notification-border"></div>';
-        echo '<div class="notification-content"><img src="images/follow.png"/> <span>Mardi 12 Novembre 2013</span> - <a href="#">Valentin Got</a> a ajouté l\'utilisateur <a href="#">Julien Sénac</a> à sa liste de suivi</div>';
-        echo '<div class="notification-border"></div>';
-        echo '<div class="notification-content"><img src="images/challenge-accepted.png"/> <span>Mardi 12 Novembre 2013</span> - <a href="#">Valentin Got</a> a accepté de relevé le défi sur le problème <a href="#">Hello World</a></div>';
-        echo '<div class="notification-border"></div>';
-        echo '<div class="notification-content"><img src="images/challenge.png"/> <span>Dimanche 10 Novembre 2013</span> - <a href="#">Julien Sénac</a> a défié <a href="#">Valentin Got</a> sur le problème <a href="#">Hello World</a></div>';
-        echo '<div class="notification-border"></div>';*/
+        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')'));
 
         // Achievements
         echo '<br/>' . $this->lipsoutput->display_h1(get_string('achievements', 'lips'));

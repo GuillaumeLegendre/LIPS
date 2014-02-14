@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+global $USER;
+
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/pagelib.php');
@@ -25,8 +27,6 @@ $n = optional_param('n', 0, PARAM_INT);
 $action = optional_param('action', 0, PARAM_TEXT);
 $originv = optional_param('originV', "index", PARAM_TEXT);
 $originaction = optional_param('originAction', null, PARAM_TEXT);
-
-global $USER;
 
 if ($id) {
     $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
@@ -42,37 +42,45 @@ if ($id) {
 
 require_login($course, true, $cm);
 
-if (!has_role('administration')) {
-    redirect(new moodle_url('view.php', array('id' => $cm->id)));
-}
-
 add_to_log($course->id, 'lips', 'action', "action.php?id={$cm->id}", $lips->name, $cm->id);
 
 switch ($action) {
     case "deleteCategory":
-        $categoryid = optional_param('categoryId', 0, PARAM_INT);
+        if (has_role('administration')) {
+            $categoryid = optional_param('categoryId', 0, PARAM_INT);
+            $categorydetails = get_category_details($categoryid);
 
-        delete_category($categoryid);
+            delete_category($categoryid);
 
-        if ($originaction == null) {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
-        } else {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+            // Insert the notifications
+            $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+            $followers = fetch_followers($userdetails->id);
+            foreach($followers as $follower) {
+                insert_notification($follower->follower, 'notification_category_deleted', time(), $follower->followed, null, null, null, $categorydetails->category_name);
+            }
+
+            if ($originaction == null) {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+            } else {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+            }
         }
         break;
     case "deleteProblem":
-        $problemid = optional_param('problemId', null, PARAM_INT);
-        $categoryid = optional_param('categoryId', null, PARAM_INT);
-        if (is_author($problemid, $USER->id)) {
-            delete_problem($problemid);
-        }
-        if ($categoryid != null && !empty($categoryid)) {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'categoryId' => $categoryid)));
-        }
-        if ($originaction == null) {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
-        } else {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+        if (has_role('administration')) {
+            $problemid = optional_param('problemId', null, PARAM_INT);
+            $categoryid = optional_param('categoryId', null, PARAM_INT);
+            if (is_author($problemid, $USER->id)) {
+                delete_problem($problemid);
+            }
+            if ($categoryid != null && !empty($categoryid)) {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'categoryId' => $categoryid)));
+            }
+            if ($originaction == null) {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+            } else {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+            }
         }
         break;
 
@@ -87,7 +95,7 @@ switch ($action) {
         if ($originuser == null) {
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
         } else {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction, 'id_user' => $originuser)));
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'id_user' => $originuser)));
         }
         break;
 
@@ -111,28 +119,32 @@ switch ($action) {
         break;
 
     case 'testing':
-        $totest = optional_param('to_test', 0, PARAM_INT);
+        if (has_role('administration')) {
+            $totest = optional_param('to_test', 0, PARAM_INT);
 
-        // Go to testing mode
-        to_testing_mode($totest);
+            // Go to testing mode
+            to_testing_mode($totest);
 
-        if ($originaction == null) {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
-        } else {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+            if ($originaction == null) {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+            } else {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+            }
         }
         break;
 
     case 'untesting':
-        $tountest = optional_param('to_untest', 0, PARAM_INT);
+        if (has_role('administration')) {
+            $tountest = optional_param('to_untest', 0, PARAM_INT);
 
-        // Go to display mode
-        to_display_mode($tountest);
+            // Go to display mode
+            to_display_mode($tountest);
 
-        if ($originaction == null) {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
-        } else {
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+            if ($originaction == null) {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+            } else {
+                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+            }
         }
         break;
 }

@@ -134,6 +134,7 @@
         <FIELD NAME="notification_to" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID of a user in relation to the notification"/>
         <FIELD NAME="notification_problem" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID of a problem in relation to the notification"/>
         <FIELD NAME="notification_category" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Notification category ID"/>
+        <FIELD NAME="notification_text" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Notification text"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

@@ -66,10 +66,10 @@ $string['notification_challenge_refused'] = '{img} {date} - {notification_from} 
 $string['notification_problem_solved'] = '{img} {date} - {notification_from} a résolu le problème {notification_problem}';
 $string['notification_problem_created'] = '{img} {date} - {notification_from} a créé le problème {notification_problem}';
 $string['notification_problem_modified'] = '{img} {date} - {notification_from} a modifié le problème {notification_problem}';
-$string['notification_problem_deleted'] = '{img} {date} - {notification_from} a supprimé le problème {notification_problem}';
+$string['notification_problem_deleted'] = '{img} {date} - {notification_from} a supprimé le problème {notification_text}';
 $string['notification_category_created'] = '{img} {date} - {notification_from} a créé la catégorie {notification_category}';
 $string['notification_category_modified'] = '{img} {date} - {notification_from} a modifié la catégorie {notification_category}';
-$string['notification_category_deleted'] = '{img} {date} - {notification_from} a supprimé la catégorie {notification_category}';
+$string['notification_category_deleted'] = '{img} {date} - {notification_from} a supprimé la catégorie {notification_text}';
 
 /*--------------------------------------------------
  * Constants
@@ -113,6 +113,7 @@ $string['testing'] = 'Tester';
 $string['recent_activity'] = 'Activité récente';
 $string['achievements'] = 'Badges';
 $string['at'] = 'à';
+$string['notifications'] = 'Notifications';
 
 /*--------------------------------------------------
  * Dates
