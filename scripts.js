@@ -379,30 +379,31 @@ window.createUnitTest = function (editorid) {
 
 //Create an ace editor in readonly mode
 //used to display problem's code. not editable
-window.createReadOnly = function (editorid) {
-    var editor = ace.edit(editorid);
-    var doc = editor.getSession().getDocument();
-    var lines = doc.getLength();
-    var allLines = doc.getAllLines();
-    var longestLine = 0;
-    var longestIndex = 0;
-    editor.setReadOnly(true);
-    editor.renderer.setShowGutter(false);
-
-    for (var i in allLines) {
-        if (longestLine < allLines[i].length) {
-            longestLine = allLines[i].length;
-            longestIndex = i;
-        }
-    }
-
-    for (var j in allLines[longestIndex]) {
-        if (allLines[longestIndex][j] == "\t")
-            longestLine = longestLine + 3;
-    }
-
-    $("#" + editorid).css("height", lines * 16);
-    $("#" + editorid).css("width", (20 + (longestLine * 7)));
+window.createReadOnly = function(editorid){
+	var editor = ace.edit(editorid);
+	var doc = editor.getSession().getDocument();
+	var lines = doc.getLength();
+	var allLines = doc.getAllLines();
+	var longestLine = 0;
+	var longestIndex = 0;
+	editor.setReadOnly(true);
+	editor.renderer.setShowGutter(false);
+	editor.setHighlightActiveLine(false);
+	
+	for (var i in allLines) {
+		if (longestLine < allLines[i].length){
+			longestLine = allLines[i].length;
+			longestIndex = i;
+		}
+	}
+	
+	for (var j in allLines[longestIndex]) {
+		if (allLines[longestIndex][j] == "\t")
+			longestLine = longestLine + 3;
+	}
+	
+	$("#" + editorid).css("height", lines * 16);
+	$("#" + editorid).css("width", (20 + (longestLine * 7)));
 }
 
 $(document).ready(function () {
@@ -410,6 +411,8 @@ $(document).ready(function () {
     /*---------------------------------
      *  Ajax to populate select of similar problem
      *-------------------------------*/
+
+if ($('#dialog').length > 0){
     $('#dialog').dialog({
         height: 250,
         width: 400,
@@ -445,5 +448,5 @@ $(document).ready(function () {
         $(this).parent().remove();
         $("#id_problem_similar").val($("#id_problem_similar").val().replace(" "+$(this).attr("id"),""));
     });
-
+}
 });

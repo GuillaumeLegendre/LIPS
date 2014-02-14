@@ -304,6 +304,18 @@ function get_category_details($id) {
 /**
  * Get details of a specific category.
  *
+ * @return object An array containing the details of a category.
+ */
+function get_category_details_array(array $conditions = array()) {
+    global $DB;
+
+    return $DB->get_record('lips_category', $conditions, '*', MUST_EXIST);
+}
+
+
+/**
+ * Get details of a specific category.
+ *
  * @param int $id Problem ID
  * @return object An array containing the details of a category.
  */
@@ -338,6 +350,7 @@ function delete_category($id) {
     global $DB;
 
     $DB->delete_records("lips_category", array("id" => $id));
+    $DB->delete_records("lips_notification", array("notification_category" => $id));
 }
 
 /**
@@ -573,13 +586,7 @@ function follow($follower, $followed) {
     global $DB;
 
     $DB->insert_record('lips_follow', array('follower' => $follower, 'followed' => $followed));
-    $DB->insert_record('lips_notification', array(
-            'notification_user_id' => $follower,
-            'notification_type' => 'notification_follow',
-            'notification_date' => time(),
-            'notification_from' => $follower,
-            'notification_to' => $followed)
-    );
+    insert_notification($follower, 'notification_follow', time(), $follower, $followed);
 }
 
 /**
@@ -728,12 +735,16 @@ function problem_similar_exist($mainproblemid, $problemsimilarid) {
  * Fetch the notifications details
  *
  * @param array $conditions Conditions to fetch the notifications
- * @return object The notifications details
+ * @return string The notifications details
  */
-function fetch_notifications_details(array $conditions = array()) {
+function fetch_notifications_details($conditions ) {
     global $DB;
-
-    return $DB->get_records('lips_notification', $conditions, 'notification_date DESC', '*', 0, get_string('notifications_limit', 'lips'));
+    
+    return $DB->get_records_sql('SELECT * FROM mdl_lips_notification 
+        WHERE ' . $conditions . ' 
+        ORDER BY notification_date DESC 
+        LIMIT 0, ' . get_string('notifications_limit', 'lips')
+    );
 }
 
 /**
@@ -760,4 +771,42 @@ function format_date($timestamp) {
 function delete_problems_similar($problemid) {
     global $DB;
     $DB->delete_records("lips_problem_similar", array('problem_similar_main_id' => $problemid));
+}
+
+/** Fetch the user followers
+ *
+ * @param int $id ID of the user
+ * @return object The user followers
+ */
+function fetch_followers($id) {
+    global $DB;
+    
+    return $DB->get_records('lips_follow', array('followed' => $id));
+}
+
+/**
+ * Insert a notification
+ *
+ * @param int $notification_user_id ID of the user who will receive the notification
+ * @param string $notification_type Notification type
+ * @param int $notitification_date Timestamp
+ * @param int $notification_from Notifier
+ * @param int $notification_to Notified
+ * @param int $notification_problem Problem ID related to the notification
+ * @param int $notification_category Category ID related to the notification
+ * @param string $notification_text Notification text
+ */
+function insert_notification($notification_user_id, $notification_type, $notification_date, $notification_from, $notification_to = null, $notification_problem = null, $notification_category = null, $notification_text = null) {
+    global $DB;
+
+    $DB->insert_record('lips_notification', array(
+        'notification_user_id' => $notification_user_id,
+        'notification_type' => $notification_type,
+        'notification_date' => $notification_date,
+        'notification_from' => $notification_from,
+        'notification_to' => $notification_to,
+        'notification_problem' => $notification_problem,
+        'notification_category' => $notification_category,
+        'notification_text' => $notification_text
+    ));
 }

@@ -172,9 +172,6 @@ h3 {
     font-weight: bold;
 }
 
-.acetitle.required {
-}
-
 .acepanel {
     width: 90%;
     background-color: #EBEBEB;
@@ -198,7 +195,7 @@ h3 {
 
 .ace {
     width: 90%;
-    height: 400px;
+    height: 250px;
     border: 1px solid #000000;
 }
 

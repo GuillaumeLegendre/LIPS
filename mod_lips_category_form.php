@@ -98,7 +98,7 @@ class mod_lips_category_create_form extends moodleform {
      * @param array $files Form uploaded files
      */
     public function handle() {
-        global $PAGE;
+        global $PAGE, $USER;
 
         // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled()) {
@@ -126,6 +126,13 @@ class mod_lips_category_create_form extends moodleform {
         // Insert the data.
         $lips = get_current_instance();
         insert_category($lips->id, $categoryname, $categorydocumentation, $categorydocumentationtype);
+
+        // Insert the notifications
+        $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+        $followers = fetch_followers($userdetails->id);
+        foreach($followers as $follower) {
+            insert_notification($follower->follower, 'notification_category_created', time(), $follower->followed, null, null, get_category_details_array(array('category_name' => $data->inputCategoryName))->id);
+        }
 
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_create_success', 'lips'), 'SUCCESS');
@@ -262,7 +269,7 @@ class mod_lips_category_modify_form extends moodleform {
      * @param array $files Form uploaded files
      */
     public function handle() {
-        global $PAGE;
+        global $PAGE, $USER;
 
         // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled()) {
@@ -290,6 +297,13 @@ class mod_lips_category_modify_form extends moodleform {
 
         // Update the data.
         update_category($categoryid, $categoryname, $categorydocumentation, $categorydocumentationtype);
+
+        // Insert the notifications
+        $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+        $followers = fetch_followers($userdetails->id);
+        foreach($followers as $follower) {
+            insert_notification($follower->follower, 'notification_category_modified', time(), $follower->followed, null, null, $categoryid);
+        }
 
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_modify_success', 'lips'), 'SUCCESS');
