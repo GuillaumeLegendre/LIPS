@@ -405,6 +405,11 @@ window.createReadOnly = function(editorid){
 	$("#" + editorid).css("width", (20 + (longestLine * 7)));
 }
 
+// Delete the challenged user
+function deleteChalengedUser(user_id) {
+    $("#" + user_id).remove();
+}
+
 $(document).ready(function () {
 
     /*---------------------------------
@@ -446,6 +451,91 @@ $(document).ready(function () {
         $('body').on('click', '.delete_problem_similar_button', function () {
             $(this).parent().remove();
             $("#id_problem_similar").val($("#id_problem_similar").val().replace(" "+$(this).attr("id"),""));
+        });
+    }
+
+    /*---------------------------------
+     *  Autocomplete on users to challenge
+     *-------------------------------*/
+
+    if ($('#challenge-users').length > 0) {
+        var mytable = new Array();
+
+        // Create the dialog box
+        $('#challenge-users').dialog({
+            height: 505,
+            width: 500,
+            modal: true,
+            autoOpen: false,
+            draggable: false,
+            buttons: {
+                "Défier les utilisateurs": function () {
+                    var toChallenge = new Array();
+
+                    $("#challenged-players p").each(function(index) {
+                        toChallenge.push($(this).attr("id"));
+                    });
+
+                    $.ajax({
+                        url: 'challenge_users.php',
+                        type: 'POST',
+                        data: {
+                            action: 'post',
+                            problemid: $("#hiddenProblemid").val(),
+                            users: toChallenge
+                        },
+                        success: function () {
+                            $("#notify.notifySuccess").show();
+
+                            $("#challenged-players p").each(function(index) {
+                                if($("#challenged-users").text() != "") {
+                                    $("#challenged-users").html($("#challenged-users").text() + ", " + $(this).text());
+                                } else {
+                                    $("#challenged-users").html($(this).text());
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
+
+        // Get users
+        $.ajax({
+            url: 'challenge_users.php',
+            type: 'POST',
+            data: {
+                action: 'get',
+                problemid: $("#hiddenProblemid").val()
+            },
+            dataType: 'json',
+            success: function (users) {
+                $.map(users, function (value, key) {
+                    user = new Object();
+                    user.label = value;
+                    user.id = key;
+
+                    mytable.push(user);
+                });
+            }
+        });
+
+        // Autocomplete
+        $("#challenge-user").autocomplete({
+            minLength: 1,
+            source: mytable,
+            select: function(event, ui) {
+                if($("#challenged-players #" + ui.item.id).length == 0) {
+                    $("#challenged-players").append('<p id="' + ui.item.id + '">' + ui.item.label + '<img src="images/delete_similar.png" title="Supprimer" onClick="deleteChalengedUser(' + ui.item.id + ')"/></p>');
+                }
+            }
+        });
+
+        // Open the dialog box
+        $("#challenge").click(function() {
+            $("#challenge-users").dialog("open");
+
+            return false;
         });
     }
 });

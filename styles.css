@@ -36,6 +36,14 @@ h3 {
 }
 
 /*---------------------------------
+ *  JQuery dialog
+ *-------------------------------*/
+
+.ui-widget {
+    z-index: 1000;
+}
+
+/*---------------------------------
  *  Table
  *-------------------------------*/
 
@@ -150,6 +158,11 @@ h3 {
     margin-right: 0;
 }
 
+.label_field_page_problem {
+    color: #0066CC;
+    font-weight: bold;
+}
+
 .unit-test img {
     float: left;
     width: 24px;
@@ -160,6 +173,72 @@ h3 {
 .unit-test span {
     display: block;
     line-height: 24px;
+}
+
+.solution {
+    width: 40%;
+    margin-bottom: 10px;
+}
+
+.solution #header {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    padding: 5px;
+    background-color: #9fc5f8;
+}
+
+.solution #content {
+    padding: 5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+.solution #date {
+    font-style: italic;
+}
+
+.similar_problem button {
+    display: inline;
+}
+
+.similar_problem .ftext {
+    display: inline;
+}
+
+/*---------------------------------
+ *  Challenge
+ *-------------------------------*/
+
+#challenge-users h3 {
+    margin: 10px 0 5px 0;
+}
+
+#challenged-players {
+    overflow: auto;
+    height: 145px;
+    width: 100%;
+    border: 2px groove #555555;
+}
+
+#challenged-players p {
+    margin: 6px;
+    padding: 5px;
+    border: 1px solid #AAAAAA;
+    background-color: #FFFFFF;
+}
+
+#challenged-players p:hover {
+    background-color: #EEEEEE;
+}
+
+#challenged-players img {
+    float: right;
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+    margin: 2px 3px 0 0;
 }
 
 /*---------------------------------
@@ -287,8 +366,20 @@ h3 {
     border: 1px dashed #AAAAAA;
 }
 
-.notification-content {
+.notification-content, .challenge-content {
     margin: 5px 0 5px 0;
+}
+
+.notification-content .notification-language {
+    display: inline;
+    float: right;
+    background-color: #9DC3F6;
+    color: #FFFFFF;
+    font-weight: bold;
+    border: 1px solid #AAAAAA;
+    border-radius: 2px;
+    padding: 2px 6px 2px 6px;
+    margin-top: -1px;
 }
 
 .notification-content img {
@@ -297,8 +388,12 @@ h3 {
     margin-right: 2px;
 }
 
-.notification-content span {
+.notification-content span, .challenge-content span {
     color: #555555;
+}
+
+.challenge-content .lips-button {
+    margin: 5px 10px 5px 0;
 }
 
 /*---------------------------------
@@ -466,49 +561,4 @@ h3 {
     border: 1px solid #FBC2C4;
     background-color: #FBE3E4;
     color: #8A1F11;
-}
-
-.label_field_page_problem {
-    color: #0066CC;
-}
-
-.search_bar {
-    width: 80%;
-    border: 1;
-}
-
-.search_bar button {
-    float: right;
-}
-
-.solution {
-    width: 40%;
-    margin-bottom: 10px;
-}
-
-.solution #header {
-    border-width: 1px;
-    border-style: solid;
-    border-color: black;
-    padding: 5px;
-    background-color: #9fc5f8;
-}
-
-.solution #content {
-    padding: 5px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: black;
-}
-
-.solution #date {
-    font-style: italic;
-}
-
-.similar_problem button {
-    display: inline;
-}
-
-.similar_problem .ftext {
-    display: inline;
 }

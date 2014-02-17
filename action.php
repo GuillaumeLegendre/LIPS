@@ -54,10 +54,10 @@ switch ($action) {
 
             // Insert the notifications.
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+            insert_notification($userdetails->id, 'notification_category_deleted', time(), $userdetails->id, null, null, null, $categorydetails->category_name);
             $followers = fetch_followers($userdetails->id);
             foreach ($followers as $follower) {
-                insert_notification($follower->follower, 'notification_category_deleted', time(),
-                    $follower->followed, null, null, null, $categorydetails->category_name);
+                insert_notification($follower->follower, 'notification_category_deleted', time(), $userdetails->id, null, null, null, $categorydetails->category_name);
             }
 
             if ($originaction == null) {
@@ -67,13 +67,25 @@ switch ($action) {
             }
         }
         break;
+
     case "deleteProblem":
         if (has_role('administration')) {
             $problemid = optional_param('problemId', null, PARAM_INT);
             $categoryid = optional_param('categoryId', null, PARAM_INT);
+            $problemdetails = get_problem_details_array(array('id' => $problemid));
+
             if (is_author($problemid, $USER->id)) {
                 delete_problem($problemid);
             }
+
+            // Insert the notifications.
+            $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+            insert_notification($userdetails->id, 'notification_problem_deleted', time(), $userdetails->id, null, null, null, $problemdetails->problem_label);
+            $followers = fetch_followers($userdetails->id);
+            foreach ($followers as $follower) {
+                insert_notification($follower->follower, 'notification_problem_deleted', time(), $userdetails->id, null, null, null, $problemdetails->problem_label);
+            }
+
             if ($categoryid != null && !empty($categoryid)) {
                 redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'categoryId' => $categoryid)));
             }
@@ -147,6 +159,15 @@ switch ($action) {
                 redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
             }
         }
+        break;
+
+    case 'accept_challenge':
+        $challengeid = optional_param('challenge_id', 0, PARAM_INT);
+
+        // Accept the challenge
+        accept_challenge($challengeid);
+
+        redirect(new moodle_url('view.php', array('id' => $cm->id)));
         break;
 }
 

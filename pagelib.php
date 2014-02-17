@@ -164,12 +164,27 @@ class page_index extends page_view {
         // User details
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
 
-        // Challenge
-        echo $this->lipsoutput->display_h1(get_string('challenges', 'lips'));
+        // Current challenges
+        $currentchallengedetails = fetch_challenges(array('challenge_to' => $userdetails->id, 'challenge_state' => 'ACCEPTED'));
+        echo $this->lipsoutput->display_h1(get_string('current_challenges', 'lips'));
+        if(count($currentchallengedetails) > 0) {
+            echo $this->lipsoutput->display_current_challenges($currentchallengedetails);
+        } else {
+            echo $this->lipsoutput->display_p(get_string('no_challenges', 'lips'));
+        }
+
+        // Received challenges
+        $receivedchallengedetails = fetch_challenges(array('challenge_to' => $userdetails->id, 'challenge_state' => 'WAITING'));
+        echo $this->lipsoutput->display_h1(get_string('challenges', 'lips'), array("style" => "margin-top: 15px"));
+        if(count($receivedchallengedetails) > 0) {
+            echo $this->lipsoutput->display_challenges($receivedchallengedetails);
+        } else {
+            echo $this->lipsoutput->display_p(get_string('no_challenges', 'lips'));
+        }
 
         // Notifications
         $notificationsdetails = fetch_notifications_details('notification_user_id = ' . $userdetails->id);
-        echo $this->lipsoutput->display_h1(get_string('notifications', 'lips'));
+        echo $this->lipsoutput->display_h1(get_string('notifications', 'lips'), array("style" => "margin-top: 15px"));
         if(count($notificationsdetails) > 0) {
             echo $this->lipsoutput->display_notifications($notificationsdetails);
         } else {
@@ -921,7 +936,8 @@ class page_profile_ranks extends page_view {
      */
     function display_content() {
         echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
-        echo 'Ranks';
+
+        echo 'Challenges';
     }
 }
 
@@ -1242,7 +1258,7 @@ class page_solutions extends page_view {
 
         $details = get_problem_details($this->id);
         echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
-        $author_link = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . strtoupper($details[$this->id]->lastname));
+        $author_link = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . ucfirst($details[$this->id]->lastname));
         $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $author_link;
         echo $this->lipsoutput->display_p($author, array("class" => "field_page_problem"));
         $datecreation = $this->lipsoutput->display_span(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . date("d/m/y", $details[$this->id]->problem_date);
@@ -1313,7 +1329,7 @@ class page_problem extends page_view {
          *------------------------------*/
 
         // Challenge button
-        $buttondefie = $this->lipsoutput->action_link(new moodle_url(""), "Défier", null, array("class" => "lips-button"));
+        $buttondefie = $this->lipsoutput->action_link(new moodle_url("#"), "Défier", null, array("class" => "lips-button", "id" => "challenge"));
 
         // Solutions button
         $buttonsolutions = "";
@@ -1344,7 +1360,7 @@ class page_problem extends page_view {
         echo $this->lipsoutput->display_div($buttondefie . $buttonsolutions . $buttonedit . $buttondelete, array("id" => "problem-right-buttons"));
 
         // Author
-        $authorlink = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . strtoupper($details[$this->id]->lastname));
+        $authorlink = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . ucfirst($details[$this->id]->lastname));
         echo $this->lipsoutput->display_problem_information(get_string("problem_author", "lips"), $authorlink);
 
         // Creation date
@@ -1411,6 +1427,11 @@ class page_problem extends page_view {
 
         // Create ace
         $this->lipsoutput->display_ace_form('answerEditor', '', $lips->coloration_language, 'resolution');
+
+        // Challenge dialog
+        $userid = get_user_details(array("id_user_moodle" => $USER->id))->id;
+        echo $this->lipsoutput->display_challenge_dialog($categorydetails->category_name, $details[$this->id]->problem_label, fetch_challenged_users($userid, $this->id));
+        echo '<input type="hidden" id="hiddenProblemid" value="' . $this->id . '"/>';
     }
 }
 

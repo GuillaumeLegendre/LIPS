@@ -203,7 +203,7 @@ class mod_lips_renderer extends plugin_renderer_base {
                 <div id="role">' . get_string($userdetails->user_status, 'lips') . '</div>
                 <div id="rank">' . $rank->rank_label . '</div>
             </div>
-            <div id="user">' . ucfirst($moodleuserdetails->firstname) . ' ' . strtoupper($moodleuserdetails->lastname) . '</div>
+            <div id="user">' . ucfirst($moodleuserdetails->firstname) . ' ' . ucfirst($moodleuserdetails->lastname) . '</div>
         </div>
         <ul id="links">';
 
@@ -350,7 +350,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             $display .= '<div class="notification-border"></div>';
 
             // Notification message
-            $notification_msg = '<div class="notification-content">' . get_string($notification->notification_type, 'lips') . '</div>';
+            $notification_msg = '<div class="notification-content"><div class="notification-language">Java</div>' . get_string($notification->notification_type, 'lips') . '</div>';
 
             // Set the picture
             $notification_msg = str_replace('{img}', '<img src="images/' .  get_string($notification->notification_type . '_picture', 'lips') . '"/>', $notification_msg);
@@ -421,8 +421,136 @@ class mod_lips_renderer extends plugin_renderer_base {
             'view' => 'profile',
             'id_user' => $userid
         )),
-        ucfirst($firstname) . ' ' . strtoupper($lastname));
+        ucfirst($firstname) . ' ' . ucfirst($lastname));
 
         return $this->render($url);
+    }
+
+    /**
+     * Display the dialog box
+     *
+     * @param string $category Category name
+     * @param string $problem Problem name
+     * @param array $challengedusers Challenged users
+     * @return string Dialog box
+     */
+    public function display_challenge_dialog($category, $problem, $challengedusers) {
+        $dialog = '<div id="challenge-users" title="' . get_string('challenge', 'lips') . ' - ' . $category . ' - ' . $problem . '">
+            <div id="notify" class="notifySuccess" style="width: 98%; display: none">' . get_string('problem_challenge_success', 'lips') . '</div>
+
+            <h2>' . $problem . '</h2>
+            <p>Sélectionnez la liste des utilisateurs que vous souhaitez défier sur ce problème.</p>
+            <input id="challenge-user"/>
+            <h3>' . get_string('challenged_users', 'lips') . '</h3><p id="challenged-users">';
+
+        if(count($challengedusers) > 0) {
+            foreach($challengedusers as $user) {
+                $dialog .= ucfirst($user->firstname) . ' ' . ucfirst($user->lastname) . ', ';
+            }
+            $dialog = substr($dialog, 0, -2);
+        } else {
+            $dialog .= "";
+        }
+
+        $dialog .= '</p><h3>' . get_string('challenged', 'lips') . '</h3><div id="challenged-players"></div></div>';
+
+        return $dialog;
+    }
+
+    /**
+     * Display the challenges
+     *
+     * @param object $challenges Challenges informations
+     * @return string The rendered challenges
+     */
+    public function display_challenges($challenges) {
+        $display = '';
+
+        foreach($challenges as $challenge) {
+            // Challenge border
+            $display .= '<div class="notification-border"></div>';
+
+            // Challenge message
+            $challenge_msg = '<div class="challenge-content">' . get_string('challenge_notification', 'lips') . '<br/>{challenge_solve} {challenge_refuse}</div>';
+
+            // Set the date
+            $challenge_msg = str_replace('{date}', '<span>' . format_date($challenge->challenge_date) . '</span>', $challenge_msg);
+
+            // Set the challenge_from
+            $challenge_from = get_moodle_user_details(array('id' => get_user_details(array('id' => $challenge->challenge_from))->id_user_moodle));
+            $challenge_msg = str_replace('{challenge_from}', $this->display_user_link($challenge->challenge_from, $challenge_from->firstname, $challenge_from->lastname), $challenge_msg);
+
+            // Set the challenge_problem
+            $challenge_problem = get_problem_details($challenge->challenge_problem);
+            $url_problem = new action_link(new moodle_url('view.php', array(
+                'id' => $this->page->cm->id,
+                'view' => 'problem',
+                'problemId' => $challenge->challenge_problem
+            )),
+            $challenge_problem[$challenge->challenge_problem]->problem_label);
+            $challenge_msg = str_replace('{challenge_problem}', $this->render($url_problem), $challenge_msg);
+
+            // Set the buttons
+            $url_solve = new moodle_url('action.php', array(
+                'id' => $this->page->cm->id,
+                'action' => 'accept_challenge',
+                'challenge_id' => $challenge->id
+            ));
+            $url_refuse = new moodle_url('action.php', array(
+                'id' => $this->page->cm->id,
+                'action' => 'refuse_challenge',
+                'challenge_id' => $challenge->id
+            ));
+            $challenge_msg = str_replace('{challenge_solve}', '<a href="' . $url_solve . '" class="lips-button">' . get_string('accept', 'lips') . '</a>', $challenge_msg);
+            $challenge_msg = str_replace('{challenge_refuse}', '<a href="' . $url_refuse . '" class="lips-button">' . get_string('refuse', 'lips') . '</a>', $challenge_msg);
+
+            $display .= $challenge_msg;
+        }
+
+        if($display != '') {
+            $display .= '<div class="notification-border"></div>';
+        }
+
+        return $display;
+    }
+
+    /**
+     * Display the current challenges
+     *
+     * @param object $challenges Challenges informations
+     * @return string The rendered challenges
+     */
+    public function display_current_challenges($challenges) {
+        $display = '';
+
+        foreach($challenges as $challenge) {
+            // Challenge border
+            $display .= '<div class="notification-border"></div>';
+
+            // Challenge message
+            $challenge_msg = '<div class="challenge-content">' . get_string('challenge_current', 'lips') . '</div>';
+
+            // Set the challenge_problem
+            $challenge_problem = get_problem_details($challenge->challenge_problem);
+            $url_problem = new action_link(new moodle_url('view.php', array(
+                'id' => $this->page->cm->id,
+                'view' => 'problem',
+                'problemId' => $challenge->challenge_problem
+            )),
+            $challenge_problem[$challenge->challenge_problem]->problem_label);
+            $challenge_msg = str_replace('{challenge_problem}', $this->render($url_problem), $challenge_msg);
+
+            // Set the challenge_from
+            $challenge_from = get_moodle_user_details(array('id' => get_user_details(array('id' => $challenge->challenge_from))->id_user_moodle));
+            $challenge_msg = str_replace('{challenge_from}', $this->display_user_link($challenge->challenge_from, $challenge_from->firstname, $challenge_from->lastname), $challenge_msg);
+
+            $display .= $challenge_msg;
+        }
+
+        if($display != '') {
+            $display .= '<div class="notification-border"></div>';
+        }
+
+        return $display;
     }
 }

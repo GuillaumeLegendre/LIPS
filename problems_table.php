@@ -22,7 +22,6 @@ require_once("$CFG->libdir/outputrenderers.php");
 
 
 class problems_table extends table_sql {
-
     private $cm;
 
     function  __construct($cm, $id, $search = null) {
@@ -65,6 +64,8 @@ class problems_table extends table_sql {
 
     function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE, $USER;
+        $lipsoutput = $PAGE->get_renderer('mod_lips');
+
         switch($colname) {
             case 'problem_label':
                 $star = ($USER->id == $attempt->problem_creator_id) ? ' <span style="color :red">*</span>' : '';
@@ -95,7 +96,7 @@ class problems_table extends table_sql {
                 break;
 
             case 'problem_creator_id':
-                return $OUTPUT->action_link(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'profile', 'id_user' => $attempt->user_id)), ucfirst($attempt->firstname) . ' ' . strtoupper($attempt->lastname));
+                return $lipsoutput->display_user_link($attempt->id, $attempt->firstname, $attempt->lastname);
                 break;
         }
 
