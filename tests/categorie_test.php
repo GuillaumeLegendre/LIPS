@@ -2,7 +2,7 @@
 require_once('/var/www/moodle/lib/phpunit/classes/advanced_testcase.php');
 require_once(dirname(__FILE__) . '/../locallib.php');
 
-class mod_myplugin_testcase extends advanced_testcase {
+class mod_categorie_testcase extends advanced_testcase {
 
  	/*
 		Check that insert_category() inserts the specified category in db.
@@ -128,39 +128,4 @@ class mod_myplugin_testcase extends advanced_testcase {
 
  		$this->assertEquals($DB->get_records('lips_category', array()), fetch_all_categories(1));
  	}
-
- 	// public function test() {
- 	// 	$toto = $this->getDataGenerator()->create_user(array('email'=>'toto@example.com', 'username'=>'toto'));
- 	// 	$this->setUser($toto);
-
- 	// 	// user déloggué
- 	// 	// $this->setUser(null);
- 	// }
-
-    // $createCategoryForm = new mod_lips_category_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'category_create')), null, 'post');
-    // $createCategoryForm->handle($this->cm->instance);
-
-    // -- un étudiant n'a pas accès à la création d'une catégorie
-    // -- un enseignant a accès à la création d'une catégorie (cas normal)
-
-    // -- sans nom
-    // -- avec nom déjà utilisé
-    // -- avec nom non utilisé (cas normal)
-
-    // -- sans documentation (cas normal)
-    // -- avec les 2 documentations
-    // -- avec un lien externe (cas normal)
-    // -- avec une documentation textuelle (cas normal)
-
-    /* Check category fields */
-
-    // public function test_get_category_details()
-    // {
-
-    //     $details = get_category_details($this->id);
-    //     $details->category_name;
-    //     $details->category_documentation;
-    //     $details->category_documentation_type;
-
-    // }
 }
