@@ -52,11 +52,12 @@ switch ($action) {
 
             delete_category($categoryid);
 
-            // Insert the notifications
+            // Insert the notifications.
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
             $followers = fetch_followers($userdetails->id);
-            foreach($followers as $follower) {
-                insert_notification($follower->follower, 'notification_category_deleted', time(), $follower->followed, null, null, null, $categorydetails->category_name);
+            foreach ($followers as $follower) {
+                insert_notification($follower->follower, 'notification_category_deleted', time(),
+                    $follower->followed, null, null, null, $categorydetails->category_name);
             }
 
             if ($originaction == null) {
@@ -88,7 +89,7 @@ switch ($action) {
         $tofollow = optional_param('to_follow', 0, PARAM_INT);
         $originuser = optional_param('originUser', null, PARAM_TEXT);
 
-        // Follow the user
+        // Follow the user.
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
         follow($userdetails->id, $tofollow);
 
@@ -103,12 +104,12 @@ switch ($action) {
         $tounfollow = optional_param('to_unfollow', 0, PARAM_INT);
         $originuser = optional_param('originUser', null, PARAM_TEXT);
 
-        // Unfollow the user
+        // Unfollow the user.
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
         unfollow($userdetails->id, $tounfollow);
 
         if ($originuser == null) {
-            if($originaction == null) {
+            if ($originaction == null) {
                 redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
             } else {
                 redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
@@ -122,7 +123,7 @@ switch ($action) {
         if (has_role('administration')) {
             $totest = optional_param('to_test', 0, PARAM_INT);
 
-            // Go to testing mode
+            // Go to testing mode.
             to_testing_mode($totest);
 
             if ($originaction == null) {
@@ -137,7 +138,7 @@ switch ($action) {
         if (has_role('administration')) {
             $tountest = optional_param('to_untest', 0, PARAM_INT);
 
-            // Go to display mode
+            // Go to display mode.
             to_display_mode($tountest);
 
             if ($originaction == null) {

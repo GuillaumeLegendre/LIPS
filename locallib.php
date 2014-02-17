@@ -90,7 +90,8 @@ function get_highest_role() {
 /**
  * Get the tab name corresponding to the view name in parameter.
  *
- * @return array The tab name corresponding to the view name in parameter.
+ * @return array
+ * The tab name corresponding to the view name in parameter.
  */
 function convert_active_tab($view) {
     $tabs = array(

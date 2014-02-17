@@ -619,6 +619,7 @@ class page_admin_problem_modify extends page_view {
         $lips = get_current_instance();
 
         // Create ace
+        $this->lipsoutput->display_ace_form('preconfigEditor', '', $lips->coloration_language, 'readonly');
         $this->lipsoutput->display_ace_form('importsEditor', 'id_problem_imports', $lips->coloration_language, '');
         $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code');
         $this->lipsoutput->display_ace_form('unitTestsEditor', 'id_problem_unit_tests', $lips->coloration_language, 'unit-test');

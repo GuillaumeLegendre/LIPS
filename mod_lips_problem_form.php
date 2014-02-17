@@ -269,6 +269,7 @@ class mod_lips_problem_modify_form extends moodleform {
         global $PAGE;
         $mcustomdata = $this->_customdata;
         $mform =& $this->_form;
+        $lips = get_current_instance();
         $output = $PAGE->get_renderer('mod_lips');
         // Fetch all categories
         $categories = array();
@@ -289,7 +290,9 @@ class mod_lips_problem_modify_form extends moodleform {
         // Preconfig
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_preconfig_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_language_code_msg", "lips"));
-
+        if ($lips->base_code != null) {
+            $mform->addElement('html', '<div id="preconfigEditor" class="ace" style="margin: auto;">' . htmlspecialchars($lips->base_code) . '</div>');
+        }
         // Global Informations
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_informations_subtitle", "lips")));
         $mform->addElement('html', get_string("administration_problem_create_informations_msg", "lips"));
@@ -342,7 +345,6 @@ class mod_lips_problem_modify_form extends moodleform {
         /*--------------------------------------------------
        * Similar problems
        *------------------------------------------------*/
-        $lips = get_current_instance();
         $categorieswithproblems = array();
         foreach (fetch_all_categories_with_problems() as $category) {
             $categorieswithproblems[$category->id] = $category->category_name;
@@ -360,6 +362,7 @@ class mod_lips_problem_modify_form extends moodleform {
             $problems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
         $mform->addElement('html', '</div>');
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_similar_subtitle", "lips")));
+        $mform->addElement('html', $output->display_p(get_string("administration_problem_similar_subtitle_msg", "lips")));
         $mform->addElement('html', '<div id="problem_similar_content">');
         $mform->addElement('html', '</div>');
 

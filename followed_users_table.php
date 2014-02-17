@@ -42,30 +42,32 @@ class followed_users_table extends table_sql {
         parent::__construct("mdl_lips_category");
         $this->cm = $cm;
 
-        if($search == null) {
-            $this->set_sql("mlu.id, firstname, lastname, rank_label", 
-                "mdl_lips_follow mlf, mdl_lips_user mlu, mdl_lips_rank mlr, mdl_user mu", 
-                "mlf.followed = mlu.id 
-                AND mlu.user_rank_id = mlr.id 
+        if ($search == null) {
+            $this->set_sql("mlu.id, firstname, lastname, rank_label",
+                "mdl_lips_follow mlf, mdl_lips_user mlu, mdl_lips_rank mlr, mdl_user mu",
+                "mlf.followed = mlu.id
+                AND mlu.user_rank_id = mlr.id
                 AND mu.id = mlu.id_user_moodle
                 AND mlf.follower = " . $iduser);
         } else {
-            $this->set_sql("mlu.id, firstname, lastname, rank_label", 
-                "mdl_lips_follow mlf, mdl_lips_user mlu, mdl_lips_rank mlr, mdl_user mu", 
-                "mlf.followed = mlu.id 
-                AND mlu.user_rank_id = mlr.id 
+            $this->set_sql("mlu.id, firstname, lastname, rank_label",
+                "mdl_lips_follow mlf, mdl_lips_user mlu, mdl_lips_rank mlr, mdl_user mu",
+                "mlf.followed = mlu.id
+                AND mlu.user_rank_id = mlr.id
                 AND mu.id = mlu.id_user_moodle
                 AND mlf.follower = " . $iduser . "
                 AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
-        } 
+        }
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_follow WHERE follower = " . $iduser);
 
-        if($owner) {
-            $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'profile', 'action' => 'followed_users')));
+        if ($owner) {
+            $this->define_baseurl(new moodle_url('view.php',
+                array('id' => $cm->id, 'view' => 'profile', 'action' => 'followed_users')));
             $this->define_headers(array(get_string('user', 'lips'), get_string('grade', 'lips'), ''));
             $this->define_columns(array("user_infos", "rank_label", "user_follow"));
         } else {
-            $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'profile', 'action' => 'followed_users', 'id_user' => $iduser)));
+            $this->define_baseurl(new moodle_url('view.php',
+                array('id' => $cm->id, 'view' => 'profile', 'action' => 'followed_users', 'id_user' => $iduser)));
             $this->define_headers(array(get_string('user', 'lips'), get_string('grade', 'lips')));
             $this->define_columns(array("user_infos", "rank_label"));
         }
@@ -76,26 +78,27 @@ class followed_users_table extends table_sql {
     public function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE;
 
-        switch($colname) {
+        switch ($colname) {
             case 'user_infos':
                 $url = new action_link(new moodle_url('view.php', array(
-                    'id' => $this->cm->id,
-                    'view' => 'profile',
-                    'id_user' => $attempt->id)),
-                ucfirst($attempt->firstname) . ' ' . strtoupper($attempt->lastname));
+                        'id' => $this->cm->id,
+                        'view' => 'profile',
+                        'id_user' => $attempt->id)),
+                    ucfirst($attempt->firstname) . ' ' . strtoupper($attempt->lastname));
 
-                return '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $attempt->id)) . '"/>' . $OUTPUT->render($url) . '</div>';
+                return '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $attempt->id)) . '"/>'
+                . $OUTPUT->render($url) . '</div>';
                 break;
 
             case 'user_follow':
                 $url = new action_link(new moodle_url('action.php', array(
-                    'id' => $this->cm->id,
-                    'action' => 'unfollow',
-                    'originV' => 'profile',
-                    'originAction' => 'followed_users',
-                    'to_unfollow' => $attempt->id
-                )),
-                get_string('unfollow', 'lips'), null, array("class" => "lips-button"));
+                        'id' => $this->cm->id,
+                        'action' => 'unfollow',
+                        'originV' => 'profile',
+                        'originAction' => 'followed_users',
+                        'to_unfollow' => $attempt->id
+                    )),
+                    get_string('unfollow', 'lips'), null, array("class" => "lips-button"));
 
                 return $OUTPUT->render($url);
                 break;

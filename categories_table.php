@@ -34,8 +34,8 @@ class categories_table extends table_sql {
         parent::__construct("mdl_lips_category");
         $this->cm = $cm;
 
-        $this->set_sql("mlc.id, category_name, category_documentation, COUNT(mlp.id) AS category_problems", 
-            "mdl_lips_category mlc LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id 
+        $this->set_sql("mlc.id, category_name, category_documentation, COUNT(mlp.id) AS category_problems",
+            "mdl_lips_category mlc LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id
             AND (problem_testing = 0 OR problem_testing = 1 AND problem_creator_id = " . $USER->id . ")",
             "mlc.id_language = " . get_current_instance()->id . "
             GROUP BY mlc.id HAVING COUNT(mlc.id) > 0");
