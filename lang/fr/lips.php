@@ -213,6 +213,7 @@ $string['administration_category_documentation_link'] = 'Documentation (Lien)';
 $string['administration_category_documentation_text'] = 'Documentation (Texte)';
 $string['administration_category_documentation_error'] = 'Vous ne pouvez pas avoir les deux types de documentation, choisissez soit un lien vers une documentation externe soit une documentation textuelle.';
 $string['administration_delete_category_confirmation'] = "Confirmez-vous la suppression de la catégorie ?";
+$string['administration_empty_categories'] = "Aucune catégorie";
 
 // Problem
 $string['administration_problem_create_title'] = 'Créer un probleme';
@@ -244,6 +245,10 @@ $string['administration_problem_export_warning_msg'] = "Les fichiers d'export se
 $string['administration_language_form_code_error'] = 'Vous devez renseigner du code à completer';
 $string['administration_unittests_form_code_error'] = 'You devez renseigner les tests unitaires';
 $string['administration_problem_already_exists'] = 'Ce nom de problème est déjà utilisé, merci d\'en choisir un autre';
+$string['administration_problem_delete_title'] = 'Supprimer un problème';
+$string['administration_delete_problems_confirmation'] = 'Confirmez vous la suppression des problèmes suivants ?';
+$string['administration_delete_problem_confirmation'] = 'Confirmez vous la suppression du problème suivant ?';
+$string['administration_empty_problems'] = 'Aucun problème';
 
 // My problems
 $string['administration_my_problems_title'] = "Mes problèmes";

@@ -105,7 +105,8 @@ function convert_active_tab($view) {
         "deleteCategory" => "problems",
         "problem" => "problems",
         "deleteProblem" => "problems",
-        "solutions" => "problems"
+        "solutions" => "problems",
+        "deleteProblems" => "problems"
     );
 
     return $tabs[$view];
@@ -826,3 +827,27 @@ function problem_exists($problemname) {
     }
     return false;
 }
+
+/**
+ * Delete problems with the specified name.
+ *
+ * @param int $name name of the problem.
+ */
+function delete_problem_by_name($iduser, $name) {
+    global $DB;
+    $DB->delete_records("lips_problem", array('problem_label' => $name, 'problem_creator_id' => $iduser));
+}
+
+/**
+ * Fetch all problems of a user of the specified category.
+ *
+ * @param int $userid Id of the user
+ * @param int $categoryid Id of the category
+ * @return array The problems of the category
+ */
+function fetch_problems_user_by_category($userid, $categoryid) {
+    global $DB;
+    return $DB->get_records('lips_problem', array('problem_category_id' => $categoryid, 'problem_creator_id' => $userid));
+}
+
+

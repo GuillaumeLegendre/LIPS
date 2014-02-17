@@ -84,7 +84,15 @@ switch ($action) {
             }
         }
         break;
-
+    case "deleteProblems":
+        if (has_role('administration')) {
+            $serializedproblems = optional_param("categories", null, PARAM_TEXT);
+            foreach (unserialize($serializedproblems) as $problem) {
+                delete_problem_by_name($USER->id, $problem);
+            }
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'problem_category_select_delete')));
+        }
+        break;
     case 'follow':
         $tofollow = optional_param('to_follow', 0, PARAM_INT);
         $originuser = optional_param('originUser', null, PARAM_TEXT);

@@ -170,7 +170,7 @@ class page_index extends page_view {
         // Notifications
         $notificationsdetails = fetch_notifications_details('notification_user_id = ' . $userdetails->id);
         echo $this->lipsoutput->display_h1(get_string('notifications', 'lips'));
-        if(count($notificationsdetails) > 0) {
+        if (count($notificationsdetails) > 0) {
             echo $this->lipsoutput->display_notifications($notificationsdetails);
         } else {
             echo $this->lipsoutput->display_p(get_string('no_notifications', 'lips'));
@@ -668,6 +668,52 @@ class page_admin_problem_select_modify extends page_view {
 }
 
 /**
+ * Page to select the category of the problems to delete
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickael OHLEN
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_problem_category_select_delete extends page_view {
+
+    /**
+     * page_admin_problem_select_modify constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_problem_select_modify content
+     */
+    function display_content() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Modify a problem
+        echo $this->lipsoutput->display_h2(get_string('administration_problem_delete_title', 'lips'));
+
+        $modifySelectCategoryForm = new mod_lips_category_select_problems_delete_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problems_delete')), null, 'get');
+
+        if ($modifySelectCategoryForm->is_submitted()) {
+            $modifySelectCategoryForm->handle();
+            $modifySelectCategoryForm->display();
+        } else {
+            $modifySelectCategoryForm->display();
+        }
+    }
+}
+
+/**
  * Problem delete page
  *
  * @package    mod_lips
@@ -677,13 +723,16 @@ class page_admin_problem_select_modify extends page_view {
  */
 class page_admin_problem_delete extends page_view {
 
+    private $idcategory;
+
     /**
      * page_admin_problem_delete constructor
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    function  __construct($cm, $idcategory) {
         parent::__construct($cm, "administration");
+        $this->idcategory = $idcategory;
     }
 
     /**
@@ -702,7 +751,16 @@ class page_admin_problem_delete extends page_view {
         // Delete a problem
         echo $this->lipsoutput->display_h2(get_string('administration_problem_delete_title', 'lips'));
 
-        $deleteProblemForm = new mod_lips_problem_delete_form(new moodle_url('view.php', array('id' => $this->cm->id, 'originV' => 'administration', 'originAction' => 'problem_delete', 'view' => 'deleteProblem')), null, 'post');
+        $deleteProblemForm = new mod_lips_problems_delete_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problems_delete', 'idcategory' => $this->idcategory)), array('idcategory' => $this->idcategory), 'post');
+        if ($deleteProblemForm->is_submitted()) {
+            $categories = array();
+            foreach ($deleteProblemForm->get_data() as $problem => $state) {
+                if ($state == 1) {
+                    $categories[] = $problem;
+                }
+            }
+            redirect(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'deleteProblems', 'categories' => serialize($categories))));
+        }
         $deleteProblemForm->display();
     }
 }
@@ -880,7 +938,7 @@ class page_profile extends page_view {
         global $USER;
 
         $iduser = optional_param('id_user', null, PARAM_TEXT);
-        if($iduser == null) {
+        if ($iduser == null) {
             $iduser = get_user_details(array('id_user_moodle' => $USER->id))->id;
         }
 
@@ -1020,7 +1078,7 @@ class page_profile_followed_users extends page_view {
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
 
         // Search form
-        if($iduser == null) {
+        if ($iduser == null) {
             $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'followed_users')), null, 'post', '', array('class' => 'search-form'));
         } else {
             $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'followed_users', 'id_user' => $iduser)), null, 'post', '', array('class' => 'search-form'));
@@ -1037,9 +1095,9 @@ class page_profile_followed_users extends page_view {
         }
 
         // Followed users table
-        if($iduser == null || $iduser == $userdetails->id) {
+        if ($iduser == null || $iduser == $userdetails->id) {
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-            
+
             $table = new followed_users_table($this->cm, $userdetails->id, true);
         } else {
             $table = new followed_users_table($this->cm, $iduser, false);
@@ -1098,7 +1156,7 @@ class page_category extends page_view {
             }
         }
 
-        if(has_role('administration')) {
+        if (has_role('administration')) {
             echo '<p><span style="color: red;">*</span> : ' . get_string('problem_owner', 'lips') . '.</p>';
             echo '<img src="images/' . get_string('picture_testing', 'lips') . '" width="16px" height="16px"/> : ' . get_string('problem_testing_picture', 'lips') . '.';
         }
@@ -1177,6 +1235,45 @@ class page_delete_category extends page_view {
         echo $this->lipsoutput->confirm($message, $continueurl, $cancelurl);
     }
 }
+
+/**
+ * Display a message of confirmation for the deletion of problems.
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickaël Ohlen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_delete_problems extends page_view {
+
+    function  __construct($cm) {
+        parent::__construct($cm, "deleteProblems");
+    }
+
+    /**
+     * Display the message of confirmation.
+     */
+    function display_content() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
+        $message="";
+        $serializedcategories = optional_param("categories", null, PARAM_TEXT);
+        $count = 0;
+        foreach (unserialize($serializedcategories) as $category) {
+            $count++;
+            $message .= $this->lipsoutput->display_p($category);
+        }
+        if ($count > 1) {
+            $title = $this->lipsoutput->display_h2(get_string('administration_delete_problems_confirmation', 'lips'));
+        } else {
+            $title = $this->lipsoutput->display_h2(get_string('administration_delete_problem_confirmation_msg', 'lips'));
+        }
+        $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'categories' => $serializedcategories, 'action' => 'deleteProblems'));
+        $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_category_select_delete'));
+        echo $this->lipsoutput->confirm($title.$message, $continueurl, $cancelurl);
+    }
+}
+
 
 /**
  * Display a message of confirmation for the deletion of a problem.
@@ -1300,11 +1397,11 @@ class page_problem extends page_view {
         $details = get_problem_details($this->id);
 
         // Redirect if not allowed to see this problem
-        if($details[$this->id]->problem_testing == 1 && $USER->id != $details[$this->id]->problem_creator_id) {
+        if ($details[$this->id]->problem_testing == 1 && $USER->id != $details[$this->id]->problem_creator_id) {
             redirect(new moodle_url('view.php', array('id' => $this->cm->id)));
         }
 
-        if($details[$this->id]->problem_testing == 1) {
+        if ($details[$this->id]->problem_testing == 1) {
             echo $this->lipsoutput->display_notification(get_string('problem_testing_info', 'lips'), 'INFO');
         }
 

@@ -130,7 +130,7 @@ class mod_lips_category_create_form extends moodleform {
         // Insert the notifications
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
         $followers = fetch_followers($userdetails->id);
-        foreach($followers as $follower) {
+        foreach ($followers as $follower) {
             insert_notification($follower->follower, 'notification_category_created', time(), $follower->followed, null, null, get_category_details_array(array('category_name' => $data->inputCategoryName))->id);
         }
 
@@ -161,12 +161,15 @@ class mod_lips_category_modify_select_form extends moodleform {
         foreach (fetch_all_categories($lips->id) as $category) {
             $categories[$category->id] = $category->category_name;
         }
+        if (count($categories) != 0) {
+            $mform->addElement('select', 'selectCategory', get_string('administration_category_modify_select', 'lips'), $categories);
+            $mform->addRule('selectCategory', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
-        $mform->addElement('select', 'selectCategory', get_string('administration_category_modify_select', 'lips'), $categories);
-        $mform->addRule('selectCategory', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
-
-        // Modify button.
-        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+            // Modify button.
+            $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+        } else {
+            echo get_string("administration_empty_problems", "lips");
+        }
     }
 }
 
@@ -223,7 +226,7 @@ class mod_lips_category_modify_form extends moodleform {
 
         // Category documentation (TEXT)
         $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
-        if($mcustomdata['category_documentation_type'] == 'TEXT') {
+        if ($mcustomdata['category_documentation_type'] == 'TEXT') {
             $mform->setDefault('areaCategoryDocumentation', array('text' => $mcustomdata['category_documentation'], 'format' => FORMAT_HTML));
         }
 
@@ -242,14 +245,14 @@ class mod_lips_category_modify_form extends moodleform {
         $errors = parent::validation($data, $files);
         $errors = array();
 
-        if(isset($data->inputCategoryName) && isset($data->inputCategoryDocumentation) && isset($data->areaCategoryDocumentation)) {
-            if(!empty($data->inputCategoryName)) {
+        if (isset($data->inputCategoryName) && isset($data->inputCategoryDocumentation) && isset($data->areaCategoryDocumentation)) {
+            if (!empty($data->inputCategoryName)) {
                 $lips = get_current_instance();
-                if($data->inputCategoryCurrentName != $data->inputCategoryName && category_exists(array('id_language' => $lips->id, 'category_name' => $data->inputCategoryName))) {
+                if ($data->inputCategoryCurrentName != $data->inputCategoryName && category_exists(array('id_language' => $lips->id, 'category_name' => $data->inputCategoryName))) {
                     $errors['alreadyExists'] = get_string('administration_category_already_exists', 'lips');
                 }
 
-                if(!empty($data->inputCategoryDocumentation) && $data->areaCategoryDocumentation['text'] != "") {
+                if (!empty($data->inputCategoryDocumentation) && $data->areaCategoryDocumentation['text'] != "") {
                     $errors['bothLinkAndText'] = get_string('administration_category_documentation_error', 'lips');
                 }
             } else {
@@ -301,7 +304,7 @@ class mod_lips_category_modify_form extends moodleform {
         // Insert the notifications
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
         $followers = fetch_followers($userdetails->id);
-        foreach($followers as $follower) {
+        foreach ($followers as $follower) {
             insert_notification($follower->follower, 'notification_category_modified', time(), $follower->followed, null, null, $categoryid);
         }
 
@@ -343,5 +346,35 @@ class mod_lips_category_delete_form extends moodleform {
 
         // Delete button.
         $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
+    }
+}
+
+/**
+ * Form to select the category of the problems to delete.
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickael OHLEN
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class mod_lips_category_select_problems_delete_form extends moodleform {
+
+    /**
+     * Form definition.
+     */
+    public function definition() {
+        $mform =& $this->_form;
+
+        // Select the category.
+        $lips = get_current_instance();
+        $categories = array();
+        foreach (fetch_all_categories($lips->id) as $category) {
+            $categories[$category->id] = $category->category_name;
+        }
+        $mform->addElement('select', 'idcategory', get_string('administration_category_modify_select', 'lips'), $categories);
+        $mform->addRule('idcategory', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+
+        // Modify button.
+        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
     }
 }

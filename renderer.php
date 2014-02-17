@@ -143,7 +143,7 @@ class mod_lips_renderer extends plugin_renderer_base {
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_create">' . get_string('create', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_select_modify">' . get_string('modify', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_delete">' . get_string('delete', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_category_select_delete">' . get_string('delete', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problems_import">' . get_string('import', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problems_export">' . get_string('export', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=my_problems">' . get_string('administration_my_problems_title', 'lips') . '</a></li>

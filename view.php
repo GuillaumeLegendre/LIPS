@@ -97,12 +97,16 @@ switch ($view) {
                 case "problem_select_modify":
                     $viewpage = new page_admin_problem_select_modify($cm);
                     break;
+                case "problem_category_select_delete":
+                    $viewpage = new page_admin_problem_category_select_delete($cm);
+                    break;
                 case "problem_modify":
                     $problemid = optional_param('problemId', null, PARAM_INT);
                     $viewpage = new page_admin_problem_modify($cm, $problemid);
                     break;
-                case "problem_delete":
-                    $viewpage = new page_admin_problem_delete($cm);
+                case "problems_delete":
+                    $categoryid = optional_param('idcategory', null, PARAM_INT);
+                    $viewpage = new page_admin_problem_delete($cm, $categoryid);
                     break;
                 case "problems_import" :
                     $viewpage = new page_import_problems($cm);
@@ -170,6 +174,9 @@ switch ($view) {
         $originaction = optional_param('originAction', 0, PARAM_TEXT);
         $categoryid = optional_param('categoryId', 0, PARAM_TEXT);
         $viewpage = new page_delete_problem($cm, $idcategory, $originv, $originaction, $categoryid);
+        break;
+    case "deleteProblems" :
+        $viewpage = new page_delete_problems($cm);
         break;
     case "solutions" :
         $idproblem = optional_param('problemId', 0, PARAM_INT);

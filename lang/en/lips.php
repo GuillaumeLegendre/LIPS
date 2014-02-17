@@ -245,6 +245,8 @@ $string['administration_category_documentation_link'] = 'Documentation (Link)';
 $string['administration_category_documentation_text'] = 'Documentation (Text)';
 $string['administration_category_documentation_error'] = 'You can\'t have both documentations, please choose either a link to an external documentation or a textual documentation.';
 $string['administration_delete_category_confirmation'] = "Confirm the deletion of the category";
+$string['administration_empty_categories'] = "No category";
+
 
 // Problem
 $string['administration_problem_create_title'] = 'Create a problem';
@@ -287,6 +289,9 @@ $string['administration_problem_export_warning_msg'] = "The exported files will 
 $string['administration_language_form_code_error'] = 'You must enter the code';
 $string['administration_unittests_form_code_error'] = 'You must enter the unit tests';
 $string['administration_problem_already_exists'] = 'This problem name already exists, please choose an other';
+$string['administration_delete_problems_confirmation'] = 'Confirm the deletion of these problems ?';
+$string['administration_delete_problem_confirmation_msg'] = 'Confirm the deletion of this problem ?';
+$string['administration_empty_problems'] = 'No problems';
 
 // My problems
 $string['administration_my_problems_title'] = "My problems";

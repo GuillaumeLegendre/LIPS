@@ -109,7 +109,7 @@ class mod_lips_problem_create_form extends moodleform {
         *------------------------------------------------*/
         $categorieswithproblems = array();
         foreach (fetch_all_categories_with_problems() as $category) {
-            $categorieswithproblems[$category->id] = $category->category_name;
+            $categorieswithproblems[$category->problem_category_id] = $category->category_name;
         }
 
         $problems = array();
@@ -234,21 +234,26 @@ class mod_lips_problem_create_form extends moodleform {
  * @author     Mickael OHLEN
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_lips_problem_delete_form extends moodleform {
+class mod_lips_problems_delete_form extends moodleform {
 
     /**
      * Form definition
      */
     public function definition() {
         global $PAGE, $USER;
+        $mcustomdata = $this->_customdata;
         $mform =& $this->_form;
-        $problems = "";
-        foreach (fetch_problems($USER->id) as $problem) {
-            $problems[$problem->id] = $problem->problem_label;
+        $hasproblems = false;
+        foreach (fetch_problems_user_by_category($USER->id, $mcustomdata['idcategory']) as $problem) {
+            $hasproblems = true;
+            $mform->addElement('advcheckbox', $problem->problem_label, null, $problem->problem_label, array('group' => 1), array(0, 1));
         }
-        $mform->addElement('select', 'problemId', get_string('administration_problem_modify_select', 'lips'), $problems);
+        if ($hasproblems) {
+            $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
+        } else {
+            echo get_string("administration_empty_problems", "lips");
+        }
         // Delete button.
-        $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
     }
 }
 
@@ -347,7 +352,7 @@ class mod_lips_problem_modify_form extends moodleform {
        *------------------------------------------------*/
         $categorieswithproblems = array();
         foreach (fetch_all_categories_with_problems() as $category) {
-            $categorieswithproblems[$category->id] = $category->category_name;
+            $categorieswithproblems[$category->problem_category_id] = $category->category_name;
         }
         $problems = array();
         foreach (fetch_problems_by_category(key($categorieswithproblems)) as $problem) {
@@ -488,11 +493,16 @@ class mod_lips_problem_modify_select_form extends moodleform {
         foreach (fetch_problems($USER->id) as $problem) {
             $problems[$problem->id] = $problem->problem_label;
         }
-        $mform->addElement('select', 'problemId', get_string('administration_problem_modify_select', 'lips'), $problems);
-        $mform->addRule('problemId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+        if (count($problems) != 0) {
+            $mform->addElement('select', 'problemId', get_string('administration_problem_modify_select', 'lips'), $problems);
+            $mform->addRule('problemId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
-        // Modify button.
-        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+            // Modify button.
+            $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+        } else {
+            echo get_string("administration_empty_problems", "lips");
+        }
+
     }
 }
 
