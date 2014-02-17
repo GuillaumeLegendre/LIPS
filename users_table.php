@@ -63,16 +63,11 @@ class users_table extends table_sql {
      */
     public function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE, $USER;
+        $lipsoutput = $PAGE->get_renderer('mod_lips');
 
         switch($colname) {
             case 'user_name':
-                $url = new action_link(new moodle_url('view.php', array(
-                    'id' => $this->cm->id,
-                    'view' => 'profile',
-                    'id_user' => $attempt->id)),
-                ucfirst($attempt->firstname) . ' ' . strtoupper($attempt->lastname));
-
-                return '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $attempt->id)) . '"/>' . $OUTPUT->render($url) . '</div>';
+                return '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $attempt->id)) . '"/>' . $lipsoutput->display_user_link($attempt->id, $attempt->firstname, $attempt->lastname) . '</div>';
                 break;
 
             case 'user_status':

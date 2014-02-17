@@ -207,6 +207,7 @@ class mod_lips_problem_create_form extends moodleform {
         }
 
         $problemssimilarid = array_unique(explode(" ", $data->problems_similar));
+
         // Insert the problem
         $data->problem_date = time();
         $data->problem_creator_id = $USER->id;
@@ -221,6 +222,15 @@ class mod_lips_problem_create_form extends moodleform {
                 insert_problem_similar($problemid, $problemsimilar);
             }
         }
+
+        // Insert notifications
+        $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+        insert_notification($userdetails->id, 'notification_problem_created', time(), $userdetails->id, null, get_problem_details_array(array('problem_label' => $data->problem_label))->id);
+        $followers = fetch_followers($userdetails->id);
+        foreach($followers as $follower) {
+            insert_notification($follower->follower, 'notification_problem_created', time(), $userdetails->id, null, get_problem_details_array(array('problem_label' => $data->problem_label))->id);
+        }
+
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_create_success', 'lips'), 'SUCCESS');
     }
@@ -253,7 +263,6 @@ class mod_lips_problems_delete_form extends moodleform {
         } else {
             echo get_string("administration_empty_problems", "lips");
         }
-        // Delete button.
     }
 }
 
@@ -434,12 +443,15 @@ class mod_lips_problem_modify_form extends moodleform {
      */
     public function handle($instance) {
         global $USER, $PAGE;
+
         // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled()) {
             return;
         }
+
         // Form data.
         $data = $this->get_submitted_data();
+
         // The validation failed.
         $data->id = $data->id_problem;
         $errors = $this->validation($data, null);
@@ -449,10 +461,13 @@ class mod_lips_problem_modify_form extends moodleform {
             }
             return;
         }
+
         $data->problem_date = time();
         $data->problem_creator_id = $USER->id;
         $data->problem_statement = $data->problem_statement['text'];
         $data->problem_tips = $data->problem_tips['text'];
+
+        // Update
         update_problem($data);
         delete_problems_similar($data->id);
         $problemssimilarid = array_unique(explode(" ", $data->problems_similar));
@@ -464,6 +479,13 @@ class mod_lips_problem_modify_form extends moodleform {
             }
         }
 
+        // Insert notifications
+        $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+        insert_notification($userdetails->id, 'notification_problem_modified', time(), $userdetails->id, null, $data->id);
+        $followers = fetch_followers($userdetails->id);
+        foreach($followers as $follower) {
+            insert_notification($follower->follower, 'notification_problem_modified', time(), $userdetails->id, null, $data->id);
+        }
 
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_modify_success', 'lips'), 'SUCCESS');

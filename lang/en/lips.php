@@ -77,6 +77,7 @@ $string['difficulty_label_difficult'] = 'difficult';
 
 // Text
 $string['notification_follow'] = '{img} {date} - {notification_from} is following {notification_to}';
+$string['notification_followed'] = '{img} {date} - {notification_from} has added you to his following list';
 $string['notification_challenge'] = '{img} {date} - {notification_from} a défié {notification_to} sur le problème {notification_problem}';
 $string['notification_challenge_accepted'] = '{img} {date} - {notification_from} a accepté de relever le défi sur le problème {notification_problem}';
 $string['notification_challenge_refused'] = '{img} {date} - {notification_from} a refusé de relever le défi sur le problème {notification_problem}';
@@ -90,6 +91,7 @@ $string['notification_category_deleted'] = '{img} {date} - {notification_from} a
 
 // Picture
 $string['notification_follow_picture'] = 'follow.png';
+$string['notification_followed_picture'] = 'follow.png';
 $string['notification_challenge_picture'] = 'challenge.png';
 $string['notification_challenge_accepted_picture'] = 'challenge-accepted.png';
 $string['notification_challenge_refused_picture'] = 'challenge-refused.png';
@@ -100,6 +102,12 @@ $string['notification_problem_deleted_picture'] = 'delete.png';
 $string['notification_category_created_picture'] = 'add.png';
 $string['notification_category_modified_picture'] = 'edit.png';
 $string['notification_category_deleted_picture'] = 'delete.png';
+
+/*--------------------------------------------------
+ * Challenges
+ *------------------------------------------------*/
+$string['challenge_notification'] = '{date} - {challenge_from} has challenged you on the problem {challenge_problem}';
+$string['challenge_current'] = '{challenge_problem} challenged by {challenge_from}';
 
 /*--------------------------------------------------
  * Constants
@@ -130,6 +138,11 @@ $string['ranks'] = 'Ranks';
 $string['status'] = 'Status';
 $string['solved_problems'] = 'Solved problems';
 $string['challenges'] = 'Challenges';
+$string['challenge'] = 'Challenge';
+$string['challenged'] = 'Challenged';
+$string['challenged_users'] = 'Challenged users';
+$string['no_challenges'] = 'No challenges';
+$string['current_challenges'] = 'Current challenges';
 $string['followed_users'] = 'Followed users';
 $string['attempts'] = "attempts";
 $string['The'] = "The";
@@ -140,12 +153,15 @@ $string['send_response'] = "Send reponses";
 $string['similar_problems'] = 'Similar problems';
 $string['test_problem'] = 'Test the problem';
 $string['untesting'] = 'Submit';
-$string['testing'] = 'Test';
+$string['testing'] = 'Test mode';
 $string['recent_activity'] = 'Recent activity';
 $string['achievements'] = 'Achievements';
-$string['at'] = 'at';
+$string['at'] = '\a\t';
 $string['notifications'] = 'Notifications';
 $string['no_notifications'] = 'No notifications';
+$string['refuse'] = 'Refuse';
+$string['solve'] = 'Solve';
+$string['accept'] = 'Accept';
 
 /*--------------------------------------------------
  * Dates
@@ -313,3 +329,4 @@ $string['problem_resolved_by'] = 'Solved by';
 $string['problem_owner'] = 'You create this problem';
 $string['problem_testing_picture'] = 'Problem in testing mode';
 $string['problem_testing_info'] = 'This problem is in <strong>Testing</strong> mode. You can go to <strong>Display</strong> mode by going in <strong>Administration > Problems > My problems</strong>.';
+$string['problem_challenge_success'] = 'The selected users has been challenged';

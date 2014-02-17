@@ -60,6 +60,7 @@ $string['difficulty_label_difficult'] = 'Difficile';
  * Notifications
  *------------------------------------------------*/
 $string['notification_follow'] = '{img} {date} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
+$string['notification_followed'] = '{img} {date} - L\'utilisateur {notification_from} vous a ajouté à sa liste de suivi';
 $string['notification_challenge'] = '{img} {date} - {notification_from} a défié {notification_to} sur le problème {notification_problem}';
 $string['notification_challenge_accepted'] = '{img} {date} - {notification_from} a accepté de relever le défi sur le problème {notification_problem}';
 $string['notification_challenge_refused'] = '{img} {date} - {notification_from} a refusé de relever le défi sur le problème {notification_problem}';
@@ -70,6 +71,12 @@ $string['notification_problem_deleted'] = '{img} {date} - {notification_from} a 
 $string['notification_category_created'] = '{img} {date} - {notification_from} a créé la catégorie {notification_category}';
 $string['notification_category_modified'] = '{img} {date} - {notification_from} a modifié la catégorie {notification_category}';
 $string['notification_category_deleted'] = '{img} {date} - {notification_from} a supprimé la catégorie {notification_text}';
+
+/*--------------------------------------------------
+ * Challenges
+ *------------------------------------------------*/
+$string['challenge_notification'] = '{date} - {challenge_from} vous a défié sur le problème {challenge_problem}';
+$string['challenge_current'] = '{challenge_problem} lancé par {challenge_from}';
 
 /*--------------------------------------------------
  * Constants
@@ -99,6 +106,11 @@ $string['status'] = 'Statut';
 $string['ranks'] = 'Classements';
 $string['solved_problems'] = 'Problèmes résolus';
 $string['challenges'] = 'Défis reçus';
+$string['challenge'] = 'Défier';
+$string['challenged'] = 'Défiés';
+$string['challenged_users'] = 'Utilisateurs défiés';
+$string['no_challenges'] = 'Aucun défis';
+$string['current_challenges'] = 'Défis en cours';
 $string['followed_users'] = 'Utilisateurs suivis';
 $string['attempts'] = "tentatives";
 $string['The'] = "Le";
@@ -109,12 +121,15 @@ $string['send_response'] = "Envoyer la réponse";
 $string['similar_problems'] = 'Essayez aussi';
 $string['test_problem'] = 'Tester le problème';
 $string['untesting'] = 'Soumettre';
-$string['testing'] = 'Tester';
+$string['testing'] = 'Mode test';
 $string['recent_activity'] = 'Activité récente';
 $string['achievements'] = 'Badges';
 $string['at'] = 'à';
 $string['notifications'] = 'Notifications';
 $string['no_notifications'] = 'Aucune notifications';
+$string['refuse'] = 'Refuser';
+$string['solve'] = 'Résoudre';
+$string['accept'] = 'Accepter';
 
 /*--------------------------------------------------
  * Dates
@@ -268,3 +283,4 @@ $string['problem_resolved_by'] = 'Résolu par';
 $string['problem_owner'] = 'Problème que vous avez créé';
 $string['problem_testing_picture'] = 'Problème en mode de test';
 $string['problem_testing_info'] = 'Ce problème est en mode <strong>Test</strong>. Vous pouvez le passer en mode <strong>Affichage</strong> dans <strong>Administration > Problèmes > Mes problèmes</strong>.';
+$string['problem_challenge_success'] = 'Les utilisateurs sélectionnés ont été défiés';

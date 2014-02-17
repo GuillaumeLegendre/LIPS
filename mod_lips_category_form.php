@@ -133,7 +133,6 @@ class mod_lips_category_create_form extends moodleform {
         foreach ($followers as $follower) {
             insert_notification($follower->follower, 'notification_category_created', time(), $follower->followed, null, null, get_category_details_array(array('category_name' => $data->inputCategoryName))->id);
         }
-
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_create_success', 'lips'), 'SUCCESS');
     }
@@ -274,15 +273,15 @@ class mod_lips_category_modify_form extends moodleform {
     public function handle() {
         global $PAGE, $USER;
 
-        // Do nothing if not submitted or cancelled.
+        // Do nothing if not submitted or cancelled
         if (!$this->is_submitted() || $this->is_cancelled()) {
             return;
         }
 
-        // Form data.
+        // Form data
         $data = $this->get_submitted_data();
 
-        // The validation failed.
+        // The validation failed
         $errors = $this->validation($data, null);
         if (count($errors) > 0) {
             foreach ($errors as $error) {
@@ -298,9 +297,8 @@ class mod_lips_category_modify_form extends moodleform {
         $categorydocumentation = (empty($data->inputCategoryDocumentation)) ? $data->areaCategoryDocumentation['text'] : $data->inputCategoryDocumentation;
         $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ? ((!empty($data->areaCategoryDocumentation['text'])) ? 'TEXT' : null) : 'LINK';
 
-        // Update the data.
+        // Update the data
         update_category($categoryid, $categoryname, $categorydocumentation, $categorydocumentationtype);
-
         // Insert the notifications
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
         $followers = fetch_followers($userdetails->id);
@@ -341,8 +339,7 @@ class mod_lips_category_delete_form extends moodleform {
         $error = get_string("administration_category_delete_info", "lips");
         echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'WARNING');
         $mform->addElement('select', 'categoryId', get_string('administration_category_modify_select', 'lips'), $categories);
-        $mform->addRule('categoryId',
-            get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+        $mform->addRule('categoryId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
         // Delete button.
         $mform->addElement('submit', 'submit', get_string('delete', 'lips'));

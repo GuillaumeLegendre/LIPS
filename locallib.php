@@ -261,6 +261,7 @@ function delete_picture_file($picture) {
  */
 function fetch_all_categories($idlanguage) {
     global $DB;
+
     return $DB->get_records('lips_category', array('id_language' => $idlanguage));
 }
 
@@ -314,7 +315,6 @@ function get_category_details_array(array $conditions = array()) {
     return $DB->get_record('lips_category', $conditions, '*', MUST_EXIST);
 }
 
-
 /**
  * Get details of a specific category.
  *
@@ -333,6 +333,17 @@ function get_problem_details($id) {
 }
 
 /**
+ * Get details of a specific problem.
+ *
+ * @return object An array containing the details of a problem.
+ */
+function get_problem_details_array(array $conditions = array()) {
+    global $DB;
+
+    return $DB->get_record('lips_problem', $conditions, '*', MUST_EXIST);
+}
+
+/**
  * Get the similar problems of a problem
  *
  * @param int $mainproblemid Main problem ID
@@ -344,18 +355,6 @@ function get_similar_problems($mainproblemid) {
 }
 
 /**
- * Remove from the Database the category with the id in parameter.
- *
- * @param int $id Id the of the category to delete
- */
-function delete_category($id) {
-    global $DB;
-
-    $DB->delete_records("lips_category", array("id" => $id));
-    $DB->delete_records("lips_notification", array("notification_category" => $id));
-}
-
-/**
  * Remove from the Database the problem with the id in parameter.
  *
  * @param int $id Id the of the category to delete
@@ -364,6 +363,7 @@ function delete_problem($id) {
     global $DB;
 
     $DB->delete_records("lips_problem", array("id" => $id));
+    $DB->delete_records("lips_notification", array("notification_problem" => $id));
 }
 
 /**
@@ -421,13 +421,23 @@ function is_removable($id, $idlanguage) {
  * @param string $categorydocumentationtype Category documentation type (LINK or TEXT)
  */
 function insert_category($idlanguage, $categoryname, $categorydocumentation, $categorydocumentationtype) {
-    global $DB;
+    global $DB, $USER;
 
+    // Category
     $DB->insert_record('lips_category', array(
         'id_language' => $idlanguage,
         'category_name' => $categoryname,
         'category_documentation' => $categorydocumentation,
-        'category_documentation_type' => $categorydocumentationtype));
+        'category_documentation_type' => $categorydocumentationtype
+    ));
+
+    // Notifications
+    $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+    insert_notification($userdetails->id, 'notification_category_created', time(), $userdetails->id, null, null, get_category_details_array(array('category_name' => $categoryname))->id);
+    $followers = fetch_followers($userdetails->id);
+    foreach ($followers as $follower) {
+        insert_notification($follower->follower, 'notification_category_created', time(), $userdetails->id, null, null, get_category_details_array(array('category_name' => $categoryname))->id);
+    }
 }
 
 /**
@@ -439,10 +449,35 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
  * @param string $categorydocumentationtype Category documentation type (LINK or TEXT)
  */
 function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
+    global $DB, $USER;
+
+    // Category
+    $DB->update_record('lips_category', array(
+        'id' => $id,
+        'category_name' => $categoryname,
+        'category_documentation' => $categorydocumentation,
+        'category_documentation_type' => $categorydocumentationtype
+    ));
+
+    // Notifications
+    $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+    insert_notification($userdetails->id, 'notification_category_modified', time(), $userdetails->id, null, null, $id);
+    $followers = fetch_followers($userdetails->id);
+    foreach ($followers as $follower) {
+        insert_notification($follower->follower, 'notification_category_modified', time(), $userdetails->id, null, null, $id);
+    }
+}
+
+/**
+ * Delete the category
+ *
+ * @param int $id Id the of the category to delete
+ */
+function delete_category($id) {
     global $DB;
 
-    $DB->update_record('lips_category', array('id' => $id, 'category_name' => $categoryname,
-        'category_documentation' => $categorydocumentation, 'category_documentation_type' => $categorydocumentationtype));
+    $DB->delete_records("lips_category", array("id" => $id));
+    $DB->delete_records("lips_notification", array("notification_category" => $id));
 }
 
 /**
@@ -589,6 +624,7 @@ function follow($follower, $followed) {
 
     $DB->insert_record('lips_follow', array('follower' => $follower, 'followed' => $followed));
     insert_notification($follower, 'notification_follow', time(), $follower, $followed);
+    insert_notification($followed, 'notification_followed', time(), $follower, $followed);
 }
 
 /**
@@ -825,6 +861,62 @@ function problem_exists($problemname) {
     if ($DB->count_records('lips_problem', array('problem_label' => $problemname)) > 0) {
         return true;
     }
+
+    return false;
+}
+
+/*
+ * Fetch challenged users
+ *
+ * @param int $userid Current user ID
+ * @param int $problemid Problem ID
+ * @return object All users
+ */
+function fetch_challenged_users($userid, $problemid) {
+    global $DB;
+
+    return $DB->get_records_sql('SELECT mlu.id AS userid, firstname, lastname, mlc.id FROM mdl_lips_user mlu
+        JOIN mdl_user mu ON mlu.id_user_moodle = mu.id 
+        AND mlu.id <> ' . $userid . ' 
+        LEFT OUTER JOIN mdl_lips_challenge mlc ON mlu.id = mlc.challenge_to 
+        AND mlc.challenge_from = ' . $userid . ' 
+        AND mlc.challenge_problem = ' . $problemid . ' 
+        HAVING mlc.id IS NOT NULL');
+}
+
+/**
+ * Fetch not challenged users
+ *
+ * @param int $userid Current user ID
+ * @param int $problemid Problem ID
+ * @return object All users
+ */
+function fetch_not_challenged_users($userid, $problemid) {
+    global $DB;
+
+    return $DB->get_records_sql('SELECT mlu.id AS userid, firstname, lastname, mlc.id FROM mdl_lips_user mlu
+        JOIN mdl_user mu ON mlu.id_user_moodle = mu.id 
+        AND mlu.id <> ' . $userid . ' 
+        LEFT OUTER JOIN mdl_lips_challenge mlc ON mlu.id = mlc.challenge_to 
+        AND mlc.challenge_from = ' . $userid . ' 
+        AND mlc.challenge_problem = ' . $problemid . ' 
+        HAVING mlc.id IS NULL');
+}
+
+/**
+ * Test if the user ($to) is already challenged on the problem by the current user ($from)
+ *
+ * @param int $from Challenger
+ * @param int $to Challenged
+ * @param int $problem Problem to challenge on
+ * @return bool True if the user if already challenged on the problem, otherwise false
+ */
+function is_challenged($from, $to, $problem) {
+    global $DB;
+
+    if ($DB->count_records('lips_challenge', array("challenge_from" => $from, "challenge_to" => $to, "challenge_problem" => $problem)) > 0) {
+        return true;
+    }
     return false;
 }
 
@@ -851,3 +943,95 @@ function fetch_problems_user_by_category($userid, $categoryid) {
 }
 
 
+/** Challenge the user ($to) on the problem
+ *
+ * @param int $from Challenger
+ * @param int $to Challenged
+ * @param int $problem Problem to challenge on
+ */
+function challenge($from, $to, $problem) {
+    global $DB;
+
+    // Challenge
+    $DB->insert_record('lips_challenge', array(
+        'challenge_from' => $from,
+        'challenge_to' => $to,
+        'challenge_problem' => $problem,
+        'challenge_date' => time(),
+        'challenge_state' => 'WAITING'
+    ));
+
+    // From & From followers
+    insert_notification($from, 'notification_challenge', time(), $from, $to, $problem);
+    $from_followers = fetch_followers($from);
+    foreach ($from_followers as $follower) {
+        if ($follower->follower != $to) {
+            insert_notification($follower->follower, 'notification_challenge', time(), $from, $to, $problem);
+        }
+    }
+
+    // To & To follower
+    insert_notification($to, 'notification_challenge', time(), $from, $to, $problem);
+    $to_followers = fetch_followers($to);
+    foreach ($to_followers as $follower) {
+        if ($follower->follower != $from) {
+            insert_notification($follower->follower, 'notification_challenge', time(), $from, $to, $problem);
+        }
+    }
+}
+
+/**
+ * Fetch challenges
+ *
+ * @param array $conditions Conditions to fetch the challenges
+ * @return object Challenges
+ */
+function fetch_challenges(array $conditions = array()) {
+    global $DB;
+
+    return $DB->get_records('lips_challenge', $conditions);
+}
+
+/**
+ * Get challenge details
+ *
+ * @param array $conditions Conditions to get the challenge
+ * @return object Challenge
+ */
+function get_challenge_details(array $conditions = array()) {
+    global $DB;
+
+    return $DB->get_record('lips_challenge', $conditions);
+}
+
+/**
+ * Accept the challenge
+ *
+ * @param int $challengeid Challenge ID
+ */
+function accept_challenge($challengeid) {
+    global $DB;
+
+    $DB->update_record('lips_challenge', array('id' => $challengeid, 'challenge_state' => 'ACCEPTED'));
+
+    // Challenge details
+    $challengedetails = get_challenge_details(array('id' => $challengeid));
+
+    // From & From followers
+    insert_notification($challengedetails->challenge_from, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+    $from_followers = fetch_followers($challengedetails->challenge_from);
+    foreach ($from_followers as $follower) {
+        if ($follower->follower != $challengedetails->challenge_to) {
+            insert_notification($follower->follower, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+        }
+    }
+
+    // To & To follower
+    insert_notification($challengedetails->challenge_to, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+    $to_followers = fetch_followers($challengedetails->challenge_to);
+    foreach ($to_followers as $follower) {
+        if ($follower->follower != $challengedetails->challenge_from) {
+            insert_notification($follower->follower, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+        }
+    }
+}
