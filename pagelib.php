@@ -183,7 +183,7 @@ class page_index extends page_view {
         }
 
         // Notifications
-        $notificationsdetails = fetch_notifications_details('notification_user_id = ' . $userdetails->id);
+        $notificationsdetails = fetch_notifications_details('notification_user_id = ' . $userdetails->id . ' AND notification_from <> ' . $userdetails->id . ' AND notification_to <> ' . $userdetails->id);
         echo $this->lipsoutput->display_h1(get_string('notifications', 'lips'));
         if (count($notificationsdetails) > 0) {
             echo $this->lipsoutput->display_notifications($notificationsdetails);
