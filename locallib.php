@@ -137,7 +137,7 @@ function convert_active_tab($view) {
  * @param array $conditions Conditions to match the user.
  * @return object An array containing the details of the requested user.
  */
-function get_user_details(array $conditions = null) {
+function get_user_details(array $conditions = array()) {
     global $DB;
 
     return $DB->get_record('lips_user', $conditions, '*');
@@ -149,10 +149,35 @@ function get_user_details(array $conditions = null) {
  * @param array $conditions Conditions to match the user.
  * @return object An array containing the details of the requested user.
  */
-function get_moodle_user_details(array $conditions = null) {
+function get_moodle_user_details(array $conditions = array()) {
     global $DB;
 
     return $DB->get_record('user', $conditions, '*');
+}
+
+/**
+ * Get user status
+ *
+ * @param int $userid User ID
+ * @param int $lipsintance LIPS instance
+ * @return object User status
+ */
+function get_user_status($userid, $lipsintance) {
+    global $DB;
+
+    return $DB->get_record('lips_user_rights', array('user_rights_user' => $userid, 'user_rights_instance' => $lipsintance), '*');
+}
+
+/**
+ * Delete user status
+ *
+ * @param int $userid User ID
+ * @param int $lipsinstance LIPS instance
+ */
+function delete_user_status($userid, $lipsinstance) {
+    global $DB;
+
+    $DB->delete_records("lips_user_rights", array('user_rights_user' => $userid, 'user_rights_instance' => $lipsinstance));
 }
 
 /**
@@ -161,11 +186,19 @@ function get_moodle_user_details(array $conditions = null) {
 function insert_user_if_not_exists() {
     global $USER;
 
+    $lips = get_current_instance();
     $user = get_user_details(array('id_user_moodle' => $USER->id));
     if ($user == null) {
         $role = get_highest_role();
         if ($role != null) {
-            insert_user($USER->id, get_highest_role(), 1, 0);
+            insert_user($USER->id, $role, 1, 0);
+        }
+    } else {
+        delete_user_status($user->id, $lips->id);
+
+        $role = get_highest_role();
+        if($role != null) {
+            insert_user_rights($user->id, $lips->id, $role);
         }
     }
 }
@@ -176,16 +209,41 @@ function insert_user_if_not_exists() {
  * @param int $idusermoodle ID of the user on moodle
  * @param string $userstatus User status
  * @param int $userrankid User rank id
- * @param int $userscore
  */
-function insert_user($idusermoodle, $userstatus, $userrankid, $userscore) {
+function insert_user($idusermoodle, $userstatus, $userrankid) {
     global $DB;
 
-    $DB->insert_record('lips_user', array(
+    $lips = get_current_instance();
+
+    $lastinsertid = $DB->insert_record('lips_user', array(
         'id_user_moodle' => $idusermoodle,
-        'user_status' => $userstatus,
-        'user_rank_id' => $userrankid,
-        'user_score' => $userscore
+        'user_rank_id' => $userrankid
+    ));
+
+    // Delete current user stauts
+    delete_user_status($lastinsertid, $lips->id);
+    
+    // Insert user status
+    $role = get_highest_role();
+    if($role != null) {
+        insert_user_rights($lastinsertid, $lips->id, $userstatus);
+    }
+}
+
+/**
+ * Insert user status
+ *
+ * @param int $userid User ID
+ * @param int $lipsintance LIPS instance
+ * @param string $status Status
+ */
+function insert_user_rights($iduser, $lipsintance, $status) {
+    global $DB;
+
+    $DB->insert_record('lips_user_rights', array(
+        'user_rights_user' => $iduser,
+        'user_rights_instance' => $lipsintance,
+        'user_rights_status' => $status
     ));
 }
 
@@ -961,6 +1019,7 @@ function is_challenged($from, $to, $problem) {
  */
 function delete_problem_by_name($iduser, $name) {
     global $DB;
+
     $DB->delete_records("lips_problem", array('problem_label' => $name, 'problem_creator_id' => $iduser));
 }
 

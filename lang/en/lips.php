@@ -108,6 +108,10 @@ $string['notification_category_deleted_picture'] = 'delete.png';
  *------------------------------------------------*/
 $string['challenge_notification'] = '{date} - {challenge_from} has challenged you on the problem {challenge_problem}';
 $string['challenge_current'] = '{challenge_problem} challenged by {challenge_from}';
+$string['received_challenges'] = 'Received challenges';
+$string['sent_challenges'] = 'Sent challenges';
+$string['challenge_challenged'] = 'Challenged';
+$string['state'] = 'State';
 
 /*--------------------------------------------------
  * Constants
@@ -215,6 +219,8 @@ $string['resolved'] = 'Resolved';
 $string['configure'] = 'Configure';
 $string['picture'] = 'Picture';
 $string['base'] = 'Base';
+$string['challenge_author'] = 'Author';
+$string['resolve'] = 'Resolve';
 
 /*--------------------------------------------------
  * Administration

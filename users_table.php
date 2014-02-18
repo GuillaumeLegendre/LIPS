@@ -38,16 +38,24 @@ class users_table extends table_sql {
     public function  __construct($cm, $search = null) {
         parent::__construct("mdl_lips_user");
         $this->cm = $cm;
+        $lips = get_current_instance();
 
         if($search == null) {
-            $this->set_sql("mlu.id, mlu.id_user_moodle, firstname, lastname, user_status, rank_label",
-                "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",
-                "mlu.id_user_moodle = mu.id AND mlu.user_rank_id = mlr.id");
+            $this->set_sql("mlu.id, mlu.id_user_moodle, firstname, lastname, user_rights_status, rank_label",
+                "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr, mdl_lips_user_rights mlur",
+                "mlu.id_user_moodle = mu.id
+                AND mlu.user_rank_id = mlr.id
+                AND mlu.id = mlur.user_rights_user
+                AND mlur.user_rights_instance = " . $lips->id);
             $this->set_count_sql('SELECT COUNT(*) FROM mdl_lips_user');
         } else {
-            $this->set_sql("mlu.id, mlu.id_user_moodle, firstname, lastname, user_status, rank_label",
-                "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr",
-                "mlu.id_user_moodle = mu.id AND mlu.user_rank_id = mlr.id AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
+            $this->set_sql("mlu.id, mlu.id_user_moodle, firstname, lastname, user_rights_status, rank_label",
+                "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr, mdl_lips_user_rights mlur",
+                "mlu.id_user_moodle = mu.id
+                AND mlu.user_rank_id = mlr.id
+                AND mlu.id = mlur.user_rights_user
+                AND mlur.user_rights_instance = " . $lips->id . "
+                AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
             $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_user mlu, mdl_user mu WHERE mlu.id_user_moodle = mu.id AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
         }
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "users")));
@@ -71,7 +79,7 @@ class users_table extends table_sql {
                 break;
 
             case 'user_status':
-                return get_string($attempt->user_status, 'lips');
+                return get_string($attempt->user_rights_status, 'lips');
                 break;
 
             case 'user_follow':

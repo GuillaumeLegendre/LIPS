@@ -169,11 +169,13 @@ class mod_lips_renderer extends plugin_renderer_base {
         $iduser = optional_param('id_user', null, PARAM_TEXT);
 
         // Infos
+        $lips = get_current_instance();
         $currentuserdetails = get_user_details(array('id_user_moodle' => $USER->id));
         $userdetails = ($iduser == null) ? $currentuserdetails : get_user_details(array('id' => $iduser));
         $moodleuserdetails = get_moodle_user_details(array('id' => $userdetails->id_user_moodle));
         $rank = get_rank_details(array('id' => $userdetails->user_rank_id));
         $userpicture = get_user_picture_url(array('id_user_moodle' => $moodleuserdetails->id), 'f1');
+        $userstatus = get_user_status($userdetails->id, $lips->id);
 
         $menu = '<div id="profile-menu"><img src="' . $userpicture . '" id="picture"/>';
         if ($iduser != null && $iduser != $currentuserdetails->id) {
@@ -200,7 +202,7 @@ class mod_lips_renderer extends plugin_renderer_base {
 
         $menu .= '<div id="background">
             <div id="infos">
-                <div id="role">' . get_string($userdetails->user_status, 'lips') . '</div>
+                <div id="role">' . get_string($userstatus->user_rights_status, 'lips') . '</div>
                 <div id="rank">' . $rank->rank_label . '</div>
             </div>
             <div id="user">' . ucfirst($moodleuserdetails->firstname) . ' ' . ucfirst($moodleuserdetails->lastname) . '</div>
@@ -210,7 +212,7 @@ class mod_lips_renderer extends plugin_renderer_base {
         $menu .= ($action == 'profile') ? '<li><p class="current">Profil</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('profile', 'lips') . '</a></li>';
         $menu .= ($action == 'ranks') ? '<li><p class="current">Classements</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=ranks' . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('ranks', 'lips') . '</a></li>';
         $menu .= ($action == 'solved_problems') ? '<li><p class="current">Problèmes résolus</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=solved_problems' . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('solved_problems', 'lips') . '</a></li>';
-        $menu .= ($action == 'challenges') ? '<li><p class="current">Défis reçus</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=challenges' . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('challenges', 'lips') . '</a></li>';
+        $menu .= ($action == 'challenges') ? '<li><p class="current">Défis</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=challenges' . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('challenges', 'lips') . '</a></li>';
         $menu .= ($action == 'followed_users') ? '<li><p class="current">Utilisateurs suivis</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=followed_users' . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('followed_users', 'lips') . '</a></li>';
         $menu .= '</ul></div>';
 

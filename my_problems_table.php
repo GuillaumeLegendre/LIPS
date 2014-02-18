@@ -53,8 +53,8 @@ class my_problems_table extends table_sql {
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'my_problems')));
 
         $context = context_module::instance($cm->id);
-        $this->define_headers(array(get_string('problem', 'lips'), get_string('difficulty', 'lips'), get_string('date', 'lips'), get_string('problem_author', 'lips'), get_string('problem_nb_resolutions', 'lips'), "", ""));
-        $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_creator_id", "problem_resolutions", "testing", "actions"));
+        $this->define_headers(array(get_string('problem', 'lips'), get_string('difficulty', 'lips'), get_string('date', 'lips'), get_string('problem_nb_resolutions', 'lips'), "", ""));
+        $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_resolutions", "testing", "actions"));
         $this->sortable(true);
     }
 
@@ -79,10 +79,6 @@ class my_problems_table extends table_sql {
 
             case 'difficulty_label':
                 return get_string($attempt->difficulty_label, "lips");
-                break;
-
-            case 'problem_creator_id':
-                return $OUTPUT->action_link(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'profile', 'id_user' => $attempt->user_id)), ucfirst($attempt->firstname) . ' ' . strtoupper($attempt->lastname));
                 break;
 
             case 'testing':

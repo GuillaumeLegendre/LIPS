@@ -42,6 +42,8 @@ class followed_users_table extends table_sql {
         parent::__construct("mdl_lips_category");
         $this->cm = $cm;
 
+// TODO ; select the langage name.
+
         if ($search == null) {
             $this->set_sql("mlu.id, firstname, lastname, rank_label",
                 "mdl_lips_follow mlf, mdl_lips_user mlu, mdl_lips_rank mlr, mdl_user mu",
