@@ -175,7 +175,7 @@ class page_index extends page_view {
 
         // Received challenges
         $receivedchallengedetails = fetch_challenges(array('challenge_to' => $userdetails->id, 'challenge_state' => 'WAITING'));
-        echo $this->lipsoutput->display_h1(get_string('challenges', 'lips'), array("style" => "margin-top: 15px"));
+        echo $this->lipsoutput->display_h1(get_string('received_challenges', 'lips'), array("style" => "margin-top: 15px"));
         if(count($receivedchallengedetails) > 0) {
             echo $this->lipsoutput->display_challenges($receivedchallengedetails);
         } else {
@@ -1033,7 +1033,7 @@ class page_profile_solved_problems extends page_view {
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
- * @author     Valentin Got
+ * @author     Anaiïs Picoreau
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class page_profile_challenges extends page_view {
@@ -1052,8 +1052,59 @@ class page_profile_challenges extends page_view {
      * Display the page_profile_challenges content
      */
     function display_content() {
+        global $USER;
+
+        require_once(dirname(__FILE__) . '/challenges_table.php');
+        require_once(dirname(__FILE__) . '/mod_lips_challenges_search_form.php');
+
         echo $this->lipsoutput->display_profile_menu('challenges') . '<br/>';
-        echo 'Challenges';
+
+        // User details
+        $iduser = optional_param('id_user', null, PARAM_TEXT);
+        $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+
+        // Search form
+         if ($iduser == null) {
+            $searchForm = new mod_lips_challenges_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges')), null, 'post', '', array('class' => 'search-form'));
+        } else {
+            $searchForm = new mod_lips_challenges_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges', 'id_user' => $iduser)), null, 'post', '', array('class' => 'search-form'));
+        }
+        $searchForm->display();
+
+        // Search result
+        $search = new stdClass();
+        if ($searchForm->is_submitted()) {
+            $data = $searchForm->get_submitted_data();
+            if (!empty($data->problemInputSearch)) {
+                $search->problem = $data->problemInputSearch;
+            }
+            if (!empty($data->authorInputSearch)) {
+                $search->author = $data->authorInputSearch;
+            }
+        }
+
+        // Received challenges table
+        echo $this->lipsoutput->display_h1(get_string('received_challenges', 'lips'));
+
+        if ($iduser == null || $iduser == $userdetails->id) {
+            $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+            $receivedchallengestable = new challenges_table($this->cm, $userdetails->id, true, $search, true);
+        } else {
+            $receivedchallengestable = new challenges_table($this->cm, $iduser, false, $search, true);
+        }
+        $receivedchallengestable->out("challenges_table", true);
+
+        // Sent challenges table
+
+        echo '<br/>' . $this->lipsoutput->display_h1(get_string('sent_challenges', 'lips'));
+
+        if ($iduser == null || $iduser == $userdetails->id) {
+            $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
+            $sentchallengestable = new challenges_table($this->cm, $userdetails->id, true, $search, false);
+        } else {
+            $sentchallengestable = new challenges_table($this->cm, $iduser, false, $search, false);
+        }
+        $sentchallengestable->out("challenges_table", true);
     }
 }
 

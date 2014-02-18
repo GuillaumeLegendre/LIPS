@@ -77,6 +77,11 @@ $string['notification_category_deleted'] = '{img} {date} - {notification_from} a
  *------------------------------------------------*/
 $string['challenge_notification'] = '{date} - {challenge_from} vous a défié sur le problème {challenge_problem}';
 $string['challenge_current'] = '{challenge_problem} lancé par {challenge_from}';
+$string['received_challenges'] = 'Défis reçus';
+$string['sent_challenges'] = 'Défis lancés';
+$string['challenge_challenged'] = 'Défié';
+$string['challenges'] = 'Défis';
+$string['state'] = 'Etat';
 
 /*--------------------------------------------------
  * Constants
@@ -105,7 +110,6 @@ $string['grade'] = 'Grade';
 $string['status'] = 'Statut';
 $string['ranks'] = 'Classements';
 $string['solved_problems'] = 'Problèmes résolus';
-$string['challenges'] = 'Défis reçus';
 $string['challenge'] = 'Défier';
 $string['challenged'] = 'Défiés';
 $string['challenged_users'] = 'Utilisateurs défiés';
@@ -183,6 +187,8 @@ $string['resolved'] = 'Résolu';
 $string['configure'] = 'Configurer';
 $string['picture'] = 'Image';
 $string['base'] = 'Base';
+$string['challenge_author'] = 'Auteur';
+$string['resolve'] = 'Résoudre';
 
 /*--------------------------------------------------
  * Administration
