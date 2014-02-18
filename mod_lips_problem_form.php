@@ -282,7 +282,8 @@ class mod_lips_problem_modify_form extends moodleform {
      */
     public function definition() {
         global $PAGE;
-        $mcustomdata = $this->_customdata;
+        $mcustomdata = $this->get_data();
+        print_object($mcustomdata);
         $mform =& $this->_form;
         $lips = get_current_instance();
         $output = $PAGE->get_renderer('mod_lips');

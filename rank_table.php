@@ -36,30 +36,30 @@ class rank_table extends table_sql {
         $this->cm = $cm;
         $conditions = "1";
         if (!empty($searchuser)) {
-            $conditions = " AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'";
+            $conditions .= " AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'";
         }
         if (!empty($language)) {
-            $conditions .= " AND mlc.id_language=$language";
+            $conditions .= " AND mlur.user_rights_instance=$language";
         }
-        $this->set_sql("mlu.id,mlu.user_score, mu.id as id_moodle_user, mu.firstname, mu.lastname,
+        if (!empty($category)) {
+            $conditions .= " AND mlc.id=$category";
+        }
+        $this->set_sql("mlu.id, SUM(score_score) as user_score, mu.id as id_moodle_user, mu.firstname, mu.lastname,
         COUNT( DISTINCT(mlps.problem_solved_problem) ) AS nb_problems_solved",
             " `mdl_lips_user` mlu JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
             left JOIN mdl_lips_problem_solved mlps on mlps.problem_solved_user=mlu.id_user_moodle
+            left JOIN mdl_lips_score mls ON mls.score_user=mlu.id
             left JOIN mdl_lips_problem mlp ON mlp.id=mlps.problem_solved_problem
-            left JOIN mdl_lips_category mlc ON mlp.problem_category_id=mlc.id",
+            left JOIN mdl_lips_category mlc ON mlc.id=mlp.problem_category_id
+            left JOIN mdl_lips_user_rights mlur ON user_rights_user=mlu.id",
             $conditions . " GROUP BY  mlu.id_user_moodle");
-        echo "mlu.id,mlu.user_score, mu.id as id_moodle_user, mu.firstname, mu.lastname,
-        COUNT( DISTINCT(mlps.problem_solved_problem) ) AS nb_problems_solved",
-        " `mdl_lips_user` mlu JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
-        left JOIN mdl_lips_problem_solved mlps on mlps.problem_solved_user=mlu.id_user_moodle
-        left JOIN mdl_lips_problem mlp ON mlp.id=mlps.problem_solved_problem
-        left JOIN mdl_lips_category mlc ON mlp.problem_category_id=mlc.id",
-            $conditions . " GROUP BY  mlu.id_user_moodle";
         $this->set_count_sql("SELECT count(*) FROM mdl_lips_user  mlu
             JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
             left JOIN mdl_lips_problem_solved mlps on mlps.problem_solved_user=mlu.id_user_moodle
+            left JOIN mdl_lips_score mls ON mls.score_user=mlu.id
             left JOIN mdl_lips_problem mlp ON mlp.id=mlps.problem_solved_problem
-            left JOIN mdl_lips_category mlc ON mlp.problem_category_id=mlc.id
+            left JOIN mdl_lips_category mlc ON mlc.id=mlp.problem_category_id
+            left JOIN mdl_lips_user_rights mlur ON user_rights_user=mlu.id
             where $conditions");
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "problems")));
         $context = context_module::instance($cm->id);
@@ -80,6 +80,11 @@ class rank_table extends table_sql {
 
         if ($colname == "user") {
             return $lipsoutput->display_user_link($attempt->id, $attempt->firstname, $attempt->lastname);
+        }
+        if ($colname == "user_score") {
+            if (empty($attempt->user_score)) {
+                return 0;
+            }
         }
 
         if ($colname == 'suivre') {

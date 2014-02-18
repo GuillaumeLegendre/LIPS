@@ -16,33 +16,33 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
     if (mode != null && mode != '')
         editor.getSession().setMode("ace/mode/" + mode);
 
-	/*switch to call different Ace editor Mode
-		"configure" : used for language configuration editor, provides code, import and test tags
-		"code" : used for problem code configuration editor, provides code tag
-		"unit-test" : used for choosing the unit test to display, provides unit-test tag
-		"resolution" : used to solve problem. allows user to type only betweens <code></code> tags
-		"readonly" : used to display problem's code. not editable
-	*/
-   switch(flag){
-	   case "configure":
-	   		createConfigure(editorid);
-	   		break;
-		case "code":
-			createCode(editorid);
-			break;
-		case "unit-test":
-			createUnitTest(editorid);
-			break;
-		case "resolution":
-			createResolution(editorid);
-			//matchTags(editorid);
-			break;
-		case "readonly":
-			createReadOnly(editorid);
-		default:
-			break;
-   }
-   
+    /*switch to call different Ace editor Mode
+     "configure" : used for language configuration editor, provides code, import and test tags
+     "code" : used for problem code configuration editor, provides code tag
+     "unit-test" : used for choosing the unit test to display, provides unit-test tag
+     "resolution" : used to solve problem. allows user to type only betweens <code></code> tags
+     "readonly" : used to display problem's code. not editable
+     */
+    switch (flag) {
+        case "configure":
+            createConfigure(editorid);
+            break;
+        case "code":
+            createCode(editorid);
+            break;
+        case "unit-test":
+            createUnitTest(editorid);
+            break;
+        case "resolution":
+            createResolution(editorid);
+            //matchTags(editorid);
+            break;
+        case "readonly":
+            createReadOnly(editorid);
+        default:
+            break;
+    }
+
     // Copy the ace content on the area
     if (areaid != null && areaid != '') {
         editor.getSession().on("change", function () {
@@ -259,30 +259,30 @@ var closestTag = function (tags, row, col) {
 
 //Create an ace editor in resolution mode
 //used to solve problem. allows user to type only betweens <code></code> tags
-window.createResolution = function(editorid){
-	
-	var editor = ace.edit(editorid);
-	var selection = editor.getSession().getSelection();
-	var cursor = selection.getCursor();
-	var selectionHandler = function(){
-		
-		var cursor = selection.getCursor();
-		var tags = matchTags(editorid);
-		
-		if (!inTag(tags, cursor.row, cursor.column)){
-			var tag = closestTag(tags, cursor.row, cursor.column);
-			if (tag.object.state == "opening")
-				selection.selectToPosition({row : tag.object.row, column : tag.object.end});
-			else if (tag.object.state == "ending")
-				selection.selectToPosition({row : tag.object.row, column : tag.object.start});
-				
-			selection.clearSelection();
-		}
-		
-		
-	}
-	
-	//selection.on("changeCursor", selectionHandler);
+window.createResolution = function (editorid) {
+
+    var editor = ace.edit(editorid);
+    var selection = editor.getSession().getSelection();
+    var cursor = selection.getCursor();
+    var selectionHandler = function () {
+
+        var cursor = selection.getCursor();
+        var tags = matchTags(editorid);
+
+        if (!inTag(tags, cursor.row, cursor.column)) {
+            var tag = closestTag(tags, cursor.row, cursor.column);
+            if (tag.object.state == "opening")
+                selection.selectToPosition({row: tag.object.row, column: tag.object.end});
+            else if (tag.object.state == "ending")
+                selection.selectToPosition({row: tag.object.row, column: tag.object.start});
+
+            selection.clearSelection();
+        }
+
+
+    }
+
+    //selection.on("changeCursor", selectionHandler);
 }
 
 
@@ -378,36 +378,51 @@ window.createUnitTest = function (editorid) {
 
 //Create an ace editor in readonly mode
 //used to display problem's code. not editable
-window.createReadOnly = function(editorid){
-	var editor = ace.edit(editorid);
-	var doc = editor.getSession().getDocument();
-	var lines = doc.getLength();
-	var allLines = doc.getAllLines();
-	var longestLine = 0;
-	var longestIndex = 0;
-	editor.setReadOnly(true);
-	editor.renderer.setShowGutter(false);
-	editor.setHighlightActiveLine(false);
-	
-	for (var i in allLines) {
-		if (longestLine < allLines[i].length){
-			longestLine = allLines[i].length;
-			longestIndex = i;
-		}
-	}
-	
-	for (var j in allLines[longestIndex]) {
-		if (allLines[longestIndex][j] == "\t")
-			longestLine = longestLine + 3;
-	}
-	
-	$("#" + editorid).css("height", lines * 16);
-	$("#" + editorid).css("width", (20 + (longestLine * 7)));
+window.createReadOnly = function (editorid) {
+    var editor = ace.edit(editorid);
+    var doc = editor.getSession().getDocument();
+    var lines = doc.getLength();
+    var allLines = doc.getAllLines();
+    var longestLine = 0;
+    var longestIndex = 0;
+    editor.setReadOnly(true);
+    editor.renderer.setShowGutter(false);
+    editor.setHighlightActiveLine(false);
+
+    for (var i in allLines) {
+        if (longestLine < allLines[i].length) {
+            longestLine = allLines[i].length;
+            longestIndex = i;
+        }
+    }
+
+    for (var j in allLines[longestIndex]) {
+        if (allLines[longestIndex][j] == "\t")
+            longestLine = longestLine + 3;
+    }
+
+    $("#" + editorid).css("height", lines * 16);
+    $("#" + editorid).css("width", (20 + (longestLine * 7)));
 }
 
 // Delete the challenged user
 function deleteChalengedUser(user_id) {
     $("#" + user_id).remove();
+}
+
+function populateselectinstance() {
+    var idinstance = $("#id_language_id_js option:selected").val();
+    console.log(idinstance);
+    $.getJSON("./get_categories_by_instance.php", {id: idinstance, ajax: 'true'}, function (j) {
+        console.log(j);
+        var options = "<option value='all'>Tout</option>";
+        $.each(j, function (key, val) {
+            console.log(val);
+
+            options += '<option value="' + val.id_language + '">' + val.category_name + '</option>';
+        });
+        $("#id_category_id_js").html(options);
+    })
 }
 
 $(document).ready(function () {
@@ -416,7 +431,7 @@ $(document).ready(function () {
      *  Ajax to populate select of similar problem
      *-------------------------------*/
 
-    if ($('#dialog').length > 0){
+    if ($('#dialog').length > 0) {
         $('#dialog').dialog({
             height: 250,
             width: 400,
@@ -426,7 +441,7 @@ $(document).ready(function () {
             buttons: {
                 Conseiller: function () {
                     if ($.inArray($("#id_problem_id_js option:selected").val(), $("#id_problem_similar").val().split(" ")) == -1) {
-                        $("#problem_similar_content").append("<div class='fitem fitem_ftext similar_problem'><div class='felement ftext'><input readonly type='text' name='select_problem_similar_" + $("#id_problem_id_js option:selected").val() + "' value='" + $("#id_problem_id_js option:selected").text() + "'></div> <input class='delete_problem_similar_button' id='"+$("#id_problem_id_js option:selected").val()+"' src='./images/delete_similar.png' type='image'></div>");
+                        $("#problem_similar_content").append("<div class='fitem fitem_ftext similar_problem'><div class='felement ftext'><input readonly type='text' name='select_problem_similar_" + $("#id_problem_id_js option:selected").val() + "' value='" + $("#id_problem_id_js option:selected").text() + "'></div> <input class='delete_problem_similar_button' id='" + $("#id_problem_id_js option:selected").val() + "' src='./images/delete_similar.png' type='image'></div>");
                         $("#id_problem_similar").val($("#id_problem_similar").val() + " " + $("#id_problem_id_js option:selected").val());
                     }
                     $(this).dialog("close");
@@ -450,21 +465,16 @@ $(document).ready(function () {
 
         $('body').on('click', '.delete_problem_similar_button', function () {
             $(this).parent().remove();
-            $("#id_problem_similar").val($("#id_problem_similar").val().replace(" "+$(this).attr("id"),""));
+            $("#id_problem_similar").val($("#id_problem_similar").val().replace(" " + $(this).attr("id"), ""));
         });
     }
 
-    $("#id_language_id_js").change(function () {
-        $.getJSON("./get_categories_by_instance.php", {id: $(this).val(), ajax: 'true'}, function (j) {
-            var options = '';
-            options += "<option value='all'> Tout </option>";
-            $.each(j, function (key, val) {
-                options += '<option value="' + val.id + '">' +val.category_name + '</option>';
-            });
-            $("#id_category_id_js").html(options);
-        })
-    });
-
+    if ($('#id_language_id_js').length > 0) {
+        $("#id_language_id_js").change(function () {
+            populateselectinstance();
+        });
+        populateselectinstance();
+    }
     /*---------------------------------
      *  Autocomplete on users to challenge
      *-------------------------------*/
@@ -483,7 +493,7 @@ $(document).ready(function () {
                 "Défier les utilisateurs": function () {
                     var toChallenge = new Array();
 
-                    $("#challenged-players p").each(function(index) {
+                    $("#challenged-players p").each(function (index) {
                         toChallenge.push($(this).attr("id"));
                     });
 
@@ -499,8 +509,8 @@ $(document).ready(function () {
                         success: function (info) {
                             $("#notify.notifySuccess").show();
 
-                            $("#challenged-players p").each(function(index) {
-                                if($("#challenged-users").text() != "") {
+                            $("#challenged-players p").each(function (index) {
+                                if ($("#challenged-users").text() != "") {
                                     $("#challenged-users").html($("#challenged-users").text() + ", " + $(this).text());
                                 } else {
                                     $("#challenged-users").html($(this).text());
@@ -536,15 +546,15 @@ $(document).ready(function () {
         $("#challenge-user").autocomplete({
             minLength: 1,
             source: mytable,
-            select: function(event, ui) {
-                if($("#challenged-players #" + ui.item.id).length == 0) {
+            select: function (event, ui) {
+                if ($("#challenged-players #" + ui.item.id).length == 0) {
                     $("#challenged-players").append('<p id="' + ui.item.id + '">' + ui.item.label + '<img src="images/delete_similar.png" title="Supprimer" onClick="deleteChalengedUser(' + ui.item.id + ')"/></p>');
                 }
             }
         });
 
         // Open the dialog box
-        $("#challenge").click(function() {
+        $("#challenge").click(function () {
             $("#challenge-users").dialog("open");
 
             return false;

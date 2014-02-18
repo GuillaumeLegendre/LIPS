@@ -176,7 +176,7 @@ class page_index extends page_view {
         // Received challenges
         $receivedchallengedetails = fetch_challenges(array('challenge_to' => $userdetails->id, 'challenge_state' => 'WAITING'));
         echo $this->lipsoutput->display_h1(get_string('received_challenges', 'lips'), array("style" => "margin-top: 15px"));
-        if(count($receivedchallengedetails) > 0) {
+        if (count($receivedchallengedetails) > 0) {
             echo $this->lipsoutput->display_challenges($receivedchallengedetails);
         } else {
             echo $this->lipsoutput->display_p(get_string('no_challenges', 'lips'));
@@ -1064,7 +1064,7 @@ class page_profile_challenges extends page_view {
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
 
         // Search form
-         if ($iduser == null) {
+        if ($iduser == null) {
             $searchForm = new mod_lips_challenges_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges')), null, 'post', '', array('class' => 'search-form'));
         } else {
             $searchForm = new mod_lips_challenges_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges', 'id_user' => $iduser)), null, 'post', '', array('class' => 'search-form'));
@@ -1728,6 +1728,7 @@ class page_rank extends page_view {
         require_once(dirname(__FILE__) . '/mod_lips_filter_form.php');
 
         // Rank title
+        $category_id_post = optional_param("category_id_js", null, PARAM_TEXT);
         echo $this->lipsoutput->display_h1(get_string('Rank', 'lips'));
         $filterform = new mod_lips_filter_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null, 'post', '', array('class' => 'search-form'));
         $usersearch = null;
@@ -1735,15 +1736,14 @@ class page_rank extends page_view {
         $category_id_js = null;
         if ($filterform->is_submitted()) {
             $data = $filterform->get_submitted_data();
-            print_object($data);
-            if (!empty($data->userSearch)) {
+            if (isset($data->userSearch) && !empty($data->userSearch)) {
                 $usersearch = $data->userSearch;
             }
-            if ($data->language_id_js != "all") {
+            if (isset($data->language_id_js) && $data->language_id_js != "all") {
                 $instance_id_js = $data->language_id_js;
             }
-            if ($data->category_id_js != "all") {
-                $category_id_js = $data->category_id_js;
+            if (isset($category_id_post) && $category_id_post != "all") {
+                $category_id_js = $category_id_post;
             }
         }
         $table = new rank_table($this->cm, $usersearch, $instance_id_js, $category_id_js);

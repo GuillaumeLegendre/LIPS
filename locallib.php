@@ -1176,3 +1176,12 @@ function get_active_languages() {
 
     return $DB->get_records_sql('select id, compile_language from mdl_lips where compile_language is not null');
 }
+
+/**
+ * Get categories of a specific instance of lips..
+ *
+ */
+function get_categories_by_instance($instanceid) {
+    global $DB;
+    $categories = $DB->get_records('lips_category', array('id_language' => $instanceid));
+}
