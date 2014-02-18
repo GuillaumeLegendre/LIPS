@@ -26,14 +26,15 @@ if(isset($_POST['action'])) {
 			break;
 
 		case 'post':
-			if(isset($_POST['problemid']) && isset($_POST['users'])) {
+			if(isset($_POST['lipsid']) && isset($_POST['problemid']) && isset($_POST['users'])) {
 				$userid = get_user_details(array("id_user_moodle" => $USER->id))->id;
+				$lipsid = $_POST['lipsid'];
 				$problemid = $_POST['problemid'];
 				$users = $_POST['users'];
 
 				foreach($users as $to) {
 					if(!is_challenged($userid, $to, $problemid)) {
-						challenge($userid, $to, $problemid);
+						challenge($lipsid, $userid, $to, $problemid);
 					}
 				}
 			}

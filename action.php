@@ -53,11 +53,12 @@ switch ($action) {
             delete_category($categoryid);
 
             // Insert the notifications.
+            $lips = get_current_instance();
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-            insert_notification($userdetails->id, 'notification_category_deleted', time(), $userdetails->id, null, null, null, $categorydetails->category_name);
+            insert_notification($lips->id, $userdetails->id, 'notification_category_deleted', time(), $userdetails->id, null, null, null, $categorydetails->category_name);
             $followers = fetch_followers($userdetails->id);
             foreach ($followers as $follower) {
-                insert_notification($follower->follower, 'notification_category_deleted', time(), $userdetails->id, null, null, null, $categorydetails->category_name);
+                insert_notification($lips->id, $follower->follower, 'notification_category_deleted', time(), $userdetails->id, null, null, null, $categorydetails->category_name);
             }
 
             if ($originaction == null) {
@@ -79,11 +80,12 @@ switch ($action) {
             }
 
             // Insert the notifications.
+            $lips = get_current_instance();
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-            insert_notification($userdetails->id, 'notification_problem_deleted', time(), $userdetails->id, null, null, null, $problemdetails->problem_label);
+            insert_notification($lips->id, $userdetails->id, 'notification_problem_deleted', time(), $userdetails->id, null, null, null, $problemdetails->problem_label);
             $followers = fetch_followers($userdetails->id);
             foreach ($followers as $follower) {
-                insert_notification($follower->follower, 'notification_problem_deleted', time(), $userdetails->id, null, null, null, $problemdetails->problem_label);
+                insert_notification($lips->id, $follower->follower, 'notification_problem_deleted', time(), $userdetails->id, null, null, null, $problemdetails->problem_label);
             }
 
             if ($categoryid != null && !empty($categoryid)) {
@@ -174,6 +176,15 @@ switch ($action) {
 
         // Accept the challenge
         accept_challenge($challengeid);
+
+        redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        break;
+
+    case 'refuse_challenge':
+        $challengeid = optional_param('challenge_id', 0, PARAM_INT);
+
+        // Accept the challenge
+        refuse_challenge($challengeid);
 
         redirect(new moodle_url('view.php', array('id' => $cm->id)));
         break;

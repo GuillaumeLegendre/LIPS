@@ -375,7 +375,7 @@ h3 {
     margin: 5px 0 5px 0;
 }
 
-.notification-content .notification-language {
+.notification-content .notification-language, .challenge-content .notification-language {
     display: inline;
     float: right;
     background-color: #9DC3F6;
@@ -399,6 +399,15 @@ h3 {
 
 .challenge-content .lips-button {
     margin: 5px 10px 5px 0;
+}
+
+.challenge-content.current {
+    padding-bottom: 2px;
+}
+
+.challenge-content.current span {
+    display: inline-block;
+    margin-top: 2px;
 }
 
 /*---------------------------------

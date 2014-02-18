@@ -350,7 +350,14 @@ class mod_lips_renderer extends plugin_renderer_base {
             $display .= '<div class="notification-border"></div>';
 
             // Notification message
-            $notification_msg = '<div class="notification-content"><div class="notification-language">Java</div>' . get_string($notification->notification_type, 'lips') . '</div>';
+            $language = '';
+            if($notification->notification_language != null) {
+                $lips = get_instance($notification->notification_language);
+                if($lips->compile_language != null) {
+                    $language = '<div class="notification-language">' . $lips->compile_language . '</div>';
+                }
+            }
+            $notification_msg = '<div class="notification-content">' . $language . get_string($notification->notification_type, 'lips') . '</div>';
 
             // Set the picture
             $notification_msg = str_replace('{img}', '<img src="images/' .  get_string($notification->notification_type . '_picture', 'lips') . '"/>', $notification_msg);
@@ -372,7 +379,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             if($notification->notification_problem != null) {
                 $notification_problem = get_problem_details($notification->notification_problem);
                 $url_problem = new action_link(new moodle_url('view.php', array(
-                    'id' => $this->page->cm->id,
+                    'id' => $lips->instance_link,
                     'view' => 'problem',
                     'problemId' => $notification->notification_problem
                 )),
@@ -384,7 +391,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             if($notification->notification_category != null) {
                 $notification_category = get_category_details($notification->notification_category);
                 $url_category = new action_link(new moodle_url('view.php', array(
-                    'id' => $this->page->cm->id,
+                    'id' => $lips->instance_link,
                     'view' => 'category',
                     'categoryId' => $notification->notification_category
                 )),
@@ -413,11 +420,12 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param int $userid User ID
      * @param string $firstname First name
      * @param string $lastname Last name
+     * @param int $languageid Language ID
      * @return string User link
      */
-    public function display_user_link($userid, $firstname, $lastname) {
+    public function display_user_link($userid, $firstname, $lastname, $languageid= null) {
         $url = new action_link(new moodle_url('view.php', array(
-            'id' => $this->page->cm->id,
+            'id' => (($languageid == null) ? $this->page->cm->id : $languageid),
             'view' => 'profile',
             'id_user' => $userid
         )),
@@ -470,8 +478,10 @@ class mod_lips_renderer extends plugin_renderer_base {
             // Challenge border
             $display .= '<div class="notification-border"></div>';
 
+            $lips = get_instance($challenge->challenge_language);
+
             // Challenge message
-            $challenge_msg = '<div class="challenge-content">' . get_string('challenge_notification', 'lips') . '<br/>{challenge_solve} {challenge_refuse}</div>';
+            $challenge_msg = '<div class="challenge-content"><div class="notification-language">' . get_instance($challenge->challenge_language)->compile_language . '</div>' . get_string('challenge_notification', 'lips') . '<br/>{challenge_solve} {challenge_refuse}</div>';
 
             // Set the date
             $challenge_msg = str_replace('{date}', '<span>' . format_date($challenge->challenge_date) . '</span>', $challenge_msg);
@@ -483,7 +493,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             // Set the challenge_problem
             $challenge_problem = get_problem_details($challenge->challenge_problem);
             $url_problem = new action_link(new moodle_url('view.php', array(
-                'id' => $this->page->cm->id,
+                'id' => $lips->instance_link,
                 'view' => 'problem',
                 'problemId' => $challenge->challenge_problem
             )),
@@ -524,16 +534,19 @@ class mod_lips_renderer extends plugin_renderer_base {
         $display = '';
 
         foreach($challenges as $challenge) {
+
             // Challenge border
             $display .= '<div class="notification-border"></div>';
 
+            $lips = get_instance($challenge->challenge_language);
+
             // Challenge message
-            $challenge_msg = '<div class="challenge-content">' . get_string('challenge_current', 'lips') . '</div>';
+            $challenge_msg = '<div class="challenge-content current"><div class="notification-language">' . get_instance($challenge->challenge_language)->compile_language . '</div><span>' . get_string('challenge_current', 'lips') . '</span></div>';
 
             // Set the challenge_problem
             $challenge_problem = get_problem_details($challenge->challenge_problem);
             $url_problem = new action_link(new moodle_url('view.php', array(
-                'id' => $this->page->cm->id,
+                'id' => $lips->instance_link,
                 'view' => 'problem',
                 'problemId' => $challenge->challenge_problem
             )),
