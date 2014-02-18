@@ -178,9 +178,14 @@ switch ($view) {
     case "deleteProblems" :
         $viewpage = new page_delete_problems($cm);
         break;
+    case "rank" :
+        $viewpage = new page_rank($cm);
+        break;
     case "solutions" :
         $idproblem = optional_param('problemId', 0, PARAM_INT);
-        $viewpage = new page_solutions($cm, $idproblem);
+        if (nb_resolutions_problem($USER->id, $idproblem) > 0 || is_author($idproblem, $USER->id)) {
+            $viewpage = new page_solutions($cm, $idproblem);
+        }
         break;
     default :
         insert_user_if_not_exists();

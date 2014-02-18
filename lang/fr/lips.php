@@ -130,6 +130,8 @@ $string['no_notifications'] = 'Aucune notifications';
 $string['refuse'] = 'Refuser';
 $string['solve'] = 'Résoudre';
 $string['accept'] = 'Accepter';
+$string['Rank'] = 'Classement';
+$string['filter'] = 'Filtrer';
 
 /*--------------------------------------------------
  * Dates

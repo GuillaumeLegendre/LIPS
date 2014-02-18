@@ -94,6 +94,11 @@ h3 {
     margin: 0;
 }
 
+.search-form .fitem_fselect, .search-form .fitem_fselect .fitemtitle, .search-form .fitem_fselect .fselect {
+    display: inline;
+    margin: 0;
+}
+
 .search-form input[type=text] {
     height: 20px;
     width: 30%;

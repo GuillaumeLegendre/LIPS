@@ -106,7 +106,8 @@ function convert_active_tab($view) {
         "problem" => "problems",
         "deleteProblem" => "problems",
         "solutions" => "problems",
-        "deleteProblems" => "problems"
+        "deleteProblems" => "problems",
+        "rank" => "rank"
     );
 
     return $tabs[$view];
@@ -1034,4 +1035,14 @@ function accept_challenge($challengeid) {
             insert_notification($follower->follower, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
         }
     }
+}
+
+/**
+ * Get active languages of plugins lips.
+ *
+ */
+function get_active_languages() {
+    global $DB;
+
+    return $DB->get_records_sql('select compile_language from mdl_lips where compile_language is not null');
 }

@@ -1437,7 +1437,7 @@ class page_problem extends page_view {
         // Modify & Delete button
         $buttonedit = "";
         $buttondelete = "";
-        if (has_role("administration")) {
+        if (has_role("administration") && is_author($this->id, $USER->id)) {
             $buttonedit = $this->lipsoutput->action_link(new moodle_url(""), get_string("edit", "lips"), null, array("class" => "lips-button"));
             $buttondelete = $this->lipsoutput->action_link(new moodle_url(""), get_string("delete", "lips"), null, array("class" => "lips-button"));
         }
@@ -1621,5 +1621,48 @@ class page_export_problems extends page_view {
         } else {
             $exportProblemForm->display();
         }
+    }
+}
+
+/**
+ * Page to view the global rank
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickaël Ohlen
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_rank extends page_view {
+
+    /**
+     * page_rank constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "rank");
+    }
+
+    /**
+     * Display the page_rank content
+     */
+    function display_content() {
+        global $CFG;
+        require_once("$CFG->libdir/tablelib.php");
+        require_once(dirname(__FILE__) . '/rank_table.php');
+        require_once(dirname(__FILE__) . '/mod_lips_filter_form.php');
+
+        // Rank title
+        echo $this->lipsoutput->display_h1(get_string('Rank', 'lips'));
+        $filterform=new mod_lips_filter_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null, 'post', '', array('class' => 'search-form'));
+        if($filterform->is_submitted()) {
+            $data = $filterform->get_submitted_data();
+            $table = new rank_table($this->cm, $data->userSearch);
+        }
+        else {
+            $table = new rank_table($this->cm);
+        }
+        $filterform->display();
+        $table->out(10, true);
     }
 }
