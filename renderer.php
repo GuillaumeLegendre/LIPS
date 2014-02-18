@@ -169,11 +169,13 @@ class mod_lips_renderer extends plugin_renderer_base {
         $iduser = optional_param('id_user', null, PARAM_TEXT);
 
         // Infos
+        $lips = get_current_instance();
         $currentuserdetails = get_user_details(array('id_user_moodle' => $USER->id));
         $userdetails = ($iduser == null) ? $currentuserdetails : get_user_details(array('id' => $iduser));
         $moodleuserdetails = get_moodle_user_details(array('id' => $userdetails->id_user_moodle));
         $rank = get_rank_details(array('id' => $userdetails->user_rank_id));
         $userpicture = get_user_picture_url(array('id_user_moodle' => $moodleuserdetails->id), 'f1');
+        $userstatus = get_user_status($userdetails->id, $lips->id);
 
         $menu = '<div id="profile-menu"><img src="' . $userpicture . '" id="picture"/>';
         if ($iduser != null && $iduser != $currentuserdetails->id) {
@@ -200,7 +202,7 @@ class mod_lips_renderer extends plugin_renderer_base {
 
         $menu .= '<div id="background">
             <div id="infos">
-                <div id="role">' . get_string($userdetails->user_status, 'lips') . '</div>
+                <div id="role">' . get_string($userstatus->user_rights_status, 'lips') . '</div>
                 <div id="rank">' . $rank->rank_label . '</div>
             </div>
             <div id="user">' . ucfirst($moodleuserdetails->firstname) . ' ' . ucfirst($moodleuserdetails->lastname) . '</div>
