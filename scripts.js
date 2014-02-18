@@ -481,10 +481,11 @@ $(document).ready(function () {
                         type: 'POST',
                         data: {
                             action: 'post',
+                            lipsid: $("#hiddenLIPSid").val(),
                             problemid: $("#hiddenProblemid").val(),
                             users: toChallenge
                         },
-                        success: function () {
+                        success: function (info) {
                             $("#notify.notifySuccess").show();
 
                             $("#challenged-players p").each(function(index) {

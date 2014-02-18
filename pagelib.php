@@ -1401,7 +1401,30 @@ class page_problem extends page_view {
 
     function  __construct($cm, $id) {
         parent::__construct($cm, "problem");
+
         $this->id = $id;
+    }
+
+    /**
+     * Display the view
+     */
+    function display() {
+
+        // Manage rights
+        if(problem_exists(array('id' => $this->id))) {
+            $details = get_problem_details($this->id);
+            $categorydetails = get_category_details($details[$this->id]->problem_category_id);
+            $lipsinstance = get_instance($categorydetails->id_language);
+            if($lipsinstance->instance_link != $this->cm->id) {
+                redirect(new moodle_url('view.php', array('id' => $lipsinstance->instance_link, 'view' => 'problem', 'problemId' => $this->id)));
+            }
+        } else {
+            redirect(new moodle_url('view.php', array('id' => $this->cm->id)));
+        }
+
+        parent::display_header();
+        $this->display_content();
+        parent::display_footer();
     }
 
     function display_content() {
@@ -1411,6 +1434,7 @@ class page_problem extends page_view {
         // Problem details
         $lips = get_current_instance();
         $details = get_problem_details($this->id);
+        $categorydetails = get_category_details($details[$this->id]->problem_category_id);
 
         // Redirect if not allowed to see this problem
         if ($details[$this->id]->problem_testing == 1 && $USER->id != $details[$this->id]->problem_creator_id) {
@@ -1445,7 +1469,6 @@ class page_problem extends page_view {
         /*--------------------------------
          *   Left informations
          *------------------------------*/
-        $categorydetails = get_category_details($details[$this->id]->problem_category_id);
 
         // Category documentation
         echo $this->lipsoutput->display_documentation($categorydetails);
@@ -1461,7 +1484,7 @@ class page_problem extends page_view {
         echo $this->lipsoutput->display_problem_information(get_string("problem_author", "lips"), $authorlink);
 
         // Creation date
-        echo $this->lipsoutput->display_problem_information(get_string("problem_date_creation", "lips"), date("d/m/y", $details[$this->id]->problem_date));
+        echo $this->lipsoutput->display_problem_information(get_string("problem_date_creation", "lips"), format_date($details[$this->id]->problem_date, false));
 
         // Number of resolutions
         echo $this->lipsoutput->display_problem_information(get_string("problem_nb_resolutions", "lips"), $details[$this->id]->problem_resolutions . " / " . $details[$this->id]->problem_attempts . " " . get_string("attempts", "lips"));
@@ -1528,6 +1551,7 @@ class page_problem extends page_view {
         // Challenge dialog
         $userid = get_user_details(array("id_user_moodle" => $USER->id))->id;
         echo $this->lipsoutput->display_challenge_dialog($categorydetails->category_name, $details[$this->id]->problem_label, fetch_challenged_users($userid, $this->id));
+        echo '<input type="hidden" id="hiddenLIPSid" value="' . $lips->id . '"/>';
         echo '<input type="hidden" id="hiddenProblemid" value="' . $this->id . '"/>';
     }
 }
