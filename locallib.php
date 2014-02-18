@@ -1115,5 +1115,5 @@ function refuse_challenge($challengeid) {
 function get_active_languages() {
     global $DB;
 
-    return $DB->get_records_sql('select compile_language from mdl_lips where compile_language is not null');
+    return $DB->get_records_sql('select id, compile_language from mdl_lips where compile_language is not null');
 }

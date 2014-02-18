@@ -30,18 +30,37 @@ class rank_table extends table_sql {
     private $cm;
     private $rank = 1;
 
-    public function  __construct($cm, $searchuser = null, $language = null) {
+    public function  __construct($cm, $searchuser = null, $language = null, $category = null) {
         global $USER;
         parent::__construct("mdl_lips_category");
         $this->cm = $cm;
         $conditions = "1";
         if (!empty($searchuser)) {
-            $conditions = "mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'";
+            $conditions = " AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'";
         }
-        $this->set_sql("mlu.id,mlu.user_score, mu.id as id_moodle_user, mu.firstname, mu.lastname, COUNT( DISTINCT(mlps.problem_solved_problem) ) AS nb_problems_solved",
-            " `mdl_lips_user` mlu JOIN mdl_user mu ON mlu.id_user_moodle = mu.id left JOIN mdl_lips_problem_solved mlps on mlps.problem_solved_user=mlu.id_user_moodle",
+        if (!empty($language)) {
+            $conditions .= " AND mlc.id_language=$language";
+        }
+        $this->set_sql("mlu.id,mlu.user_score, mu.id as id_moodle_user, mu.firstname, mu.lastname,
+        COUNT( DISTINCT(mlps.problem_solved_problem) ) AS nb_problems_solved",
+            " `mdl_lips_user` mlu JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
+            left JOIN mdl_lips_problem_solved mlps on mlps.problem_solved_user=mlu.id_user_moodle
+            left JOIN mdl_lips_problem mlp ON mlp.id=mlps.problem_solved_problem
+            left JOIN mdl_lips_category mlc ON mlp.problem_category_id=mlc.id",
             $conditions . " GROUP BY  mlu.id_user_moodle");
-        $this->set_count_sql("SELECT count(*) FROM mdl_lips_user  mlu JOIN mdl_user mu ON mlu.id_user_moodle = mu.id where $conditions");
+        echo "mlu.id,mlu.user_score, mu.id as id_moodle_user, mu.firstname, mu.lastname,
+        COUNT( DISTINCT(mlps.problem_solved_problem) ) AS nb_problems_solved",
+        " `mdl_lips_user` mlu JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
+        left JOIN mdl_lips_problem_solved mlps on mlps.problem_solved_user=mlu.id_user_moodle
+        left JOIN mdl_lips_problem mlp ON mlp.id=mlps.problem_solved_problem
+        left JOIN mdl_lips_category mlc ON mlp.problem_category_id=mlc.id",
+            $conditions . " GROUP BY  mlu.id_user_moodle";
+        $this->set_count_sql("SELECT count(*) FROM mdl_lips_user  mlu
+            JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
+            left JOIN mdl_lips_problem_solved mlps on mlps.problem_solved_user=mlu.id_user_moodle
+            left JOIN mdl_lips_problem mlp ON mlp.id=mlps.problem_solved_problem
+            left JOIN mdl_lips_category mlc ON mlp.problem_category_id=mlc.id
+            where $conditions");
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "problems")));
         $context = context_module::instance($cm->id);
 

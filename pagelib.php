@@ -167,7 +167,7 @@ class page_index extends page_view {
         // Current challenges
         $currentchallengedetails = fetch_challenges(array('challenge_to' => $userdetails->id, 'challenge_state' => 'ACCEPTED'));
         echo $this->lipsoutput->display_h1(get_string('current_challenges', 'lips'));
-        if(count($currentchallengedetails) > 0) {
+        if (count($currentchallengedetails) > 0) {
             echo $this->lipsoutput->display_current_challenges($currentchallengedetails);
         } else {
             echo $this->lipsoutput->display_p(get_string('no_challenges', 'lips'));
@@ -176,7 +176,7 @@ class page_index extends page_view {
         // Received challenges
         $receivedchallengedetails = fetch_challenges(array('challenge_to' => $userdetails->id, 'challenge_state' => 'WAITING'));
         echo $this->lipsoutput->display_h1(get_string('challenges', 'lips'), array("style" => "margin-top: 15px"));
-        if(count($receivedchallengedetails) > 0) {
+        if (count($receivedchallengedetails) > 0) {
             echo $this->lipsoutput->display_challenges($receivedchallengedetails);
         } else {
             echo $this->lipsoutput->display_p(get_string('no_challenges', 'lips'));
@@ -1272,7 +1272,7 @@ class page_delete_problems extends page_view {
     function display_content() {
         global $CFG;
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
-        $message="";
+        $message = "";
         $serializedcategories = optional_param("categories", null, PARAM_TEXT);
         $count = 0;
         foreach (unserialize($serializedcategories) as $category) {
@@ -1286,7 +1286,7 @@ class page_delete_problems extends page_view {
         }
         $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'categories' => $serializedcategories, 'action' => 'deleteProblems'));
         $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_category_select_delete'));
-        echo $this->lipsoutput->confirm($title.$message, $continueurl, $cancelurl);
+        echo $this->lipsoutput->confirm($title . $message, $continueurl, $cancelurl);
     }
 }
 
@@ -1411,11 +1411,11 @@ class page_problem extends page_view {
     function display() {
 
         // Manage rights
-        if(problem_exists(array('id' => $this->id))) {
+        if (problem_exists(array('id' => $this->id))) {
             $details = get_problem_details($this->id);
             $categorydetails = get_category_details($details[$this->id]->problem_category_id);
             $lipsinstance = get_instance($categorydetails->id_language);
-            if($lipsinstance->instance_link != $this->cm->id) {
+            if ($lipsinstance->instance_link != $this->cm->id) {
                 redirect(new moodle_url('view.php', array('id' => $lipsinstance->instance_link, 'view' => 'problem', 'problemId' => $this->id)));
             }
         } else {
@@ -1678,14 +1678,24 @@ class page_rank extends page_view {
 
         // Rank title
         echo $this->lipsoutput->display_h1(get_string('Rank', 'lips'));
-        $filterform=new mod_lips_filter_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null, 'post', '', array('class' => 'search-form'));
-        if($filterform->is_submitted()) {
+        $filterform = new mod_lips_filter_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null, 'post', '', array('class' => 'search-form'));
+        $usersearch = null;
+        $instance_id_js = null;
+        $category_id_js = null;
+        if ($filterform->is_submitted()) {
             $data = $filterform->get_submitted_data();
-            $table = new rank_table($this->cm, $data->userSearch);
+            print_object($data);
+            if (!empty($data->userSearch)) {
+                $usersearch = $data->userSearch;
+            }
+            if ($data->language_id_js != "all") {
+                $instance_id_js = $data->language_id_js;
+            }
+            if ($data->category_id_js != "all") {
+                $category_id_js = $data->category_id_js;
+            }
         }
-        else {
-            $table = new rank_table($this->cm);
-        }
+        $table = new rank_table($this->cm, $usersearch, $instance_id_js, $category_id_js);
         $filterform->display();
         $table->out(10, true);
     }

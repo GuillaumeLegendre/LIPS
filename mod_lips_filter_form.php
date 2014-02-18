@@ -23,11 +23,12 @@ class mod_lips_filter_form extends moodleform {
         $activelanguages = array();
         $activelanguages["all"] = "Tout";
         foreach (get_active_languages() as $language) {
-            $activelanguages[$language->compile_language] = $language->compile_language;
+            $activelanguages[$language->id] = $language->compile_language;
         }
         // Header
         $mform->addElement('header', 'headerSearch', get_string('filter', 'lips'));
-        $mform->addElement('select', 'problem_category_id', null, $activelanguages);
+        $mform->addElement('select', 'language_id_js', null, $activelanguages);
+        $mform->addElement('select', 'category_id_js', null, $activelanguages);
 
         // Input search
         $mform->addElement('text', 'userSearch', null, array('placeholder' => get_string("user", "lips")));

@@ -454,6 +454,17 @@ $(document).ready(function () {
         });
     }
 
+    $("#id_language_id_js").change(function () {
+        $.getJSON("./get_categories_by_instance.php", {id: $(this).val(), ajax: 'true'}, function (j) {
+            var options = '';
+            options += "<option value='all'> Tout </option>";
+            $.each(j, function (key, val) {
+                options += '<option value="' + val.id + '">' +val.category_name + '</option>';
+            });
+            $("#id_category_id_js").html(options);
+        })
+    });
+
     /*---------------------------------
      *  Autocomplete on users to challenge
      *-------------------------------*/
