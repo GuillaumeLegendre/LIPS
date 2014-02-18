@@ -1608,7 +1608,7 @@ class page_problem extends page_view {
 }
 
 /**
- * Page to import problems
+ * Confirmation page to redirect on Moodle restore course in order to import problems.
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
@@ -1617,7 +1617,7 @@ class page_problem extends page_view {
  */
 class page_import_problems extends page_view {
 
-    /**
+     /**
      * page_import_problems constructor
      *
      * @param object $cm Moodle context
@@ -1630,31 +1630,23 @@ class page_import_problems extends page_view {
      * Display the page_import_problems content
      */
     function display_content() {
-        global $CFG, $PAGE;
-        require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
+        global $PAGE;
 
-        // Administration title
-        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+        $context = $PAGE->context;
+        $coursecontext = $context->get_course_context();
 
-        // Administration menu
-        echo $this->lipsoutput->display_administration_menu();
+        // Moodle restore view.
+        $continueurl = new moodle_url('../../backup/restorefile.php', array('contextid'=>$coursecontext->id));
+        $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => "administration"));
 
-        // Import a problem
-        echo $this->lipsoutput->display_h2(get_string('administration_problems_import_title', 'lips'));
+        $message = $this->lipsoutput->display_h2(get_string('administration_problems_import_confirmation', 'lips'));
 
-        $importProblemForm = new mod_lips_problems_import_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problems_import')), null, 'post');
-
-        if ($importProblemForm->is_submitted()) {
-            $importProblemForm->handle($this->cm->instance);
-            $importProblemForm->display();
-        } else {
-            $importProblemForm->display();
-        }
+        echo $this->lipsoutput->confirm($message, $continueurl, $cancelurl);
     }
 }
 
 /**
- * Page to export problems
+ * Confirmation page to redirect on Moodle backup course in order to export problems.
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
@@ -1676,26 +1668,20 @@ class page_export_problems extends page_view {
      * Display the page_export_problems content
      */
     function display_content() {
-        global $CFG, $PAGE;
-        require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
+        global $PAGE;
 
-        // Administration title
-        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+        $context = $PAGE->context;
+        $coursecontext = $context->get_course_context();
+        $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);
 
-        // Administration menu
-        echo $this->lipsoutput->display_administration_menu();
+        // Moodle backup view only for the lips instance.
+        $continueurl = new moodle_url('../../backup/backup.php', array('id'=>$coursecontext->instanceid, 'cm'=>$cm->id));
+        
+        $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => "administration"));
 
-        // Export a problem
-        echo $this->lipsoutput->display_h2(get_string('administration_problems_export_title', 'lips'));
+        $message = $this->lipsoutput->display_h2(get_string('administration_problems_export_confirmation', 'lips'));
 
-        $exportProblemForm = new mod_lips_problems_export_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problems_export')), null, 'post');
-
-        if ($exportProblemForm->is_submitted()) {
-            $exportProblemForm->handle($this->cm->instance);
-            $exportProblemForm->display();
-        } else {
-            $exportProblemForm->display();
-        }
+        echo $this->lipsoutput->confirm($message, $continueurl, $cancelurl);
     }
 }
 
