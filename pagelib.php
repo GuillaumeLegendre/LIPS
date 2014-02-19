@@ -1068,8 +1068,10 @@ class page_profile_challenges extends page_view {
     function display_content() {
         global $USER;
 
-        require_once(dirname(__FILE__) . '/challenges_table.php');
-        require_once(dirname(__FILE__) . '/mod_lips_challenges_search_form.php');
+        require_once(dirname(__FILE__) . '/received_challenges_table.php');
+        require_once(dirname(__FILE__) . '/sent_challenges_table.php');
+        require_once(dirname(__FILE__) . '/mod_lips_received_challenges_search_form.php');
+        require_once(dirname(__FILE__) . '/mod_lips_sent_challenges_search_form.php');
 
         echo $this->lipsoutput->display_profile_menu('challenges') . '<br/>';
 
@@ -1077,46 +1079,69 @@ class page_profile_challenges extends page_view {
         $iduser = optional_param('id_user', null, PARAM_TEXT);
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
 
-        // Search form
+        // Search form for received challenges
         if ($iduser == null) {
-            $searchForm = new mod_lips_challenges_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges')), null, 'post', '', array('class' => 'search-form'));
+            $receivedSearchForm = new mod_lips_received_challenges_search_form(
+                new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges')), null, 'post', '', array('class' => 'search-form'));
         } else {
-            $searchForm = new mod_lips_challenges_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges', 'id_user' => $iduser)), null, 'post', '', array('class' => 'search-form'));
+            $receivedSearchForm = new mod_lips_received_challenges_search_form(
+                new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges', 'id_user' => $iduser)), null, 'post', '', array('class' => 'search-form'));
         }
-        $searchForm->display();
 
         // Search result
-        $search = new stdClass();
-        if ($searchForm->is_submitted()) {
-            $data = $searchForm->get_submitted_data();
+        $receivedsearch = new stdClass();
+        if ($receivedSearchForm->is_submitted()) {
+            $data = $receivedSearchForm->get_submitted_data();
             if (!empty($data->problemInputSearch)) {
-                $search->problem = $data->problemInputSearch;
+                $receivedsearch->problem = $data->problemInputSearch;
             }
             if (!empty($data->authorInputSearch)) {
-                $search->author = $data->authorInputSearch;
+                $receivedsearch->author = $data->authorInputSearch;
             }
         }
 
         // Received challenges table
         echo $this->lipsoutput->display_h1(get_string('received_challenges', 'lips'));
+        $receivedSearchForm->display();
 
         if ($iduser == null || $iduser == $userdetails->id) {
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-            $receivedchallengestable = new challenges_table($this->cm, $userdetails->id, true, $search, true);
+            $receivedchallengestable = new received_challenges_table($this->cm, $userdetails->id, true, $receivedsearch);
         } else {
-            $receivedchallengestable = new challenges_table($this->cm, $iduser, false, $search, true);
+            $receivedchallengestable = new received_challenges_table($this->cm, $iduser, false, $receivedsearch);
         }
         $receivedchallengestable->out(get_string('challenges_table', 'lips'), true);
 
-        // Sent challenges table
+        // Search form for sent challenges
+        if ($iduser == null) {
+            $sentSearchForm = new mod_lips_sent_challenges_search_form(
+                new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges')), null, 'post', '', array('class' => 'search-form'));
+        } else {
+            $sentSearchForm = new mod_lips_challenges_search_form(
+                new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges', 'id_user' => $iduser)), null, 'post', '', array('class' => 'search-form'));
+        }
 
+        // Search result
+        $sentsearch = new stdClass();
+        if ($sentSearchForm->is_submitted()) {
+            $data = $sentSearchForm->get_submitted_data();
+            if (!empty($data->problemInputSearch)) {
+                $sentsearch->problem = $data->problemInputSearch;
+            }
+            if (!empty($data->authorInputSearch)) {
+                $sentsearch->author = $data->authorInputSearch;
+            }
+        }
+
+        // Sent challenges table
         echo '<br/>' . $this->lipsoutput->display_h1(get_string('sent_challenges', 'lips'));
+        $sentSearchForm->display();
 
         if ($iduser == null || $iduser == $userdetails->id) {
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-            $sentchallengestable = new challenges_table($this->cm, $userdetails->id, true, $search, false);
+            $sentchallengestable = new sent_challenges_table($this->cm, $userdetails->id, true, $sentsearch);
         } else {
-            $sentchallengestable = new challenges_table($this->cm, $iduser, false, $search, false);
+            $sentchallengestable = new sent_challenges_table($this->cm, $iduser, false, $sentsearch);
         }
         $sentchallengestable->out(get_string('challenges_table', 'lips'), true);
     }
