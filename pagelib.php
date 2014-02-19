@@ -1535,7 +1535,7 @@ class page_problem extends page_view {
     function display() {
 
         // Manage rights
-        if (problem_exists(array('id' => $this->id))) {
+        if (problem_exists_for_conditions(array('id' => $this->id))) {
             $details = get_problem_details($this->id);
             $categorydetails = get_category_details($details[$this->id]->problem_category_id);
             $lipsinstance = get_instance($categorydetails->id_language);

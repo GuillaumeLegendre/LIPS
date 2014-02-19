@@ -977,6 +977,23 @@ function problem_exists($problemlabel, $categoryid) {
     return false;
 }
 
+
+/**
+ * Test if the problem already exists using the specified condition.
+ *
+ * @param array $conditions An array of conditions for the sql request
+ * @return bool True if the problem already exists, otherwise false
+ */
+function problem_exists_for_conditions($conditions) {
+    global $DB;
+
+    if ($DB->count_records('lips_problem', $conditions) > 0) {
+        return true;
+    }
+
+    return false;
+}
+
 /*
  * Fetch challenged users
  *
