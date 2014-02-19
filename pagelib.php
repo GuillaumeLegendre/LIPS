@@ -751,21 +751,11 @@ class page_admin_problem_delete extends page_view {
     }
 
     /**
-     * Display the page_admin_problem_delete content
+     * Display the view
      */
-    function display_content() {
+    function display() {
         global $CFG;
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
-
-        // Administration title
-        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
-
-        // Administration menu
-        echo $this->lipsoutput->display_administration_menu();
-
-        // Delete a problem
-        echo $this->lipsoutput->display_h2(get_string('administration_problem_delete_title', 'lips'));
-
         $deleteProblemForm = new mod_lips_problems_delete_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problems_delete', 'idcategory' => $this->idcategory)), array('idcategory' => $this->idcategory), 'post');
         if ($deleteProblemForm->is_submitted()) {
             $categories = array();
@@ -775,8 +765,28 @@ class page_admin_problem_delete extends page_view {
                 }
             }
             redirect(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'deleteProblems', 'categories' => serialize($categories))));
+            return;
         }
+        parent::display_header();
+        $this->display_content();
         $deleteProblemForm->display();
+        parent::display_footer();
+    }
+
+    /**
+     * Display the page_admin_problem_delete content
+     */
+    function display_content() {
+
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Delete a problem
+        echo $this->lipsoutput->display_h2(get_string('administration_problem_delete_title', 'lips'));
     }
 }
 
