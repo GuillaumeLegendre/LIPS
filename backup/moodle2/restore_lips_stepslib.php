@@ -51,17 +51,20 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         $data = (object)$data;
         $oldid = $data->id;
 
-        $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);
-        $this->mod_id = $cm->id;
+// TODO : Do not create a new lips instance if one already exists in the current courses
 
-        $sql = "
-            SELECT count(*)
-            FROM mdl_course_modules cm
-            JOIN mdl_modules md ON md.id = cm.module
-            WHERE cm.id = " . $this->mod_id . " AND md.name = 'lips'";
+        // $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);
+        // $this->mod_id = $cm->id;
+
+        // $sql = "
+        //     SELECT count(*)
+        //     FROM mdl_course_modules cm
+        //     JOIN mdl_modules md ON md.id = cm.module
+        //     JOIN mdl_lips lips ON cm.instance = lips.id
+        //     WHERE lips.course = " . $currentcourseid . " AND md.name = 'lips'";
 
          // We create a new lips instance : the current course has no instance for lips.
-        if (!$DB->count_records_sql($sql)) {
+        // if (!$DB->count_records_sql($sql)) {
 
             $data->course = $this->get_courseid();
 
@@ -71,8 +74,16 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
             // Insert the lips record in db.
             $newitemid = $DB->insert_record('lips', $data);
             $this->apply_activity_instance($newitemid);
-            $this->mod_id = $newitemid;
-        }
+
+            // Get 
+            $sql = "
+            SELECT cm.id
+            FROM mdl_course_modules cm, mdl_lips lips
+            WHERE lips.id = " . $newitemid . "
+            AND lips.id = cm.instance";
+
+            $this->mod_id = $DB->get_record_sql($sql)->id;
+        // }
     }
 
     /**
