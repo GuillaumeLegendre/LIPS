@@ -1631,8 +1631,8 @@ class page_problem extends page_view {
         // echo '<div id="answerEditor" class="ace">' . htmlspecialchars($details[$this->id]->problem_code) . '</div>';
 
         // echo '<br/><center><a href="#" class="lips-button">' . get_string('send_response', 'lips') . '</a></center>';
+        $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'get', '', array('class' => 'solve-button'));
 
-        $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'get');
         if ($formanswer->is_submitted()) {
             $data = $formanswer->get_data();
             $languages = lips_rest_interface_impl::execute($data->problem_answer);

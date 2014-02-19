@@ -122,6 +122,29 @@ h3 {
     display: none;
 }
 
+.solve-button {
+    width: 90%;
+}
+
+.solve-button #answerEditor {
+    width: 100%;
+}
+
+.solve-button fieldset, .solve-button fieldset div, .solve-button #fitem_id_submit .fsubmit {
+    margin: 0;
+    padding: 0;
+}
+
+.solve-button fieldset div #fitem_id_problem_answer {
+    line-height: 0px;
+    margin: 0;
+    padding: 0;
+}
+
+.solve-button #fitem_id_submit {
+    text-align: left;
+}
+
 /*---------------------------------
  *  Button
  *-------------------------------*/
