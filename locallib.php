@@ -125,7 +125,8 @@ function convert_active_tab($view) {
         "deleteProblem" => "problems",
         "solutions" => "problems",
         "deleteProblems" => "problems",
-        "rank" => "rank"
+        "rank" => "rank",
+        "cancelChallenge" => "profile"
     );
 
     return $tabs[$view];

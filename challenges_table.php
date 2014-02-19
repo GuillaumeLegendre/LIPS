@@ -101,10 +101,10 @@ class challenges_table extends table_sql {
 
         $userinfoheader = ($received)?get_string('challenge_author', 'lips'):get_string('challenge_challenged', 'lips');
 
-        $this->define_headers(array(get_string('problem', 'lips'), get_string('category', 'lips'), get_string('difficulty', 'lips'),
-        	$userinfoheader, get_string('state', 'lips')));
-        
-        $this->define_columns(array("problem_label", "category_name", "difficulty", "challenge_author", "state"));
+        $this->define_headers(array(get_string('language', 'lips'), get_string('problem', 'lips'), get_string('category', 'lips'),
+            get_string('difficulty', 'lips'), $userinfoheader, get_string('state', 'lips')));
+       
+        $this->define_columns(array("language", "problem_label", "category_name", "difficulty", "challenge_author", "state"));
 
         $this->sortable(true);
     }
@@ -113,38 +113,60 @@ class challenges_table extends table_sql {
         global $OUTPUT, $PAGE;
 
         switch ($colname) {
+            case 'language' :
+                $moddetails = get_instance($attempt->id);
+                if (!empty($moddetails->compile_language)) {
+                    return $moddetails->compile_language;
+                }
+                return "";
+                break;
         	case 'difficulty':
         		return get_string($attempt->difficulty_label, 'lips');
         		break;
             case 'challenge_author':
-                return "<p>$attempt->firstname $attempt->lastname</p>";
+                return "$attempt->firstname $attempt->lastname";
                 break;
             case 'state':
-            	if ($this->owner && $this->received) {
-            		switch ($attempt->challenge_state) {
+            	if ($this->owner) {
+                	switch ($attempt->challenge_state) {
             			// Problem is in WAITING state.
             			case 'WAITING':
-            				
-            				$url_accept = new action_link(new moodle_url('action.php', array(
-		                        'id' => $this->cm->id,
-		                        'action' => 'accept_challenge',
-		                        'originV' => 'profile',
-		                        'originAction' => 'challenges',
-		                        'challenge_id' => $attempt->id
-		                    )),
-		                    get_string('accept', 'lips'), null, array("class" => "lips-button"));
+                            // Challenges reception
+                            if ($this->received) {
+                                $url_accept = new action_link(new moodle_url('action.php', array(
+                                    'id' => $this->cm->id,
+                                    'action' => 'accept_challenge',
+                                    'originV' => 'profile',
+                                    'originAction' => 'challenges',
+                                    'challenge_id' => $attempt->id
+                                )),
+                                get_string('accept', 'lips'), null, array("class" => "lips-button"));
 
-		                	$url_refuse = new action_link(new moodle_url('action.php', array(
-		                        'id' => $this->cm->id,
-		                        'action' => 'refuse_challenge',
-		                        'originV' => 'profile',
-		                        'originAction' => 'challenges',
-		                        'challenge_id' => $attempt->id
-		                    )),
-		                    get_string('refuse', 'lips'), null, array("class" => "lips-button"));
+                                $url_refuse = new action_link(new moodle_url('action.php', array(
+                                    'id' => $this->cm->id,
+                                    'action' => 'refuse_challenge',
+                                    'originV' => 'profile',
+                                    'originAction' => 'challenges',
+                                    'challenge_id' => $attempt->id
+                                )),
+                                get_string('refuse', 'lips'), null, array("class" => "lips-button"));
 
-	                		return $OUTPUT->render($url_accept) . $OUTPUT->render($url_refuse);
-	                		break;
+                                return $OUTPUT->render($url_accept) . $OUTPUT->render($url_refuse);
+                            }
+                            // Sent challenges
+                            else {
+                                $url_cancel = new action_link(new moodle_url('view.php', array(
+                                    'id' => $this->cm->id,
+                                    'view' => 'cancelChallenge',
+                                    'challengeid' => $attempt->id,
+                                    'originV' => 'profile',
+                                    'originAction' => 'challenges'
+                                )),
+                                get_string('cancel', 'lips'), null, array("class" => "lips-button"));
+
+                                return $OUTPUT->render($url_cancel);
+                            }
+                                break;
 
             			// Problem is in ACCEPTED state.
             			case 'ACCEPTED':
@@ -154,11 +176,11 @@ class challenges_table extends table_sql {
 
             			// Problem is in REFUSED state.
             			case 'REFUSED':
-            				return $attempt->challenge_state;
+            				return get_string($attempt->challenge_state, 'lips');
             				break;
-		                }
+                    }
             	} else {
-	                return $attempt->challenge_state;
+	                return get_string($attempt->challenge_state, 'lips');
 	            }
 	            break;
         }

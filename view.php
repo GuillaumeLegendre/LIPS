@@ -187,6 +187,12 @@ switch ($view) {
             $viewpage = new page_solutions($cm, $idproblem);
         }
         break;
+    case "cancelChallenge" :
+        $idChallenge = optional_param('challengeid', 0, PARAM_INT);
+        $originv = optional_param('originV', 0, PARAM_TEXT);
+        $originaction = optional_param('originAction', 0, PARAM_TEXT);
+        $viewpage = new page_cancel_challenge($cm, $idChallenge, $originv, $originaction);
+        break;
     default :
         insert_user_if_not_exists();
 

@@ -189,6 +189,15 @@ switch ($action) {
 
         redirect(new moodle_url('view.php', array('id' => $cm->id)));
         break;
+
+    case 'cancel_challenge':
+        $challengeid = optional_param('challenge_id', 0, PARAM_INT);
+
+        // Cancel the challenge
+        cancel_challenge($challengeid);
+
+        redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        break;
 }
 
 redirect(new moodle_url('view.php', array('id' => $cm->id)));
