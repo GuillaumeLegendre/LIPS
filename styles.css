@@ -146,6 +146,10 @@ h3 {
     text-decoration: none;
 }
 
+.lips-button.margin-right {
+    margin-right: 15px;
+}
+
 /*---------------------------------
  *  Problems
  *-------------------------------*/

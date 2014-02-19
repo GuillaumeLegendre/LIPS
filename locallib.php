@@ -502,7 +502,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
     global $DB, $USER;
 
     // Category
-    $DB->insert_record('lips_category', array(
+    $categoryid = $DB->insert_record('lips_category', array(
         'id_language' => $idlanguage,
         'category_name' => $categoryname,
         'category_documentation' => $categorydocumentation,
@@ -511,11 +511,11 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
 
     // Notifications
     $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-    insert_notification($idlanguage, $userdetails->id, 'notification_category_created', time(), $userdetails->id, 0, null, get_category_details_array(array('category_name' => $categoryname))->id);
+    insert_notification($idlanguage, $userdetails->id, 'notification_category_created', time(), $userdetails->id, 0, null, $categoryid);
     $followers = fetch_followers($userdetails->id);
 
     foreach($followers as $follower) {
-        insert_notification($idlanguage, $follower->follower, 'notification_category_created', time(), $userdetails->id, 0, null, get_category_details_array(array('category_name' => $categoryname))->id);
+        insert_notification($idlanguage, $follower->follower, 'notification_category_created', time(), $userdetails->id, 0, null, $categoryid);
     }
 }
 
@@ -642,7 +642,7 @@ function fetch_problems($userid) {
 
     $lips = get_current_instance();
     
-    return $DB->get_records_sql('SELECT * FROM mdl_lips_problem mlp, mdl_lips_category mlc
+    return $DB->get_records_sql('SELECT mlp.id, problem_label FROM mdl_lips_problem mlp, mdl_lips_category mlc
         WHERE mlp.problem_category_id = mlc.id
         AND problem_creator_id = ' . $userid . ' 
         AND mlc.id_language = ' . $lips->id);
@@ -868,7 +868,7 @@ function problem_similar_exist($mainproblemid, $problemsimilarid) {
  */
 function fetch_notifications_details($conditions) {
     global $DB;
-
+    
     return $DB->get_records_sql('SELECT * FROM mdl_lips_notification 
         WHERE ' . $conditions . ' 
         ORDER BY notification_date DESC 
@@ -1178,6 +1178,29 @@ function refuse_challenge($challengeid) {
 }
 
 /**
+ * Cancel the challenge
+ *
+ * @param int $challengeid Challenge ID
+ */
+function cancel_challenge($challengeid) {
+    global $DB;
+
+    // Challenge details
+    $challengedetails = get_challenge_details(array('id' => $challengeid));
+
+    // Delete notifications
+    $DB->delete_records('lips_notification', array(
+        'notification_language' => $challengedetails->challenge_language,
+        'notification_type' => 'notification_challenge',
+        'notification_from' => $challengedetails->challenge_from,
+        'notification_to' => $challengedetails->challenge_to
+    ));
+
+    // Delete the challenge
+    $DB->delete_records('lips_challenge', array('id' => $challengeid));
+}
+
+/**
  * Get active languages of plugins lips.
  *
  */
@@ -1193,6 +1216,7 @@ function get_active_languages() {
  */
 function get_categories_by_instance($instanceid) {
     global $DB;
+
     $categories = $DB->get_records('lips_category', array('id_language' => $instanceid));
 }
 
@@ -1208,4 +1232,38 @@ function get_code_to_resolve($idproblem) {
     $basecode=preg_replace("|(<lips-preconfig-code/>)|U", $codes->problem_code,$basecode );
     $basecode=preg_replace("|(<lips-preconfig-tests/>)|U", $codes->problem_unit_tests,$basecode );
     return $basecode;
+}
+
+/*
+ * User rank in a specific language
+ *
+ * @param int $languageid Language ID
+ * @return int position
+ */
+function user_rank_for_language($languageid) {
+    global $DB, $USER;
+
+    // User details
+    $currentuser = get_user_details(array('id_user_moodle' => $USER->id));
+
+    // Scores on a language
+    $scores = $DB->get_records_sql('SELECT * FROM mdl_lips_score WHERE score_instance = ' . $languageid . ' ORDER BY score_score DESC');
+
+    $pos = 1;
+    foreach($scores as $score) {
+        if($score->score_user == $currentuser->id) {
+            return $pos;
+        }
+
+        $pos++;
+    }
+}
+
+/**
+ * Number of users
+ *
+ * @return int number of users
+ */
+function number_of_users() {
+    return $DB->count_records('lips_user');
 }

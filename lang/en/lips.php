@@ -337,4 +337,4 @@ $string['problem_resolved_by'] = 'Solved by';
 $string['problem_owner'] = 'You create this problem';
 $string['problem_testing_picture'] = 'Problem in testing mode';
 $string['problem_testing_info'] = 'This problem is in <strong>Testing</strong> mode. You can go to <strong>Display</strong> mode by going in <strong>Administration > Problems > My problems</strong>.';
-$string['problem_challenge_success'] = 'The selected users has been challenged';
+$string['problem_challenge_success'] = 'The selected users have been challenged';

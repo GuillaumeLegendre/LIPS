@@ -142,7 +142,7 @@ class challenges_table extends table_sql {
                                     'originAction' => 'challenges',
                                     'challenge_id' => $attempt->id
                                 )),
-                                get_string('accept', 'lips'), null, array("class" => "lips-button"));
+                                get_string('accept', 'lips'), null, array("class" => "lips-button margin-right"));
 
                                 $url_refuse = new action_link(new moodle_url('action.php', array(
                                     'id' => $this->cm->id,
@@ -155,6 +155,7 @@ class challenges_table extends table_sql {
 
                                 return $OUTPUT->render($url_accept) . $OUTPUT->render($url_refuse);
                             }
+                            
                             // Sent challenges
                             else {
                                 $url_cancel = new action_link(new moodle_url('view.php', array(

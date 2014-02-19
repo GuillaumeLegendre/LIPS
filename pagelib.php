@@ -609,8 +609,7 @@ class page_admin_problem_modify extends page_view {
     }
 
     /**
-     * Display the page_admin_problem
-     * _modify content
+     * Display the page_admin_problem_modify content
      */
     function display_content() {
         global $CFG;
@@ -887,6 +886,8 @@ class page_admin_my_problems extends page_view {
         $lips = get_current_instance();
         $table = new my_problems_table($this->cm, $lips->id, $USER->id);
         $table->out(get_string('my_problems_table', 'lips'), true);
+
+        echo '<br/><br/><br/><br/><br/>';
     }
 }
 
@@ -1005,7 +1006,10 @@ class page_profile_ranks extends page_view {
     function display_content() {
         echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
 
-        echo 'Challenges';
+        echo $this->lipsoutput->display_h1(get_string('ranks', 'lips'));
+
+        $lips = get_current_instance();
+        echo user_rank_for_language($lips->id);
     }
 }
 
@@ -1145,7 +1149,7 @@ class page_cancel_challenge extends page_view {
     function display_content() {
         $message = $this->lipsoutput->display_h2(get_string('administration_cancel_challenge_confirmation', 'lips'));
 
-        $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view, 'originV' => $this->originv, 'originAction' => $this->originaction, 'challengeId' => $this->idChallenge));
+        $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'action' => 'cancel_challenge', 'originV' => $this->originv, 'originAction' => $this->originaction, 'challengeId' => $this->idChallenge));
         $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => "profile", 'action' => "challenges"));
 
         echo $this->lipsoutput->confirm($message, $continueurl, $cancelurl);
@@ -1229,7 +1233,7 @@ class page_category extends page_view {
     private $id;
 
     /**
-     * page_profil constructor
+     * page_category constructor
      *
      * @param object $cm Moodle context
      */
@@ -1558,8 +1562,8 @@ class page_problem extends page_view {
         $buttonedit = "";
         $buttondelete = "";
         if (has_role("administration") && is_author($this->id, $USER->id)) {
-            $buttonedit = $this->lipsoutput->action_link(new moodle_url(""), get_string("edit", "lips"), null, array("class" => "lips-button"));
-            $buttondelete = $this->lipsoutput->action_link(new moodle_url(""), get_string("delete", "lips"), null, array("class" => "lips-button"));
+            $buttonedit = $this->lipsoutput->action_link(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_modify', 'problemId' => $this->id)), get_string("edit", "lips"), null, array("class" => "lips-button"));
+            $buttondelete = $this->lipsoutput->action_link(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'deleteProblem', 'problemId' => $this->id, 'originV' => 'problem')), get_string("delete", "lips"), null, array("class" => "lips-button"));
         }
 
         /*--------------------------------

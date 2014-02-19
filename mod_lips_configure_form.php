@@ -45,7 +45,6 @@ class mod_lips_configure_language_form extends moodleform {
             echo $PAGE->get_renderer('mod_lips')->display_notification(
                 get_string('web_service_communication_error', 'lips'), 'ERROR');
         } else {
-            print_object($languages);
             $mform->addElement('select', 'selectLanguage',
                 get_string('administration_language_form_select', 'lips'), $languages);
             $mform->addRule('selectLanguage',

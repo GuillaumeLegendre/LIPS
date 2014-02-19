@@ -108,8 +108,8 @@ class my_problems_table extends table_sql {
             case 'actions':
                 $context = context_module::instance($this->cm->id);
 
-                $actions = $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_modify', "problem_id" => $attempt->id)), new pix_icon("t/edit", "edit"));
-                $actions .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_delete', "problem_id" => $attempt->id)), new pix_icon("t/delete", "delete"));
+                $actions = $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_modify', "problemId" => $attempt->id)), new pix_icon("t/edit", "edit"));
+                $actions .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'deleteProblem', "problemId" => $attempt->id, 'originV' => 'administration', 'originAction' => 'my_problems')), new pix_icon("t/delete", "delete"));
 
                 return $actions;
                 break;

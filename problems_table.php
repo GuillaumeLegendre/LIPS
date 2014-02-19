@@ -88,8 +88,8 @@ class problems_table extends table_sql {
                 $a = "";
 
                 if (has_capability('mod/lips:administration', $context) && is_author($attempt->id, $USER->id)) {
-                    $a = $OUTPUT->action_icon(new moodle_url("action.php", array('id' => $this->cm->id, 'action' => 'editProblem', 'problemId' => $attempt->id, "originV" => "problems")), new pix_icon("t/edit", "edit"));
-                    $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $PAGE->cm->id, 'view' => 'deleteProblem', 'problemId' => $attempt->id, 'originV' => "category", "categoryId" => $attempt->problem_category_id)), new pix_icon("t/delete", "delete"));
+                    $a = $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_modify', 'problemId' => $attempt->id)), new pix_icon("t/edit", "edit"));
+                    $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'deleteProblem', 'problemId' => $attempt->id, 'originV' => "category", "categoryId" => $attempt->problem_category_id)), new pix_icon("t/delete", "delete"));
                 }
 
                 return $a;

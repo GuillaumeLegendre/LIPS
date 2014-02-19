@@ -92,7 +92,11 @@ switch ($action) {
                 redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'categoryId' => $categoryid)));
             }
             if ($originaction == null) {
-                redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+                if($originv == 'problem') {
+                    redirect(new moodle_url('view.php', array('id' => $cm->id)));
+                } else {
+                    redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
+                }
             } else {
                 redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
             }
@@ -108,6 +112,7 @@ switch ($action) {
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'problem_category_select_delete')));
         }
         break;
+        
     case 'follow':
         $tofollow = optional_param('to_follow', 0, PARAM_INT);
         $originuser = optional_param('originUser', null, PARAM_TEXT);
@@ -178,7 +183,11 @@ switch ($action) {
         // Accept the challenge
         accept_challenge($challengeid);
 
-        redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        if ($originv == null && $originaction == null) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        } else {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+        }
         break;
 
     case 'refuse_challenge':
@@ -187,16 +196,24 @@ switch ($action) {
         // Accept the challenge
         refuse_challenge($challengeid);
 
-        redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        if ($originv == null && $originaction == null) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        } else {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+        }
         break;
 
     case 'cancel_challenge':
-        $challengeid = optional_param('challenge_id', 0, PARAM_INT);
+        $challengeid = optional_param('challengeId', 0, PARAM_INT);
 
         // Cancel the challenge
         cancel_challenge($challengeid);
 
-        redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        if ($originv == null && $originaction == null) {
+            redirect(new moodle_url('view.php', array('id' => $cm->id)));
+        } else {
+            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'action' => $originaction)));
+        }
         break;
 }
 

@@ -1,8 +1,5 @@
 // JavaScript Document
 
-var openingTag = "<code>";
-var endingTag = "</code>";
-
 // Create a ace editor
 window.createAce = function (editorid, areaid, mode, theme, flag) {
 
