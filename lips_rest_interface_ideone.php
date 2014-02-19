@@ -16,9 +16,9 @@
 
 require_once(dirname(__FILE__) . '/lips_rest_interface.php');
 
-class lips_rest_interface_impl implements lips_rest_interface {
+class lips_rest_interface_ideone implements lips_rest_interface {
 
-    public static function execute($source) {
+    public static function execute($source, $language) {
         // creating soap client
         $client = new SoapClient("http://ideone.com/api/1/service.wsdl");
         // calling test function
@@ -30,26 +30,25 @@ class lips_rest_interface_impl implements lips_rest_interface {
             $res = $client->getSubmissionDetails("mohlen", "lips", $testArray['link'], true, true, true, true, true);
         }
         $resarray = array();
-        if ($res['status'] == 15) {
-            $resarray['status'] = 1;
+        if ($res['result'] == 15) {
+            $resarray['result'] = 1;
         } else {
-            $resarray['status'] = 0;
+            $resarray['result'] = 0;
         }
         $resarray['error'] = $res['stderr'];
         $resarray['output'] = $res['output'];
         return $resarray;
-
     }
 
     public static function get_list_languages() {
         $languages = array();
-        $json = file_get_contents("http://localhost:4567/available_languages");
-        if (!$json) {
-            return false;
-        }
-        $data = json_decode($json);
-        foreach ($data->languages as $language) {
-            $languages[$language] = $language;
+        // creating soap client
+        $client = new SoapClient("http://ideone.com/api/1/service.wsdl");
+        // calling test function
+        $languagessupported = $client->getLanguages("mohlen", "lips");
+
+        foreach ($languagessupported['languages'] as $languageid => $languagename) {
+            $languages[$languageid] = $languagename;
         }
         return $languages;
     }

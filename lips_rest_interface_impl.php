@@ -18,34 +18,41 @@ require_once(dirname(__FILE__) . '/lips_rest_interface.php');
 
 class lips_rest_interface_impl implements lips_rest_interface {
 
-    public static function execute($source) {
-        $languages = array();
-        $data = new stdClass();
-        $data->code = $source;
-        $data->language = "c";
-        $json_data = json_encode($data);
-        print_object($json_data);
+    public static function execute($source, $language) {
+        $postdata = http_build_query(
+            array(
+                'code' => $source,
+                'language' => $language
+            )
+        );
 
         $opts = array('http' =>
             array(
                 'method' => 'POST',
-                'header' => "Content-type: application/json;charset=utf-8\r\n" .
-                    "Connection: close\r\n" .
-                    "Content-length: " . strlen($json_data) . "\r\n",
-                'content' => $json_data,
+                'header' => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
             )
         );
         $context = stream_context_create($opts);
-        $result = file_get_contents("http://localhost:4567/compilation", false, $context);
-        print_object($result);
-
-        return $languages;
-
+        $json = file_get_contents("http://localhost:4567/execute", false, $context);
+        if (!$json) {
+            return false;
+        }
+        $data = json_decode($json);
+        $resarray = array();
+        if (empty($data->stderr)) {
+            $resarray['result'] = 1;
+        } else {
+            $resarray['result'] = 0;
+        }
+        $resarray['error'] = $data->stderr;
+        $resarray['output'] = $data->stdout;
+        return $resarray;
     }
 
     public static function get_list_languages() {
         $languages = array();
-        $json = file_get_contents("http://localhost:4567/available_languages");
+        $json = file_get_contents("http://localhost:4567/languages");
         if (!$json) {
             return false;
         }

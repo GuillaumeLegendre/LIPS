@@ -318,6 +318,8 @@ $string['administration_my_problems_title'] = "My problems";
  *------------------------------------------------*/
 
 $string['web_service_communication_error'] = 'An error occured when contacting the web service.<br/>You can\'t select a programming language.';
+$string['web_service_compil_communication_error'] = 'An error occured when contacting the web service.<br/>You can\'t send your solution for the moment.';
+
 
 /*--------------------------------------------------
  * Problems
@@ -331,3 +333,5 @@ $string['problem_owner'] = 'You create this problem';
 $string['problem_testing_picture'] = 'Problem in testing mode';
 $string['problem_testing_info'] = 'This problem is in <strong>Testing</strong> mode. You can go to <strong>Display</strong> mode by going in <strong>Administration > Problems > My problems</strong>.';
 $string['problem_challenge_success'] = 'The selected users has been challenged';
+$string['problem_solved_success'] = 'Congratulation you have solved the problem !';
+$string['problem_solved_fail'] = 'Insert coin';

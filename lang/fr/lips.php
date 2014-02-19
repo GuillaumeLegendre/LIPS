@@ -272,6 +272,8 @@ $string['administration_my_problems_title'] = "Mes problèmes";
  * Web services
  *------------------------------------------------*/
 $string['web_service_communication_error'] = 'Une erreur est survenue lors de la communication avec le service web.<br/>Vous ne pouvez pas sélectionner un langage de programmation.';
+$string['web_service_compil_communication_error'] = 'Une erreur est survenue lors de la communication avec le service web.<br/>Vous ne pouvez pas envoyer votre solution pour le moment.';
+
 
 /*--------------------------------------------------
  * Problems
@@ -284,3 +286,5 @@ $string['problem_owner'] = 'Problème que vous avez créé';
 $string['problem_testing_picture'] = 'Problème en mode de test';
 $string['problem_testing_info'] = 'Ce problème est en mode <strong>Test</strong>. Vous pouvez le passer en mode <strong>Affichage</strong> dans <strong>Administration > Problèmes > Mes problèmes</strong>.';
 $string['problem_challenge_success'] = 'Les utilisateurs sélectionnés ont été défiés';
+$string['problem_solved_success'] = 'Félicitations vous avez réussi !';
+$string['problem_solved_fail'] = 'Solution incorrecte ';

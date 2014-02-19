@@ -1597,13 +1597,16 @@ class page_problem extends page_view {
         $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'get');
         if ($formanswer->is_submitted()) {
             $data = $formanswer->get_data();
-            $languages = lips_rest_interface_impl::execute($data->problem_answer);
-            if ($languages['status'] != 1) {
+            $languages = lips_rest_interface_impl::execute(get_code_complete($this->id, $data->problem_answer), get_current_instance()->compile_language);
+            if(!$languages) {
+                echo $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
+            }
+            else if ($languages['result'] != 1) {
                 echo $this->lipsoutput->display_notification($languages['error'], 'ERROR');
             } else if ($languages['output'] == "true") {
-                echo $this->lipsoutput->display_notification("Felicitation problem resolu", 'SUCCESS');
+                echo $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
             } else {
-                echo $this->lipsoutput->display_notification("Solution non valide", 'ERROR');
+                echo $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"), 'ERROR');
             }
         }
         $formanswer->display();
