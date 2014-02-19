@@ -482,8 +482,13 @@ class mod_lips_renderer extends plugin_renderer_base {
 
             $lips = get_instance($challenge->challenge_language);
 
+            $language = '';
+            $lips = get_instance($challenge->challenge_language);
+            if($lips->compile_language != null) {
+                $language = '<div class="notification-language">' . $lips->compile_language . '</div>';
+            }
             // Challenge message
-            $challenge_msg = '<div class="challenge-content"><div class="notification-language">' . get_instance($challenge->challenge_language)->compile_language . '</div>' . get_string('challenge_notification', 'lips') . '<br/>{challenge_solve} {challenge_refuse}</div>';
+            $challenge_msg = '<div class="challenge-content">' . $language . get_string('challenge_notification', 'lips') . '<br/>{challenge_solve} {challenge_refuse}</div>';
 
             // Set the date
             $challenge_msg = str_replace('{date}', '<span>' . format_date($challenge->challenge_date) . '</span>', $challenge_msg);
@@ -540,10 +545,13 @@ class mod_lips_renderer extends plugin_renderer_base {
             // Challenge border
             $display .= '<div class="notification-border"></div>';
 
+            $language = '';
             $lips = get_instance($challenge->challenge_language);
-
+            if($lips->compile_language != null) {
+                $language = '<div class="notification-language">' . $lips->compile_language . '</div>';
+            }
             // Challenge message
-            $challenge_msg = '<div class="challenge-content current"><div class="notification-language">' . get_instance($challenge->challenge_language)->compile_language . '</div><span>' . get_string('challenge_current', 'lips') . '</span></div>';
+            $challenge_msg = '<div class="challenge-content current">' . $language . '<span>' . get_string('challenge_current', 'lips') . '</span></div>';
 
             // Set the challenge_problem
             $challenge_problem = get_problem_details($challenge->challenge_problem);

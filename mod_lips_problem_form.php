@@ -262,7 +262,7 @@ class mod_lips_problems_delete_form extends moodleform {
         if ($hasproblems) {
             $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
         } else {
-            echo get_string("administration_empty_problems", "lips");
+            echo get_string("administration_empty_problems", "lips") . '<br/><br/><br/><br/><br/><br/>';
         }
     }
 }
@@ -520,6 +520,7 @@ class mod_lips_problem_modify_select_form extends moodleform {
         foreach (fetch_problems($USER->id) as $problem) {
             $problems[$problem->id] = $problem->problem_label;
         }
+
         if (count($problems) != 0) {
             $mform->addElement('select', 'problemId', get_string('administration_problem_modify_select', 'lips'), $problems);
             $mform->addRule('problemId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
@@ -527,7 +528,7 @@ class mod_lips_problem_modify_select_form extends moodleform {
             // Modify button.
             $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
         } else {
-            echo get_string("administration_empty_problems", "lips");
+            echo get_string("administration_empty_problems", "lips") . '<br/><br/><br/><br/><br/><br/>';
         }
 
     }

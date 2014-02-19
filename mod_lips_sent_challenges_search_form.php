@@ -4,14 +4,14 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
 /**
- * Search form for challenges
+ * Search form for sent challenges
  *
  * @package    mod_lips
  * @copyright  2014 LIPS
  * @author     Anaïs Picoreau
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_lips_challenges_search_form extends moodleform {
+class mod_lips_sent_challenges_search_form extends moodleform {
 
     /**
      * Form definition

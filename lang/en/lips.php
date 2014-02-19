@@ -48,6 +48,7 @@ $string['users_table'] = 10;
 $string['my_problems_table'] = 10;
 $string['followed_users_table'] = 10;
 $string['notifications_limit'] = 15;
+$string['challenges_table'] = 10;
 
 /*--------------------------------------------------
  * Status
@@ -112,6 +113,11 @@ $string['received_challenges'] = 'Received challenges';
 $string['sent_challenges'] = 'Sent challenges';
 $string['challenge_challenged'] = 'Challenged';
 $string['state'] = 'State';
+$string['administration_cancel_challenge_confirmation'] = 'Are you sure to cancel the challenge ?';
+$string['WAITING'] = 'Waiting';
+$string['ACCEPTED'] = 'Accepted';
+$string['SOLVED'] = 'Solved';
+$string['REFUSED'] = 'Refused';
 
 /*--------------------------------------------------
  * Constants
@@ -168,6 +174,7 @@ $string['solve'] = 'Solve';
 $string['accept'] = 'Accept';
 $string['Rank'] = 'Rank';
 $string['filter'] = 'Filter';
+$string['cancel'] = 'Cancel';
 
 /*--------------------------------------------------
  * Dates
@@ -335,3 +342,4 @@ $string['problem_testing_info'] = 'This problem is in <strong>Testing</strong> m
 $string['problem_challenge_success'] = 'The selected users has been challenged';
 $string['problem_solved_success'] = 'Congratulation you have solved the problem !';
 $string['problem_solved_fail'] = 'Insert coin';
+$string['problem_challenge_success'] = 'The selected users have been challenged';

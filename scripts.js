@@ -1,8 +1,5 @@
 // JavaScript Document
 
-var openingTag = "<code>";
-var endingTag = "</code>";
-
 // Create a ace editor
 window.createAce = function (editorid, areaid, mode, theme, flag) {
 
@@ -34,6 +31,7 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
             createUnitTest(editorid);
             break;
         case "resolution":
+			/*Not working properly */
             createResolution(editorid);
             break;
         case "readonly":
@@ -106,20 +104,20 @@ window.createConfigure = function (editorid) {
 window.createCode = function (editorid) {
 
     // Create ace
-    var editor = ace.edit(editorid);
+	var editor = ace.edit(editorid);
+	
+	$("#" + editorid).before('<div class="acepanel">' +
+		'<a href="#" id="' + editorid + '_tagCode">Code</a>' + 
+	'</div>');
+	
+		// Click on the code tag
+	$("#" + editorid + "_tagCode").click(function(){
+		if (editor.findAll('Code', null, true) == 0)
+			editor.insert("<code></code>");
+		editor.focus();
 
-    $("#" + editorid).before('<div class="acepanel">' +
-        '<a href="#" id="' + editorid + '_tagCode">Code</a>' +
-        '</div>');
-
-    // Click on the code tag
-    $("#" + editorid + "_tagCode").click(function () {
-        if (editor.findAll('Code', null, true) == 0)
-            editor.insert("<lips-code/>");
-        editor.focus();
-
-        return false;
-    });
+		return false;
+	});
 }
 
 //Create an ace editor in unit-test mode
