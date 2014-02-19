@@ -19,33 +19,25 @@ require_once(dirname(__FILE__) . '/lips_rest_interface.php');
 class lips_rest_interface_impl implements lips_rest_interface {
 
     public static function execute($source) {
-        $languages = array();
-        $json = file_get_contents("http://localhost:4567/compilation");
-        $postdata = http_build_query(
-            array(
-                'code' => $source,
-                'language' => 'C'
-            )
-        );
-
-        $opts = array('http' =>
-            array(
-                'method' => 'POST',
-                'header' => 'Content-type: application/x-www-form-urlencoded',
-                'content' => $postdata
-            )
-        );
-        $context = stream_context_create($opts);
-        $result = file_get_contents("http://localhost:4567/compilation", false, $context);
-        print_object($result);
-        if (!$json) {
-            return false;
+        // creating soap client
+        $client = new SoapClient("http://ideone.com/api/1/service.wsdl");
+        // calling test function
+        $testArray = $client->createSubmission("mohlen", "lips", $source, 29, "", true, true);
+        $res = $client->getSubmissionDetails("mohlen", "lips", $testArray['link'], true, true, true, true, true);
+        // printing returned values
+        while ($res['status'] != 0) {
+            sleep(3);
+            $res = $client->getSubmissionDetails("mohlen", "lips", $testArray['link'], true, true, true, true, true);
         }
-        $data = json_decode($json);
-        foreach ($data->languages as $language) {
-            $languages[$language] = $language;
+        $resarray = array();
+        if ($res['status'] == 15) {
+            $resarray['status'] = 1;
+        } else {
+            $resarray['status'] = 0;
         }
-        return $languages;
+        $resarray['error'] = $res['stderr'];
+        $resarray['output'] = $res['output'];
+        return $resarray;
 
     }
 

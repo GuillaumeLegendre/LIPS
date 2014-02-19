@@ -1185,3 +1185,14 @@ function get_categories_by_instance($instanceid) {
     global $DB;
     $categories = $DB->get_records('lips_category', array('id_language' => $instanceid));
 }
+
+
+function get_code_to_resolve($idproblem) {
+    global $DB;
+    $codes=$DB->get_record_sql('select base_code,problem_code, problem_imports, problem_unit_tests from mdl_lips_problem mlp join mdl_lips_category mlc on mlc.id=mlp.problem_category_id JOIN mdl_lips ml ON ml.id=mlc.id_language');
+    $basecode=$codes->base_code;
+    $basecode=preg_replace("|(<lips-preconfig-import/>)|U", $codes->problem_imports,$basecode );
+    $basecode=preg_replace("|(<lips-preconfig-code/>)|U", $codes->problem_code,$basecode );
+    $basecode=preg_replace("|(<lips-preconfig-tests/>)|U", $codes->problem_unit_tests,$basecode );
+    return $basecode;
+}

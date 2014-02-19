@@ -1481,7 +1481,8 @@ class page_problem extends page_view {
     function display_content() {
         global $USER;
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
-
+        require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
+        require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
         // Problem details
         $lips = get_current_instance();
         $details = get_problem_details($this->id);
@@ -1579,9 +1580,23 @@ class page_problem extends page_view {
 
         // Answer
         echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style" => "margin-bottom: 10px;"), false);
-        echo '<div id="answerEditor" class="ace">' . htmlspecialchars($details[$this->id]->problem_code) . '</div>';
+        // echo '<div id="answerEditor" class="ace">' . htmlspecialchars($details[$this->id]->problem_code) . '</div>';
 
-        echo '<br/><center><a href="#" class="lips-button">' . get_string('send_response', 'lips') . '</a></center>';
+        // echo '<br/><center><a href="#" class="lips-button">' . get_string('send_response', 'lips') . '</a></center>';
+
+        $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'get');
+        if ($formanswer->is_submitted()) {
+            $data = $formanswer->get_data();
+            $languages = lips_rest_interface_impl::execute($data->problem_answer);
+            if ($languages['status'] != 1) {
+                echo $this->lipsoutput->display_notification($languages['error'], 'ERROR');
+            } else if ($languages['output'] == "true") {
+                echo $this->lipsoutput->display_notification("Felicitation problem resolu", 'SUCCESS');
+            } else {
+                echo $this->lipsoutput->display_notification("Solution non valide", 'ERROR');
+            }
+        }
+        $formanswer->display();
 
         // Similar problems
         $similarproblems = get_similar_problems($this->id);
@@ -1597,7 +1612,7 @@ class page_problem extends page_view {
         }
 
         // Create ace
-        $this->lipsoutput->display_ace_form('answerEditor', '', $lips->coloration_language, 'resolution');
+        $this->lipsoutput->display_ace_form('answerEditor', 'id_problem_answer', $lips->coloration_language, 'resolution');
 
         // Challenge dialog
         $userid = get_user_details(array("id_user_moodle" => $USER->id))->id;

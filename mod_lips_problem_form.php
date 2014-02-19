@@ -228,7 +228,7 @@ class mod_lips_problem_create_form extends moodleform {
         $lips = get_current_instance();
         insert_notification($lips->id, $userdetails->id, 'notification_problem_created', time(), $userdetails->id, null, get_problem_details_array(array('problem_label' => $data->problem_label))->id);
         $followers = fetch_followers($userdetails->id);
-        foreach($followers as $follower) {
+        foreach ($followers as $follower) {
             insert_notification($lips->id, $follower->follower, 'notification_problem_created', time(), $userdetails->id, null, get_problem_details_array(array('problem_label' => $data->problem_label))->id);
         }
 
@@ -486,7 +486,7 @@ class mod_lips_problem_modify_form extends moodleform {
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
         insert_notification($lips->id, $userdetails->id, 'notification_problem_modified', time(), $userdetails->id, null, $data->id);
         $followers = fetch_followers($userdetails->id);
-        foreach($followers as $follower) {
+        foreach ($followers as $follower) {
             insert_notification($lips->id, $follower->follower, 'notification_problem_modified', time(), $userdetails->id, null, $data->id);
         }
 
@@ -796,5 +796,30 @@ class mod_lips_problems_export_form extends moodleform {
 
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_problem_export_success', 'lips'), 'SUCCESS');
+    }
+}
+
+/**
+ * Form to answer to a problem.
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Mickael OHLEN
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class mod_lips_problems_resolve_form extends moodleform {
+    /**
+     * Form definition
+     */
+    public function definition() {
+        global $PAGE, $CFG;
+        $mform =& $this->_form;
+        $mcustomdata = $this->_customdata;
+        $code = htmlspecialchars(get_code_to_resolve($mcustomdata['idproblem']));
+        $mform->addElement('html', '<div id="answerEditor"" class="ace">'.htmlspecialchars(get_code_to_resolve($mcustomdata['idproblem'])).'</div>');
+        $mform->addElement('textarea', 'problem_answer', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
+        $mform->setDefault('problem_answer', $code);
+        // Export button.
+        $mform->addElement('submit', 'submit', get_string('send_response', 'lips'));
     }
 }
