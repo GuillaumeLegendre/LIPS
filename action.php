@@ -54,7 +54,7 @@ switch ($action) {
 
             // Insert the notifications.
             $lips = get_current_instance();
-            $userdetails = get_user_details($lips->id, array('id_user_moodle' => $USER->id));
+            $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
             insert_notification($lips->id, $userdetails->id, 'notification_category_deleted', time(), $userdetails->id, null, null, null, $categorydetails->category_name);
             $followers = fetch_followers($userdetails->id);
             foreach ($followers as $follower) {
@@ -98,6 +98,7 @@ switch ($action) {
             }
         }
         break;
+
     case "deleteProblems":
         if (has_role('administration')) {
             $serializedproblems = optional_param("categories", null, PARAM_TEXT);

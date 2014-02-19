@@ -372,7 +372,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             $notification_msg = str_replace('{notification_from}', $this->display_user_link($notification->notification_from, $notification_from->firstname, $notification_from->lastname), $notification_msg);
 
             // Set the notification_to
-            if($notification->notification_to != null) {
+            if($notification->notification_to != 0) {
                 $notification_to = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_to))->id_user_moodle));
                 $notification_msg = str_replace('{notification_to}', $this->display_user_link($notification->notification_to, $notification_to->firstname, $notification_to->lastname), $notification_msg);
             }

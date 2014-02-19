@@ -282,11 +282,12 @@ class mod_lips_problem_modify_form extends moodleform {
      */
     public function definition() {
         global $PAGE;
-        $mcustomdata = $this->get_data();
-        print_object($mcustomdata);
+
+        $mcustomdata = $this->_customdata;
         $mform =& $this->_form;
         $lips = get_current_instance();
         $output = $PAGE->get_renderer('mod_lips');
+
         // Fetch all categories
         $categories = array();
         foreach (fetch_all_categories(get_current_instance()->id) as $category) {
@@ -298,6 +299,7 @@ class mod_lips_problem_modify_form extends moodleform {
         foreach (fetch_all_difficulties() as $difficulty) {
             $difficulties[$difficulty->id] = get_string($difficulty->difficulty_label, "lips");
         }
+        
         // ID.
         $mform->addElement('hidden', 'id_problem', null, null);
         $mform->setType('id_problem', PARAM_INT);

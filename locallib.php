@@ -510,11 +510,11 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
 
     // Notifications
     $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-    insert_notification($idlanguage, $userdetails->id, 'notification_category_created', time(), $userdetails->id, null, null, get_category_details_array(array('category_name' => $categoryname))->id);
+    insert_notification($idlanguage, $userdetails->id, 'notification_category_created', time(), $userdetails->id, 0, null, get_category_details_array(array('category_name' => $categoryname))->id);
     $followers = fetch_followers($userdetails->id);
 
     foreach($followers as $follower) {
-        insert_notification($idlanguage, $follower->follower, 'notification_category_created', time(), $userdetails->id, null, null, get_category_details_array(array('category_name' => $categoryname))->id);
+        insert_notification($idlanguage, $follower->follower, 'notification_category_created', time(), $userdetails->id, 0, null, get_category_details_array(array('category_name' => $categoryname))->id);
     }
 }
 
@@ -639,7 +639,12 @@ function get_unitest_picture() {
 function fetch_problems($userid) {
     global $DB;
 
-    return $DB->get_records('lips_problem', array('problem_creator_id' => $userid));
+    $lips = get_current_instance();
+    
+    return $DB->get_records_sql('SELECT * FROM mdl_lips_problem mlp, mdl_lips_category mlc
+        WHERE mlp.problem_category_id = mlc.id
+        AND problem_creator_id = ' . $userid . ' 
+        AND mlc.id_language = ' . $lips->id);
 }
 
 
@@ -925,8 +930,10 @@ function fetch_followers($id) {
  * @param int $notification_category Category ID related to the notification
  * @param string $notification_text Notification text
  */
-function insert_notification($notification_language, $notification_user_id, $notification_type, $notification_date, $notification_from, $notification_to = null, $notification_problem = null, $notification_category = null, $notification_text = null) {
+function insert_notification($notification_language, $notification_user_id, $notification_type, $notification_date, $notification_from, $notification_to = 0, $notification_problem = null, $notification_category = null, $notification_text = null) {
     global $DB;
+
+    if($notification_to == null) { $notification_to = 0; }
 
     $DB->insert_record('lips_notification', array(
         'notification_language' => $notification_language,
@@ -1009,6 +1016,7 @@ function is_challenged($from, $to, $problem) {
     if ($DB->count_records('lips_challenge', array("challenge_from" => $from, "challenge_to" => $to, "challenge_problem" => $problem)) > 0) {
         return true;
     }
+
     return false;
 }
 
@@ -1032,6 +1040,7 @@ function delete_problem_by_name($iduser, $name) {
  */
 function fetch_problems_user_by_category($userid, $categoryid) {
     global $DB;
+
     return $DB->get_records('lips_problem', array('problem_category_id' => $categoryid, 'problem_creator_id' => $userid));
 }
 
