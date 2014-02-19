@@ -116,9 +116,9 @@ class challenges_table extends table_sql {
             case 'language' :
                 $challengedetails = get_challenge_details(array('id' => $attempt->id));
                 $idlanguage = $challengedetails->challenge_language;
-                $moddetails = get_instance($idlanguage);
-                if (!empty($moddetails->compile_language)) {
-                    return $moddetails->compile_language;
+                $moodledetails = get_instance($idlanguage);
+                if (!empty($moodledetails->compile_language)) {
+                    return $moodledetails->compile_language;
                 }
                 return "";
                 break;
