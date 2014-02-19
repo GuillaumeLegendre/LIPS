@@ -952,15 +952,25 @@ function insert_notification($notification_language, $notification_user_id, $not
 }
 
 /**
- * Test if the problem already exists
+ * Test if the problem already exists in the same category of lips instance.
  *
  * @param array $conditions Conditions to fetch the problem
  * @return bool True if the problem already exists, otherwise false
  */
-function problem_exists(array $conditions = array()) {
+function problem_exists($problemlabel, $categoryid) {
     global $DB;
 
-    if ($DB->count_records('lips_problem', $conditions) > 0) {
+    $lips = get_current_instance();
+
+    $sql = "
+        SELECT count(*)
+        FROM mdl_lips_category cat, mdl_lips_problem prob
+        WHERE prob.problem_category_id = cat.id
+        AND cat.id_language = " . $lips->id . "
+        AND cat.id = " . $categoryid . "
+        AND prob.problem_label = '" . $problemlabel . "'";
+
+    if ($DB->count_records_sql($sql) > 0) {
         return true;
     }
 
