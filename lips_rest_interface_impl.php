@@ -20,31 +20,25 @@ class lips_rest_interface_impl implements lips_rest_interface {
 
     public static function execute($source) {
         $languages = array();
-        $json = file_get_contents("http://localhost:4567/compilation");
-        $postdata = http_build_query(
-            array(
-                'code' => $source,
-                'language' => 'C'
-            )
-        );
+        $data = new stdClass();
+        $data->code = $source;
+        $data->language = "c";
+        $json_data = json_encode($data);
+        print_object($json_data);
 
         $opts = array('http' =>
             array(
                 'method' => 'POST',
-                'header' => 'Content-type: application/x-www-form-urlencoded',
-                'content' => $postdata
+                'header' => "Content-type: application/json;charset=utf-8\r\n" .
+                    "Connection: close\r\n" .
+                    "Content-length: " . strlen($json_data) . "\r\n",
+                'content' => $json_data,
             )
         );
         $context = stream_context_create($opts);
         $result = file_get_contents("http://localhost:4567/compilation", false, $context);
         print_object($result);
-        if (!$json) {
-            return false;
-        }
-        $data = json_decode($json);
-        foreach ($data->languages as $language) {
-            $languages[$language] = $language;
-        }
+
         return $languages;
 
     }
