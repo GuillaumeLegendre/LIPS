@@ -1576,6 +1576,27 @@ class page_problem extends page_view {
         require_once(dirname(__FILE__) . '/lips_rest_interface_ideone.php');
         // Problem details
         $lips = get_current_instance();
+
+        $notifanswer = "";
+        $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'post', '', array('class' => 'solve-button'));
+        if ($formanswer->is_submitted()) {
+            $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), null, 'post', '', array('class' => 'solve-button'));
+            increment_attempt($this->id);
+            $data = $formanswer->get_data();
+            $codeinformations = get_code_complete($this->id, $data->problem_answer);
+            $languages = lips_rest_interface_ideone::execute($codeinformations['code'], get_current_instance()->compile_language);
+            if (!$languages) {
+                $notifanswer = $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
+            } else if ($languages['result'] != 1) {
+                $notifanswer = $this->lipsoutput->display_notification(nl2br($languages['error']), 'ERROR');
+            } else if (trim($languages['output']) == $codeinformations['idtrue']) {
+                insert_solution($data->problem_answer, $this->id, $USER->id);
+                $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
+            } else {
+                $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"), 'ERROR');
+            }
+        }
+
         $details = get_problem_details($this->id);
         $categorydetails = get_category_details($details[$this->id]->problem_category_id);
 
@@ -1674,25 +1695,8 @@ class page_problem extends page_view {
         // echo '<div id="answerEditor" class="ace">' . htmlspecialchars($details[$this->id]->problem_code) . '</div>';
 
         // echo '<br/><center><a href="#" class="lips-button">' . get_string('send_response', 'lips') . '</a></center>';
-        $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'get', '', array('class' => 'solve-button'));
 
-        if ($formanswer->is_submitted()) {
-            $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), null, 'get', '', array('class' => 'solve-button'));
-            increment_attempt($this->id);
-            $data = $formanswer->get_data();
-            $codeinformations = get_code_complete($this->id, $data->problem_answer);
-            $languages = lips_rest_interface_ideone::execute($codeinformations['code'], get_current_instance()->compile_language);
-            if (!$languages) {
-                echo $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
-            } else if ($languages['result'] != 1) {
-                echo $this->lipsoutput->display_notification($languages['error'], 'ERROR');
-            } else if ($languages['output'] == trim($codeinformations['idtrue'])) {
-                insert_solution($data->problem_answer, $this->id, $USER->id);
-                echo $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
-            } else {
-                echo $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"), 'ERROR');
-            }
-        }
+        echo $notifanswer;
         $formanswer->display();
 
         // Similar problems
@@ -1846,6 +1850,7 @@ class page_rank extends page_view {
         }
         $table = new rank_table($this->cm, $usersearch, $instance_id_js, $category_id_js);
         $filterform->display();
+        $table->sortable(false);
         $table->out(10, true);
     }
 }

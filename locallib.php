@@ -1342,9 +1342,27 @@ function insert_solution($solution, $idproblem, $iduser) {
         'problem_solved_date' => time(),
         'problem_solved_solution' => $solution,
     ));
+    $DB->execute("UPDATE mdl_lips_score
+    SET score_score=score_score+
+    (select difficulty_points
+    from mdl_lips_difficulty mld
+    JOIN mdl_lips_problem mlp ON mlp.problem_difficulty_id=mld.id
+    WHERE mlp.id=$idproblem)
+    WHERE score_user=(select id from mdl_lips_user where id_user_moodle=$iduser)
+    AND score_instance=".get_current_instance()->id);
 }
 
 function increment_attempt($idproblem) {
     global $DB;
     $DB->execute("UPDATE mdl_lips_problem SET problem_attempts=problem_attempts+1 WHERE id=$idproblem");
+}
+
+function get_count_problem_resolved($userid, $idinstance=null) {
+    global $DB;
+
+    $conditions="WHERE 1";
+    if($idinstance!=null) {
+        $conditions=" AND mlc.id_language=$idinstance";
+    }
+    return $DB->count_records_sql('select count(distinct(problem_solved_problem)) from mdl_lips_problem_solved WHERE problem_solved_user='.$userid.' AND problem_solved_problem in (select mlp.id from mdl_lips_problem mlp JOIN mdl_lips_category mlc ON mlp.problem_category_id=mlc.id '.$conditions.')');
 }

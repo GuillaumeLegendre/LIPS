@@ -39,7 +39,7 @@ class lips_rest_interface_ideone implements lips_rest_interface {
         }
         $resarray = array();
         $resarray['error'] = $res['stderr'];
-        if ($res['result'] == 15) {
+        if ($res['result'] == 15 || $res['result'] == 12) {
             $resarray['result'] = 1;
         } else if ($res['result'] == 11) {
             $resarray['result'] = 0;
@@ -57,7 +57,6 @@ class lips_rest_interface_ideone implements lips_rest_interface {
         $client = new SoapClient("http://ideone.com/api/1/service.wsdl");
         // calling test function
         $languagessupported = $client->getLanguages("mohlen", "lips");
-
         foreach ($languagessupported['languages'] as $languageid => $languagename) {
             $languages[$languagename] = $languagename;
         }
