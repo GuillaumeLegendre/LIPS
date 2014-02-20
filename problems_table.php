@@ -30,7 +30,7 @@ class problems_table extends table_sql {
         $this->cm = $cm;
 
         if ($search != null) {
-            $this->set_sql("mlp.id, problem_label, problem_category_id, problem_date, problem_creator_id, difficulty_label, count(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing",
+            $this->set_sql("mlp.id, problem_label, problem_category_id, problem_date, problem_creator_id, difficulty_label, difficulty_points, count(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing",
                 "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
                 LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
                 JOIN mdl_user mu ON mu.id = problem_creator_id 
@@ -38,7 +38,8 @@ class problems_table extends table_sql {
                 "problem_category_id = " . $id . " 
                 AND problem_label LIKE '%$search%' 
                 AND (problem_testing = 0 OR problem_testing = 1 AND problem_creator_id = " . $USER->id . ") 
-                GROUP BY mlp.id");
+                GROUP BY mlp.id
+                ORDER BY difficulty_points ASC, problem_label ASC");
         } else {
             $this->set_sql("mlp.id, problem_label, problem_category_id, problem_date, problem_creator_id, difficulty_label, count(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing",
                 "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
@@ -47,7 +48,8 @@ class problems_table extends table_sql {
                 JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id",
                 "problem_category_id = " . $id . " 
                 AND (problem_testing = 0 OR problem_testing = 1 AND problem_creator_id = " . $USER->id . ") 
-                GROUP BY mlp.id");
+                GROUP BY mlp.id
+                ORDER BY difficulty_points ASC, problem_label ASC");
         }
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'category', "categoryId" => $id)));
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_problem where problem_category_id = " . $id);

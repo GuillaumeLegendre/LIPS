@@ -360,6 +360,6 @@ class mod_lips_category_select_problems_delete_form extends moodleform {
         $mform->addRule('idcategory', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
         // Modify button.
-        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('select', 'lips'));
     }
 }

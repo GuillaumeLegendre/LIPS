@@ -126,6 +126,8 @@ window.createCode = function (editorid, comment) {
 		$("#" + editorid + "_tagCode").click(function(){
 			editor.insert(comment);
 			editor.focus();
+
+            return false;
 		});	
 	}
 	

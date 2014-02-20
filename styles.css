@@ -328,7 +328,7 @@ h3 {
     border: 1px solid #555555;
 }
 
-#profile-menu #follow {
+#profile-menu .right-button {
     float: right;
     margin-top: 10px;
 }
@@ -385,6 +385,28 @@ h3 {
 #profile-menu #links li p.current {
     color: #000000;
     margin: 0;
+}
+
+/*---------------------------------
+ *  Ranks
+ *-------------------------------*/
+
+#ranks table {
+    display: inline-table;
+    margin: 10px;
+}
+
+#ranks .img {
+    padding: 0;
+}
+
+#ranks .img img {
+    width: 64px;
+    height: 64px;
+}
+
+#ranks .rank-language {
+    font-weight: bold;
 }
 
 /*---------------------------------

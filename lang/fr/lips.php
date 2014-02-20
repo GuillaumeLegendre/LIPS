@@ -49,15 +49,6 @@ $string['pluginadministration'] = 'lips administration';
 $string['pluginname'] = 'LIPS';
 
 /*--------------------------------------------------
- * Number of elements per tabs 
- *------------------------------------------------*/
-$string['users_table'] = 10;
-$string['my_problems_table'] = 10;
-$string['followed_users_table'] = 10;
-$string['notifications_limit'] = 15;
-$string['challenges_table'] = 10;
-
-/*--------------------------------------------------
  * Status
  *------------------------------------------------*/
 $string['coursecreator'] = 'Créateur du cours';
@@ -158,6 +149,8 @@ $string['accept'] = 'Accepter';
 $string['Rank'] = 'Classement';
 $string['filter'] = 'Filtrer';
 $string['cancel'] = 'Annuler';
+$string['select'] = 'Sélectionner';
+$string['send_message'] = 'Envoyer un message';
 
 /*--------------------------------------------------
  * Dates

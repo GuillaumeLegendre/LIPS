@@ -262,7 +262,10 @@ class mod_lips_problems_delete_form extends moodleform {
         if ($hasproblems) {
             $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
         } else {
-            echo get_string("administration_empty_problems", "lips") . '<br/><br/><br/><br/><br/><br/>';
+            $msg = get_string("administration_empty_problems", "lips");
+            $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'WARNING');
+            $mform->addElement('html', $html);
+            $mform->addElement('html', '<br/><br/><br/><br/><br/><br/>');
         }
     }
 }
@@ -530,7 +533,10 @@ class mod_lips_problem_modify_select_form extends moodleform {
             // Modify button.
             $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
         } else {
-            echo get_string("administration_empty_problems", "lips") . '<br/><br/><br/><br/><br/><br/>';
+            $msg = get_string("administration_empty_problems", "lips");
+            $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'WARNING');
+            $mform->addElement('html', $html);
+            $mform->addElement('html', '<br/><br/><br/><br/><br/><br/>');
         }
 
     }

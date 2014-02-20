@@ -47,7 +47,7 @@ $string['pluginname'] = 'LIPS';
 $string['users_table'] = 10;
 $string['my_problems_table'] = 10;
 $string['followed_users_table'] = 10;
-$string['notifications_limit'] = 15;
+$string['notifications_limit'] = 50;
 $string['challenges_table'] = 10;
 
 /*--------------------------------------------------
@@ -175,6 +175,8 @@ $string['accept'] = 'Accept';
 $string['Rank'] = 'Rank';
 $string['filter'] = 'Filter';
 $string['cancel'] = 'Cancel';
+$string['select'] = 'Select';
+$string['send_message'] = 'Send a message';
 
 /*--------------------------------------------------
  * Dates
