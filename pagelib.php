@@ -685,7 +685,6 @@ class page_admin_problem_select_modify extends page_view {
 
         $modifySelectProblemForm = new mod_lips_problem_modify_select_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify')), null, '');
         $modifySelectProblemForm->display();
-
     }
 }
 
@@ -1573,7 +1572,7 @@ class page_problem extends page_view {
         global $USER;
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
-        require_once(dirname(__FILE__) . '/lips_rest_interface_ideone.php');
+        require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
         // Problem details
         $lips = get_current_instance();
 
@@ -1614,12 +1613,12 @@ class page_problem extends page_view {
          *------------------------------*/
 
         // Challenge button
-        $buttondefie = $this->lipsoutput->action_link(new moodle_url("#"), "Défier", null, array("class" => "lips-button", "id" => "challenge"));
+        $buttondefie = $this->lipsoutput->action_link(new moodle_url("#"), get_string('challenge', 'lips'), null, array("class" => "lips-button", "id" => "challenge"));
 
         // Solutions button
         $buttonsolutions = "";
         if (nb_resolutions_problem($USER->id, $this->id) > 0 || is_author($this->id, $USER->id)) {
-            $buttonsolutions = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => $this->view, 'view' => 'solutions', "problemId" => $this->id)), "Solutions", null, array("class" => "lips-button"));
+            $buttonsolutions = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => $this->view, 'view' => 'solutions', "problemId" => $this->id)), get_string('solutions', 'lips'), null, array("class" => "lips-button"));
         }
 
         // Modify & Delete button
@@ -1697,12 +1696,13 @@ class page_problem extends page_view {
         // echo '<br/><center><a href="#" class="lips-button">' . get_string('send_response', 'lips') . '</a></center>';
 
         echo $notifanswer;
+
         $formanswer->display();
 
         // Similar problems
         $similarproblems = get_similar_problems($this->id);
         if (count($similarproblems) > 0) {
-            echo $this->lipsoutput->display_h3(get_string("similar_problems", "lips"), array("style" => "margin-bottom: 10px;"), false);
+            echo $this->lipsoutput->display_h3(get_string("similar_problems", "lips"), array("style" => "margin-bottom: 10px; margin-top: 20px"), false);
 
             foreach ($similarproblems as $similarproblem) {
                 $problemdetails = get_problem_details($similarproblem->problem_similar_id);

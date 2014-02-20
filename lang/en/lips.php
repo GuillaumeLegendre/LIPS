@@ -80,8 +80,8 @@ $string['difficulty_label_difficult'] = 'difficult';
 $string['notification_follow'] = '{img} {date} - {notification_from} is following {notification_to}';
 $string['notification_followed'] = '{img} {date} - {notification_from} has added you to his following list';
 $string['notification_challenge'] = '{img} {date} - {notification_from} a défié {notification_to} sur le problème {notification_problem}';
-$string['notification_challenge_accepted'] = '{img} {date} - {notification_from} a accepté de relever le défi sur le problème {notification_problem}';
-$string['notification_challenge_refused'] = '{img} {date} - {notification_from} a refusé de relever le défi sur le problème {notification_problem}';
+$string['notification_challenge_accepted'] = '{img} {date} - {notification_from} a accepté de relever le défi sur le problème {notification_problem} lancé par {notification_to}';
+$string['notification_challenge_refused'] = '{img} {date} - {notification_from} a refusé de relever le défi sur le problème {notification_problem} lancé par {notification_to}';
 $string['notification_problem_solved'] = '{img} {date} - {notification_from} a résolu le problème {notification_problem}';
 $string['notification_problem_created'] = '{img} {date} - {notification_from} a créé le problème {notification_problem}';
 $string['notification_problem_modified'] = '{img} {date} - {notification_from} a modifié le problème {notification_problem}';
@@ -285,7 +285,7 @@ $string['administration_category_documentation_text'] = 'Documentation (Text)';
 $string['administration_category_documentation_error'] = 'You can\'t have both documentations, please choose either a link to an external documentation or a textual documentation.';
 $string['administration_delete_category_confirmation'] = "Confirm the deletion of the category";
 $string['administration_empty_categories'] = "No category";
-
+$string['problemNotSelected'] = "No problem selected";
 
 // Problem
 $string['administration_problem_create_title'] = 'Create a problem';

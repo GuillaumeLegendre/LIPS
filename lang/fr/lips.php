@@ -69,8 +69,8 @@ $string['difficulty_label_difficult'] = 'Difficile';
 $string['notification_follow'] = '{img} {date} - {notification_from} a ajouté l\'utilisateur {notification_to} à sa liste de suivi';
 $string['notification_followed'] = '{img} {date} - L\'utilisateur {notification_from} vous a ajouté à sa liste de suivi';
 $string['notification_challenge'] = '{img} {date} - {notification_from} a défié {notification_to} sur le problème {notification_problem}';
-$string['notification_challenge_accepted'] = '{img} {date} - {notification_from} a accepté de relever le défi sur le problème {notification_problem}';
-$string['notification_challenge_refused'] = '{img} {date} - {notification_from} a refusé de relever le défi sur le problème {notification_problem}';
+$string['notification_challenge_accepted'] = '{img} {date} - {notification_from} a accepté de relever le défi sur le problème {notification_problem} lancé par {notification_to}';
+$string['notification_challenge_refused'] = '{img} {date} - {notification_from} a refusé de relever le défi sur le problème {notification_problem} lancé par {notification_to}';
 $string['notification_problem_solved'] = '{img} {date} - {notification_from} a résolu le problème {notification_problem}';
 $string['notification_problem_created'] = '{img} {date} - {notification_from} a créé le problème {notification_problem}';
 $string['notification_problem_modified'] = '{img} {date} - {notification_from} a modifié le problème {notification_problem}';
@@ -258,6 +258,7 @@ $string['administration_category_documentation_text'] = 'Documentation (Texte)';
 $string['administration_category_documentation_error'] = 'Vous ne pouvez pas avoir les deux types de documentation, choisissez soit un lien vers une documentation externe soit une documentation textuelle.';
 $string['administration_delete_category_confirmation'] = "Confirmez-vous la suppression de la catégorie ?";
 $string['administration_empty_categories'] = "Aucune catégorie";
+$string['problemNotSelected'] = "Aucun problème sélectionné";
 
 // Problem
 $string['administration_problem_create_title'] = 'Créer un probleme';
