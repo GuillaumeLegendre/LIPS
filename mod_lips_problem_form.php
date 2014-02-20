@@ -522,7 +522,7 @@ class mod_lips_problem_modify_select_form extends moodleform {
      * Form definition.
      */
     public function definition() {
-        global $USER;
+        global $USER, $PAGE;
         $mform =& $this->_form;
 
         // Select the category.
