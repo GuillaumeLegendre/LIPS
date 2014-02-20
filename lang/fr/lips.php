@@ -258,6 +258,7 @@ $string['administration_category_documentation_text'] = 'Documentation (Texte)';
 $string['administration_category_documentation_error'] = 'Vous ne pouvez pas avoir les deux types de documentation, choisissez soit un lien vers une documentation externe soit une documentation textuelle.';
 $string['administration_delete_category_confirmation'] = "Confirmez-vous la suppression de la catégorie ?";
 $string['administration_empty_categories'] = "Aucune catégorie";
+$string['problemNotSelected'] = "Aucun problème sélectionné";
 
 // Problem
 $string['administration_problem_create_title'] = 'Créer un probleme';

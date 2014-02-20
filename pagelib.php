@@ -685,7 +685,6 @@ class page_admin_problem_select_modify extends page_view {
 
         $modifySelectProblemForm = new mod_lips_problem_modify_select_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify')), null, '');
         $modifySelectProblemForm->display();
-
     }
 }
 

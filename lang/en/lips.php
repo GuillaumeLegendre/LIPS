@@ -285,7 +285,7 @@ $string['administration_category_documentation_text'] = 'Documentation (Text)';
 $string['administration_category_documentation_error'] = 'You can\'t have both documentations, please choose either a link to an external documentation or a textual documentation.';
 $string['administration_delete_category_confirmation'] = "Confirm the deletion of the category";
 $string['administration_empty_categories'] = "No category";
-
+$string['problemNotSelected'] = "No problem selected";
 
 // Problem
 $string['administration_problem_create_title'] = 'Create a problem';

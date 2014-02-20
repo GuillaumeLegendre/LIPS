@@ -670,7 +670,8 @@ function fetch_problems($userid) {
         FROM mdl_lips_problem mlp, mdl_lips_category mlc
         WHERE mlp.problem_category_id = mlc.id
         AND problem_creator_id = ' . $userid . ' 
-        AND mlc.id_language = ' . $lips->id);
+        AND mlc.id_language = ' . $lips->id . "
+        ORDER BY category_name ASC, problem_label ASC");
 }
 
 
