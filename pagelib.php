@@ -1573,7 +1573,7 @@ class page_problem extends page_view {
         global $USER;
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
-        require_once(dirname(__FILE__) . '/lips_rest_interface_ideone.php');
+        require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
         // Problem details
         $lips = get_current_instance();
         $details = get_problem_details($this->id);
@@ -1593,12 +1593,12 @@ class page_problem extends page_view {
          *------------------------------*/
 
         // Challenge button
-        $buttondefie = $this->lipsoutput->action_link(new moodle_url("#"), "Défier", null, array("class" => "lips-button", "id" => "challenge"));
+        $buttondefie = $this->lipsoutput->action_link(new moodle_url("#"), get_string('challenge', 'lips'), null, array("class" => "lips-button", "id" => "challenge"));
 
         // Solutions button
         $buttonsolutions = "";
         if (nb_resolutions_problem($USER->id, $this->id) > 0 || is_author($this->id, $USER->id)) {
-            $buttonsolutions = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => $this->view, 'view' => 'solutions', "problemId" => $this->id)), "Solutions", null, array("class" => "lips-button"));
+            $buttonsolutions = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => $this->view, 'view' => 'solutions', "problemId" => $this->id)), get_string('solutions', 'lips'), null, array("class" => "lips-button"));
         }
 
         // Modify & Delete button
@@ -1681,12 +1681,12 @@ class page_problem extends page_view {
             increment_attempt($this->id);
             $data = $formanswer->get_data();
             $codeinformations = get_code_complete($this->id, $data->problem_answer);
-            $languages = lips_rest_interface_ideone::execute($codeinformations['code'], get_current_instance()->compile_language);
+            $languages = lips_rest_interface_impl::execute($codeinformations['code'], get_current_instance()->compile_language);
             if (!$languages) {
                 echo $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
             } else if ($languages['result'] != 1) {
                 echo $this->lipsoutput->display_notification($languages['error'], 'ERROR');
-            } else if ($languages['output'] == trim($codeinformations['idtrue'])) {
+            } else if (trim($languages['output']) == trim($codeinformations['idtrue'])) {
                 insert_solution($data->problem_answer, $this->id, $USER->id);
                 echo $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
             } else {
@@ -1698,7 +1698,7 @@ class page_problem extends page_view {
         // Similar problems
         $similarproblems = get_similar_problems($this->id);
         if (count($similarproblems) > 0) {
-            echo $this->lipsoutput->display_h3(get_string("similar_problems", "lips"), array("style" => "margin-bottom: 10px;"), false);
+            echo $this->lipsoutput->display_h3(get_string("similar_problems", "lips"), array("style" => "margin-bottom: 10px; margin-top: 20px"), false);
 
             foreach ($similarproblems as $similarproblem) {
                 $problemdetails = get_problem_details($similarproblem->problem_similar_id);

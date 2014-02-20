@@ -101,7 +101,7 @@ class sent_challenges_table extends table_sql {
                 $idlanguage = $challengedetails->challenge_language;
                 $moodledetails = get_instance($idlanguage);
                 if (!empty($moodledetails->compile_language)) {
-                    return $moodledetails->compile_language;
+                    return ucfirst($moodledetails->compile_language);
                 }
                 return "";
                 break;
