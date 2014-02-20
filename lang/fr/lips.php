@@ -211,7 +211,7 @@ $string['resolve'] = 'Résoudre';
 
 // Language
 $string['administration_language_configure_title'] = 'Configurer le langage';
-$string['administration_language_configure_msg'] = 'Sélectionnez le langage dans lequel vous souhaitez compiler.';
+$string['administration_language_configure_msg'] = 'Sélectionnez le langage dans lequel vous souhaitez compiler.<br/>Pour donner des indications à l\'étudiant sur le code qu\'il devra implémenter, vous pouvez spécifier un format de commentaire (ex: /* TODO */) adapté au langage.';
 $string['administration_language_image_title'] = 'Image';
 $string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.<br/>Taille maximum de l\'image : ';
 $string['administration_language_image_success'] = 'L\'image a été modifiée';
@@ -221,12 +221,16 @@ $string['administration_language_code_title'] = 'Base du code';
 $string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisé à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
 $string['administration_language_code_success'] = 'La préparation du code a été modifiée';
 $string['administration_language_code_imports_error'] = 'Vous ne pouvez mettre qu\'une seule balise &lt;lips-preconfig-import/&gt;';
+$string['administration_language_code_imports_error_no'] = 'La balise &lt;lips-preconfig-import/&gt; est obligatoire';
 $string['administration_language_code_code_error'] = 'Vous ne pouvez mettre qu\'une seule balise &lt;lips-preconfig-code/&gt;';
+$string['administration_language_code_code_error_no'] = 'La balise &lt;lips-preconfig-code/&gt; est obligatoire';
 $string['administration_language_code_tests_error'] = 'Vous ne pouvez mettre qu\'une seule balise &lt;lips-preconfig-tests/&gt;';
+$string['administration_language_code_tests_error_no'] = 'La balise &lt;lips-preconfig-tests/&gt; est obligatoire';
 $string['administration_language_form_select'] = 'Langage de programmation';
 $string['administration_language_form_select_error'] = 'Vous devez sélectionner un langage';
 $string['administration_language_form_highlighting_select'] = 'Coloration syntaxique';
 $string['administration_language_form_highlighting_select_error'] = 'Vous devez sélectionner une coloration syntaxique';
+$string['administration_language_form_input'] = 'Format de commentaire';
 $string['administration_language_form_file'] = 'Sélectionner l\'image';
 $string['administration_language_form_file_error'] = 'Vous devez sélectionner une image';
 $string['administration_existing_problems'] = 'Attention, des problèmes existent déjà dans ce cours, la configuration peut engendrer des erreurs dans les problèmes déjà présents.';

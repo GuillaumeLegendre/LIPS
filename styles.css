@@ -122,14 +122,6 @@ h3 {
     display: none;
 }
 
-.solve-button {
-    width: 90%;
-}
-
-.solve-button #answerEditor {
-    width: 100%;
-}
-
 .solve-button fieldset, .solve-button fieldset div, .solve-button #fitem_id_submit .fsubmit {
     margin: 0;
     padding: 0;
@@ -284,7 +276,7 @@ h3 {
 }
 
 .acepanel {
-    width: 90%;
+    width: 100%;
     background-color: #EBEBEB;
     border: 1px solid #000000;
     border-bottom: none;
@@ -305,7 +297,7 @@ h3 {
 }
 
 .ace {
-    width: 90%;
+    width: 100%;
     height: 250px;
     border: 1px solid #000000;
 }
@@ -577,7 +569,7 @@ h3 {
     padding-left: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    width: 90%;
+    width: 99%;
 }
 
 .notifyInfo {

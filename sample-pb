@@ -18,3 +18,43 @@ boolean test2 = <lips-unit-test>isPalindrome("kayak") == true</lips-unit-test>;
 boolean test3 = isPalindrome("bonjour") == false;
 
 System.out.println(test1 == test2 == test3);
+
+------------------------------------------------------------------------------------------------
+	Palindrome C
+------------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+#include <string.h>
+
+------------------------------------------------------------------------------------------------
+
+int isPalindrome(char s[]) {
+    <code></code>
+}
+
+------------------------------------------------------------------------------------------------
+
+int main() {
+    int test1 = <lips-unit-test>isPalindrome("radar") == 1</lips-unit-test>;
+    int test2 = isPalindrome("kayak") == 1;
+    int test3 = <lips-unit-test>isPalindrome("bonjour") != 1</lips-unit-test>;
+
+    if (test1 && test2 && test3) {
+        printf("true");
+    } else {
+        printf("false");
+    }
+}
+
+------------------------------------------------------------------------------------------------
+
+int isPalindrome(char *s) {
+    int i, length; 
+    length = strlen(s); 
+    for (i = 0; i < length/2; i++) { 
+        if (s[i] != s[length-1-i]) 
+            return 0;
+    }
+    
+    return 1; 
+}

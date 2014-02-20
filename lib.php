@@ -77,7 +77,17 @@ function lips_add_instance(stdClass $lips, mod_lips_mod_form $mform = null) {
 
     // You may have to add extra stuff in here.
 
-    return $DB->insert_record('lips', $lips);
+    $id = $DB->insert_record('lips', $lips);
+
+    // Insert the base code
+    $basecode = '<lips-preconfig-import/>
+
+<lips-preconfig-code/>
+
+<lips-preconfig-tests/>';
+    $DB->update_record('lips', array('id' => $id, 'base_code' => $basecode));
+
+    return $id;
 }
 
 /**

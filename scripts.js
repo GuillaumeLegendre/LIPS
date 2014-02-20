@@ -1,7 +1,7 @@
 // JavaScript Document
 
 // Create a ace editor
-window.createAce = function (editorid, areaid, mode, theme, flag) {
+window.createAce = function (editorid, areaid, mode, theme, flag, comment) {
 
     // Create ace
     var editor = ace.edit(editorid);
@@ -31,7 +31,6 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
             createUnitTest(editorid);
             break;
         case "resolution":
-			/*Not working properly */
             createResolution(editorid);
             break;
         case "readonly":
@@ -52,7 +51,10 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
 //Create an ace editor in resolution mode
 //used to solve problem. allows user to type only betweens <code></code> tags
 window.createResolution = function (editorid) {
-
+    // Copy the area content on ace
+    /*if ($("#" + areaid).val() != '') {
+        editor.getSession().setValue($("#" + areaid).val());
+    }*/
 }
 
 

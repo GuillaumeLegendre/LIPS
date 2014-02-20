@@ -265,9 +265,10 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param string $mode Ace mode for the syntax highlightning
      * @param string $flag Ace flag (configure, code or unit-test)
      * @param string $theme Ace theme
+     * @param string $comment Base comment
      */
-    public function display_ace_form($editorid, $areaid, $mode, $flag = '', $theme = 'eclipse') {
-        echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '", "' . $flag . '")</script>';
+    public function display_ace_form($editorid, $areaid, $mode, $flag = '', $theme = 'eclipse', $comment = '') {
+        echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '", "' . $flag . '", "' . $comment . '")</script>';
     }
 
     /**
