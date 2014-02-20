@@ -685,20 +685,20 @@ function get_solutions($problemid, $search = null) {
     global $DB;
 
     if ($search == null) {
-        return $DB->get_records_sql("select mls.id, mlu.id as profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
-        from mdl_lips_problem_solved mls
-        join mdl_user mu on mu.id=mls.problem_solved_user
-        join mdl_lips_user mlu on mlu.id_user_moodle=mls.problem_solved_user
-        where problem_solved_problem = $problemid
-        ORDER BY problem_solved_date DESC");
+        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
+            FROM mdl_lips_problem_solved mls
+            JOIN mdl_user mu ON mu.id = mls.problem_solved_user
+            JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
+            WHERE problem_solved_problem = $problemid
+            ORDER BY problem_solved_date DESC");
     } else {
-        return $DB->get_records_sql("select mls.id, mlu.id as profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
-        from mdl_lips_problem_solved mls
-        join mdl_user mu on mu.id=mls.problem_solved_user
-        join mdl_lips_user mlu on mlu.id_user_moodle=mls.problem_solved_user
-        where problem_solved_problem = $problemid
-        and (mu.firstname like '%" . $search . "%' or mu.lastname like '%" . $search . "%')
-        ORDER BY problem_solved_date DESC");
+        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
+            FROM mdl_lips_problem_solved mls
+            JOIN mdl_user mu ON mu.id = mls.problem_solved_user
+            JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
+            WHERE problem_solved_problem = $problemid
+            AND (mu.firstname like '%" . $search . "%' or mu.lastname LIKE '%" . $search . "%')
+            ORDER BY problem_solved_date DESC");
     }
 }
 
@@ -982,6 +982,22 @@ function insert_notification($notification_language, $notification_user_id, $not
 }
 
 /**
+ * Test if the notification already exists using the specified conditions.
+ *
+ * @param array $conditions An array of conditions for the sql request
+ * @return bool True if the problem already exists, otherwise false
+ */
+function notification_exists(array $conditions = array()) {
+    global $DB;
+
+    if ($DB->count_records('lips_notification', $conditions) > 0) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * Test if the problem already exists in the same category of lips instance.
  *
  * @param array $conditions Conditions to fetch the problem
@@ -1117,9 +1133,15 @@ function challenge($lipsid, $from, $to, $problem) {
     // From & From followers
     insert_notification($lipsid, $from, 'notification_challenge', time(), $from, $to, $problem);
     $from_followers = fetch_followers($from);
-
     foreach ($from_followers as $follower) {
-        if ($follower->follower != $to) {
+        $notificationexists = notification_exists(array(
+            'notification_user_id' => $follower->follower, 
+            'notification_type' => 'notification_challenge', 
+            'notification_from' => $from, 
+            'notification_to' => $to, 
+            'notification_problem' => $problem));
+
+        if(!$notificationexists) {
             insert_notification($lipsid, $follower->follower, 'notification_challenge', time(), $from, $to, $problem);
         }
     }
@@ -1127,9 +1149,15 @@ function challenge($lipsid, $from, $to, $problem) {
     // To & To follower
     insert_notification($lipsid, $to, 'notification_challenge', time(), $from, $to, $problem);
     $to_followers = fetch_followers($to);
-
     foreach ($to_followers as $follower) {
-        if ($follower->follower != $from) {
+        $notificationexists = notification_exists(array(
+            'notification_user_id' => $follower->follower, 
+            'notification_type' => 'notification_challenge', 
+            'notification_from' => $from, 
+            'notification_to' => $to, 
+            'notification_problem' => $problem));
+
+        if(!$notificationexists) {
             insert_notification($lipsid, $follower->follower, 'notification_challenge', time(), $from, $to, $problem);
         }
     }
@@ -1173,20 +1201,34 @@ function accept_challenge($challengeid) {
     $challengedetails = get_challenge_details(array('id' => $challengeid));
 
     // From & From followers
-    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_from, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_from, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
     $from_followers = fetch_followers($challengedetails->challenge_from);
     foreach ($from_followers as $follower) {
-        if ($follower->follower != $challengedetails->challenge_to) {
-            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+        $notificationexists = notification_exists(array(
+            'notification_user_id' => $follower->follower, 
+            'notification_type' => 'notification_challenge_accepted', 
+            'notification_from' => $challengedetails->challenge_to, 
+            'notification_to' => $challengedetails->challenge_from, 
+            'notification_problem' => $challengedetails->challenge_problem));
+
+        if(!$notificationexists) {
+            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
         }
     }
 
     // To & To follower
-    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_to, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_to, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
     $to_followers = fetch_followers($challengedetails->challenge_to);
     foreach ($to_followers as $follower) {
-        if ($follower->follower != $challengedetails->challenge_from) {
-            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+        $notificationexists = notification_exists(array(
+            'notification_user_id' => $follower->follower, 
+            'notification_type' => 'notification_challenge_accepted', 
+            'notification_from' => $challengedetails->challenge_to, 
+            'notification_to' => $challengedetails->challenge_from, 
+            'notification_problem' => $challengedetails->challenge_problem));
+
+        if(!$notificationexists) {
+            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
         }
     }
 }
@@ -1205,22 +1247,34 @@ function refuse_challenge($challengeid) {
     $challengedetails = get_challenge_details(array('id' => $challengeid));
 
     // From & From followers
-    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_from, 'notification_challenge_refused', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_from, 'notification_challenge_refused', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
     $from_followers = fetch_followers($challengedetails->challenge_from);
-
     foreach ($from_followers as $follower) {
-        if ($follower->follower != $challengedetails->challenge_to) {
-            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_refused', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+        $notificationexists = notification_exists(array(
+            'notification_user_id' => $follower->follower, 
+            'notification_type' => 'notification_challenge_refused', 
+            'notification_from' => $challengedetails->challenge_to, 
+            'notification_to' => $challengedetails->challenge_from, 
+            'notification_problem' => $challengedetails->challenge_problem));
+
+        if(!$notificationexists) {
+            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_refused', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
         }
     }
 
     // To & To follower
-    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_to, 'notification_challenge_refused', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_to, 'notification_challenge_refused', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
     $to_followers = fetch_followers($challengedetails->challenge_to);
-
     foreach ($to_followers as $follower) {
-        if ($follower->follower != $challengedetails->challenge_from) {
-            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_refused', time(), $challengedetails->challenge_to, null, $challengedetails->challenge_problem);
+        $notificationexists = notification_exists(array(
+            'notification_user_id' => $follower->follower, 
+            'notification_type' => 'notification_challenge_refused', 
+            'notification_from' => $challengedetails->challenge_to, 
+            'notification_to' => $challengedetails->challenge_from, 
+            'notification_problem' => $challengedetails->challenge_problem));
+
+        if(!$notificationexists) {
+            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_refused', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
         }
     }
 }
@@ -1336,17 +1390,85 @@ function number_of_users() {
     return $DB->count_records('lips_user');
 }
 
+/**
+ * Insert problem solutions
+ *
+ * @param string $solution Solution
+ * @param int $idproblem Problem ID
+ * @param int $iduser User ID
+ */
 function insert_solution($solution, $idproblem, $iduser) {
     global $DB;
+
+    $userdetails = get_user_details(array('id_user_moodle' => $iduser));
+    
+    // Solution
     $DB->insert_record('lips_problem_solved', array(
         'problem_solved_problem' => $idproblem,
         'problem_solved_user' => $iduser,
         'problem_solved_date' => time(),
         'problem_solved_solution' => $solution,
     ));
+
+    // Notifications
+    $lips = get_current_instance();
+    $notificationexists = notification_exists(array(
+        'notification_user_id' => $userdetails->id, 
+        'notification_type' => 'notification_problem_solved', 
+        'notification_from' => $userdetails->id,
+        'notification_problem' => $idproblem));
+    if(!$notificationexists) {
+        insert_notification($lips->id, $userdetails->id, 'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
+    }
+
+    // Followers notifications
+    $followers = fetch_followers($userdetails->id);
+    foreach ($followers as $follower) {
+        $notificationexists = notification_exists(array(
+            'notification_user_id' => $follower->follower, 
+            'notification_type' => 'notification_problem_solved', 
+            'notification_from' => $userdetails->id,
+            'notification_problem' => $idproblem));
+
+        if(!$notificationexists) {
+            insert_notification($lips->id, $follower->follower, 'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
+        }
+    }
+
+    // If challenged
+    $challenge = get_challenge_details(array('challenge_to' => $userdetails->id, 'challenge_problem' => $idproblem));
+    if($challenge != null) {
+        // Solve the challenge
+        $DB->update_record('lips_challenge', array('id' => $challenge->id, 'challenge_state' => 'SOLVED'));
+
+        // Insert a notification to "challenge_from"
+        $notificationexists = notification_exists(array(
+            'notification_user_id' => $challenge->challenge_from, 
+            'notification_type' => 'notification_problem_solved', 
+            'notification_from' => $userdetails->id,
+            'notification_problem' => $idproblem));
+        if(!$notificationexists) {
+            insert_notification($lips->id, $challenge->challenge_from, 'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
+        }
+
+        // Insert notifications to "challenge_from" followers
+        $followers = fetch_followers($challenge->challenge_from);
+        foreach ($followers as $follower) {
+            $notificationexists = notification_exists(array(
+                'notification_user_id' => $follower->follower, 
+                'notification_type' => 'notification_problem_solved', 
+                'notification_from' => $userdetails->id,
+                'notification_problem' => $idproblem));
+
+            if(!$notificationexists) {
+                insert_notification($lips->id, $follower->follower, 'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
+            }
+        }
+    }
 }
 
 function increment_attempt($idproblem) {
     global $DB;
+
     $DB->execute("UPDATE mdl_lips_problem SET problem_attempts=problem_attempts+1 WHERE id=$idproblem");
 }
