@@ -537,10 +537,13 @@ class mod_lips_problem_modify_select_form extends moodleform {
             $problemsarray[$problem->problem_category_id][$problem->id] = $problem->problem_label;
         }
 
-        if (count($problems) != 0) {
+        $problemscount = count($problems);
+        if ($problemscount != 0) {
+
+            $problemscount = ($problemscount<10)?$problemscount:10;
 
             // Add hierselect element.
-            $attribs = array('size' => '10');
+            $attribs = array('size' => $problemscount);
             $hier = &$mform->addElement('hierselect', 'problemId', get_string('administration_problem_modify_select', 'lips'), $attribs);
             $hier->setOptions(array($categoriesarray, $problemsarray));
             $mform->addRule('problemId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
