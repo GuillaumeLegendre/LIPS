@@ -33,7 +33,14 @@ defined('MOODLE_INTERNAL') || die();
  *------------------------------------------------*/
 $string['modulename'] = 'LIPS';
 $string['modulenameplural'] = 'LIPS';
-$string['modulename_help'] = 'Use the lips module for... | The lips module allows...';
+$string['modulename_help'] = 'Le module activité LIPS offre la possibilité aux étudiants de s’autoformer sur différents langages de programmation.
+
+Cette plateforme pédagogique permet aux étudiants, par le biais de tests unitaires, de répondre à des problèmes de programmation exprimés par les enseignants.
+Ces problèmes se présentent sous la forme de code à compléter. La plateforme exécute alors le code avec la réponse fournit par l’étudiant et lui retourne le résultat d’exécution correspondant, validant ou invalidant alors sa réponse.
+
+L’apprentissage étant au cœur du module, l’enseignant peut fournir une aide sur un problème ou sur une technologie à travers un commentaire ou des liens vers des ressources externes.
+L’outil permet aux enseignants de suivre l’avancée de ses élèves, en accédant à un certain nombre de statistiques et à l’historique de leurs réponses. Ainsi, l’enseignant peut voir si l’élève est bloqué sur un exercice précis, et peut lui apporter une aide par ses propres moyens.
+';
 $string['lipsfieldset'] = 'Custom example fieldset';
 $string['lipsname'] = 'LIPS';
 $string['lipsname_help'] = 'This is the content of the help tooltip associated with the lipsname field. Markdown syntax is supported.';
@@ -232,6 +239,7 @@ $string['administration_language_form_file_error'] = 'Vous devez sélectionner u
 $string['administration_existing_problems'] = 'Attention, des problèmes existent déjà dans ce cours, la configuration peut engendrer des erreurs dans les problèmes déjà présents.';
 $string['administration_no_syntax_highlighting'] = 'Aucun langage de coloration syntaxique n\'a été définie. Vous pouvez le configurer dans <strong>Administration > Langage > Configurer le langage</strong>.';
 $string['administration_no_compile_language'] = 'Aucun langage de compilation n\'a été définie. Vous pouvez le configurer dans <strong>Administration > Langage > Configurer le langage</strong>.';
+$string['administration_warning_existing_language'] = 'Seulement les langages de programmation non utilisés dans les autres instances de lips sont sélectionnables.<br/>Pour rappel, voici les languages déja utilisés :';
 
 // Category
 $string['administration_category_create_title'] = 'Créer une catégorie';

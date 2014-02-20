@@ -45,6 +45,10 @@ class mod_lips_configure_language_form extends moodleform {
             echo $PAGE->get_renderer('mod_lips')->display_notification(
                 get_string('web_service_communication_error', 'lips'), 'ERROR');
         } else {
+            $languagesused = get_active_languages();
+            foreach ($languagesused as $language) {
+                    unset($languages[$language->compile_language]);
+            }
             $mform->addElement('select', 'selectLanguage',
                 get_string('administration_language_form_select', 'lips'), $languages);
             $mform->addRule('selectLanguage',
@@ -175,7 +179,7 @@ class mod_lips_configure_picture_form extends moodleform {
         $formdata = $this->get_data();
         $picture = $this->get_new_filename('filePicture');
 
-        if(!is_a_picture($picture)) {
+        if (!is_a_picture($picture)) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error', 'lips'), 'ERROR');
 
             return;
@@ -185,7 +189,7 @@ class mod_lips_configure_picture_form extends moodleform {
         $success = $this->save_file('filePicture', 'images/' . $picture);
 
         // In case of error
-        if(!$success) {
+        if (!$success) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_save_error', 'lips'), 'ERROR');
 
             return;
@@ -195,7 +199,7 @@ class mod_lips_configure_picture_form extends moodleform {
         $lips = get_current_instance();
 
         // Delete the old image
-        if($lips->language_picture != $picture && $lips->language_picture != 'default-language.png')
+        if ($lips->language_picture != $picture && $lips->language_picture != 'default-language.png')
             delete_picture_file($lips->language_picture);
 
         // Update the picture on the database

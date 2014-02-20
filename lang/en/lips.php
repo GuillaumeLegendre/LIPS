@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  *------------------------------------------------*/
 $string['modulename'] = 'LIPS';
 $string['modulenameplural'] = 'LIPS';
-$string['modulename_help'] = 'Use the lips module for... | The lips module allows...';
+$string['modulename_help'] = 'The activity module LIPS permit for a .';
 $string['lipsfieldset'] = 'Custom example fieldset';
 $string['lipsname'] = 'LIPS';
 $string['lipsname_help'] = 'This is the content of the help tooltip associated with the lipsname field. Markdown syntax is supported.';
@@ -257,6 +257,8 @@ $string['administration_language_form_file_error'] = 'You must select a picture'
 $string['administration_existing_problems'] = 'Warning, some problems already exists in this course, the configuration can cause errors in the presents problems.';
 $string['administration_no_syntax_highlighting'] = 'There is no syntax highlighting defined. Go to <strong>Administration > Language > Configure language</strong>.';
 $string['administration_no_compile_language'] = 'There is no compile language defined. Go to <strong>Administration > Language > Configure language</strong>.';
+$string['administration_warning_existing_language'] = 'Only languages that are not used by other instance are display here.<br/>For your information these languages are already used :';
+
 
 // Category
 $string['administration_category_create_title'] = 'Create a category';

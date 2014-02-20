@@ -262,6 +262,14 @@ class page_admin_langage_configure extends page_view {
         // Configure language
         echo $this->lipsoutput->display_h2(get_string('administration_language_configure_title', 'lips'));
         echo $this->lipsoutput->display_p(get_string('administration_language_configure_msg', 'lips'));
+        $activelanguages = get_active_languages();
+        $advmsg = "<br/>";
+        foreach ($activelanguages as $language) {
+            $advmsg .= "<strong>" . $language->compile_language . "</strong><br/>";
+        }
+        if (count($activelanguages) > 0) {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_warning_existing_language', 'lips') . $advmsg, 'WARNING');
+        }
 
         $lips = get_current_instance();
         if (count_languages_number($lips->id) > 0) {
