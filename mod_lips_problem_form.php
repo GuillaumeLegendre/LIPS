@@ -157,7 +157,7 @@ class mod_lips_problem_create_form extends moodleform {
         if (isset($data->problem_label) && isset($data->problem_category_id) && isset($data->problem_statement) && isset($data->problem_difficulty_id) && isset($data->problem_unit_tests)) {
             if (empty($data->problem_label)) {
                 $errors['emptyProblemLabel'] = get_string('administration_language_form_select_name_error', 'lips');
-            } else if (problem_exists(array('problem_label' => $data->problem_label))) {
+            } else if (problem_exists($data->problem_label, $data->problem_category_id)) {
                 $errors['alreadyExists'] = get_string('administration_problem_already_exists', 'lips');
             }
             if (empty($data->problem_category_id)) {
@@ -226,10 +226,10 @@ class mod_lips_problem_create_form extends moodleform {
         // Insert notifications
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
         $lips = get_current_instance();
-        insert_notification($lips->id, $userdetails->id, 'notification_problem_created', time(), $userdetails->id, null, get_problem_details_array(array('problem_label' => $data->problem_label))->id);
+        insert_notification($lips->id, $userdetails->id, 'notification_problem_created', time(), $userdetails->id, null, $problemid);
         $followers = fetch_followers($userdetails->id);
         foreach ($followers as $follower) {
-            insert_notification($lips->id, $follower->follower, 'notification_problem_created', time(), $userdetails->id, null, get_problem_details_array(array('problem_label' => $data->problem_label))->id);
+            insert_notification($lips->id, $follower->follower, 'notification_problem_created', time(), $userdetails->id, null, $problemid);
         }
 
         // Success message.
