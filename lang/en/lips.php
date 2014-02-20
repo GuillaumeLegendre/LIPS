@@ -175,6 +175,7 @@ $string['accept'] = 'Accept';
 $string['Rank'] = 'Rank';
 $string['filter'] = 'Filter';
 $string['cancel'] = 'Cancel';
+$string['select'] = 'Select';
 
 /*--------------------------------------------------
  * Dates

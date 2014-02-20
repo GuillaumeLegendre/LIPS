@@ -158,6 +158,7 @@ $string['accept'] = 'Accepter';
 $string['Rank'] = 'Classement';
 $string['filter'] = 'Filtrer';
 $string['cancel'] = 'Annuler';
+$string['select'] = 'Sélectionner';
 
 /*--------------------------------------------------
  * Dates
