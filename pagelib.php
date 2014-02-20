@@ -628,9 +628,8 @@ class page_admin_problem_modify extends page_view {
         echo $this->lipsoutput->display_administration_menu();
         echo $this->lipsoutput->display_h2(get_string('administration_problem_modify_title', 'lips'));
 
-        $modifyproblemform = new mod_lips_problem_modify_form();
+        $modifyproblemform = new mod_lips_problem_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify', 'problemId' => $this->id)), null, "post");
         if ($modifyproblemform->is_submitted()) {
-            $modifyproblemform = new mod_lips_problem_modify_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_modify', 'problemId' => $this->id)), null, "post");
             $modifyproblemform->handle($this->cm->instance);
         }
         $problem_details = get_problem_details($this->id);
@@ -1572,7 +1571,7 @@ class page_problem extends page_view {
         global $USER;
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
-        require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
+        require_once(dirname(__FILE__) . '/lips_rest_interface_ideone.php');
         // Problem details
         $lips = get_current_instance();
 

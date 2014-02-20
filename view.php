@@ -101,13 +101,18 @@ switch ($view) {
                     $viewpage = new page_admin_problem_category_select_delete($cm);
                     break;
                 case "problem_modify":
-                    $problemidarray = required_param_array('problemId', PARAM_RAW);
-                    if (!isset($problemidarray[1])) {
-                        $viewpage = new page_admin_problem_select_modify($cm);
+                    $problemid = optional_param('problemId', null, PARAM_INT);
+                    if (isset($problemid)) {
+                        $viewpage = new page_admin_problem_modify($cm, $problemid);
+                    } else {
+                        $problemidarray = optional_param_array('problemIdArray', null, PARAM_RAW);
+                        if (!isset($problemidarray[1])) {
+                            $viewpage = new page_admin_problem_select_modify($cm);
+                        } else {
+                            $viewpage = new page_admin_problem_modify($cm, $problemidarray[1]);
+                        }
                     }
-                    else {
-                        $viewpage = new page_admin_problem_modify($cm, $problemidarray[1]);
-                    }
+
                     break;
                 case "problems_delete":
                     $categoryid = optional_param('idcategory', null, PARAM_INT);

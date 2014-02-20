@@ -544,9 +544,9 @@ class mod_lips_problem_modify_select_form extends moodleform {
 
             // Add hierselect element.
             $attribs = array('size' => $problemscount);
-            $hier = &$mform->addElement('hierselect', 'problemId', get_string('administration_problem_modify_select', 'lips'), $attribs);
+            $hier = &$mform->addElement('hierselect', 'problemIdArray', get_string('administration_problem_modify_select', 'lips'), $attribs);
             $hier->setOptions(array($categoriesarray, $problemsarray));
-            $mform->addRule('problemId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+            $mform->addRule('problemIdArray', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
             // Modify button.
             $mform->addElement('submit', 'submit', get_string('modify', 'lips'));

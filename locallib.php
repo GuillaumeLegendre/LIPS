@@ -1500,6 +1500,6 @@ function get_count_problem_resolved($userid, $idinstance = null) {
     from mdl_lips_problem_solved
     WHERE problem_solved_user=' . $userid . '
     AND problem_solved_problem in
-    (select mlp.id from mdl_lips_problem mlp 
+    (select mlp.id from mdl_lips_problem mlp
     JOIN mdl_lips_category mlc ON mlp.problem_category_id=mlc.id ' . $conditions . ')');
 }
