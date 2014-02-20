@@ -105,9 +105,9 @@ switch ($action) {
 
     case "deleteProblems":
         if (has_role('administration')) {
-            $serializedproblems = optional_param("categories", null, PARAM_TEXT);
-            foreach (unserialize($serializedproblems) as $problem) {
-                delete_problem_by_name($USER->id, $problem);
+            $serializedidproblems = optional_param("idproblems", null, PARAM_TEXT);
+            foreach (unserialize($serializedidproblems) as $idproblem) {
+                delete_problem($idproblem);
             }
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'problem_category_select_delete')));
         }
