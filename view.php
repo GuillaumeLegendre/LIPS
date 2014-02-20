@@ -101,8 +101,8 @@ switch ($view) {
                     $viewpage = new page_admin_problem_category_select_delete($cm);
                     break;
                 case "problem_modify":
-                    $problemid = optional_param('problemId', null, PARAM_INT);
-                    $viewpage = new page_admin_problem_modify($cm, $problemid);
+                    $problemidarray = optional_param_array('problemId', array(), PARAM_RAW);
+                    $viewpage = new page_admin_problem_modify($cm, $problemidarray[1]);
                     break;
                 case "problems_delete":
                     $categoryid = optional_param('idcategory', null, PARAM_INT);

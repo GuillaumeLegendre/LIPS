@@ -666,7 +666,8 @@ function fetch_problems($userid) {
 
     $lips = get_current_instance();
 
-    return $DB->get_records_sql('SELECT mlp.id, problem_label FROM mdl_lips_problem mlp, mdl_lips_category mlc
+    return $DB->get_records_sql('SELECT mlp.id, problem_label, problem_category_id, category_name
+        FROM mdl_lips_problem mlp, mdl_lips_category mlc
         WHERE mlp.problem_category_id = mlc.id
         AND problem_creator_id = ' . $userid . ' 
         AND mlc.id_language = ' . $lips->id);
