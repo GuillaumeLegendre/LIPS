@@ -1670,16 +1670,15 @@ class page_problem extends page_view {
 
         if ($formanswer->is_submitted()) {
             $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), null, 'get', '', array('class' => 'solve-button'));
-
             increment_attempt($this->id);
             $data = $formanswer->get_data();
-
-            $languages = lips_rest_interface_ideone::execute(get_code_complete($this->id, $data->problem_answer), get_current_instance()->compile_language);
+            $codeinformations = get_code_complete($this->id, $data->problem_answer);
+            $languages = lips_rest_interface_ideone::execute($codeinformations['code'], get_current_instance()->compile_language);
             if (!$languages) {
                 echo $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
             } else if ($languages['result'] != 1) {
                 echo $this->lipsoutput->display_notification($languages['error'], 'ERROR');
-            } else if ($languages['output'] == "true") {
+            } else if ($languages['output'] == trim($codeinformations['idtrue'])) {
                 insert_solution($data->problem_answer, $this->id, $USER->id);
                 echo $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
             } else {

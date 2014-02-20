@@ -38,12 +38,15 @@ class lips_rest_interface_ideone implements lips_rest_interface {
             $res = $client->getSubmissionDetails("mohlen", "lips", $testArray['link'], true, true, true, true, true);
         }
         $resarray = array();
+        $resarray['error'] = $res['stderr'];
         if ($res['result'] == 15) {
             $resarray['result'] = 1;
+        } else if ($res['result'] == 11) {
+            $resarray['result'] = 0;
+            $resarray['error'] = $res['cmpinfo'];
         } else {
             $resarray['result'] = 0;
         }
-        $resarray['error'] = $res['stderr'];
         $resarray['output'] = $res['output'];
         return $resarray;
     }
