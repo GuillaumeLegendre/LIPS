@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
-require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
+require_once(dirname(__FILE__) . '/lips_rest_interface_ideone.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
 /**
@@ -40,7 +40,7 @@ class mod_lips_configure_language_form extends moodleform {
         $lips = get_current_instance();
 
         // Select the language.
-        $languages = lips_rest_interface_impl::get_list_languages();
+        $languages = lips_rest_interface_ideone::get_list_languages();
         if (!$languages) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(
                 get_string('web_service_communication_error', 'lips'), 'ERROR');
