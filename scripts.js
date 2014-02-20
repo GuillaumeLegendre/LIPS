@@ -3,11 +3,17 @@
 // Create a ace editor
 window.createAce = function (editorid, areaid, mode, theme, flag, comment) {
 
+	ace.require("ace/ext/language_tools");
+
     // Create ace
     var editor = ace.edit(editorid);
 
     // Set the ace theme
     editor.setTheme("ace/theme/" + theme);
+	
+	editor.setOptions({
+		enableBasicAutocompletion : true
+	});
 
     // Set the ace mode
     if (mode != null && mode != '')
@@ -25,7 +31,7 @@ window.createAce = function (editorid, areaid, mode, theme, flag, comment) {
             createConfigure(editorid);
             break;
         case "code":
-            createCode(editorid);
+            createCode(editorid, comment);
             break;
         case "unit-test":
             createUnitTest(editorid);
@@ -106,23 +112,24 @@ window.createConfigure = function (editorid) {
 
 //Create an ace editor in code mode
 //used for problem code configuration editor, provides code tag
-window.createCode = function (editorid) {
+window.createCode = function (editorid, comment) {
 
     // Create ace
 	var editor = ace.edit(editorid);
-	
-	$("#" + editorid).before('<div class="acepanel">' +
-		'<a href="#" id="' + editorid + '_tagCode">Code</a>' + 
-	'</div>');
-	
-		// Click on the code tag
-	$("#" + editorid + "_tagCode").click(function(){
-		if (editor.findAll('Code', null, true) == 0)
-			editor.insert("<code></code>");
-		editor.focus();
 
-		return false;
-	});
+	if (comment != ""){
+		$("#" + editorid).before('<div class="acepanel">' +
+		'<a href="#" id="' + editorid + '_tagCode">Comment</a>' + 
+		'</div>');
+		
+			// Click on the code tag
+		$("#" + editorid + "_tagCode").click(function(){
+			editor.insert(comment);
+			editor.focus();
+		});	
+	}
+	
+	
 }
 
 //Create an ace editor in unit-test mode
@@ -141,10 +148,12 @@ window.createUnitTest = function (editorid) {
 
         if (editor.getCopyText().length == 0) {
             editor.insert("<lips-unit-test></lips-unit-test>");
+			editor.focus();
         } else {
             var currentText = editor.getCopyText();
             editor.remove(editor.getSelectionRange());
             editor.insert("<lips-unit-test>" + currentText + "</lips-unit-test>");
+			editor.focus();
         }
 
         return false;

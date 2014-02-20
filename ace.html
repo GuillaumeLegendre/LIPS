@@ -52,25 +52,29 @@ if (f(&lt;code&gt;&lt;/code&gt;) == "&lt;code&gt;&lt;/code&gt;")
 }
 </div>-->
 
-<div id="editor" class="ace">&lt;code&gt;&lt;/code&gt;
+<!--<div id="editor" class="ace">&lt;code&gt;&lt;/code&gt;
 
 if (f("bonjour") == "bonjour")
 	return true;
-</div>
+</div>-->
+
+<div id="editor" class="ace"></div>
 
 <textarea id="area" class="editorCode"></textarea>
 
 <script src="./ace/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="./ace/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 <script src="./ace/ace-builds/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
 <script src="scripts.js" type="text/javascript" charset="utf-8"></script>
 <script>
 	
 	//createAce("editor", "area",  "javascript", "eclipse", "configure");
-	//createAce("editor", "area",  "javascript", "eclipse", "code");
+	createAce("editor", "area",  "javascript", "eclipse", "code", "");
+	//createAce("editor", "area",  "javascript", "eclipse", "code", "/* TODO */");
 	//createAce("editor", "area",  "javascript", "eclipse", "unit-test");
 	//createAce("editor", "area",  "javascript", "eclipse", "normal");
 	//createAce("editor", "area",  "javascript", "eclipse", "readonly");
-	createAce("editor", "area",  "javascript", "eclipse", "resolution");
+	//createAce("editor", "area",  "javascript", "eclipse", "resolution");
 	
 
 </script>

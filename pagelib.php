@@ -765,13 +765,13 @@ class page_admin_problem_delete extends page_view {
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
         $deleteProblemForm = new mod_lips_problems_delete_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problems_delete', 'idcategory' => $this->idcategory)), array('idcategory' => $this->idcategory), 'post');
         if ($deleteProblemForm->is_submitted()) {
-            $categories = array();
+            $problemsid = array();
             foreach ($deleteProblemForm->get_data() as $problem => $state) {
                 if ($state == 1) {
-                    $categories[] = $problem;
+                    $problemsid[] = $problem;
                 }
             }
-            redirect(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'deleteProblems', 'categories' => serialize($categories))));
+            redirect(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'deleteProblems', 'idproblems' => serialize($problemsid))));
             return;
         }
         parent::display_header();
@@ -1405,18 +1405,20 @@ class page_delete_problems extends page_view {
         global $CFG;
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
         $message = "";
-        $serializedcategories = optional_param("categories", null, PARAM_TEXT);
+        $serializedidproblems = optional_param("idproblems", null, PARAM_TEXT);
         $count = 0;
-        foreach (unserialize($serializedcategories) as $category) {
+        foreach (unserialize($serializedidproblems) as $idproblem) {
             $count++;
-            $message .= $this->lipsoutput->display_p($category);
+            $problemdetailsarray = get_problem_details($idproblem);
+            $problemdetails = $problemdetailsarray[$idproblem];
+            $message .= $this->lipsoutput->display_p($problemdetails->problem_label);
         }
         if ($count > 1) {
             $title = $this->lipsoutput->display_h2(get_string('administration_delete_problems_confirmation', 'lips'));
         } else {
             $title = $this->lipsoutput->display_h2(get_string('administration_delete_problem_confirmation_msg', 'lips'));
         }
-        $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'categories' => $serializedcategories, 'action' => 'deleteProblems'));
+        $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'idproblems' => $serializedidproblems, 'action' => 'deleteProblems'));
         $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_category_select_delete'));
         echo $this->lipsoutput->confirm($title . $message, $continueurl, $cancelurl);
     }

@@ -1057,17 +1057,6 @@ function is_challenged($from, $to, $problem) {
 }
 
 /**
- * Delete problems with the specified name.
- *
- * @param int $name name of the problem.
- */
-function delete_problem_by_name($iduser, $name) {
-    global $DB;
-
-    $DB->delete_records("lips_problem", array('problem_label' => $name, 'problem_creator_id' => $iduser));
-}
-
-/**
  * Fetch all problems of a user of the specified category.
  *
  * @param int $userid Id of the user
