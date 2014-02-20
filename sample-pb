@@ -28,7 +28,7 @@ System.out.println(test1 == test2 == test3);
 
 ------------------------------------------------------------------------------------------------
 
-int isPalindrome(char s[]) {
+int isPalindrome(char *s) {
     <code></code>
 }
 
