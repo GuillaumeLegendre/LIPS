@@ -442,6 +442,10 @@ function delete_problem($id) {
 
     $DB->delete_records("lips_problem", array("id" => $id));
     $DB->delete_records("lips_notification", array("notification_problem" => $id));
+    $DB->delete_records("lips_problem_similar", array('problem_similar_main_id' => $id));
+    $DB->delete_records("lips_problem_similar", array('problem_similar_id' => $id));
+    $DB->delete_records("lips_problem_solved", array('problem_solved_problem' => $id));
+    $DB->delete_records("lips_challenge", array('challenge_problem' => $id));
 }
 
 /**
