@@ -108,7 +108,7 @@ class mod_lips_problem_create_form extends moodleform {
         * Similar problems
         *------------------------------------------------*/
         $categorieswithproblems = array();
-        foreach (fetch_all_categories_with_problems() as $category) {
+        foreach (fetch_all_categories_with_problems(get_current_instance()->id) as $category) {
             $categorieswithproblems[$category->problem_category_id] = $category->category_name;
         }
 
@@ -299,7 +299,7 @@ class mod_lips_problem_modify_form extends moodleform {
         foreach (fetch_all_difficulties() as $difficulty) {
             $difficulties[$difficulty->id] = get_string($difficulty->difficulty_label, "lips");
         }
-        
+
         // ID.
         $mform->addElement('hidden', 'id_problem', null, null);
         $mform->setType('id_problem', PARAM_INT);
@@ -364,7 +364,7 @@ class mod_lips_problem_modify_form extends moodleform {
        * Similar problems
        *------------------------------------------------*/
         $categorieswithproblems = array();
-        foreach (fetch_all_categories_with_problems() as $category) {
+        foreach (fetch_all_categories_with_problems(get_current_instance()->id) as $category) {
             $categorieswithproblems[$category->problem_category_id] = $category->category_name;
         }
         $problems = array();
@@ -553,7 +553,7 @@ class mod_lips_problems_resolve_form extends moodleform {
         $mform =& $this->_form;
         $mcustomdata = $this->_customdata;
 
-        if($mcustomdata['idproblem'] != null) {
+        if ($mcustomdata['idproblem'] != null) {
             $code = htmlspecialchars(get_code_to_resolve($mcustomdata['idproblem']));
             $mform->addElement('html', '<div id="answerEditor"" class="ace">' . htmlspecialchars(get_code_to_resolve($mcustomdata['idproblem'])) . '</div>');
             $mform->addElement('textarea', 'problem_answer', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
@@ -562,7 +562,7 @@ class mod_lips_problems_resolve_form extends moodleform {
             $mform->addElement('html', '<div id="answerEditor"" class="ace"></div>');
             $mform->addElement('textarea', 'problem_answer', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
         }
-        
+
         // Export button.
         $mform->addElement('submit', 'submit', get_string('send_response', 'lips'));
     }
