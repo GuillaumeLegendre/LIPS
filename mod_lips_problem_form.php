@@ -417,6 +417,8 @@ class mod_lips_problem_modify_form extends moodleform {
         if (isset($data->problem_label) && isset($data->problem_category_id) && isset($data->problem_statement) && isset($data->problem_difficulty_id) && isset($data->problem_unit_tests)) {
             if (empty($data->problem_label)) {
                 $errors['emptyProblemLabel'] = get_string('administration_language_form_select_name_error', 'lips');
+            } else if (problem_exists($data->problem_label, $data->problem_category_id)) {
+                $errors['alreadyExists'] = get_string('administration_problem_already_exists', 'lips');
             }
             if (empty($data->problem_category_id)) {
                 $errors['emptyCategoryId'] = get_string('administration_language_form_select_category_error', 'lips');
