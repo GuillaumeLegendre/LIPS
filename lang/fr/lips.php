@@ -212,6 +212,7 @@ $string['resolve'] = 'Résoudre';
 // Language
 $string['administration_language_configure_title'] = 'Configurer le langage';
 $string['administration_language_configure_msg'] = 'Sélectionnez le langage dans lequel vous souhaitez compiler.<br/>Pour donner des indications à l\'étudiant sur le code qu\'il devra implémenter, vous pouvez spécifier un format de commentaire (ex: /* TODO */) adapté au langage.';
+$string['administration_language_configure_success'] = 'Le langage a été configuré';
 $string['administration_language_image_title'] = 'Image';
 $string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.<br/>Taille maximum de l\'image : ';
 $string['administration_language_image_success'] = 'L\'image a été modifiée';
@@ -282,7 +283,7 @@ $string['administration_unittests_form_code_error'] = 'You devez renseigner les 
 $string['administration_problem_already_exists'] = 'Ce nom de problème est déjà utilisé, merci d\'en choisir un autre';
 $string['administration_problem_delete_title'] = 'Supprimer un problème';
 $string['administration_delete_problems_confirmation'] = 'Confirmez vous la suppression des problèmes suivants ?';
-$string['administration_delete_problem_confirmation'] = 'Confirmez vous la suppression du problème suivant ?';
+$string['administration_delete_problem_confirmation_msg'] = 'Confirmez vous la suppression du problème suivant ?';
 $string['administration_empty_problems'] = 'Aucun problème';
 
 // My problems
