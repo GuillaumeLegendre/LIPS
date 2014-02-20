@@ -1012,12 +1012,18 @@ class page_profile_ranks extends page_view {
      * Display the page_profile_ranks content
      */
     function display_content() {
+        global $USER;
+
         echo $this->lipsoutput->display_profile_menu('ranks') . '<br/>';
 
         echo $this->lipsoutput->display_h1(get_string('ranks', 'lips'));
 
-        $lips = get_current_instance();
-        echo user_rank_for_language($lips->id);
+        $userid = optional_param('id_user', null, PARAM_TEXT);
+        if ($userid == null) {
+            $userid = get_user_details(array('id_user_moodle' => $USER->id))->id;
+        }
+
+        echo $this->lipsoutput->display_ranks($userid);
     }
 }
 

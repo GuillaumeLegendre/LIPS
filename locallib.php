@@ -58,6 +58,17 @@ function get_instance($id) {
         HAVING mm.name = \'lips\'');
 }
 
+function fetch_all_instances() {
+    global $DB;
+
+    return $DB->get_records_sql('SELECT mcd.id AS instance_link, ml.id AS instance_id, ml.name, ml.compile_language, ml.coloration_language, ml.language_picture, ml.base_code, mm.name 
+        FROM mdl_lips ml, mdl_course_modules mcd, mdl_modules mm 
+        WHERE ml.id = mcd.instance 
+        AND ml.course = mcd.course 
+        AND mcd.module = mm.id
+        HAVING mm.name = \'lips\'');
+}
+
 /**
  * Test if the current user has the requested role
  *
@@ -199,7 +210,7 @@ function insert_user_if_not_exists() {
 
         $role = get_highest_role();
         if ($role != null) {
-            insert_user_rights($user->id, $lips->id, $role);
+            insert_user_rights_score($user->id, $lips->id, $role);
         }
     }
 }
@@ -221,24 +232,24 @@ function insert_user($idusermoodle, $userstatus, $userrankid) {
         'user_rank_id' => $userrankid
     ));
 
-    // Delete current user stauts
+    // Delete current user status
     delete_user_status($lastinsertid, $lips->id);
 
     // Insert user status
     $role = get_highest_role();
     if ($role != null) {
-        insert_user_rights($lastinsertid, $lips->id, $userstatus);
+        insert_user_rights_score($lastinsertid, $lips->id, $userstatus);
     }
 }
 
 /**
- * Insert user status
+ * Insert user status & score
  *
  * @param int $userid User ID
  * @param int $lipsintance LIPS instance
  * @param string $status Status
  */
-function insert_user_rights($iduser, $lipsintance, $status) {
+function insert_user_rights_score($iduser, $lipsintance, $status) {
     global $DB;
 
     $DB->insert_record('lips_user_rights', array(
@@ -246,6 +257,15 @@ function insert_user_rights($iduser, $lipsintance, $status) {
         'user_rights_instance' => $lipsintance,
         'user_rights_status' => $status
     ));
+
+    // Insert user score if not exist
+    $score = $DB->get_record('lips_score', array('score_instance' => $lipsintance, 'score_user' => $iduser));
+    if($score == null) {
+        $DB->insert_record('lips_score', array(
+            'score_instance' => $lipsintance,
+            'score_user' => $iduser
+        ));
+    }
 }
 
 /**
@@ -1278,24 +1298,22 @@ function get_code_to_resolve($idproblem) {
     return $codes->problem_code;
 }
 
-/*
+/**
  * User rank in a specific language
  *
  * @param int $languageid Language ID
+ * @param int $userid User ID
  * @return int position
  */
-function user_rank_for_language($languageid) {
-    global $DB, $USER;
-
-    // User details
-    $currentuser = get_user_details(array('id_user_moodle' => $USER->id));
+function user_rank_for_language($languageid, $userid) {
+    global $DB;
 
     // Scores on a language
     $scores = $DB->get_records_sql('SELECT * FROM mdl_lips_score WHERE score_instance = ' . $languageid . ' ORDER BY score_score DESC');
 
     $pos = 1;
     foreach ($scores as $score) {
-        if ($score->score_user == $currentuser->id) {
+        if ($score->score_user == $userid) {
             return $pos;
         }
 
@@ -1310,6 +1328,7 @@ function user_rank_for_language($languageid) {
  */
 function number_of_users() {
     global $DB;
+
     return $DB->count_records('lips_user');
 }
 

@@ -187,7 +187,7 @@ class mod_lips_renderer extends plugin_renderer_base {
                     'originUser' => $userdetails->id,
                     'to_unfollow' => $userdetails->id
                 )),
-                get_string('unfollow', 'lips'), null, array("id" => "follow", "class" => "lips-button")));
+                get_string('unfollow', 'lips'), null, array("class" => "lips-button right-button", "style" => "margin-left: 15px")));
             } else {
                 $menu .= $this->render(new action_link(new moodle_url('action.php', array(
                     'id' => $this->page->cm->id,
@@ -196,8 +196,10 @@ class mod_lips_renderer extends plugin_renderer_base {
                     'originUser' => $userdetails->id,
                     'to_follow' => $userdetails->id
                 )),
-                get_string('follow', 'lips'), null, array("id" => "follow", "class" => "lips-button")));
+                get_string('follow', 'lips'), null, array("class" => "lips-button right-button", "style" => "margin-left: 15px")));
             }
+
+            $menu .= $this->render(new action_link(new moodle_url('#'), get_string('send_message', 'lips'), null, array("class" => "lips-button right-button")));
         }
 
         $menu .= '<div id="background">
@@ -359,7 +361,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             if($notification->notification_language != null) {
                 $lips = get_instance($notification->notification_language);
                 if($lips->compile_language != null) {
-                    $language = '<div class="notification-language">' . $lips->compile_language . '</div>';
+                    $language = '<div class="notification-language">' . ucfirst($lips->compile_language) . '</div>';
                 }
             }
             $notification_msg = '<div class="notification-content">' . $language . get_string($notification->notification_type, 'lips') . '</div>';
@@ -488,7 +490,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             $language = '';
             $lips = get_instance($challenge->challenge_language);
             if($lips->compile_language != null) {
-                $language = '<div class="notification-language">' . $lips->compile_language . '</div>';
+                $language = '<div class="notification-language">' . ucfirst($lips->compile_language) . '</div>';
             }
             // Challenge message
             $challenge_msg = '<div class="challenge-content">' . $language . get_string('challenge_notification', 'lips') . '<br/>{challenge_solve} {challenge_refuse}</div>';
@@ -551,7 +553,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             $language = '';
             $lips = get_instance($challenge->challenge_language);
             if($lips->compile_language != null) {
-                $language = '<div class="notification-language">' . $lips->compile_language . '</div>';
+                $language = '<div class="notification-language">' . ucfirst($lips->compile_language) . '</div>';
             }
             // Challenge message
             $challenge_msg = '<div class="challenge-content current">' . $language . '<span>' . get_string('challenge_current', 'lips') . '</span></div>';
@@ -576,6 +578,36 @@ class mod_lips_renderer extends plugin_renderer_base {
         if($display != '') {
             $display .= '<div class="notification-border"></div>';
         }
+
+        return $display;
+    }
+
+    /**
+     * Display the user ranks
+     *
+     * @param int $userid User ID
+     * @return string User ranks
+     */
+    public function display_ranks($userid) {
+        $display = '<div id="ranks">';
+
+        $numberofusers = number_of_users();
+        $instances = fetch_all_instances();
+        foreach($instances as $instance) {
+            $userrank = user_rank_for_language($instance->instance_id, $userid);
+
+            $display .= '<table>
+                            <tr>
+                                <td class="img"><img src="images/' . $instance->language_picture . '"/></td>
+                                <td>
+                                    <p class="rank-language">' . ucfirst($instance->compile_language) . '</p>
+                                    <p class="rank-rank">Classement ' . (($userrank != null) ? $userrank : $numberofusers) . ' / ' . $numberofusers . '</p>
+                                </td>
+                            </tr>
+                        </table>';
+        }
+
+        $display .= '</div>';
 
         return $display;
     }
