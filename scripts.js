@@ -1,7 +1,7 @@
 // JavaScript Document
 
 // Create a ace editor
-window.createAce = function (editorid, areaid, mode, theme, flag) {
+window.createAce = function (editorid, areaid, mode, theme, flag, comment) {
 
     // Create ace
     var editor = ace.edit(editorid);
@@ -31,11 +31,12 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
             createUnitTest(editorid);
             break;
         case "resolution":
-			/*Not working properly */
-            createResolution(editorid);
+            createResolution(editorid, areaid);
             break;
         case "readonly":
-            createReadOnly(editorid);
+            createReadOnly(editorid, true);
+        case "readonly-notsizable":
+            createReadOnly(editorid, false);
         default:
             break;
     }
@@ -51,8 +52,12 @@ window.createAce = function (editorid, areaid, mode, theme, flag) {
 
 //Create an ace editor in resolution mode
 //used to solve problem. allows user to type only betweens <code></code> tags
-window.createResolution = function (editorid) {
+window.createResolution = function (editorid, areaid) {
+    // Create ace
+    var editor = ace.edit(editorid);
 
+    // Copy the area content on ace
+    editor.getSession().setValue($("#" + areaid).val());
 }
 
 
@@ -148,7 +153,7 @@ window.createUnitTest = function (editorid) {
 
 //Create an ace editor in readonly mode
 //used to display problem's code. not editable
-window.createReadOnly = function (editorid) {
+window.createReadOnly = function (editorid, sizable) {
     var editor = ace.edit(editorid);
     var doc = editor.getSession().getDocument();
     var lines = doc.getLength();
@@ -159,20 +164,23 @@ window.createReadOnly = function (editorid) {
     editor.renderer.setShowGutter(false);
     editor.setHighlightActiveLine(false);
 
-    for (var i in allLines) {
-        if (longestLine < allLines[i].length) {
-            longestLine = allLines[i].length;
-            longestIndex = i;
+    if(sizable) {
+        for (var i in allLines) {
+            if (longestLine < allLines[i].length) {
+                longestLine = allLines[i].length;
+                longestIndex = i;
+            }
         }
-    }
 
-    for (var j in allLines[longestIndex]) {
-        if (allLines[longestIndex][j] == "\t")
-            longestLine = longestLine + 3;
+        for (var j in allLines[longestIndex]) {
+            if (allLines[longestIndex][j] == "\t")
+                longestLine = longestLine + 3;
+        }
+
+        $("#" + editorid).css("width", (20 + (longestLine * 7)));
     }
 
     $("#" + editorid).css("height", lines * 16);
-    $("#" + editorid).css("width", (20 + (longestLine * 7)));
 }
 
 // Delete the challenged user

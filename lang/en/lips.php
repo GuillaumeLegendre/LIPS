@@ -235,7 +235,7 @@ $string['resolve'] = 'Resolve';
 
 // Language
 $string['administration_language_configure_title'] = 'Configure language';
-$string['administration_language_configure_msg'] = 'Select the language in which you want to compile.';
+$string['administration_language_configure_msg'] = 'Select the language in which you want to compile.<br/>To give an indication to the student on the code he will implement, you can specify a comment format (e.g: /* TODO */) apdated to the language.';
 $string['administration_language_configure_success'] = 'The language has been configured';
 $string['administration_language_image_title'] = 'Picture';
 $string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.<br/>Picture maximum size : ';
@@ -246,12 +246,16 @@ $string['administration_language_code_title'] = 'Base code';
 $string['administration_language_code_msg'] = 'Enter the base used for each compilation.<br/>Before the compilation :<ul><li>The <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> tag will be replaced by the "<strong>Import libaries</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> tag will be replace by the "<strong>Code complete</strong>" content;</li><li>The <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> tag will be replaced by the "<strong>Unit tests</strong>" content.</li></ul>';
 $string['administration_language_code_success'] = 'The base code has been modified';
 $string['administration_language_code_imports_error'] = 'You can put only one &lt;lips-preconfig-import/&gt; tag';
+$string['administration_language_code_imports_error_no'] = 'The &lt;lips-preconfig-import/&gt; tag has to be present';
 $string['administration_language_code_code_error'] = 'You can put only one &lt;lips-preconfig-code/&gt; tag';
+$string['administration_language_code_code_error_no'] = 'The &lt;lips-preconfig-code/&gt; tag has to be present';
 $string['administration_language_code_tests_error'] = 'You can put only one &lt;lips-preconfig-tests/&gt; tag';
+$string['administration_language_code_tests_error_no'] = 'The &lt;lips-preconfig-tests/&gt; tag has to be present';
 $string['administration_language_form_select'] = 'Programming language';
 $string['administration_language_form_select_error'] = 'You must select a language';
 $string['administration_language_form_highlighting_select'] = 'Syntax highlighting';
 $string['administration_language_form_highlighting_select_error'] = 'You must select a syntax highlighting';
+$string['administration_language_form_input'] = 'Comment format';
 $string['administration_language_form_file'] = 'Select the picture';
 $string['administration_language_form_file_error'] = 'You must select a picture';
 $string['administration_existing_problems'] = 'Warning, some problems already exists in this course, the configuration can cause errors in the presents problems.';

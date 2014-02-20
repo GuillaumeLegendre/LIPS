@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
-require_once(dirname(__FILE__) . '/lips_rest_interface_ideone.php');
+require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
 /**
@@ -40,7 +40,7 @@ class mod_lips_configure_language_form extends moodleform {
         $lips = get_current_instance();
 
         // Select the language.
-        $languages = lips_rest_interface_ideone::get_list_languages();
+        $languages = lips_rest_interface_impl::get_list_languages();
         if (!$languages) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(
                 get_string('web_service_communication_error', 'lips'), 'ERROR');
@@ -63,6 +63,9 @@ class mod_lips_configure_language_form extends moodleform {
         if ($lips->coloration_language != null) {
             $mform->setDefault('selectSyntaxHighlighting', $lips->coloration_language);
         }
+        $mform->addElement('text', 'inputComment', get_string('administration_language_form_input', 'lips'));
+        $mform->setType('inputComment', PARAM_TEXT);
+        $mform->setDefault('inputComment', $lips->comment_format);
 
         // Modify button.
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
@@ -79,7 +82,7 @@ class mod_lips_configure_language_form extends moodleform {
         $errors = parent::validation($data, $files);
         $errors = array();
 
-        if (isset($data->selectSyntaxHighlighting)) {
+        if (isset($data->selectSyntaxHighlighting) && isset($data->inputComment)) {
             if (isset($data->selectLanguage) && empty($data->selectLanguage)) {
                 $errors['emptySelectLanguage'] = get_string('administration_language_form_select_error', 'lips');
             }
@@ -127,9 +130,14 @@ class mod_lips_configure_language_form extends moodleform {
         if (isset($data->selectLanguage)) {
             update_language($lips->id, array(
                 'compile_language' => $data->selectLanguage,
-                'coloration_language' => $data->selectSyntaxHighlighting));
+                'coloration_language' => $data->selectSyntaxHighlighting,
+                'comment_format' => $data->inputComment
+            ));
         } else {
-            update_language($lips->id, array('coloration_language' => $data->selectSyntaxHighlighting));
+            update_language($lips->id, array(
+                'coloration_language' => $data->selectSyntaxHighlighting,
+                'comment_format' => $data->inputComment
+            ));
         }
 
         // Success message.
@@ -254,11 +262,20 @@ class mod_lips_configure_code_form extends moodleform {
             preg_match_all('/<lips-preconfig-code\/>/', $data->areaBaseCode, $code);
             preg_match_all('/<lips-preconfig-tests\/>/', $data->areaBaseCode, $tests);
 
+            if (count($import[0]) == 0) {
+                $errors['noImports'] = get_string('administration_language_code_imports_error_no', 'lips');
+            }
             if (count($import[0]) > 1) {
                 $errors['tooManyImports'] = get_string('administration_language_code_imports_error', 'lips');
             }
+            if (count($code[0]) == 0) {
+                $errors['noCode'] = get_string('administration_language_code_code_error_no', 'lips');
+            }
             if (count($code[0]) > 1) {
                 $errors['tooManyCode'] = get_string('administration_language_code_code_error', 'lips');
+            }
+            if (count($tests[0]) == 0) {
+                $errors['noTests'] = get_string('administration_language_code_tests_error_no', 'lips');
             }
             if (count($tests[0]) > 1) {
                 $errors['tooManyTests'] = get_string('administration_language_code_tests_error', 'lips');

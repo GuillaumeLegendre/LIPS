@@ -643,7 +643,7 @@ class page_admin_problem_modify extends page_view {
         // Create ace
         $this->lipsoutput->display_ace_form('preconfigEditor', '', $lips->coloration_language, 'readonly');
         $this->lipsoutput->display_ace_form('importsEditor', 'id_problem_imports', $lips->coloration_language, '');
-        $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code');
+        $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code', 'eclipse', addslashes($lips->comment_format));
         $this->lipsoutput->display_ace_form('unitTestsEditor', 'id_problem_unit_tests', $lips->coloration_language, 'unit-test');
     }
 }
@@ -850,7 +850,7 @@ class page_admin_problem_create extends page_view {
         // Create ace
         $this->lipsoutput->display_ace_form('preconfigEditor', '', $lips->coloration_language, 'readonly');
         $this->lipsoutput->display_ace_form('importsEditor', 'id_problem_imports', $lips->coloration_language, '');
-        $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code');
+        $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code', 'eclipse', addslashes($lips->comment_format));
         $this->lipsoutput->display_ace_form('unitTestsEditor', 'id_problem_unit_tests', $lips->coloration_language, 'unit-test');
     }
 }
@@ -1485,6 +1485,8 @@ class page_solutions extends page_view {
     function display_content() {
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
 
+        $lips = get_current_instance();
+
         $details = get_problem_details($this->id);
         echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
         $author_link = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . ucfirst($details[$this->id]->lastname));
@@ -1503,7 +1505,7 @@ class page_solutions extends page_view {
         $prerequisite = $this->lipsoutput->display_span(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $prerequisite;
         echo $this->lipsoutput->display_p($prerequisite, array("class" => "field_page_problem"));
 
-        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), null, 'post', '', array('class' => 'search-form', 'style' => 'width: 40%'));
+        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), null, 'post', '', array('class' => 'search-form', 'style' => 'width: 60%'));
         $searchform->display();
 
         $search = null;
@@ -1515,7 +1517,7 @@ class page_solutions extends page_view {
         }
         $solutions = get_solutions($this->id, $search);
         foreach ($solutions as $solution) {
-            echo $this->lipsoutput->display_solution($solution);
+            $this->lipsoutput->display_solution($solution, $lips);
         }
     }
 }
@@ -1563,7 +1565,7 @@ class page_problem extends page_view {
         global $USER;
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
-        require_once(dirname(__FILE__) . '/lips_rest_interface_ideone.php');
+        require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
         // Problem details
         $lips = get_current_instance();
         $details = get_problem_details($this->id);
@@ -1667,9 +1669,12 @@ class page_problem extends page_view {
         $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'get', '', array('class' => 'solve-button'));
 
         if ($formanswer->is_submitted()) {
+            $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), null, 'get', '', array('class' => 'solve-button'));
+
             increment_attempt($this->id);
             $data = $formanswer->get_data();
-            $languages = lips_rest_interface_ideone::execute(get_code_complete($this->id, $data->problem_answer), get_current_instance()->compile_language);
+
+            $languages = lips_rest_interface_impl::execute(get_code_complete($this->id, $data->problem_answer), get_current_instance()->compile_language);
             if (!$languages) {
                 echo $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
             } else if ($languages['result'] != 1) {

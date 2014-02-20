@@ -442,6 +442,10 @@ function delete_problem($id) {
 
     $DB->delete_records("lips_problem", array("id" => $id));
     $DB->delete_records("lips_notification", array("notification_problem" => $id));
+    $DB->delete_records("lips_problem_similar", array('problem_similar_main_id' => $id));
+    $DB->delete_records("lips_problem_similar", array('problem_similar_id' => $id));
+    $DB->delete_records("lips_problem_solved", array('problem_solved_problem' => $id));
+    $DB->delete_records("lips_challenge", array('challenge_problem' => $id));
 }
 
 /**
@@ -663,14 +667,16 @@ function get_solutions($problemid, $search = null) {
         from mdl_lips_problem_solved mls
         join mdl_user mu on mu.id=mls.problem_solved_user
         join mdl_lips_user mlu on mlu.id_user_moodle=mls.problem_solved_user
-        where problem_solved_problem = $problemid");
+        where problem_solved_problem = $problemid
+        ORDER BY problem_solved_date DESC");
     } else {
         return $DB->get_records_sql("select mls.id, mlu.id as profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
         from mdl_lips_problem_solved mls
         join mdl_user mu on mu.id=mls.problem_solved_user
         join mdl_lips_user mlu on mlu.id_user_moodle=mls.problem_solved_user
         where problem_solved_problem = $problemid
-        and (mu.firstname like '%" . $search . "%' or mu.lastname like '%" . $search . "%')");
+        and (mu.firstname like '%" . $search . "%' or mu.lastname like '%" . $search . "%')
+        ORDER BY problem_solved_date DESC");
     }
 }
 

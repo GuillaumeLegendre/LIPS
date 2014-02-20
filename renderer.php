@@ -265,9 +265,10 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param string $mode Ace mode for the syntax highlightning
      * @param string $flag Ace flag (configure, code or unit-test)
      * @param string $theme Ace theme
+     * @param string $comment Base comment
      */
-    public function display_ace_form($editorid, $areaid, $mode, $flag = '', $theme = 'eclipse') {
-        echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '", "' . $flag . '")</script>';
+    public function display_ace_form($editorid, $areaid, $mode, $flag = '', $theme = 'eclipse', $comment = '') {
+        echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '", "' . $flag . '", "' . $comment . '")</script>';
     }
 
     /**
@@ -296,14 +297,16 @@ class mod_lips_renderer extends plugin_renderer_base {
      * Display a solution
      *
      * @param array $data
-     * @return string div tag
+     * @param object LIPS instance
      */
-    public function display_solution($data) {
+    public function display_solution($data, $lips) {
         $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)), ucfirst($data->firstname) . ' ' . strtoupper($data->lastname));
-        $date = html_writer::tag('div', get_string("The", "lips") . " " . date('d/m/Y', $data->problem_solved_date), array("id" => "date"));
+        $date = html_writer::tag('div', get_string("The", "lips") . " " . format_date($data->problem_solved_date), array("id" => "date"));
         $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header"));
-        $content = html_writer::tag('div', $data->problem_solved_solution, array("id" => "content"));
-        return html_writer::tag('div', $header . $content, array("class" => "solution"));
+        $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '" class="ace readonly">' . $data->problem_solved_solution . '</div>', array("id" => "content"));
+        echo html_writer::tag('div', $header . $content, array("class" => "solution"));
+        
+        $this->display_ace_form('aceSolution_' . $data->id, '', $lips->coloration_language, 'readonly-notsizable');
     }
 
     /**
