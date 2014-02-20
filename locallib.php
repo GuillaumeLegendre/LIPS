@@ -1232,9 +1232,11 @@ function get_code_complete($idproblem, $solution) {
     $basecode = $codes->base_code;
     $solution = preg_replace("|(<code>)|U", "", $solution);
     $solution = preg_replace("|(</code>)|U", "", $solution);
+    $unittests = preg_replace("|(<lips-unit-test>)|U", "", $codes->problem_unit_tests);
+    $unittests = preg_replace("|(</lips-unit-test>)|U", "", $unittests);
     $basecode = preg_replace("|(<lips-preconfig-import/>)|U", $codes->problem_imports, $basecode);
     $basecode = preg_replace("|(<lips-preconfig-code/>)|U", $solution, $basecode);
-    $basecode = preg_replace("|(<lips-preconfig-tests/>)|U", $codes->problem_unit_tests, $basecode);
+    $basecode = preg_replace("|(<lips-preconfig-tests/>)|U", $unittests, $basecode);
     return $basecode;
 }
 
@@ -1281,4 +1283,19 @@ function user_rank_for_language($languageid) {
 function number_of_users() {
     global $DB;
     return $DB->count_records('lips_user');
+}
+
+function insert_solution($solution, $idproblem, $iduser) {
+    global $DB;
+    $DB->insert_record('lips_problem_solved', array(
+        'problem_solved_problem' => $idproblem,
+        'problem_solved_user' => $iduser,
+        'problem_solved_date' => time(),
+        'problem_solved_solution' => $solution,
+    ));
+}
+
+function increment_attempt($idproblem) {
+    global $DB;
+    $DB->execute("UPDATE mdl_lips_problem SET problem_attempts=problem_attempts+1 WHERE id=$idproblem");
 }

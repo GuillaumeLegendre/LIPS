@@ -34,7 +34,7 @@ class lips_rest_interface_impl implements lips_rest_interface {
             )
         );
         $context = stream_context_create($opts);
-        $json = file_get_contents("http://localhost:4567/execute", false, $context);
+        $json = file_get_contents("http://10.2.21.71:4567/execute", false, $context);
         if (!$json) {
             return false;
         }
@@ -52,7 +52,7 @@ class lips_rest_interface_impl implements lips_rest_interface {
 
     public static function get_list_languages() {
         $languages = array();
-        $json = file_get_contents("http://localhost:4567/languages");
+        $json = file_get_contents("http://10.2.21.71:4567/languages");
         if (!$json) {
             return false;
         }

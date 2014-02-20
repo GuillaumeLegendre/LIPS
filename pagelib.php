@@ -1555,7 +1555,7 @@ class page_problem extends page_view {
         global $USER;
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
-        require_once(dirname(__FILE__) . '/lips_rest_interface_impl.php');
+        require_once(dirname(__FILE__) . '/lips_rest_interface_ideone.php');
         // Problem details
         $lips = get_current_instance();
         $details = get_problem_details($this->id);
@@ -1659,14 +1659,15 @@ class page_problem extends page_view {
         $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'get', '', array('class' => 'solve-button'));
 
         if ($formanswer->is_submitted()) {
+            increment_attempt($this->id);
             $data = $formanswer->get_data();
-            $languages = lips_rest_interface_impl::execute(get_code_complete($this->id, $data->problem_answer), get_current_instance()->compile_language);
-            if(!$languages) {
+            $languages = lips_rest_interface_ideone::execute(get_code_complete($this->id, $data->problem_answer), get_current_instance()->compile_language);
+            if (!$languages) {
                 echo $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
-            }
-            else if ($languages['result'] != 1) {
+            } else if ($languages['result'] != 1) {
                 echo $this->lipsoutput->display_notification($languages['error'], 'ERROR');
             } else if ($languages['output'] == "true") {
+                insert_solution($data->problem_answer, $this->id, $USER->id);
                 echo $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
             } else {
                 echo $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"), 'ERROR');
@@ -1708,7 +1709,7 @@ class page_problem extends page_view {
  */
 class page_import_problems extends page_view {
 
-     /**
+    /**
      * page_import_problems constructor
      *
      * @param object $cm Moodle context
@@ -1727,7 +1728,7 @@ class page_import_problems extends page_view {
         $coursecontext = $context->get_course_context();
 
         // Moodle restore view.
-        $continueurl = new moodle_url('../../backup/restorefile.php', array('contextid'=>$coursecontext->id));
+        $continueurl = new moodle_url('../../backup/restorefile.php', array('contextid' => $coursecontext->id));
         $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => "administration"));
 
         $message = $this->lipsoutput->display_h2(get_string('administration_problems_import_confirmation', 'lips'));
@@ -1766,8 +1767,8 @@ class page_export_problems extends page_view {
         $cm = get_coursemodule_from_id('lips', optional_param('id', 0, PARAM_INT), 0, false, MUST_EXIST);
 
         // Moodle backup view only for the lips instance.
-        $continueurl = new moodle_url('../../backup/backup.php', array('id'=>$coursecontext->instanceid, 'cm'=>$cm->id));
-        
+        $continueurl = new moodle_url('../../backup/backup.php', array('id' => $coursecontext->instanceid, 'cm' => $cm->id));
+
         $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => "administration"));
 
         $message = $this->lipsoutput->display_h2(get_string('administration_problems_export_confirmation', 'lips'));

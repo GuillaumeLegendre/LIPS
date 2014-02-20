@@ -20,9 +20,17 @@ class lips_rest_interface_ideone implements lips_rest_interface {
 
     public static function execute($source, $language) {
         // creating soap client
+        $languageid = "";
         $client = new SoapClient("http://ideone.com/api/1/service.wsdl");
+        $languagessupported = $client->getLanguages("mohlen", "lips");
+        foreach ($languagessupported['languages'] as $langid => $langname) {
+            if ($langname == $language) {
+                $languageid = $langid;
+            }
+        }
+
         // calling test function
-        $testArray = $client->createSubmission("mohlen", "lips", $source, 29, "", true, true);
+        $testArray = $client->createSubmission("mohlen", "lips", $source, $languageid, "", true, true);
         $res = $client->getSubmissionDetails("mohlen", "lips", $testArray['link'], true, true, true, true, true);
         // printing returned values
         while ($res['status'] != 0) {
@@ -48,7 +56,7 @@ class lips_rest_interface_ideone implements lips_rest_interface {
         $languagessupported = $client->getLanguages("mohlen", "lips");
 
         foreach ($languagessupported['languages'] as $languageid => $languagename) {
-            $languages[$languageid] = $languagename;
+            $languages[$languagename] = $languagename;
         }
         return $languages;
     }

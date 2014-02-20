@@ -39,7 +39,7 @@ class rank_table extends table_sql {
             $conditions .= " AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'";
         }
         if (!empty($language)) {
-            $conditions .= " AND mlur.user_rights_instance=$language";
+            $conditions .= " AND mlur.user_rights_instance=$language AND mlc.id_language=$language";
         }
         if (!empty($category)) {
             $conditions .= " AND mlc.id=$category";
@@ -52,7 +52,8 @@ class rank_table extends table_sql {
             left JOIN mdl_lips_problem mlp ON mlp.id=mlps.problem_solved_problem
             left JOIN mdl_lips_category mlc ON mlc.id=mlp.problem_category_id
             left JOIN mdl_lips_user_rights mlur ON user_rights_user=mlu.id",
-            $conditions . " GROUP BY  mlu.id_user_moodle");
+            $conditions . " GROUP BY  mlu.id_user_moodle order by user_score DESC");
+
         $this->set_count_sql("SELECT count(*) FROM mdl_lips_user  mlu
             JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
             left JOIN mdl_lips_problem_solved mlps on mlps.problem_solved_user=mlu.id_user_moodle
