@@ -324,6 +324,8 @@ $string['administration_problem_already_exists'] = 'This problem name already ex
 $string['administration_delete_problems_confirmation'] = 'Confirm the deletion of these problems ?';
 $string['administration_delete_problem_confirmation_msg'] = 'Confirm the deletion of this problem ?';
 $string['administration_empty_problems'] = 'No problems';
+$string['administration_unittests_form_code_unvalid'] = 'You must display keywords PROBLEM_SOLVED and PROBLEM_FAILED in unit tests';
+
 
 // My problems
 $string['administration_my_problems_title'] = "My problems";

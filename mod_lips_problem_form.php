@@ -174,6 +174,8 @@ class mod_lips_problem_create_form extends moodleform {
             }
             if (empty($data->problem_unit_tests)) {
                 $errors['emptyProblemUnittests'] = get_string('administration_unittests_form_code_error', 'lips');
+            } else if (!validate_unittests($data->problem_unit_tests)) {
+                $errors['unvalidUnitTests'] = get_string('administration_unittests_form_code_unvalid', 'lips');
             }
         } else {
             $errors['impossibleError'] = get_string('error_impossible', 'lips');
@@ -443,6 +445,8 @@ class mod_lips_problem_modify_form extends moodleform {
             }
             if (empty($data->problem_unit_tests)) {
                 $errors['emptyProblemUnittests'] = get_string('administration_unittests_form_code_error', 'lips');
+            } else if (!validate_unittests($data->problem_unit_tests)) {
+                $errors['unvalidUnitTests'] = get_string('administration_unittests_form_code_unvalid', 'lips');
             }
         } else {
             $errors['impossibleError'] = get_string('error_impossible', 'lips');
@@ -528,7 +532,7 @@ class mod_lips_problem_modify_select_form extends moodleform {
         // Select the category.
         $lips = get_current_instance();
 
-        $categoriesarray =  array();
+        $categoriesarray = array();
         $problemsarray = array();
 
         $problems = fetch_problems($USER->id);
@@ -540,11 +544,11 @@ class mod_lips_problem_modify_select_form extends moodleform {
         $problemscount = count($problems);
         if ($problemscount != 0) {
 
-            $problemscount = ($problemscount<10)?$problemscount:10;
+            $problemscount = ($problemscount < 10) ? $problemscount : 10;
 
             // Add hierselect element.
             $attribs = array('size' => $problemscount);
-            $hier = &$mform->addElement('hierselect', 'problemIdArray', get_string('administration_problem_modify_select', 'lips'), $attribs);
+            $hier = & $mform->addElement('hierselect', 'problemIdArray', get_string('administration_problem_modify_select', 'lips'), $attribs);
             $hier->setOptions(array($categoriesarray, $problemsarray));
             $mform->addRule('problemIdArray', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 

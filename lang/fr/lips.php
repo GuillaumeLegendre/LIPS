@@ -286,6 +286,7 @@ $string['administration_problem_delete_title'] = 'Supprimer un problème';
 $string['administration_delete_problems_confirmation'] = 'Confirmez vous la suppression des problèmes suivants ?';
 $string['administration_delete_problem_confirmation_msg'] = 'Confirmez vous la suppression du problème suivant ?';
 $string['administration_empty_problems'] = 'Aucun problème';
+$string['administration_unittests_form_code_unvalid'] = 'Vous devez afficher au moins une fois les mots clés PROBLEM_SOLVED et PROBLEM_FAILED dans les tests unitaires';
 
 // My problems
 $string['administration_my_problems_title'] = "Mes problèmes";

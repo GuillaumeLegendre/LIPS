@@ -1330,19 +1330,22 @@ function get_code_complete($idproblem, $solution) {
     global $DB;
     $res = array();
     $idtrue = uniqid();
+    $idfalse=uniqid();
     $codes = $DB->get_record_sql('select base_code,problem_code, problem_imports, problem_unit_tests from mdl_lips_problem mlp join mdl_lips_category mlc on mlc.id=mlp.problem_category_id JOIN mdl_lips ml ON ml.id=mlc.id_language where mlp.id=' . $idproblem);
     $basecode = $codes->base_code;
     $solution = preg_replace("|(<code>)|U", "", $solution);
     $solution = preg_replace("|(</code>)|U", "", $solution);
     $unittests = preg_replace("|(<lips-unit-test>)|U", "", $codes->problem_unit_tests);
     $unittests = preg_replace("|(</lips-unit-test>)|U", "", $unittests);
-    $unittests = preg_replace("|(true)|U", $idtrue, $unittests);
+    $unittests = preg_replace("|(PROBLEM_SOLVED)|U", $idtrue, $unittests);
+    $unittests = preg_replace("|(PROBLEM_FAILED)|U", $idfalse, $unittests);
     $unittests = preg_replace("|(</lips-unit-test>)|U", "", $unittests);
     $basecode = preg_replace("|(<lips-preconfig-import/>)|U", $codes->problem_imports, $basecode);
     $basecode = preg_replace("|(<lips-preconfig-code/>)|U", $solution, $basecode);
     $basecode = preg_replace("|(<lips-preconfig-tests/>)|U", $unittests, $basecode);
     $res['code'] = $basecode;
     $res['idtrue'] = $idtrue;
+    $res['idfalse'] = $idfalse;
     return $res;
 }
 
@@ -1502,4 +1505,14 @@ function get_count_problem_resolved($userid, $idinstance = null) {
     AND problem_solved_problem in
     (select mlp.id from mdl_lips_problem mlp
     JOIN mdl_lips_category mlc ON mlp.problem_category_id=mlc.id ' . $conditions . ')');
+}
+
+function validate_unittests($unittests) {
+    if (preg_match('/PROBLEM_SOLVED/', $unittests) != 1) {
+        return false;
+    }
+    if (preg_match('/PROBLEM_FAILED/', $unittests) != 1) {
+        return false;
+    }
+    return true;
 }
