@@ -67,10 +67,10 @@ $string['picture_testing'] = 'testing.png';
 /*--------------------------------------------------
  * Difficulties
  *------------------------------------------------*/
-$string['difficulty_label_elementary'] = 'elementary';
-$string['difficulty_label_easy'] = 'easy';
-$string['difficulty_label_medium'] = 'medium';
-$string['difficulty_label_difficult'] = 'difficult';
+$string['difficulty_label_elementary'] = 'Elementary';
+$string['difficulty_label_easy'] = 'Easy';
+$string['difficulty_label_medium'] = 'Medium';
+$string['difficulty_label_difficult'] = 'Difficult';
 
 /*--------------------------------------------------
  * Notifications

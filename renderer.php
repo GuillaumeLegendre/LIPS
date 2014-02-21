@@ -225,7 +225,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      * Display a notification message
      *
      * @param string $msg Message to display
-     * @param stirng $type Notification type (INFO, SUCCESS, WARNING, ERROR)
+     * @param string $type Notification type (INFO, SUCCESS, WARNING, ERROR)
      * @return string The notification message
      */
     public function display_notification($msg, $type) {

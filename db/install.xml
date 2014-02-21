@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/lips/db" VERSION="20140219" COMMENT="XMLDB file for Moodle LIPS module"
+<XMLDB PATH="mod/lips/db" VERSION="20140221" COMMENT="XMLDB file for Moodle LIPS module"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -129,7 +129,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="rank_label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Rank label"/>
-        <FIELD NAME="rank_percentage" TYPE="int" LENGTH="3" NOTNULL="true" SEQUENCE="false" COMMENT="Percentage (of the maximal score that a user can reach) from which a user can receive the rank"/>
+        <FIELD NAME="rank_problem_solved" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Number of problem solved from which a user can receive the rank"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

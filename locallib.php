@@ -1398,7 +1398,7 @@ function number_of_users() {
  *
  * @param string $solution Solution
  * @param int $idproblem Problem ID
- * @param int $iduser User ID
+ * @param int $iduser User ID (Moodle)
  */
 function insert_solution($solution, $idproblem, $iduser) {
     global $DB;
@@ -1412,14 +1412,15 @@ function insert_solution($solution, $idproblem, $iduser) {
         'problem_solved_date' => time(),
         'problem_solved_solution' => $solution,
     ));
+
+    // Update the user score
     $DB->execute("UPDATE mdl_lips_score
-    SET score_score=score_score+
-    (select difficulty_points
-    from mdl_lips_difficulty mld
-    JOIN mdl_lips_problem mlp ON mlp.problem_difficulty_id=mld.id
-    WHERE mlp.id=$idproblem)
-    WHERE score_user=(select id from mdl_lips_user where id_user_moodle=$iduser)
-    AND score_instance=" . get_current_instance()->id);
+    SET score_score = score_score + (SELECT difficulty_points
+    FROM mdl_lips_difficulty mld
+    JOIN mdl_lips_problem mlp ON mlp.problem_difficulty_id = mld.id
+    WHERE mlp.id = $idproblem)
+    WHERE score_user = (SELECT id FROM mdl_lips_user WHERE id_user_moodle = $iduser)
+    AND score_instance = " . get_current_instance()->id);
 
     // Notifications
     $lips = get_current_instance();
@@ -1476,6 +1477,14 @@ function insert_solution($solution, $idproblem, $iduser) {
             }
         }
     }
+
+    // Update the user rank
+    $numberproblemsolved = get_count_problem_resolved($iduser);
+    foreach(fetch_all_ranks() as $rank) {
+        if($rank->rank_problem_solved == $numberproblemsolved) {
+            $DB->update_record('lips_user', array('id' => $userdetails->id, 'user_rank_id' => $rank->id));
+        }
+    }
 }
 
 /**
@@ -1490,6 +1499,7 @@ function increment_attempt($idproblem) {
 
 /**
  * Get the number of problems soved by a user.
+ *
  * @param int $userid ID of the user
  */
 function get_count_problem_resolved($userid, $idinstance = null) {
@@ -1497,7 +1507,7 @@ function get_count_problem_resolved($userid, $idinstance = null) {
 
     $conditions = "WHERE 1";
     if ($idinstance != null) {
-        $conditions = " AND mlc.id_language=$idinstance";
+        $conditions = " AND mlc.id_language = $idinstance";
     }
     return $DB->count_records_sql('select count(distinct(problem_solved_problem))
     from mdl_lips_problem_solved
@@ -1515,4 +1525,15 @@ function validate_unittests($unittests) {
         return false;
     }
     return true;
+}
+
+/**
+ * Fetch all ranks
+ *
+ * @return object All ranks
+ */
+function fetch_all_ranks() {
+    global $DB;
+
+    return $DB->get_records('lips_rank');
 }

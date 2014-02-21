@@ -47,7 +47,7 @@ function xmldb_lips_install() {
     foreach($config['ranks'] as $key => $value) {
     	$DB->insert_record("lips_rank", array(
     		"rank_label" => $key,
-    		"rank_percentage" => $value
+    		"rank_problem_solved" => $value
     	));
     }
 }
