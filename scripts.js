@@ -126,12 +126,9 @@ window.createCode = function (editorid, comment) {
 		$("#" + editorid + "_tagCode").click(function(){
 			editor.insert(comment);
 			editor.focus();
-
-            return false;
+			return false;
 		});	
 	}
-	
-	
 }
 
 //Create an ace editor in unit-test mode
@@ -143,8 +140,10 @@ window.createUnitTest = function (editorid) {
 
     $("#" + editorid).before('<div class="acepanel">' +
         '<a href="#" id="' + editorid + '_tagUnit">Unit Test</a>' +
+		'<a href="#" id="' + editorid + '_tagSolved">True</a>' +
+		'<a href="#" id="' + editorid + '_tagFailed">False</a>' +
         '</div>');
-
+		
     // Click on the code tag
     $("#" + editorid + "_tagUnit").click(function () {
 
@@ -157,9 +156,24 @@ window.createUnitTest = function (editorid) {
             editor.insert("<lips-unit-test>" + currentText + "</lips-unit-test>");
 			editor.focus();
         }
-
+		
         return false;
     });
+	
+	  // Click on the code tag
+    $("#" + editorid + "_tagSolved").click(function () {
+		editor.insert("PROBLEM_SOLVED");
+		editor.focus();
+		
+		return false;
+	});
+	
+	 $("#" + editorid + "_tagFailed").click(function () {
+		editor.insert("PROBLEM_FAILED");
+		editor.focus();
+		
+		return false;
+	});
 }
 
 //Create an ace editor in readonly mode
