@@ -1130,7 +1130,7 @@ class page_profile_challenges extends page_view {
             $sentSearchForm = new mod_lips_sent_challenges_search_form(
                 new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges')), null, 'post', '', array('class' => 'search-form'));
         } else {
-            $sentSearchForm = new mod_lips_challenges_search_form(
+            $sentSearchForm = new mod_lips_sent_challenges_search_form(
                 new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'challenges', 'id_user' => $iduser)), null, 'post', '', array('class' => 'search-form'));
         }
 
