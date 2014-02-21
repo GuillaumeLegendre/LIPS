@@ -67,6 +67,7 @@ abstract class page_view {
         $this->add_script_tag('./scripts.js');
         $this->add_script_tag('./ace/ace-builds/src-noconflict/ace.js');
         $this->add_script_tag("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js");
+        $this->add_script_tag("./ace/ace-builds/src-noconflict/ext-language_tools.js");
         $this->add_css_tag("//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css");
         $this->add_css_tag('./styles.css');
     }
