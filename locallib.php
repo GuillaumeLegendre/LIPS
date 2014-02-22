@@ -1493,7 +1493,6 @@ function insert_solution($solution, $idproblem, $iduser) {
  */
 function increment_attempt($idproblem) {
     global $DB;
-
     $DB->execute("UPDATE mdl_lips_problem SET problem_attempts=problem_attempts+1 WHERE id=$idproblem");
 }
 

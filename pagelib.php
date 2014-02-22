@@ -1851,6 +1851,6 @@ class page_rank extends page_view {
         $table = new rank_table($this->cm, $usersearch, $instance_id_js, $category_id_js);
         $filterform->display();
         $table->sortable(false);
-        $table->out(10, true);
+        $table->out(30, false);
     }
 }
