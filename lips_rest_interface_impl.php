@@ -21,7 +21,7 @@ class lips_rest_interface_impl implements lips_rest_interface {
     public static function execute($source, $language) {
         $postdata = http_build_query(
             array(
-                'code' => $source,
+                'code' => base64_encode($source),
                 'language' => $language
             )
         );
