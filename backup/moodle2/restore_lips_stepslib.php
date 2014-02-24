@@ -27,7 +27,7 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
     // The current lips instance id.
     private $lipsid;
     private $newproblemsidarray = array();
-    private $newproblemsimilardataarray = array();
+    private $problemsimilardataarray = array();
 
     /**
      * Define the structure of the tree to restore.
@@ -170,15 +170,7 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         $data = (object)$data;
         $oldid = $data->id;
 
-        $problemsimilarmainid = $this->get_mappingid('lips_problem', $data->problem_similar_main_id);
-        $problemsimilarid = $this->get_mappingid('lips_problem', $data->problem_similar_id);
-
-        // Check if the link doesn't already exist.
-        $count = $DB->count_records("lips_problem_similar", array('problem_similar_main_id' => $problemsimilarmainid, 'problem_similar_id' => $problemsimilarid));
-        
-        if ($count == 0) {
-            $this->newproblemsimilardataarray[] = $data;
-        }
+        $this->problemsimilardataarray[] = $data;
     }
 
      /**
@@ -231,12 +223,21 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         }
 
         // Restore problem advices.
-        foreach ($this->newproblemsimilardataarray as $data) {
+        foreach ($this->problemsimilardataarray as $data) {
 
-            $data->problem_similar_main_id = $this->get_mappingid('lips_problem', $data->problem_similar_main_id);
-            $data->problem_similar_id = $this->get_mappingid('lips_problem', $data->problem_similar_id);
+            $problemsimilarmainid = $this->get_mappingid('lips_problem', $data->problem_similar_main_id);
+            $problemsimilarid = $this->get_mappingid('lips_problem', $data->problem_similar_id);
 
-            $DB->insert_record('lips_problem_similar', $data);
+            // Check if the link doesn't already exist.
+            $count = $DB->count_records("lips_problem_similar", array('problem_similar_main_id' => $problemsimilarmainid, 'problem_similar_id' => $problemsimilarid));
+            
+            if ($count == 0) {
+
+                $data->problem_similar_main_id = $problemsimilarmainid;
+                $data->problem_similar_id = $problemsimilarid;
+
+                $DB->insert_record('lips_problem_similar', $data);
+            }
         }
     }
 }
