@@ -204,7 +204,7 @@ class mod_lips_renderer extends plugin_renderer_base {
 
         $menu .= '<div id="background">
             <div id="infos">
-                <div id="role">' . get_string($userstatus->user_rights_status, 'lips') . '</div>
+                <div id="role">' . ((isset($userstatus->user_rights_status)) ? get_string($userstatus->user_rights_status, 'lips') : get_string('student', 'lips')) . '</div>
                 <div id="rank">' . $rank->rank_label . '</div>
             </div>
             <div id="user">' . ucfirst($moodleuserdetails->firstname) . ' ' . ucfirst($moodleuserdetails->lastname) . '</div>

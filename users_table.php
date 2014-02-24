@@ -42,20 +42,20 @@ class users_table extends table_sql {
 
         if($search == null) {
             $this->set_sql("mlu.id, mlu.id_user_moodle, firstname, lastname, user_rights_status, rank_label",
-                "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr, mdl_lips_user_rights mlur",
-                "mlu.id_user_moodle = mu.id
-                AND mlu.user_rank_id = mlr.id
-                AND mlu.id = mlur.user_rights_user
-                AND mlur.user_rights_instance = " . $lips->id);
+                        "mdl_lips_user mlu
+                        JOIN mdl_user mu ON mu.id = mlu.id_user_moodle
+                        JOIN mdl_lips_rank mlr ON mlu.user_rank_id = mlr.id
+                        LEFT OUTER JOIN mdl_lips_user_rights mlur ON mlur.user_rights_user = mlu.id
+                        AND mlur.user_rights_instance = " . $lips->id, "1");
             $this->set_count_sql('SELECT COUNT(*) FROM mdl_lips_user');
         } else {
             $this->set_sql("mlu.id, mlu.id_user_moodle, firstname, lastname, user_rights_status, rank_label",
-                "mdl_lips_user mlu, mdl_user mu, mdl_lips_rank mlr, mdl_lips_user_rights mlur",
-                "mlu.id_user_moodle = mu.id
-                AND mlu.user_rank_id = mlr.id
-                AND mlu.id = mlur.user_rights_user
-                AND mlur.user_rights_instance = " . $lips->id . "
-                AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
+                        "mdl_lips_user mlu
+                        JOIN mdl_user mu ON mu.id = mlu.id_user_moodle
+                        JOIN mdl_lips_rank mlr ON mlu.user_rank_id = mlr.id
+                        LEFT OUTER JOIN mdl_lips_user_rights mlur ON mlur.user_rights_user = mlu.id
+                        AND mlur.user_rights_instance = " . $lips->id, 
+                        "(firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
             $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_user mlu, mdl_user mu WHERE mlu.id_user_moodle = mu.id AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
         }
         
@@ -81,7 +81,11 @@ class users_table extends table_sql {
                 break;
 
             case 'user_status':
-                return get_string($attempt->user_rights_status, 'lips');
+                if($attempt->user_rights_status != null) {
+                    return get_string($attempt->user_rights_status, 'lips');
+                } else {
+                    return get_string('student', 'lips');
+                }
                 break;
 
             case 'user_follow':
