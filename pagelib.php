@@ -853,7 +853,7 @@ class page_admin_problem_create extends page_view {
         $this->lipsoutput->display_ace_form('preconfigEditor', '', $lips->coloration_language, 'readonly');
         $this->lipsoutput->display_ace_form('importsEditor', 'id_problem_imports', $lips->coloration_language, '');
         $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code', 'eclipse', addslashes($lips->comment_format));
-        $this->lipsoutput->display_ace_form('unitTestsEditor', '_problem_unit_tests', $lips->coloration_language, 'unit-test');
+        $this->lipsoutput->display_ace_form('unitTestsEditor', 'id_problem_unit_tests', $lips->coloration_language, 'unit-test');
     }
 }
 

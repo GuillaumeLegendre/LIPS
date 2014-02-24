@@ -40,7 +40,7 @@ class problems_table extends table_sql {
                 $order = "$key $value, $order";
             }
         }
-
+        $order=trim($order, ", ");
         return $order;
     }
 
