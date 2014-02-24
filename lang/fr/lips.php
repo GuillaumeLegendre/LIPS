@@ -151,6 +151,7 @@ $string['filter'] = 'Filtrer';
 $string['cancel'] = 'Annuler';
 $string['select'] = 'Sélectionner';
 $string['send_message'] = 'Envoyer un message';
+$string['score'] = 'Score';
 
 /*--------------------------------------------------
  * Dates

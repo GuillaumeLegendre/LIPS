@@ -1829,7 +1829,7 @@ class page_rank extends page_view {
     function display_content() {
         global $CFG;
         require_once("$CFG->libdir/tablelib.php");
-        require_once(dirname(__FILE__) . '/rank_table.php');
+        require_once(dirname(__FILE__) . '/rank_table_flexible.php');
         require_once(dirname(__FILE__) . '/mod_lips_filter_form.php');
 
         // Rank title
@@ -1851,9 +1851,8 @@ class page_rank extends page_view {
                 $category_id_js = $category_id_post;
             }
         }
-        $table = new rank_table($this->cm, $usersearch, $instance_id_js, $category_id_js);
         $filterform->display();
-        $table->sortable(false);
-        $table->out(30, false);
+        $table = new rank_table($this->cm, $usersearch, $instance_id_js, $category_id_js);
+        $table->finish_output();
     }
 }

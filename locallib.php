@@ -1405,6 +1405,7 @@ function insert_solution($solution, $idproblem, $iduser) {
 
     $userdetails = get_user_details(array('id_user_moodle' => $iduser));
 
+    echo $iduser;
     // Solution
     $DB->insert_record('lips_problem_solved', array(
         'problem_solved_problem' => $idproblem,

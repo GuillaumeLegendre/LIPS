@@ -177,6 +177,7 @@ $string['filter'] = 'Filter';
 $string['cancel'] = 'Cancel';
 $string['select'] = 'Select';
 $string['send_message'] = 'Send a message';
+$string['score'] = 'Score';
 
 /*--------------------------------------------------
  * Dates
