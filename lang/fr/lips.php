@@ -78,6 +78,7 @@ $string['notification_problem_deleted'] = '{img} {date} - {notification_from} a 
 $string['notification_category_created'] = '{img} {date} - {notification_from} a créé la catégorie {notification_category}';
 $string['notification_category_modified'] = '{img} {date} - {notification_from} a modifié la catégorie {notification_category}';
 $string['notification_category_deleted'] = '{img} {date} - {notification_from} a supprimé la catégorie {notification_text}';
+$string['notification_grade'] = '{img} {date} - {notification_from} a gagné le grade {notification_text}';
 
 /*--------------------------------------------------
  * Challenges
@@ -125,7 +126,7 @@ $string['solved_problems'] = 'Problèmes résolus';
 $string['challenge'] = 'Défier';
 $string['challenged'] = 'Défiés';
 $string['challenged_users'] = 'Utilisateurs défiés';
-$string['no_challenges'] = 'Aucun défis';
+$string['no_challenges'] = 'Aucun défi';
 $string['current_challenges'] = 'Défis en cours';
 $string['followed_users'] = 'Utilisateurs suivis';
 $string['attempts'] = "tentatives";
@@ -151,6 +152,7 @@ $string['filter'] = 'Filtrer';
 $string['cancel'] = 'Annuler';
 $string['select'] = 'Sélectionner';
 $string['send_message'] = 'Envoyer un message';
+$string['unranked'] = 'Non classé';
 
 /*--------------------------------------------------
  * Dates
@@ -214,7 +216,7 @@ $string['administration_language_configure_title'] = 'Configurer le langage';
 $string['administration_language_configure_msg'] = 'Sélectionnez le langage dans lequel vous souhaitez compiler.<br/>Pour donner des indications à l\'étudiant sur le code qu\'il devra implémenter, vous pouvez spécifier un format de commentaire (ex: /* TODO */) adapté au langage.';
 $string['administration_language_configure_success'] = 'Le langage a été configuré';
 $string['administration_language_image_title'] = 'Image';
-$string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.<br/>Taille maximum de l\'image : ';
+$string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.';
 $string['administration_language_image_success'] = 'L\'image a été modifiée';
 $string['administration_language_image_type_error'] = 'Le fichier que vous avez choisi d\'uploader n\'est pas une image.';
 $string['administration_language_image_save_error'] = 'Une erreur est survenue lors de l\'enregistrement de l\'image';
@@ -232,7 +234,7 @@ $string['administration_language_form_select_error'] = 'Vous devez sélectionner
 $string['administration_language_form_highlighting_select'] = 'Coloration syntaxique';
 $string['administration_language_form_highlighting_select_error'] = 'Vous devez sélectionner une coloration syntaxique';
 $string['administration_language_form_input'] = 'Format de commentaire';
-$string['administration_language_form_file'] = 'Sélectionner l\'image';
+$string['administration_language_form_file'] = 'Lien vers l\'image';
 $string['administration_language_form_file_error'] = 'Vous devez sélectionner une image';
 $string['administration_existing_problems'] = 'Attention, des problèmes existent déjà dans ce cours, la configuration peut engendrer des erreurs dans les problèmes déjà présents.';
 $string['administration_no_syntax_highlighting'] = 'Aucun langage de coloration syntaxique n\'a été défini. Vous pouvez le configurer dans <strong>Administration > Langage > Configurer le langage</strong>.';

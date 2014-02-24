@@ -32,6 +32,26 @@ class my_problems_table extends table_sql {
     private $cm;
 
     /**
+     * Override the get_sql_sort function to add a default sort
+     */
+    function get_sql_sort() {
+        $order = parent::construct_order_by($this->get_sort_columns());
+
+        $defaultorder = array(
+            'problem_label' => 'ASC',
+            'difficulty_points' => 'ASC'
+        );
+
+        foreach($defaultorder as $key => $value) {
+            if(strpos($order, $key) === false) {
+                $order = "$key $value, $order";
+            }
+        }
+
+        return $order;
+    }
+
+    /**
      * my_problems_table constructor
      *
      * @param object $cm Moodle context
@@ -49,15 +69,16 @@ class my_problems_table extends table_sql {
             JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id 
             JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id",
             "mlc.id_language = " . $idlanguage . " AND mlp.problem_creator_id = " . $idcreator . " 
-            GROUP BY mlp.id
-            ORDER BY difficulty_points ASC, problem_label ASC");
+            GROUP BY mlp.id");
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_problem WHERE problem_creator_id = " . $idcreator);
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'my_problems')));
 
         $context = context_module::instance($cm->id);
         $this->define_headers(array(get_string('problem', 'lips'), get_string('difficulty', 'lips'), get_string('date', 'lips'), get_string('problem_nb_resolutions', 'lips'), "", ""));
-        $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_resolutions", "testing", "actions"));
-        $this->sortable(true);
+        $this->define_columns(array("problem_label", "difficulty_points", "problem_date", "problem_resolutions", "testing", "actions"));
+        $this->sortable(true, 2);
+        $this->no_sorting("testing");
+        $this->no_sorting("actions");
     }
 
     /**
@@ -79,7 +100,7 @@ class my_problems_table extends table_sql {
                 return date('d/m/Y', $attempt->problem_date);
                 break;
 
-            case 'difficulty_label':
+            case 'difficulty_points':
                 return get_string($attempt->difficulty_label, "lips");
                 break;
 

@@ -737,6 +737,7 @@ function follow($follower, $followed) {
     global $DB;
 
     $DB->insert_record('lips_follow', array('follower' => $follower, 'followed' => $followed));
+    
     insert_notification(null, $follower, 'notification_follow', time(), $follower, $followed);
     insert_notification(null, $followed, 'notification_followed', time(), $follower, $followed);
 }
@@ -772,6 +773,7 @@ function fetch_problems_by_category($categoryid) {
  */
 function fetch_all_categories_with_problems($idinstance) {
     global $DB;
+
     return $DB->get_records_sql("select *
     from mdl_lips_category lc
     join mdl_lips_problem lm on problem_category_id=lc.id
@@ -1483,6 +1485,30 @@ function insert_solution($solution, $idproblem, $iduser) {
     foreach(fetch_all_ranks() as $rank) {
         if($rank->rank_problem_solved == $numberproblemsolved) {
             $DB->update_record('lips_user', array('id' => $userdetails->id, 'user_rank_id' => $rank->id));
+
+            $notificationexists = notification_exists(array(
+                'notification_user_id' => $userdetails->id,
+                'notification_type' => 'notification_grade',
+                'notification_from' => $userdetails->id,
+                'notification_text' => $rank->rank_label));
+
+            if (!$notificationexists) {
+                insert_notification(null, $userdetails->id, 'notification_grade', time(), $userdetails->id, null, null, null, $rank->rank_label);
+            }
+
+            // Followers notifications
+            $followers = fetch_followers($userdetails->id);
+            foreach ($followers as $follower) {
+                $notificationexists = notification_exists(array(
+                    'notification_user_id' => $follower->follower,
+                    'notification_type' => 'notification_grade',
+                    'notification_from' => $userdetails->id,
+                    'notification_text' => $rank->rank_label));
+
+                if (!$notificationexists) {
+                    insert_notification(null, $follower->follower, 'notification_grade', time(), $userdetails->id, null, null, null, $rank->rank_label);
+                }
+            }
         }
     }
 }
@@ -1535,4 +1561,34 @@ function fetch_all_ranks() {
     global $DB;
 
     return $DB->get_records('lips_rank');
+}
+
+/**
+ * Download an image from an URL
+ *
+ * @param string $url Image url
+ */
+function download_image($url) {
+    $explode_image = explode("/", $url);
+    $image = $explode_image[count($explode_image) - 1];
+
+    // Get the image
+    $content = file_get_contents($url);
+
+    // Store in the filesystem
+    $fp = fopen("images/" . $image, "w");
+    fwrite($fp, $content);
+    fclose($fp);
+}
+
+/**
+ * Get the difficulty details
+ *
+ * @param array $conditions Conditions to fetch the difficulty
+ * @return object Difficulty details
+ */
+function get_difficulty_details(array $conditions = array()) {
+    global $DB;
+
+    return $DB->get_record('lips_difficulty', $conditions, '*');
 }

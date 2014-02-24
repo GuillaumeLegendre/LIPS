@@ -430,7 +430,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param int $languageid Language ID
      * @return string User link
      */
-    public function display_user_link($userid, $firstname, $lastname, $languageid= null) {
+    public function display_user_link($userid, $firstname, $lastname, $languageid = null) {
         $url = new action_link(new moodle_url('view.php', array(
             'id' => (($languageid == null) ? $this->page->cm->id : $languageid),
             'view' => 'profile',
@@ -596,15 +596,19 @@ class mod_lips_renderer extends plugin_renderer_base {
         foreach($instances as $instance) {
             $userrank = user_rank_for_language($instance->instance_id, $userid);
 
-            $display .= '<table>
-                            <tr>
+            if($instance->compile_language != null) {
+                $display .= '<table><tr>
                                 <td class="img"><img src="images/' . $instance->language_picture . '"/></td>
-                                <td>
-                                    <p class="rank-language">' . ucfirst($instance->compile_language) . '</p>
-                                    <p class="rank-rank">Classement ' . (($userrank != null) ? $userrank : $numberofusers) . ' / ' . $numberofusers . '</p>
-                                </td>
-                            </tr>
-                        </table>';
+                                <td><p class="rank-language">' . ucfirst($instance->compile_language) . '</p>';
+
+                if($userrank == null) {
+                    $display .= '<p class="rank-rank">' . get_string('unranked', 'lips') . '</p>';
+                } else {
+                    $display .= '<p class="rank-rank">Classement ' . $numberofusers . ' / ' . $numberofusers . '</p>';
+                }
+                
+                $display .= '</td></tr></table>';
+            }
         }
 
         $display .= '</div>';

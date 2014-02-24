@@ -58,10 +58,12 @@ class users_table extends table_sql {
                 AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
             $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_user mlu, mdl_user mu WHERE mlu.id_user_moodle = mu.id AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
         }
+        
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "users")));
         $this->define_headers(array(get_string('user', 'lips'), get_string('status', 'lips'), get_string('grade', 'lips'), ''));
         $this->define_columns(array("user_name", "user_status", "rank_label", "user_follow"));
         $this->sortable(true);
+        $this->no_sorting("user_follow");
     }
 
     /**

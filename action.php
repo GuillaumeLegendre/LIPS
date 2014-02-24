@@ -91,6 +91,7 @@ switch ($action) {
             if ($categoryid != null && !empty($categoryid)) {
                 redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'categoryId' => $categoryid)));
             }
+            
             if ($originaction == null) {
                 if($originv == 'problem') {
                     redirect(new moodle_url('view.php', array('id' => $cm->id)));

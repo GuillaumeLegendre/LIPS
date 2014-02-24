@@ -89,6 +89,7 @@ $string['notification_problem_deleted'] = '{img} {date} - {notification_from} de
 $string['notification_category_created'] = '{img} {date} - {notification_from} created the cateogry {notification_category}';
 $string['notification_category_modified'] = '{img} {date} - {notification_from} modified the category {notification_category}';
 $string['notification_category_deleted'] = '{img} {date} - {notification_from} deleted the category {notification_text}';
+$string['notification_grade'] = '{img} {date} - {notification_from} as won the grade {notification_text}';
 
 // Picture
 $string['notification_follow_picture'] = 'follow.png';
@@ -103,6 +104,7 @@ $string['notification_problem_deleted_picture'] = 'delete.png';
 $string['notification_category_created_picture'] = 'add.png';
 $string['notification_category_modified_picture'] = 'edit.png';
 $string['notification_category_deleted_picture'] = 'delete.png';
+$string['notification_grade_picture'] = 'grade.png';
 
 /*--------------------------------------------------
  * Challenges
@@ -177,6 +179,7 @@ $string['filter'] = 'Filter';
 $string['cancel'] = 'Cancel';
 $string['select'] = 'Select';
 $string['send_message'] = 'Send a message';
+$string['unranked'] = 'Unranked';
 
 /*--------------------------------------------------
  * Dates
@@ -240,7 +243,7 @@ $string['administration_language_configure_title'] = 'Configure language';
 $string['administration_language_configure_msg'] = 'Select the language to work with.<br/>To give an indication to the student on the code he will implement, you can specify a comment format (e.g: /* TODO */) apdated to the language.';
 $string['administration_language_configure_success'] = 'The language has been configured';
 $string['administration_language_image_title'] = 'Picture';
-$string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.<br/>Picture maximum size : ';
+$string['administration_language_image_msg'] = 'Choose the picture for this programming language.<br/>This one will be used at the rank display.';
 $string['administration_language_image_success'] = 'The picture has been modified';
 $string['administration_language_image_save_error'] = 'An error occured while saving the file. Please try again.';
 $string['administration_language_image_type_error'] = 'The file you chose is not a picture. Please upload a picture.';
@@ -258,7 +261,7 @@ $string['administration_language_form_select_error'] = 'You must select a langua
 $string['administration_language_form_highlighting_select'] = 'Syntax highlighting';
 $string['administration_language_form_highlighting_select_error'] = 'You must select a syntax highlighting mode';
 $string['administration_language_form_input'] = 'Comment format';
-$string['administration_language_form_file'] = 'Select the picture';
+$string['administration_language_form_file'] = 'Link to the picture';
 $string['administration_language_form_file_error'] = 'You must select a picture';
 $string['administration_existing_problems'] = 'Warning, some problems already exist in this course, the configuration can cause errors in the current problems.';
 $string['administration_no_syntax_highlighting'] = 'There is no syntax highlighting defined. Go to <strong>Administration > Language > Configure language</strong>.';

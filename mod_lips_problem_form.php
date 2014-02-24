@@ -254,13 +254,16 @@ class mod_lips_problems_delete_form extends moodleform {
      */
     public function definition() {
         global $PAGE, $USER;
+
         $mcustomdata = $this->_customdata;
         $mform =& $this->_form;
         $hasproblems = false;
+
         foreach (fetch_problems_user_by_category($USER->id, $mcustomdata['idcategory']) as $problem) {
             $hasproblems = true;
             $mform->addElement('advcheckbox', $problem->id, null, $problem->problem_label, array('group' => 1), array(0, 1));
         }
+        
         if ($hasproblems) {
             $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
         } else {
