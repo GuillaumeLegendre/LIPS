@@ -330,7 +330,7 @@ class page_admin_langage_picture extends page_view {
 
         // Modify language picture
         echo $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'), array('id' => 'picture'));
-        echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips') . formatBytes($CFG->portfolio_moderate_filesize_threshold) . '.');
+        echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips'));
         echo '<center>' . $this->lipsoutput->display_img(get_language_picture(), array('width' => '64px', 'height' => '64px')) . '</center>';
 
         $configurepictureform->display();
@@ -853,7 +853,7 @@ class page_admin_problem_create extends page_view {
         $this->lipsoutput->display_ace_form('preconfigEditor', '', $lips->coloration_language, 'readonly');
         $this->lipsoutput->display_ace_form('importsEditor', 'id_problem_imports', $lips->coloration_language, '');
         $this->lipsoutput->display_ace_form('problemCodeEditor', 'id_problem_code', $lips->coloration_language, 'code', 'eclipse', addslashes($lips->comment_format));
-        $this->lipsoutput->display_ace_form('unitTestsEditor', 'id_problem_unit_tests', $lips->coloration_language, 'unit-test');
+        $this->lipsoutput->display_ace_form('unitTestsEditor', '_problem_unit_tests', $lips->coloration_language, 'unit-test');
     }
 }
 
@@ -1499,8 +1499,7 @@ class page_solutions extends page_view {
 
         $details = get_problem_details($this->id);
         echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
-        $author_link = $this->lipsoutput->action_link(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'profile', 'id_user' => $details[$this->id]->user_id)), ucfirst($details[$this->id]->firstname) . ' ' . ucfirst($details[$this->id]->lastname));
-        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $author_link;
+        $author = $this->lipsoutput->display_span(get_string("problem_author", "lips"), array("class" => "label_field_page_problem")) . " " . $this->lipsoutput->display_user_link($details[$this->id]->user_id, $details[$this->id]->firstname, $details[$this->id]->lastname);
         echo $this->lipsoutput->display_p($author, array("class" => "field_page_problem"));
         $datecreation = $this->lipsoutput->display_span(get_string("problem_date_creation", "lips"), array("class" => "label_field_page_problem")) . " " . date("d/m/y", $details[$this->id]->problem_date);
         echo $this->lipsoutput->display_p($datecreation, array("class" => "field_page_problem"));
@@ -1573,11 +1572,16 @@ class page_problem extends page_view {
 
     function display_content() {
         global $USER;
+
         require_once(dirname(__FILE__) . '/mod_lips_search_form.php');
         require_once(dirname(__FILE__) . '/mod_lips_problem_form.php');
         require_once(dirname(__FILE__) . '/lips_rest_interface_ideone.php');
+
         // Problem details
         $lips = get_current_instance();
+        $details = get_problem_details($this->id);
+        $categorydetails = get_category_details($details[$this->id]->problem_category_id);
+        $difficultydetails = get_difficulty_details(array('difficulty_label' => $details[$this->id]->difficulty_label));
 
         $notifanswer = "";
         $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'post', '', array('class' => 'solve-button'));
@@ -1593,14 +1597,11 @@ class page_problem extends page_view {
                 $notifanswer = $this->lipsoutput->display_notification(nl2br($languages['error']), 'ERROR');
             } else if (trim($languages['output']) == $codeinformations['idtrue']) {
                 insert_solution($data->problem_answer, $this->id, $USER->id);
-                $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
+                $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips") . '<span class="success-solve">+ ' . $difficultydetails->difficulty_points . ' pt(s)</span>', 'SUCCESS');
             } else {
                 $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"), 'ERROR');
             }
         }
-
-        $details = get_problem_details($this->id);
-        $categorydetails = get_category_details($details[$this->id]->problem_category_id);
 
         // Redirect if not allowed to see this problem
         if ($details[$this->id]->problem_testing == 1 && $USER->id != $details[$this->id]->problem_creator_id) {

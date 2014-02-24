@@ -599,6 +599,12 @@ h3 {
     width: 99%;
 }
 
+#notify .success-solve {
+    float: right;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
 .notifyInfo {
     border: 1px solid #BCE8F1;
     background-color: #D9EDF7;

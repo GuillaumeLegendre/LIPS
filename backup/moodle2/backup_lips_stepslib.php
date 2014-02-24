@@ -53,6 +53,11 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
         $problem = new backup_nested_element('problem', array('id'), array(
             'problem_creator_id', 'problem_category_id', 'problem_label', 'problem_difficulty_id',
             'problem_preconditions', 'problem_statement', 'problem_tips', 'problem_code', 'problem_unit_tests', 'problem_date'));
+
+        $problems_similars = new backup_nested_element('problems_similars');
+
+        $problem_similar = new backup_nested_element('problem_similar', array('id'), array(
+            'problem_similar_main_id', 'problem_similar_id'));
  
         // Build the tree.
         $lips->add_child($categories);
@@ -63,6 +68,9 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
 
         $problem->add_child($difficulties);
         $difficulties->add_child($difficulty);
+
+        $problem->add_child($problems_similars);
+        $problems_similars->add_child($problem_similar);
 
         // Define sources.
         $lips->set_source_table('lips', array('id' => backup::VAR_ACTIVITYID));
@@ -76,10 +84,10 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
             WHERE problem_testing = 0
             AND problem_category_id = ?",
             array(backup::VAR_PARENTID));
-        
-        // $problem->set_source_table('lips_problem', array('problem_category_id' => backup::VAR_PARENTID));
 
         $difficulty->set_source_table('lips_difficulty', array('id' => '../../problem_difficulty_id'));
+
+        $problem_similar->set_source_table('lips_problem_similar', array('problem_similar_main_id' => backup::VAR_PARENTID));
 
         // Define id annotations.
  

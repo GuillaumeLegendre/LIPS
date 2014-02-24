@@ -60,6 +60,7 @@ class mod_lips_configure_language_form extends moodleform {
                 $mform->setDefault('selectLanguage', $lips->compile_language);
             }
         }
+        
         // Select the syntax highlighting.
         $mform->addElement('select', 'selectSyntaxHighlighting', get_string('administration_language_form_highlighting_select', 'lips'), ace_available_languages());
         $mform->addRule('selectSyntaxHighlighting', get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
@@ -167,7 +168,8 @@ class mod_lips_configure_picture_form extends moodleform {
         $mform =& $this->_form;
 
         // Select the image
-        $mform->addElement('file', 'filePicture', get_string('administration_language_form_file', 'lips'));
+        $mform->addElement('text', 'filePicture', get_string('administration_language_form_file', 'lips'), array("size" => 40));
+        $mform->setType('filePicture', PARAM_TEXT);
 
         // Modify button.
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
@@ -187,8 +189,12 @@ class mod_lips_configure_picture_form extends moodleform {
             return;
 
         // Form data
-        $formdata = $this->get_data();
-        $picture = $this->get_new_filename('filePicture');
+        $data = $this->get_submitted_data();
+
+        // Picture
+        $url = $data->filePicture;
+        $explode_picture = explode("/", $url);
+        $picture = $explode_picture[count($explode_picture) - 1];
 
         if (!is_a_picture($picture)) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error', 'lips'), 'ERROR');
@@ -197,14 +203,7 @@ class mod_lips_configure_picture_form extends moodleform {
         }
 
         // Save the picture
-        $success = $this->save_file('filePicture', 'images/' . $picture);
-
-        // In case of error
-        if (!$success) {
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_save_error', 'lips'), 'ERROR');
-
-            return;
-        }
+        download_image($url);
 
         // Current instance
         $lips = get_current_instance();

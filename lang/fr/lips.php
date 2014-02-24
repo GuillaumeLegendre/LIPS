@@ -36,7 +36,7 @@ $string['modulenameplural'] = 'LIPS';
 $string['modulename_help'] = 'Le module activité LIPS offre la possibilité aux étudiants de s’autoformer sur différents langages de programmation.
 
 Cette plateforme pédagogique permet aux étudiants, par le biais de tests unitaires, de répondre à des problèmes de programmation exprimés par les enseignants.
-Ces problèmes se présentent sous la forme de code à compléter. La plateforme exécute alors le code avec la réponse fournit par l’étudiant et lui retourne le résultat d’exécution correspondant, validant ou invalidant alors sa réponse.
+Ces problèmes se présentent sous la forme de code à compléter. La plateforme exécute alors le code avec la réponse fourni par l’étudiant et lui retourne le résultat d’exécution correspondant, validant ou invalidant alors sa réponse.
 
 L’apprentissage étant au cœur du module, l’enseignant peut fournir une aide sur un problème ou sur une technologie à travers un commentaire ou des liens vers des ressources externes.
 L’outil permet aux enseignants de suivre l’avancée de ses élèves, en accédant à un certain nombre de statistiques et à l’historique de leurs réponses. Ainsi, l’enseignant peut voir si l’élève est bloqué sur un exercice précis, et peut lui apporter une aide par ses propres moyens.
@@ -58,9 +58,9 @@ $string['student'] = 'Etudiant';
 /*--------------------------------------------------
  * Difficulties
  *------------------------------------------------*/
-$string['difficulty_label_elementary'] = 'Elementaire';
+$string['difficulty_label_elementary'] = 'Elémentaire';
 $string['difficulty_label_easy'] = 'Facile';
-$string['difficulty_label_medium'] = 'Intermediaire';
+$string['difficulty_label_medium'] = 'Intermédiaire';
 $string['difficulty_label_difficult'] = 'Difficile';
 
 /*--------------------------------------------------
@@ -78,6 +78,7 @@ $string['notification_problem_deleted'] = '{img} {date} - {notification_from} a 
 $string['notification_category_created'] = '{img} {date} - {notification_from} a créé la catégorie {notification_category}';
 $string['notification_category_modified'] = '{img} {date} - {notification_from} a modifié la catégorie {notification_category}';
 $string['notification_category_deleted'] = '{img} {date} - {notification_from} a supprimé la catégorie {notification_text}';
+$string['notification_grade'] = '{img} {date} - {notification_from} a gagné le grade {notification_text}';
 
 /*--------------------------------------------------
  * Challenges
@@ -125,7 +126,7 @@ $string['solved_problems'] = 'Problèmes résolus';
 $string['challenge'] = 'Défier';
 $string['challenged'] = 'Défiés';
 $string['challenged_users'] = 'Utilisateurs défiés';
-$string['no_challenges'] = 'Aucun défis';
+$string['no_challenges'] = 'Aucun défi';
 $string['current_challenges'] = 'Défis en cours';
 $string['followed_users'] = 'Utilisateurs suivis';
 $string['attempts'] = "tentatives";
@@ -142,7 +143,7 @@ $string['recent_activity'] = 'Activité récente';
 $string['achievements'] = 'Badges';
 $string['at'] = 'à';
 $string['notifications'] = 'Notifications';
-$string['no_notifications'] = 'Aucune notifications';
+$string['no_notifications'] = 'Aucune notification';
 $string['refuse'] = 'Refuser';
 $string['solve'] = 'Résoudre';
 $string['accept'] = 'Accepter';
@@ -152,6 +153,7 @@ $string['cancel'] = 'Annuler';
 $string['select'] = 'Sélectionner';
 $string['send_message'] = 'Envoyer un message';
 $string['score'] = 'Score';
+$string['unranked'] = 'Non classé';
 
 /*--------------------------------------------------
  * Dates
@@ -215,13 +217,13 @@ $string['administration_language_configure_title'] = 'Configurer le langage';
 $string['administration_language_configure_msg'] = 'Sélectionnez le langage dans lequel vous souhaitez compiler.<br/>Pour donner des indications à l\'étudiant sur le code qu\'il devra implémenter, vous pouvez spécifier un format de commentaire (ex: /* TODO */) adapté au langage.';
 $string['administration_language_configure_success'] = 'Le langage a été configuré';
 $string['administration_language_image_title'] = 'Image';
-$string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.<br/>Taille maximum de l\'image : ';
+$string['administration_language_image_msg'] = 'Choisissez l\'image de ce langage de programmation.<br/>Celle-ci sera utilisée lors de l\'affichage du classement d\'un utilisateur.';
 $string['administration_language_image_success'] = 'L\'image a été modifiée';
-$string['administration_language_image_type_error'] = 'L\'image que vous avez choisie d\'uploader n\'est pas une image.';
+$string['administration_language_image_type_error'] = 'Le fichier que vous avez choisi d\'uploader n\'est pas une image.';
 $string['administration_language_image_save_error'] = 'Une erreur est survenue lors de l\'enregistrement de l\'image';
 $string['administration_language_code_title'] = 'Base du code';
-$string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisé à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
-$string['administration_language_code_success'] = 'La préparation du code a été modifiée';
+$string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisée à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
+$string['administration_language_code_success'] = 'La préconfiguration du code a été modifiée';
 $string['administration_language_code_imports_error'] = 'Vous ne pouvez mettre qu\'une seule balise &lt;lips-preconfig-import/&gt;';
 $string['administration_language_code_imports_error_no'] = 'La balise &lt;lips-preconfig-import/&gt; est obligatoire';
 $string['administration_language_code_code_error'] = 'Vous ne pouvez mettre qu\'une seule balise &lt;lips-preconfig-code/&gt;';
@@ -233,12 +235,12 @@ $string['administration_language_form_select_error'] = 'Vous devez sélectionner
 $string['administration_language_form_highlighting_select'] = 'Coloration syntaxique';
 $string['administration_language_form_highlighting_select_error'] = 'Vous devez sélectionner une coloration syntaxique';
 $string['administration_language_form_input'] = 'Format de commentaire';
-$string['administration_language_form_file'] = 'Sélectionner l\'image';
+$string['administration_language_form_file'] = 'Lien vers l\'image';
 $string['administration_language_form_file_error'] = 'Vous devez sélectionner une image';
 $string['administration_existing_problems'] = 'Attention, des problèmes existent déjà dans ce cours, la configuration peut engendrer des erreurs dans les problèmes déjà présents.';
-$string['administration_no_syntax_highlighting'] = 'Aucun langage de coloration syntaxique n\'a été définie. Vous pouvez le configurer dans <strong>Administration > Langage > Configurer le langage</strong>.';
-$string['administration_no_compile_language'] = 'Aucun langage de compilation n\'a été définie. Vous pouvez le configurer dans <strong>Administration > Langage > Configurer le langage</strong>.';
-$string['administration_warning_existing_language'] = 'Seulement les langages de programmation non utilisés dans les autres instances de lips sont sélectionnables.<br/>Pour rappel, voici les languages déja utilisés :';
+$string['administration_no_syntax_highlighting'] = 'Aucun langage de coloration syntaxique n\'a été défini. Vous pouvez le configurer dans <strong>Administration > Langage > Configurer le langage</strong>.';
+$string['administration_no_compile_language'] = 'Aucun langage de compilation n\'a été défini. Vous pouvez le configurer dans <strong>Administration > Langage > Configurer le langage</strong>.';
+$string['administration_warning_existing_language'] = 'Seulement les langages de programmation non utilisés dans les autres instances de lips sont sélectionnables.<br/>Pour rappel, voici les langages déja utilisés :';
 
 // Category
 $string['administration_category_create_title'] = 'Créer une catégorie';
@@ -266,11 +268,11 @@ $string['administration_problem_create_title'] = 'Créer un probleme';
 $string['administration_problem_modify_title'] = 'Modifier un problème';
 $string['administration_problem_create_preconfig_subtitle'] = '1. Pré-configuration';
 $string['administration_problem_create_informations_subtitle'] = "2. Informations sur le problème";
-$string['administration_problem_create_informations_msg'] = 'Sélectionnez la catégorie à laquelle appartiendras votre problème.<br/>Entrez le nom, la difficulté et la liste des prérequis nécessaires à la réalisation du problème.';
+$string['administration_problem_create_informations_msg'] = 'Sélectionnez la catégorie à laquelle appartiendra votre problème.<br/>Entrez le nom, la difficulté et la liste des prérequis nécessaires à la réalisation du problème.';
 $string['administration_problem_create_subject_subtitle'] = '3. Enoncé';
 $string['administration_problem_create_subject_msg'] = "Rédigez l'énoncé et les astuces du problème";
 $string['administration_problem_create_code_subtitle'] = '4. Code';
-$string['administration_problem_create_code_msg'] = 'Commencez par importer les libraires utiles à la résolution du problème.<br/><br/>Ensuite, écrivez le code que l\'utilisateur devra complèter.<br/>Pour définir les zones éditables, utilisez la balise <span style="color: red">&lt;lips-code&gt;</span><br/><br/>Pour finir, rédigez la partie <strong>Tests unitaires</strong> qui correspond à la liste des tests effectués pour valider ou non le problème. Le contenu de cette zone correspond au <strong>main</strong> du programme.</br/>Le programme doit retourner <strong>True</strong> en cas de réussite et <strong>False</strong> dans le cas contraire.<br/>Vous pouvez définir la liste des tests unitaires qui seront affichés lors de la consultation du problème. Pour cela, entourez le test unitaire à afficher d\'une balise <span style="color: red">&lt;lips-unit-test&gt;&lt;/lips-unit-test&gt;.</span>';
+$string['administration_problem_create_code_msg'] = 'Commencez par importer les libraires utiles à la résolution du problème.<br/><br/>Ensuite, écrivez le code que l\'utilisateur devra compléter.<br/>Pour indiquer les zones à éditer, utilisez la balise <span style="color: red">&lt;lips-code&gt;</span><br/><br/>Pour finir, rédigez la partie <strong>Tests unitaires</strong> qui correspond à la liste des tests effectués pour valider ou non le problème. Le contenu de cette zone correspond au <strong>main</strong> du programme.</br/>Le programme doit retourner <strong>True</strong> en cas de réussite et <strong>False</strong> dans le cas contraire.<br/>Vous pouvez définir la liste des tests unitaires qui seront affichés lors de la consultation du problème. Pour cela, entourez le test unitaire à afficher d\'une balise <span style="color: red">&lt;lips-unit-test&gt;&lt;/lips-unit-test&gt;.</span>';
 $string['administration_problem_create_code_import_label'] = 'Importer des librairies';
 $string['administration_problem_create_code_complete_label'] = 'Code à completer';
 $string['administration_problem_create_code_unittest_label'] = 'Tests unitaires';
@@ -280,9 +282,9 @@ $string['administration_problems_import_confirmation'] = "Vous allez être redir
 $string['administration_problems_export_confirmation'] = "Vous allez être redirigé vers la page Moodle pour la sauvegarde de cours. Elle va vous permettre d'exporter les problèmes de LIPS.";
 $string['administration_problem_similar_subtitle'] = '5. Conseil de problèmes similaires';
 $string['administration_problem_similar_subtitle_msg'] = 'Conseillez des problèmes que l\'utilisateur pourrait vouloir réaliser après la réalisation de celui-ci.';
-$string['administration_language_form_code_error'] = 'Vous devez renseigner du code à completer';
+$string['administration_language_form_code_error'] = 'Vous devez renseigner du code à compléter';
 $string['administration_unittests_form_code_error'] = 'You devez renseigner les tests unitaires';
-$string['administration_problem_already_exists'] = 'Ce nom de problème est déjà utilisé, merci d\'en choisir un autre';
+$string['administration_problem_already_exists'] = 'Un problème ayant le même existe déjà, merci d\'en choisir un autre';
 $string['administration_problem_delete_title'] = 'Supprimer un problème';
 $string['administration_delete_problems_confirmation'] = 'Confirmez vous la suppression des problèmes suivants ?';
 $string['administration_delete_problem_confirmation_msg'] = 'Confirmez vous la suppression du problème suivant ?';

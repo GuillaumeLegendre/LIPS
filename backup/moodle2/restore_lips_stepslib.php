@@ -27,6 +27,7 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
     // The current lips instance id.
     private $lipsid;
     private $newproblemsidarray = array();
+    private $problemsimilardataarray = array();
 
     /**
      * Define the structure of the tree to restore.
@@ -38,6 +39,7 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         $paths[] = new restore_path_element('lips', '/activity/lips');
         $paths[] = new restore_path_element('lips_category', '/activity/lips/categories/category');
         $paths[] = new restore_path_element('lips_problem', '/activity/lips/categories/category/problems/problem');
+        $paths[] = new restore_path_element('lips_problem_similar', '/activity/lips/categories/category/problems/problem/problems_similars/problem_similar');
         $paths[] = new restore_path_element('lips_difficulty', '/activity/lips/categories/category/problems/problem/difficulties/difficulty');
         
         // Return the paths wrapped into standard activity structure.
@@ -45,7 +47,8 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
     }
  
     /**
-     * Restore the lips item if it doesn't already exist.
+     * Restore the lips item if it doesn't already exist for
+     * the configured language.
      */
     protected function process_lips($data) {
         global $DB, $PAGE; 
@@ -53,10 +56,27 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         $data = (object)$data;
         $oldid = $data->id;
 
-        // TODO : Do not create a new lips instance if one already exists in the current course.
+        // Check if a compile language has been configured in the backup.
+        if ($data->compile_language != NULL) {
+
+            $sql = "
+                SELECT id
+                FROM mdl_lips
+                WHERE course = " . $this->get_courseid() . "
+                AND compile_language = '". $data->compile_language . "'";
+
+            // Check if a lips instance exists with the same compile language.
+           $lipsinstances = $DB->get_records_sql($sql);
+           if ($lipsinstances) {
+                foreach ($lipsinstances as $lipsinstance) {
+                    $this->apply_activity_instance($lipsinstance->id);
+                    $this->lipsid = $lipsinstance->id;
+                }
+                return;
+            }
+        }
 
         $data->course = $this->get_courseid();
-
         $data->timecreated = time();
         $data->timemodified = time();
         
@@ -132,7 +152,25 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
 
             $newitemid = $DB->insert_record('lips_problem', $data);
             $this->newproblemsidarray[] = $newitemid;
+            $this->set_mapping('lips_problem', $oldid, $newitemid);
         }
+        else {
+            foreach ($problems as $problem) {
+                 $this->set_mapping('lips_problem', $oldid, $problem->id);
+            }
+        }
+    }
+
+    /**
+     * Restore problem advices item for restored problem.
+     */
+    protected function process_lips_problem_similar($data) {
+        global $DB;
+
+        $data = (object)$data;
+        $oldid = $data->id;
+
+        $this->problemsimilardataarray[] = $data;
     }
 
      /**
@@ -165,20 +203,41 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
     }
 
     protected function after_execute() {
+        require_once(dirname(__FILE__) . '/../../locallib.php');
+        global $DB;
+
         // Add lips related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_lips', 'intro', null);
 
-        // Restore difficulty id of all problems that have been added.
-        foreach ($newproblemsidarray as $newproblemsid) {
+        // Restore difficulty id of all problems that have been restored.
+        foreach ($this->newproblemsidarray as $newproblemsid) {
 
             // Get the old difficulty id of the problem in db.
             $problem = get_problem_details($newproblemsid);
-            $oldid = $problem->difficulty_id;
+            $oldid = $problem[$newproblemsid]->difficulty_id;
             $currentid = $this->get_mappingid('lips_difficulty', $oldid);
             $DB->execute("
                 UPDATE mdl_lips_problem
                 SET problem_difficulty_id = " . $currentid . "
                 WHERE problem_difficulty_id = " . $oldid);
+        }
+
+        // Restore problem advices.
+        foreach ($this->problemsimilardataarray as $data) {
+
+            $problemsimilarmainid = $this->get_mappingid('lips_problem', $data->problem_similar_main_id);
+            $problemsimilarid = $this->get_mappingid('lips_problem', $data->problem_similar_id);
+
+            // Check if the link doesn't already exist.
+            $count = $DB->count_records("lips_problem_similar", array('problem_similar_main_id' => $problemsimilarmainid, 'problem_similar_id' => $problemsimilarid));
+            
+            if ($count == 0) {
+
+                $data->problem_similar_main_id = $problemsimilarmainid;
+                $data->problem_similar_id = $problemsimilarid;
+
+                $DB->insert_record('lips_problem_similar', $data);
+            }
         }
     }
 }
