@@ -41,13 +41,16 @@ class mod_lips_configure_language_form extends moodleform {
 
         // Select the language.
         $languages = lips_rest_interface_ideone::get_list_languages();
+        $currentlanguage = get_current_instance()->compile_language;
         if (!$languages) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(
                 get_string('web_service_communication_error', 'lips'), 'ERROR');
         } else {
             $languagesused = get_active_languages();
             foreach ($languagesused as $language) {
+                if ($language->compile_language != $currentlanguage) {
                     unset($languages[$language->compile_language]);
+                }
             }
             $mform->addElement('select', 'selectLanguage',
                 get_string('administration_language_form_select', 'lips'), $languages);
