@@ -74,6 +74,9 @@ class page_problem extends page_view {
             }
         }
 
+        // Update details after post a solution.
+        $details = get_problem_details($this->id);
+
         // Redirect if not allowed to see this problem
         if ($details[$this->id]->problem_testing == 1 && $USER->id != $details[$this->id]->problem_creator_id) {
             redirect(new moodle_url('view.php', array('id' => $this->cm->id)));
