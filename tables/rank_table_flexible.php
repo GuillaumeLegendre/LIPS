@@ -64,7 +64,7 @@ class rank_table extends flexible_table {
 
         // SORT.
 
-        $orderby = "order by rank DESC";
+        $orderby = "order by rank ASC";
         if ($sortedcolumn == "user") {
             if ($sortedcolumns["user"] == SORT_ASC) {
                 $orderby = "order by firstname ASC";
@@ -73,15 +73,15 @@ class rank_table extends flexible_table {
             }
         } else if ($sortedcolumn == "user_score") {
             if ($sortedcolumns["user_score"] == SORT_ASC) {
-                $orderby = "order by user_score ASC";
+                $orderby = "order by rank ASC";
             } else {
-                $orderby = "order by user_score DESC";
+                $orderby = "order by rank DESC";
             }
         } else if ($sortedcolumn == "rank") {
             if ($sortedcolumns["rank"] == SORT_ASC) {
-                $orderby = "order by user_score ASC";
+                $orderby = "order by rank ASC";
             } else {
-                $orderby = "order by user_score DESC";
+                $orderby = "order by rank DESC";
             }
         }
         $page = optional_param("page", 0, PARAM_INT);
