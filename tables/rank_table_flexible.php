@@ -124,9 +124,11 @@ class rank_table extends flexible_table {
               LEFT JOIN mdl_lips_score mls ON mls.score_user=mlu.id
               WHERE $conditionsselect
               GROUP BY mlu.id
-              $orderby
+              ORDER BY user_score DESC
               LIMIT 0 , 10
-            ) t1,(SELECT @rn:=0) t2";
+            ) t1,(SELECT @rn:=0) t2
+            $orderby
+            ";
 
 
            // $sql = "SELECT mlu.id, SUM(score_score) as user_score, mu.id as id_moodle_user, mu.firstname, mu.lastname, @curRank := @curRank + 1 AS rank
