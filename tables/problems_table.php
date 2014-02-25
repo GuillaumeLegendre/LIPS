@@ -35,13 +35,15 @@ class problems_table extends table_sql {
             'difficulty_points' => 'ASC'
         );
 
-        foreach($defaultorder as $key => $value) {
-            if(strpos($order, $key) === false) {
-                $order = "$key $value, $order";
+        if($order == '') {
+            foreach($defaultorder as $key => $value) {
+                if(strpos($order, $key) === false) {
+                    $order = "$key $value, $order";
+                }
             }
         }
-        $order=trim($order, ", ");
-        return $order;
+
+        return trim($order, ", ");
     }
 
     function  __construct($cm, $id, $search = null) {
@@ -74,10 +76,10 @@ class problems_table extends table_sql {
         $context = context_module::instance($cm->id);
         if (has_capability('mod/lips:administration', $context)) {
             $this->define_headers(array("Problème", "Difficulté", "Date", "Rédacteur", "Nombre de résolutions", ""));
-            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_creator_id", "problem_resolutions", "actions"));
+            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "firstname", "problem_resolutions", "actions"));
         } else {
             $this->define_headers(array("Problème", "Difficulté", "Date", "Rédacteur", "Nombre de résolutions"));
-            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "problem_creator_id", "problem_resolutions"));
+            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "firstname", "problem_resolutions"));
         }
         $this->sortable(true);
     }
@@ -115,7 +117,7 @@ class problems_table extends table_sql {
                 return $a;
                 break;
 
-            case 'problem_creator_id':
+            case 'firstname':
                 return $lipsoutput->display_user_link($attempt->id, $attempt->firstname, $attempt->lastname);
                 break;
         }

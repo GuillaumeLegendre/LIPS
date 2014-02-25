@@ -410,6 +410,33 @@ h3 {
 }
 
 /*---------------------------------
+ *  Achievements
+ *-------------------------------*/
+
+#achievements table {
+    display: inline-table;
+    margin: 10px;
+    width: 300px;
+}
+
+#achievements .img {
+    padding: 0 5px 0 0;
+}
+
+#achievements .img img {
+    width: 64px;
+    height: 64px;
+}
+
+#achievements .title {
+    font-weight: bold;
+}
+
+#achievements .date {
+    color: #555555;
+}
+
+/*---------------------------------
  *  Notification
  *-------------------------------*/
 

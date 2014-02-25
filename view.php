@@ -87,6 +87,12 @@ switch ($view) {
                 case "language_base":
                     $viewpage = new page_admin_langage_base($cm);
                     break;
+                case "achievement_select":
+                    $viewpage = new page_admin_achievement_select($cm);
+                    break;
+                case "achievement":
+                    $viewpage = new page_admin_achievement($cm);
+                    break;
                 case "category_create":
                     $viewpage = new page_admin_category_create($cm);
                     break;

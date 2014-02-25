@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/lips/db" VERSION="20140221" COMMENT="XMLDB file for Moodle LIPS module"
+<XMLDB PATH="mod/lips/db" VERSION="20140225" COMMENT="XMLDB file for Moodle LIPS module"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -191,9 +191,9 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="achievement_label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Achievement label"/>
         <FIELD NAME="achievement_desc" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Achievement description"/>
-        <FIELD NAME="achievement_picture" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="images/default-achievement.png" SEQUENCE="false" COMMENT="Achievement picture"/>
+        <FIELD NAME="achievement_picture" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Achievement picture"/>
         <FIELD NAME="achievement_category" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the category in relation to the achievement"/>
-        <FIELD NAME="achievement_percent" TYPE="int" LENGTH="3" NOTNULL="true" SEQUENCE="false" COMMENT="Percentage of progress to receive the achievement"/>
+        <FIELD NAME="achievement_problems" TYPE="int" LENGTH="3" NOTNULL="true" SEQUENCE="false" COMMENT="Percentage of progress to receive the achievement"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -205,6 +205,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="au_user_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user who received the achievement"/>
         <FIELD NAME="au_achievement_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the achievement received by the user"/>
+        <FIELD NAME="au_date" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Date"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

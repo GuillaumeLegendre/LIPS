@@ -42,13 +42,15 @@ class my_problems_table extends table_sql {
             'difficulty_points' => 'ASC'
         );
 
-        foreach($defaultorder as $key => $value) {
-            if(strpos($order, $key) === false) {
-                $order = "$key $value, $order";
+        if($order == '') {
+            foreach($defaultorder as $key => $value) {
+                if(strpos($order, $key) === false) {
+                    $order = "$key $value, $order";
+                }
             }
         }
 
-        return $order;
+        return trim($order, ', ');
     }
 
     /**
