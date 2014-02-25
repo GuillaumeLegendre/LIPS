@@ -108,11 +108,12 @@ class rank_table extends flexible_table {
             LIMIT $limit , 10";
         } else {
 
-            $totaltuples = $DB->count_records_sql("SELECT count(*)
+            $totaltuples = $DB->count_records_sql("SELECT count(DISTINCT(mlu.id))
             FROM `mdl_lips_user` mlu
             JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
             LEFT JOIN mdl_lips_score mls ON mls.score_user=mlu.id
             WHERE $conditions");
+
 
             $conditionsselect = str_replace(" AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'", "", $conditions);
 
