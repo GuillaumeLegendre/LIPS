@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <link rel="stylesheet" href="styles.css" />
+<title>Tuto</title>
+</head>
+
+<body>
+<h1>Configuration d'un langage</h1>
+<p>Ce tutoriel a pour objectif la d&eacute;finition et la configuration d'un langage de programmation.
+Nous d&eacute;velepperons donc en plusieurs parties :
+<ol>
+	<li>Se rendre dans la partie ad&eacute;quate de l'administration</li>
+    <li>Configurer le langage de programmation</li>
+    <li>Configurer l'image de repr&eacute;sentation du langage</li>
+    <li>Configurer la base du code</li>
+</ol>
+</p>
+
+<h1>1. Se rendre dans la partie ad&eacute;quate de l'administration</h1>
+
+<center>
+    <img src="images/accueil.png" />
+    <br/><i>Image 1</i>
+</center>
+
+<p><u><strong>1 <sup>&egrave;re</sup> &eacute;tape</strong></u> : <br />
+Depuis la page d'accueil cliquez sur le bouton "administration"<br/>
+Une fois que vous aurez cliqu&eacute; sur le bouton "administration" le plugin affichera le menu suivant : </p>
+
+<center>
+	<img src="images/administration.png" />
+    <br/><i>Image 2</i>
+</center>
+
+<p>
+<u><strong>2 <sup>&egrave;me</sup> &eacute;tape</strong></u> : <br/>
+Pour acc&eacute;der &agrave; la configuration du langage, il suffit maintenant de cliquer sur le menu "Langage"</p>
+
+<center>
+	<img src="images/menulanguage.png" />
+    <br/><i>Image 3</i>
+</center>
+
+
+<h1>2. Configurer le langage de programmation</h1>
+
+<center>
+	<img src="images/languageconfiguration.png" />
+    <br/><i>Image 4</i>
+</center>
+
+<p><u><strong>1 <sup>&egrave;re</sup> &eacute;tape</strong></u> : <br />
+D&eacute;finir le langage de programmation. Le plugin fournit ici une liste des langages disponibles pour cr&eacute;er des exercices.<br />
+La liste d&eacute;roulante des langages disponibles (Fl&egrave;che 1) est aliment&eacute;e par le service de compilation &agrave;<br/><br/>
+&Agrave; noter qu'il n'est pas possible de s&eacute;lectionner un langage qui fait déjà l'objet d'un cours dans la plateforme Moodle. Dans le cas ou des langages sont d&eacute;j&&agrave; utilis&eacute;s
+dans d'autre cours, en encadr&eacute; orange vous pr&eacute;cisera qui ne seront pas s&eacute;lectionnables.
+</p>
+
+<p><u><strong>2 <sup>&egrave;me</sup> &eacute;tape</strong></u> : <br />
+Choisir la coloration syntaxique (Fl&egrave;che 2). Le plugin utilise un &eacute;diteur de texte permettant la coloration syntaxique. Il suffit de d&eacute;finir le langage que vous d&eacute;sirez dans la l
+</p>
+
+<p><u><strong>3 <sup>&egrave;me</sup> &eacute;tape</strong></u> : <br />
+D&eacute;finir le format de commentaire (Fl&egrave;che 3). Afin d'aider au mieux les &eacute;tudiants qui prendront part &agrave; la r&eacute;solution, il y a possibilit&eacute; lors de la cr&eacute;ation de probl&egrave;
+d'indiquer les endroits qu'il devra &eacute;diter afin de r&eacute;soudre le probl&egrave;me. Ce commentaire devra être au format du langage d&eacute;fini pour la coloration syntaxique<br/>
+dans l'exemple ci-dessus, un commentaire de type /* TODO */ est utilis&eacute;
+</p>
+
+<h1>3. Configurer l'image de repr&eacute;sentation du langage</h1>
+
+<center>
+	<img src="images/imagelanguageconfiguration.png" />
+    <br/><i>Image 5</i>
+</center>
+
+<p><u><strong>1 <sup>&egrave;re</sup> &eacute;tape</strong></u> : <br />
+Cette &eacute;tape est facultative, elle permet de  d&eacute;finir l'image de repr&eacute;sentation d'un langage. Cette image sera utilis&eacute;e notamment dans la page concernant
+le classement d'un &eacute;tudiant en fonction des langages des cours auxquels il a pris part. <br />
+Le champ pr&eacute;vu pour l'image doit &ecirc;tre rempli avec un lien vers une image &agrave; l'un des formats suivants : jpg, jpeg, png, gif, ico, bmp
+</p>
+
+<p><u><strong>2 <sup>&egrave;me</sup> &eacute;tape</strong></u> : <br />
+Une fois le lien vers l'image renseign&eacute;, il suffit de cliquer surle bouton "Modifier" pour valider le changement d'image.
+</p>
+
+<h1>4. Configurer la base du code</h1>
+
+<center>
+	<img src="images/baseconfiguration.png" />
+    <br/><i>Image 6</i>
+</center>
+
+<p><u><strong>1 <sup>&egrave;re</sup> &eacute;tape</strong></u> : <br />
+La balise &lt;lips-preconfig-import&gt; repr&eacute;sente la zone o&ugrave; seront plac&eacute;s les imports d&eacute;finis dans les probl&egrave;me 
+</p>
+
+<p><u><strong>2 <sup>&egrave;me</sup> &eacute;tape</strong></u> : <br />
+La balise &lt;lips-preconfig-code&gt; repr&eacute;sente la zone o&ugrave; sera plac&eacute; le code &eacute;crit par l'&eacute;tudiant r&eacute;solvant le probl&egrave;me 
+</p>
+
+<p><u><strong>3 <sup>&egrave;me</sup> &eacute;tape</strong></u> : <br />
+La balise &lt;lips-preconfig-test&gt; repr&eacute;sente la zone o&ugrave; seront plac&eacute;s les test unitaires fournis par les professeurs afin de valider les impl&eacute;mentation des &eacute;l&egrave;ves
+</p>
+
+<p><strong><u>Remarque</u> : </strong>
+L'utilisation des trois balises pr&eacute;sent&eacute;es ci-dessus n'est pas optionnelle
+</p>
+</body>
+</html>
