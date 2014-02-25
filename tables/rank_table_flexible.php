@@ -124,7 +124,7 @@ class rank_table extends flexible_table {
               LEFT JOIN mdl_lips_score mls ON mls.score_user=mlu.id
               WHERE $conditionsselect
               GROUP BY mlu.id
-              ORDER BY user_score
+              $orderby
               LIMIT 0 , 10
             ) t1,(SELECT @rn:=0) t2";
 
