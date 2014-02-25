@@ -1,16 +1,68 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * mod_lips categories tests
+ *
+ * @package    mod_lips
+ * @category   tests
+ * @copyright  2014 Anaïs Picoreau
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 require_once('/var/www/moodle/lib/phpunit/classes/advanced_testcase.php');
+require_once(dirname(__FILE__) . '/../lib.php');
 require_once(dirname(__FILE__) . '/../locallib.php');
 
-class mod_categorie_testcase extends advanced_testcase {
+/**
+ * Categories tests class for mod_lips.
+ *
+ * @package    mod_lips
+ * @category   tests
+ * @copyright  2014 Anaïs Picoreau
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class mod_categories_testcase extends advanced_testcase {
+
+	private function init_env() {
+		global $DB, $USER;
+
+		$this->resetAfterTest(true);
+ 		$this->setAdminUser();
+
+ 		$course = $this->getDataGenerator()->create_course();
+        $id = lips_add_instance((object) array ('course' => $course->id, 'name' => 'lips'));
+
+        $mid = $DB->insert_record('modules', (object) array ('name' => 'lips'));
+        $params = (object) array ('course' => $course->id, 'module' => $mid, 'instance' => $id, 'section' => '1');
+        $cmid = $DB->insert_record('course_modules', $params);
+
+		$_POST['id'] = $cmid;
+
+		insert_user($USER->id, "coursecreator", 1, 0);
+	}
 
  	/*
 		Check that insert_category() inserts the specified category in db.
 		- tested method in locallib.php
     */
  	public function test_insert_category() {
- 		global $DB;	
- 		$this->resetAfterTest(true);
+ 		global $DB;
+ 		
+ 		$this->init_env();
 
  		$id_language = 1;
  		$category_name = "test_unitaire";
@@ -32,7 +84,8 @@ class mod_categorie_testcase extends advanced_testcase {
     */
  	public function test_delete_category() {
  		global $DB;
- 		$this->resetAfterTest(true);
+
+ 		$this->init_env();
 		
  		$id_language = 1;
  		$category_name = "test_unitaire";
@@ -52,7 +105,8 @@ class mod_categorie_testcase extends advanced_testcase {
     */
  	public function test_update_category() {
 		global $DB;
-		$this->resetAfterTest(true);
+ 		
+ 		$this->init_env();
 
 		$id_language = 1;
  		$category_name = "test_unitaire";
@@ -81,7 +135,8 @@ class mod_categorie_testcase extends advanced_testcase {
 		- tested method in locallib.php
     */
  	public function test_category_exists() {
- 		$this->resetAfterTest(true);
+ 		
+ 		$this->init_env();
 
  		$id_language = 1;
  		$category_name = "test_unitaire";
@@ -101,7 +156,8 @@ class mod_categorie_testcase extends advanced_testcase {
     */
  	public function test_get_category_details() {
  		global $DB;
-		$this->resetAfterTest(true);
+ 		
+ 		$this->init_env();
 
 		$id_language = 1;
  		$category_name = "test_unitaire";
@@ -124,7 +180,8 @@ class mod_categorie_testcase extends advanced_testcase {
     */
  	public function test_fetch_all_categories() {
 		global $DB;
-		$this->resetAfterTest(true);
+ 		
+ 		$this->init_env();
 
  		$this->assertEquals($DB->get_records('lips_category', array()), fetch_all_categories(1));
  	}
