@@ -137,6 +137,10 @@ class rank_table extends flexible_table {
         $this->no_sorting("nb_problems_solved");
 
         // Populate the table.
+        $condition = "1";
+        if (!empty($language)) {
+            $condition .= " AND mlc.id_language =" . $language;
+        }
 
         foreach ($res as $user) {
             if ($user->id) {
@@ -145,7 +149,13 @@ class rank_table extends flexible_table {
                         continue;
                     }
                 }
-                $sql = "SELECT count(DISTINCT(problem_solved_problem))  FROM mdl_lips_problem_solved WHERE problem_solved_user =$user->id_moodle_user";
+                $sql = "SELECT count(DISTINCT(problem_solved_problem))
+                FROM mdl_lips_problem_solved  mlps
+                JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id
+                JOIN mdl_lips_category mlc ON mlp.problem_category_id = mlc.id
+                WHERE $condition
+                AND problem_solved_user =$user->id_moodle_user
+                ";
                 $countproblemsolved = $DB->count_records_sql($sql);
 
                 $userlink = '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $user->id)) . '"/>' . $lipsoutput->display_user_link($user->id, $user->firstname, $user->lastname) . '</div>';
