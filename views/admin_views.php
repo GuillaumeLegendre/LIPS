@@ -206,6 +206,111 @@ class page_admin_langage_base extends page_view {
     }
 }
 
+/**
+ * Achievement administration
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin GOT
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_achievement_select extends page_view {
+
+    /**
+     * page_admin_achievement_select constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the page_admin_achievement_select content
+     */
+    function display_content() {
+        global $CFG;
+
+        require_once(dirname(__FILE__) . '/../form/mod_lips_achievement_form.php');
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Modify a category
+        echo $this->lipsoutput->display_h2(get_string('administration_achievement_title', 'lips'));
+
+        $modifySelectAchievementForm = new mod_lips_achievement_select_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'achievement')), null, 'post');
+        $modifySelectAchievementForm->display();
+    }
+}
+
+/**
+ * Achievement administration
+ *
+ * @package    mod_lips
+ * @copyright  2014 LIPS
+ * @author     Valentin GOT
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page_admin_achievement extends page_view {
+
+    /**
+     * page_admin_achievement constructor
+     *
+     * @param object $cm Moodle context
+     */
+    function  __construct($cm) {
+        parent::__construct($cm, "administration");
+    }
+
+    /**
+     * Display the view
+     */
+    function display() {
+        global $CFG;
+        require_once(dirname(__FILE__) . '/../form/mod_lips_achievement_form.php');
+
+        $modifyAchievementForm = new mod_lips_achievement_form();
+
+        if ((!isset($_POST['selectAchievement']) || !isset($_POST['selectAchievement'][0]) || !isset($_POST['selectAchievement'][1])) && !$modifyAchievementForm->is_submitted()) {
+            redirect(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'achievement_select')));
+        }
+
+        parent::display_header();
+        $this->display_content();
+        parent::display_footer();
+    }
+
+    /**
+     * Display the page_admin_achievement content
+     */
+    function display_content() {
+
+        // Administration title
+        echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
+
+        // Administration menu
+        echo $this->lipsoutput->display_administration_menu();
+
+        // Modify a category
+        echo $this->lipsoutput->display_h2(get_string('administration_achievement_title', 'lips'));
+
+        $modifyAchievementForm = new mod_lips_achievement_form();
+        if ($modifyAchievementForm->is_submitted()) {
+            $modifyAchievementForm = new mod_lips_achievement_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'achievement')), null, 'post');
+
+            $modifyAchievementForm->handle();
+            $modifyAchievementForm->display();
+        } else {
+            $achievement = get_achievement_details(array('id' => $_POST['selectAchievement'][1]));
+            $modifyAchievementForm = new mod_lips_achievement_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'achievement')), (array) $achievement, 'post');
+            $modifyAchievementForm->display();
+        }
+    }
+}
 
 /**
  * Category creation page

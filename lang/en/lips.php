@@ -171,6 +171,7 @@ $string['achievements'] = 'Achievements';
 $string['at'] = '\a\t';
 $string['notifications'] = 'Notifications';
 $string['no_notifications'] = 'No notification';
+$string['no_achievements'] = 'No achievements';
 $string['refuse'] = 'Refuse';
 $string['solve'] = 'Solve';
 $string['accept'] = 'Accept';
@@ -181,6 +182,8 @@ $string['select'] = 'Select';
 $string['send_message'] = 'Send a message';
 $string['score'] = 'Score';
 $string['unranked'] = 'Unranked';
+$string['label'] = 'Label';
+$string['description'] = 'Description';
 
 /*--------------------------------------------------
  * Dates
@@ -269,7 +272,6 @@ $string['administration_no_syntax_highlighting'] = 'There is no syntax highlight
 $string['administration_no_compile_language'] = 'There is no compile language defined. Go to <strong>Administration > Language > Configure language</strong>.';
 $string['administration_warning_existing_language'] = 'Only languages that are not used by other instances are displayed here.<br/>For your information these languages are already used :';
 
-
 // Category
 $string['administration_category_create_title'] = 'Create a category';
 $string['administration_category_create_success'] = 'The category has been created';
@@ -290,6 +292,25 @@ $string['administration_category_documentation_error'] = 'You can\'t have both d
 $string['administration_delete_category_confirmation'] = "Confirm the deletion of the category";
 $string['administration_empty_categories'] = "No category";
 $string['problemNotSelected'] = "No problem selected";
+
+// Achievement
+$string['administration_achievement_title'] = 'Modify achievement';
+$string['administration_achievement_error'] = 'You must select an achievement to modify';
+$string['administration_empty_achievements'] = 'No achievements';
+$string['administration_achievement_label_error'] = 'You must enter the achievement name';
+$string['administration_achievement_area_error'] = 'You must enter the achievement description';
+$string['administration_achievement_picture_error'] = 'You must enter a picture';
+$string['achievement_bronze_title'] = 'Bronze';
+$string['achievement_bronze_msg'] = 'You solved 10 problems in the category ';
+$string['achievement_silver_title'] = 'Silver';
+$string['achievement_silver_msg'] = 'You solved 25 problems in the category ';
+$string['achievement_gold_title'] = 'Gold';
+$string['achievement_gold_msg'] = 'You solved 50 problems in the category ';
+$string['achievement_platinum_title'] = 'Platinum';
+$string['achievement_platinum_msg'] = 'You solved 100 problems in the category ';
+$string['administration_achievement_success'] = '';
+$string['administration_achievement_label_error'] = '';
+$string['administration_achievement_desc_error'] = '';
 
 // Problem
 $string['administration_problem_create_title'] = 'Create a problem';
@@ -330,7 +351,6 @@ $string['administration_delete_problem_confirmation_msg'] = 'Confirm the deletio
 $string['administration_empty_problems'] = 'No problems';
 $string['administration_unittests_form_code_unvalid'] = 'You must display keywords PROBLEM_SOLVED and PROBLEM_FAILED in unit tests';
 
-
 // My problems
 $string['administration_my_problems_title'] = "My problems";
 
@@ -340,7 +360,6 @@ $string['administration_my_problems_title'] = "My problems";
 
 $string['web_service_communication_error'] = 'An error occured while contacting the web service.<br/>You can\'t select a programming language.';
 $string['web_service_compil_communication_error'] = 'An error occured while contacting the web service.<br/>You can\'t send your solution for the moment.';
-
 
 /*--------------------------------------------------
  * Problems

@@ -144,6 +144,7 @@ $string['achievements'] = 'Badges';
 $string['at'] = 'à';
 $string['notifications'] = 'Notifications';
 $string['no_notifications'] = 'Aucune notification';
+$string['no_achievements'] = 'Aucun badge';
 $string['refuse'] = 'Refuser';
 $string['solve'] = 'Résoudre';
 $string['accept'] = 'Accepter';
@@ -154,6 +155,8 @@ $string['select'] = 'Sélectionner';
 $string['send_message'] = 'Envoyer un message';
 $string['score'] = 'Score';
 $string['unranked'] = 'Non classé';
+$string['label'] = 'Label';
+$string['description'] = 'Description';
 
 /*--------------------------------------------------
  * Dates
@@ -263,6 +266,23 @@ $string['administration_delete_category_confirmation'] = "Confirmez-vous la supp
 $string['administration_empty_categories'] = "Aucune catégorie";
 $string['problemNotSelected'] = "Aucun problème sélectionné";
 
+// Achievement
+$string['administration_achievement_title'] = 'Modifier un badge';
+$string['administration_achievement_error'] = 'Vous devez sélectionner un badge à modifier';
+$string['administration_empty_achievements'] = 'Aucun badge';
+$string['administration_achievement_label_error'] = 'Vous devez saisir le nom du badge';
+$string['administration_achievement_area_error'] = 'Vous devez saisir la description du badge';
+$string['administration_achievement_picture_error'] = 'Vous devez entrer une image';
+$string['achievement_bronze_title'] = 'Bronze';
+$string['achievement_bronze_msg'] = 'Vous avez résolu 10 problèmes dans la catégorie ';
+$string['achievement_silver_title'] = 'Argent';
+$string['achievement_silver_msg'] = 'Vous avez résolu 25 problèmes dans la catégorie ';
+$string['achievement_gold_title'] = 'Or';
+$string['achievement_gold_msg'] = 'Vous avez résolu 50 problèmes dans la catégorie ';
+$string['achievement_platinum_title'] = 'Platine';
+$string['achievement_platinum_msg'] = 'Vous avez résolu 100 problèmes dans la catégorie ';
+$string['administration_achievement_success'] = 'Le badge a été modifié';
+$
 // Problem
 $string['administration_problem_create_title'] = 'Créer un probleme';
 $string['administration_problem_modify_title'] = 'Modifier un problème';

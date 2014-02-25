@@ -125,13 +125,7 @@ class mod_lips_renderer extends plugin_renderer_base {
             </li>';
         }
 
-        $administrationmenu .= '<li><a href="#">Badges</a>
-                <ul>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_create">' . get_string('create', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_modify">' . get_string('modify', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_delete">' . get_string('delete', 'lips') . '</a></li>
-                </ul>
-            </li>
+        $administrationmenu .= '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_select">Badges</a></li>
             <li><a href="#">Catégories</a>
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_create">' . get_string('create', 'lips') . '</a></li>
@@ -352,70 +346,74 @@ class mod_lips_renderer extends plugin_renderer_base {
     public function display_notifications($notifications) {
         $display = '';
 
-        foreach($notifications as $notification) {
-            // Notification border
-            $display .= '<div class="notification-border"></div>';
+        if(count($notifications) == 0) {
+            $display = get_string('no_notifications', 'lips');
+        } else {
+            foreach($notifications as $notification) {
+                // Notification border
+                $display .= '<div class="notification-border"></div>';
 
-            // Notification message
-            $language = '';
-            if($notification->notification_language != null) {
-                $lips = get_instance($notification->notification_language);
-                if($lips->compile_language != null) {
-                    $language = '<div class="notification-language">' . ucfirst($lips->compile_language) . '</div>';
+                // Notification message
+                $language = '';
+                if($notification->notification_language != null) {
+                    $lips = get_instance($notification->notification_language);
+                    if($lips->compile_language != null) {
+                        $language = '<div class="notification-language">' . ucfirst($lips->compile_language) . '</div>';
+                    }
                 }
+                $notification_msg = '<div class="notification-content">' . $language . get_string($notification->notification_type, 'lips') . '</div>';
+
+                // Set the picture
+                $notification_msg = str_replace('{img}', '<img src="images/' .  get_string($notification->notification_type . '_picture', 'lips') . '"/>', $notification_msg);
+
+                // Set the date
+                $notification_msg = str_replace('{date}', '<span>' . format_date($notification->notification_date) . '</span>', $notification_msg);
+
+                // Set the notification_from
+                $notification_from = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_from))->id_user_moodle));
+                $notification_msg = str_replace('{notification_from}', $this->display_user_link($notification->notification_from, $notification_from->firstname, $notification_from->lastname), $notification_msg);
+
+                // Set the notification_to
+                if($notification->notification_to != 0) {
+                    $notification_to = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_to))->id_user_moodle));
+                    $notification_msg = str_replace('{notification_to}', $this->display_user_link($notification->notification_to, $notification_to->firstname, $notification_to->lastname), $notification_msg);
+                }
+
+                // Set the notification_problem
+                if($notification->notification_problem != null) {
+                    $notification_problem = get_problem_details($notification->notification_problem);
+                    $url_problem = new action_link(new moodle_url('view.php', array(
+                        'id' => $lips->instance_link,
+                        'view' => 'problem',
+                        'problemId' => $notification->notification_problem
+                    )),
+                    $notification_problem[$notification->notification_problem]->problem_label);
+                    $notification_msg = str_replace('{notification_problem}', $this->render($url_problem), $notification_msg);
+                }
+
+                // Set the notification_category
+                if($notification->notification_category != null) {
+                    $notification_category = get_category_details($notification->notification_category);
+                    $url_category = new action_link(new moodle_url('view.php', array(
+                        'id' => $lips->instance_link,
+                        'view' => 'category',
+                        'categoryId' => $notification->notification_category
+                    )),
+                    $notification_category->category_name);
+                    $notification_msg = str_replace('{notification_category}', $this->render($url_category), $notification_msg);
+                }
+
+                // Set the notification_text
+                if($notification->notification_text != null) {
+                    $notification_msg = str_replace('{notification_text}', '<strong>' . $notification->notification_text . '</strong>', $notification_msg);
+                }
+
+                $display .= $notification_msg;
             }
-            $notification_msg = '<div class="notification-content">' . $language . get_string($notification->notification_type, 'lips') . '</div>';
 
-            // Set the picture
-            $notification_msg = str_replace('{img}', '<img src="images/' .  get_string($notification->notification_type . '_picture', 'lips') . '"/>', $notification_msg);
-
-            // Set the date
-            $notification_msg = str_replace('{date}', '<span>' . format_date($notification->notification_date) . '</span>', $notification_msg);
-
-            // Set the notification_from
-            $notification_from = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_from))->id_user_moodle));
-            $notification_msg = str_replace('{notification_from}', $this->display_user_link($notification->notification_from, $notification_from->firstname, $notification_from->lastname), $notification_msg);
-
-            // Set the notification_to
-            if($notification->notification_to != 0) {
-                $notification_to = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_to))->id_user_moodle));
-                $notification_msg = str_replace('{notification_to}', $this->display_user_link($notification->notification_to, $notification_to->firstname, $notification_to->lastname), $notification_msg);
+            if($display != '') {
+                $display .= '<div class="notification-border"></div>';
             }
-
-            // Set the notification_problem
-            if($notification->notification_problem != null) {
-                $notification_problem = get_problem_details($notification->notification_problem);
-                $url_problem = new action_link(new moodle_url('view.php', array(
-                    'id' => $lips->instance_link,
-                    'view' => 'problem',
-                    'problemId' => $notification->notification_problem
-                )),
-                $notification_problem[$notification->notification_problem]->problem_label);
-                $notification_msg = str_replace('{notification_problem}', $this->render($url_problem), $notification_msg);
-            }
-
-            // Set the notification_category
-            if($notification->notification_category != null) {
-                $notification_category = get_category_details($notification->notification_category);
-                $url_category = new action_link(new moodle_url('view.php', array(
-                    'id' => $lips->instance_link,
-                    'view' => 'category',
-                    'categoryId' => $notification->notification_category
-                )),
-                $notification_category->category_name);
-                $notification_msg = str_replace('{notification_category}', $this->render($url_category), $notification_msg);
-            }
-
-            // Set the notification_text
-            if($notification->notification_text != null) {
-                $notification_msg = str_replace('{notification_text}', '<strong>' . $notification->notification_text . '</strong>', $notification_msg);
-            }
-
-            $display .= $notification_msg;
-        }
-
-        if($display != '') {
-            $display .= '<div class="notification-border"></div>';
         }
 
         return $display;
@@ -615,4 +613,31 @@ class mod_lips_renderer extends plugin_renderer_base {
 
         return $display;
     }
+
+    /**
+     * Display the user achievements
+     *
+     * @param object $achievements Achievements
+     * @return string Achievements
+     */
+    public function display_achievements($achievements) {
+        $display = '';
+
+        if(count($achievements) == 0) {
+            $display = get_string('no_achievements', 'lips');
+        } else {
+            $display = '<div id="achievements">';
+
+            foreach($achievements as $achievement) {
+                $display .= '<table><tr>
+                                <td class="img"><img src="images/' . $achievement->achievement_picture . '"/></td>
+                                <td><span class="title">' . $achievement->achievement_label . '</span> : 
+                                ' . $achievement->achievement_desc . ' - <span class="date">' . date('d/m/Y', $achievement->au_date) . '</span></td></tr></table>';
+            }
+
+            $display .= '</div>';
+        }
+
+        return $display;
+    } 
 }
