@@ -64,7 +64,7 @@ class rank_table extends flexible_table {
 
         // SORT.
 
-        $orderby = "order by user_score DESC";
+        $orderby = "order by rank DESC";
         if ($sortedcolumn == "user") {
             if ($sortedcolumns["user"] == SORT_ASC) {
                 $orderby = "order by firstname ASC";
@@ -115,8 +115,6 @@ class rank_table extends flexible_table {
             WHERE $conditions");
 
             $conditionsselect = str_replace(" AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'", "", $conditions);
-
-
 
             $sql = "
             SELECT rank, id, user_score, id_moodle_user, firstname, lastname
