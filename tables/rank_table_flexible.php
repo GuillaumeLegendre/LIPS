@@ -116,11 +116,24 @@ class rank_table extends flexible_table {
 
             $conditionsselect = str_replace(" AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'", "", $conditions);
 
-            $sql = "SELECT mlu.id, SUM(score_score) as user_score, mu.id as id_moodle_user, mu.firstname, mu.lastname, @curRank := @curRank + 1 AS rank
-            FROM (SELECT @curRank := 0) r, `mdl_lips_user` mlu
-            JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
-            LEFT JOIN mdl_lips_score mls ON mls.score_user=mlu.id where
-            $conditionsselect GROUP BY mlu.id $orderby LIMIT $limit,10";
+            $sql = "SELECT @rn:=@rn+1 AS rank, id, user_score, id_moodle_user, firstname, lastname
+            FROM (
+              SELECT mlu.id,SUM( score_score ) as user_score, mu.id AS id_moodle_user, mu.firstname, mu.lastname
+              FROM mdl_lips_user mlu
+              JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
+              LEFT JOIN mdl_lips_score mls ON mls.score_user=mlu.id
+              WHERE $conditionsselect
+              GROUP BY mlu.id
+              ORDER BY user_score
+              LIMIT 0 , 10
+            ) t1,(SELECT @rn:=0) t2";
+
+
+           // $sql = "SELECT mlu.id, SUM(score_score) as user_score, mu.id as id_moodle_user, mu.firstname, mu.lastname, @curRank := @curRank + 1 AS rank
+            //FROM (SELECT @curRank := 0) r, `mdl_lips_user` mlu
+            //JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
+            //LEFT JOIN mdl_lips_score mls ON mls.score_user=mlu.id where
+            //$conditionsselect GROUP BY mlu.id $orderby LIMIT $limit,10";
         }
 
         $this->pagesize(10, $totaltuples);
