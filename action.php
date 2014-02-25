@@ -20,7 +20,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/pagelib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
-require_once(dirname(__FILE__) . '/mod_lips_category_form.php');
+require_once(dirname(__FILE__) . '/form/mod_lips_category_form.php');
 
 $id = optional_param('id', 0, PARAM_INT);
 $n = optional_param('n', 0, PARAM_INT);
