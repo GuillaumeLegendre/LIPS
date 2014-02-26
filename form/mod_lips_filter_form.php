@@ -19,7 +19,6 @@ class mod_lips_filter_form extends moodleform {
     public function definition() {
         global $PAGE;
         $mform =& $this->_form;
-        $mcustomdata = $this->_customdata;
         $activelanguages = array();
         $activelanguages["all"] = "Tout";
         $categorieslanguage["all"] = "Tout";

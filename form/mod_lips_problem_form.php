@@ -532,9 +532,6 @@ class mod_lips_problem_modify_select_form extends moodleform {
         global $USER, $PAGE;
         $mform =& $this->_form;
 
-        // Select the category.
-        $lips = get_current_instance();
-
         $categoriesarray = array();
         $problemsarray = array();
 

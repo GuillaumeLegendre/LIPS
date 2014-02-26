@@ -1352,16 +1352,6 @@ function get_active_languages() {
 }
 
 /**
- * Get categories of a specific instance of lips..
- *
- */
-function get_categories_by_instance($instanceid) {
-    global $DB;
-
-    $categories = $DB->get_records('lips_category', array('id_language' => $instanceid));
-}
-
-/**
  * Get complete source code with solution of the user
  *
  */
