@@ -774,7 +774,7 @@ function follow($follower, $followed) {
     global $DB;
 
     $DB->insert_record('lips_follow', array('follower' => $follower, 'followed' => $followed));
-    
+
     insert_notification(null, $follower, 'notification_follow', time(), $follower, $followed);
     insert_notification(null, $followed, 'notification_followed', time(), $follower, $followed);
 }
@@ -1369,7 +1369,7 @@ function get_code_complete($idproblem, $solution) {
     global $DB;
     $res = array();
     $idtrue = uniqid();
-    $idfalse=uniqid();
+    $idfalse = uniqid();
     $codes = $DB->get_record_sql('select base_code,problem_code, problem_imports, problem_unit_tests from mdl_lips_problem mlp join mdl_lips_category mlc on mlc.id=mlp.problem_category_id JOIN mdl_lips ml ON ml.id=mlc.id_language where mlp.id=' . $idproblem);
     $basecode = $codes->base_code;
     $solution = preg_replace("|(<code>)|U", "", $solution);
@@ -1520,8 +1520,8 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
 
     // Update the user rank
     $numberproblemsolved = get_count_problem_resolved($iduser);
-    foreach(fetch_all_ranks() as $rank) {
-        if($rank->rank_problem_solved == $numberproblemsolved) {
+    foreach (fetch_all_ranks() as $rank) {
+        if ($rank->rank_problem_solved == $numberproblemsolved) {
             $DB->update_record('lips_user', array('id' => $userdetails->id, 'user_rank_id' => $rank->id));
 
             $notificationexists = notification_exists(array(
@@ -1552,8 +1552,8 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
 
     // Achievement
     $problemsolvedbycategory = problem_solved_by_category($iduser, $categoryid);
-    foreach(get_category_achievements($categoryid) as $achievement) {
-        if($achievement->achievement_problems == $problemsolvedbycategory) {
+    foreach (get_category_achievements($categoryid) as $achievement) {
+        if ($achievement->achievement_problems == $problemsolvedbycategory) {
             $DB->insert_record('lips_achievement_user', array(
                 'au_user_id' => $userdetails->id,
                 'au_achievement_id' => $achievement->id,
@@ -1646,8 +1646,8 @@ function get_difficulty_details(array $conditions = array()) {
 
 /**
  * Fetch all categories and achievements
- * 
- * @param int $instanceid LIPS id 
+ *
+ * @param int $instanceid LIPS id
  * @return object All categories and achievement
  */
 function fetch_categories_and_achievements($instanceid) {
@@ -1699,7 +1699,7 @@ function update_achievement(array $params = array()) {
  *
  * @param int $userid User ID
  * @param int $categoryid Category ID
- * @return int Number of problem solved by category 
+ * @return int Number of problem solved by category
  */
 function problem_solved_by_category($userid, $categoryid) {
     global $DB;
@@ -1724,4 +1724,10 @@ function fetch_achievements_details($userid) {
     return $DB->get_records_sql('SELECT * FROM mdl_lips_achievement mla
         JOIN mdl_lips_achievement_user mlau ON mla.id = mlau.au_achievement_id
         AND mlau.au_user_id = ' . $userid);
+}
+
+function has_solved_problem($problemid, $userid) {
+    global $DB;
+
+    return $DB->count_records('lips_problem_solved', array('problem_solved_problem' => $problemid, 'problem_solved_user' => $userid));
 }

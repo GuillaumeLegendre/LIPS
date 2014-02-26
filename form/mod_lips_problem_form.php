@@ -54,7 +54,7 @@ class mod_lips_problem_create_form extends moodleform {
         // Preconfig.
         $lips = get_current_instance();
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_preconfig_subtitle", "lips")));
-        $mform->addElement('html', get_string("administration_language_code_msg", "lips"));
+        $mform->addElement('html', get_string("administration_problem_preconfig_msg", "lips"));
 
         if ($lips->base_code != null) {
             $mform->addElement('html', '<div id="preconfigEditor" class="ace" style="margin: auto;">' . htmlspecialchars($lips->base_code) . '</div>');
@@ -320,7 +320,7 @@ class mod_lips_problem_modify_form extends moodleform {
 
         // Preconfig
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_create_preconfig_subtitle", "lips")));
-        $mform->addElement('html', get_string("administration_language_code_msg", "lips"));
+        $mform->addElement('html', get_string("administration_problem_preconfig_msg", "lips"));
         if ($lips->base_code != null) {
             $mform->addElement('html', '<div id="preconfigEditor" class="ace" style="margin: auto;">' . htmlspecialchars($lips->base_code) . '</div>');
         }

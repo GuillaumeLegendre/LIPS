@@ -46,7 +46,7 @@ class page_problem extends page_view {
 
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
         require_once(dirname(__FILE__) . '/../form/mod_lips_problem_form.php');
-        require_once(dirname(__FILE__) . '/../lips_rest_interface_impl.php');
+        require_once(dirname(__FILE__) . '/../lips_rest_interface_ideone.php');
 
         // Problem details
         $lips = get_current_instance();
@@ -61,7 +61,7 @@ class page_problem extends page_view {
             increment_attempt($this->id);
             $data = $formanswer->get_data();
             $codeinformations = get_code_complete($this->id, $data->problem_answer);
-            $languages = lips_rest_interface_impl::execute($codeinformations['code'], get_current_instance()->compile_language);
+            $languages = lips_rest_interface_ideone::execute($codeinformations['code'], get_current_instance()->compile_language);
             if (!$languages) {
                 $notifanswer = $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
             } else if ($languages['result'] != 1) {
