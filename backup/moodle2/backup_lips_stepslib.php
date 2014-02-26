@@ -1,5 +1,5 @@
 <?php
- // This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,12 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_lips_activity_structure_step extends backup_activity_structure_step {
- 
+
     /**
      * Define the complete lips structure for backup, with file and id annotations
-     */     
+     */
     protected function define_structure() {
- 
+
         // Define each element separated.
 
         $lips = new backup_nested_element('lips', array('id'), array(
@@ -39,12 +39,12 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
 
         $difficulty = new backup_nested_element('difficulty', array('id'), array(
             'difficulty_label', 'difficulty_points'));
- 
+
         $categories = new backup_nested_element('categories');
- 
+
         $category = new backup_nested_element('category', array('id'), array(
             'category_name', 'category_documentation', 'category_documentation_type'));
- 
+
         $problems = new backup_nested_element('problems');
 
         $problem = new backup_nested_element('problem', array('id'), array(
@@ -55,7 +55,7 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
 
         $problem_similar = new backup_nested_element('problem_similar', array('id'), array(
             'problem_similar_main_id', 'problem_similar_id'));
- 
+
         // Build the tree.
         $lips->add_child($categories);
         $categories->add_child($category);
@@ -87,7 +87,7 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
         $problem_similar->set_source_table('lips_problem_similar', array('problem_similar_main_id' => backup::VAR_PARENTID));
 
         // Define id annotations.
- 
+
         // Define file annotations.
         $lips->annotate_files('lips', 'intro', null); // This file area hasn't itemid.
 
