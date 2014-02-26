@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/lips/db" VERSION="20140225" COMMENT="XMLDB file for Moodle LIPS module"
+<XMLDB PATH="mod/lips/db" VERSION="20140226" COMMENT="XMLDB file for Moodle LIPS module"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -85,7 +85,6 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="problem_solved_problem" TYPE="foreign" FIELDS="problem_solved_problem" REFTABLE="lips_problem" REFFIELDS="id"/>
-        <KEY NAME="problem_solved_user" TYPE="foreign" FIELDS="problem_solved_user" REFTABLE="lips_user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="lips_user" COMMENT="User list">
@@ -224,6 +223,19 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="score_instance" TYPE="foreign" FIELDS="score_instance" REFTABLE="lips" REFFIELDS="id"/>
         <KEY NAME="score_user" TYPE="foreign" FIELDS="score_user" REFTABLE="lips_user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lips_problem_failed" COMMENT="List of the failed problems">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="problem_failed_problem" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="problem_failed_user" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="problem_failed_date" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="problem_failed_solution" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="problem_failed_problem" TYPE="foreign" FIELDS="problem_failed_problem" REFTABLE="lips_problem" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
   </TABLES>

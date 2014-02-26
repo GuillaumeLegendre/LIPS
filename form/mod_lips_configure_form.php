@@ -75,7 +75,7 @@ class mod_lips_configure_language_form extends moodleform {
                 $mform->setDefault('selectLanguage', $lips->compile_language);
             }
         }
-
+        
         // Select the syntax highlighting.
         $mform->addElement('select', 'selectSyntaxHighlighting', get_string('administration_language_form_highlighting_select', 'lips'), ace_available_languages());
         $mform->addRule('selectSyntaxHighlighting', get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
