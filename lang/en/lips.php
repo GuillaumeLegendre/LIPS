@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -21,9 +20,17 @@
  * You can have a rather longer description of the file as well,
  * if you like, and it can span multiple lines.
  *
- * @package    mod_lips
- * @copyright  2014 LIPS
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_lips
+ * @category  grade
+ * @copyright 2014 LIPS
+ *
+ * @author Valentin Got
+ * @author Guillaume Legendre
+ * @author Mickael Ohlen
+ * @author Anaïs Picoreau
+ * @author Julien Senac
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();

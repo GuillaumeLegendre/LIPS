@@ -15,10 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package moodlecore
- * @subpackage backup-moodle2
- * @copyright 2014 onwards Lipstick
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     mod_lips
+ * @subpackage  backup-moodle2
+ * @category    backup
+ * @copyright   2014 LIPS
+ *
+ * @author Valentin Got
+ * @author Guillaume Legendre
+ * @author Mickael Ohlen
+ * @author Anaïs Picoreau
+ * @author Julien Senac
+ *
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
  // This activity has not particular settings but the inherited from the generic

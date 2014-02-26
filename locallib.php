@@ -20,9 +20,16 @@
  * All the lips specific functions, needed to implement the module
  * logic, should go here. Never include this file from your lib.php!
  *
- * @package    mod_lips
- * @copyright  2011 Your Name
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_lips
+ * @copyright 2014 LIPS
+ *
+ * @author Valentin Got
+ * @author Guillaume Legendre
+ * @author Mickael Ohlen
+ * @author Anaïs Picoreau
+ * @author Julien Senac
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();

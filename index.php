@@ -15,17 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This is a one-line short description of the file
+ * @package   mod_lips
+ * @copyright 2014 LIPS
  *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
+ * @author Valentin Got
+ * @author Guillaume Legendre
+ * @author Mickael Ohlen
+ * @author Anaïs Picoreau
+ * @author Julien Senac
  *
- * @package    mod_lips
- * @copyright  2011 Your Name
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-// Replace lips with the name of your module and remove this line.
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
