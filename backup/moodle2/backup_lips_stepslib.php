@@ -29,9 +29,6 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
      */     
     protected function define_structure() {
  
-        // To know if we are including userinfo.
-        $userinfo = $this->get_setting_value('userinfo');
- 
         // Define each element separated.
 
         $lips = new backup_nested_element('lips', array('id'), array(

@@ -51,10 +51,9 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
      * the configured language.
      */
     protected function process_lips($data) {
-        global $DB, $PAGE; 
+        global $DB; 
  
         $data = (object)$data;
-        $oldid = $data->id;
 
         // Check if a compile language has been configured in the backup.
         if ($data->compile_language != NULL) {
@@ -90,7 +89,7 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
      * Restore category item if it doesn't already exist in the lips instance.
      */
     protected function process_lips_category($data) {
-        global $DB, $PAGE;
+        global $DB;
 
         $data = (object)$data;
         $oldid = $data->id;
@@ -165,10 +164,8 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
      * Restore problem advices item for restored problem.
      */
     protected function process_lips_problem_similar($data) {
-        global $DB;
 
         $data = (object)$data;
-        $oldid = $data->id;
 
         $this->problemsimilardataarray[] = $data;
     }
