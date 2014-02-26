@@ -38,11 +38,8 @@ class followed_users_table extends table_sql {
      * @param string $search User to search
      */
     public function  __construct($cm, $iduser, $owner, $search = null) {
-        global $USER;
         parent::__construct("mdl_lips_category");
         $this->cm = $cm;
-
-// TODO ; select the langage name.
 
         if ($search == null) {
             $this->set_sql("mlu.id, firstname, lastname, rank_label",

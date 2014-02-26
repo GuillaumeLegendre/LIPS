@@ -28,7 +28,6 @@ require_once("$CFG->libdir/outputrenderers.php");
  */
 class rank_table extends flexible_table {
     private $cm;
-    private $rank = 1;
     private $language = null;
 
     public function  __construct($cm, $searchuser = null, $language = null, $category = null) {
@@ -38,7 +37,6 @@ class rank_table extends flexible_table {
         $this->language = $language;
         $this->cm = $cm;
         $conditions = "1";
-        $filterinstance = "";
 
         if (!empty($searchuser)) {
             $conditions .= " AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'";
@@ -51,7 +49,6 @@ class rank_table extends flexible_table {
         }
 
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "rank")));
-        $context = context_module::instance($cm->id);
 
         $this->set_attribute('class', 'admintable generaltable');
         $this->define_headers(array(get_string('rank', 'lips'), get_string('user', 'lips'), get_string("solved_problems", "lips"), get_string("score", "lips"), "Suivre"));

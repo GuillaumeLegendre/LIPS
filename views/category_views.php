@@ -60,7 +60,6 @@ class page_category extends page_view {
      * Display the page_category content
      */
     function display_content() {
-        global $USER;
 
         require_once(dirname(__FILE__) . '/../tables/problems_table.php');
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');

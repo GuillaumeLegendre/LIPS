@@ -14,15 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * mod_lips categories tests
- *
- * @package    mod_lips
- * @category   tests
- * @copyright  2014 Anaïs Picoreau
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 require_once('/var/www/moodle/lib/phpunit/classes/advanced_testcase.php');
 require_once(dirname(__FILE__) . '/../lib.php');
 require_once(dirname(__FILE__) . '/../locallib.php');

@@ -75,7 +75,6 @@ class my_problems_table extends table_sql {
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_problem WHERE problem_creator_id = " . $idcreator);
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'my_problems')));
 
-        $context = context_module::instance($cm->id);
         $this->define_headers(array(get_string('problem', 'lips'), get_string('difficulty', 'lips'), get_string('date', 'lips'), get_string('problem_nb_resolutions', 'lips'), "", ""));
         $this->define_columns(array("problem_label", "difficulty_points", "problem_date", "problem_resolutions", "testing", "actions"));
         $this->sortable(true, 2);
@@ -90,7 +89,7 @@ class my_problems_table extends table_sql {
      * @param int $attempt Data
      */
     function other_cols($colname, $attempt) {
-        global $OUTPUT, $PAGE, $USER;
+        global $OUTPUT, $PAGE;
 
         switch ($colname) {
             case 'problem_label':
@@ -131,8 +130,6 @@ class my_problems_table extends table_sql {
                 break;
 
             case 'actions':
-                $context = context_module::instance($this->cm->id);
-
                 $actions = $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_modify', "problemId" => $attempt->id)), new pix_icon("t/edit", "edit"));
                 $actions .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'deleteProblem', "problemId" => $attempt->id, 'originV' => 'administration', 'originAction' => 'my_problems')), new pix_icon("t/delete", "delete"));
 

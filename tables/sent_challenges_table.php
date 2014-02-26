@@ -39,7 +39,6 @@ class sent_challenges_table extends table_sql {
      * @param string $search User to search
      */
     public function  __construct($cm, $iduser, $owner, $search = null) {
-        global $USER;
         parent::__construct("mdl_lips_challenges_table");
         $this->cm = $cm;
         $this->owner = $owner;

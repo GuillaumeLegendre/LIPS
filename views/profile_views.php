@@ -54,7 +54,6 @@ class page_profile extends page_view {
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class page_profile_ranks extends page_view {
-    private $cmid;
 
     /**
      * page_profile_ranks constructor
@@ -93,7 +92,6 @@ class page_profile_ranks extends page_view {
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class page_profile_solved_problems extends page_view {
-    private $cmid;
 
     /**
      * page_profile_solved_problems constructor
@@ -122,7 +120,6 @@ class page_profile_solved_problems extends page_view {
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class page_profile_challenges extends page_view {
-    private $cmid;
 
     /**
      * page_profile_challenges constructor
@@ -227,7 +224,6 @@ class page_profile_challenges extends page_view {
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class page_profile_followed_users extends page_view {
-    private $cmid;
 
     /**
      * page_profile_followed_users constructor
