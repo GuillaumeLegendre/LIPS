@@ -205,7 +205,6 @@ function delete_user_status($userid, $lipsinstance) {
 function insert_user_if_not_exists() {
     global $USER;
 
-
     $lips = get_current_instance();
     $user = get_user_details(array('id_user_moodle' => $USER->id));
     if ($user == null) {
@@ -225,6 +224,8 @@ function insert_user_if_not_exists() {
             return false;
         }
     }
+
+    return true;
 }
 
 /**
