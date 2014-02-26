@@ -60,7 +60,6 @@ class page_category extends page_view {
      * Display the page_category content
      */
     function display_content() {
-        global $USER;
 
         require_once(dirname(__FILE__) . '/../tables/problems_table.php');
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
@@ -73,7 +72,13 @@ class page_category extends page_view {
         echo $this->lipsoutput->display_h1($categorydetails->category_name);
 
         // Search form
-        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'categoryId' => $this->id)), null, 'post', '', array('class' => 'search-form'));
+        $array = array(
+            "placeholder" => get_string('problem', 'lips'),
+            "class" => "category_problems_ac"
+        );
+
+        echo '<input type="hidden" id="hiddenCategoryID" value="' . $categorydetails->id . '"/>';
+        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'categoryId' => $this->id)), $array, 'post', '', array('class' => 'search-form'));
         $searchform->display();
 
         $search = null;

@@ -38,11 +38,8 @@ class followed_users_table extends table_sql {
      * @param string $search User to search
      */
     public function  __construct($cm, $iduser, $owner, $search = null) {
-        global $USER;
         parent::__construct("mdl_lips_category");
         $this->cm = $cm;
-
-// TODO ; select the langage name.
 
         if ($search == null) {
             $this->set_sql("mlu.id, firstname, lastname, rank_label",
@@ -58,7 +55,7 @@ class followed_users_table extends table_sql {
                 AND mlu.user_rank_id = mlr.id
                 AND mu.id = mlu.id_user_moodle
                 AND mlf.follower = " . $iduser . "
-                AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
+                AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search . "%'");
         }
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_follow WHERE follower = " . $iduser);
 

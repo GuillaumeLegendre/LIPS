@@ -18,7 +18,6 @@ global $USER;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
-require_once(dirname(__FILE__) . '/pagelib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 require_once(dirname(__FILE__) . '/form/mod_lips_category_form.php');
 
@@ -91,9 +90,9 @@ switch ($action) {
             if ($categoryid != null && !empty($categoryid)) {
                 redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv, 'categoryId' => $categoryid)));
             }
-            
+
             if ($originaction == null) {
-                if($originv == 'problem') {
+                if ($originv == 'problem') {
                     redirect(new moodle_url('view.php', array('id' => $cm->id)));
                 } else {
                     redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => $originv)));
@@ -113,7 +112,7 @@ switch ($action) {
             redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'problem_category_select_delete')));
         }
         break;
-        
+
     case 'follow':
         $tofollow = optional_param('to_follow', 0, PARAM_INT);
         $originuser = optional_param('originUser', null, PARAM_TEXT);
@@ -181,7 +180,7 @@ switch ($action) {
     case 'accept_challenge':
         $challengeid = optional_param('challenge_id', 0, PARAM_INT);
 
-        // Accept the challenge
+        // Accept the challenge.
         accept_challenge($challengeid);
 
         if ($originv == null && $originaction == null) {
@@ -194,7 +193,7 @@ switch ($action) {
     case 'refuse_challenge':
         $challengeid = optional_param('challenge_id', 0, PARAM_INT);
 
-        // Accept the challenge
+        // Accept the challenge.
         refuse_challenge($challengeid);
 
         if ($originv == null && $originaction == null) {
@@ -207,7 +206,7 @@ switch ($action) {
     case 'cancel_challenge':
         $challengeid = optional_param('challengeId', 0, PARAM_INT);
 
-        // Cancel the challenge
+        // Cancel the challenge.
         cancel_challenge($challengeid);
 
         if ($originv == null && $originaction == null) {

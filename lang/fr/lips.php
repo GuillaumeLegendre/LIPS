@@ -283,7 +283,7 @@ $string['achievement_gold_msg'] = 'Vous avez résolu 50 problèmes dans la caté
 $string['achievement_platinum_title'] = 'Platine';
 $string['achievement_platinum_msg'] = 'Vous avez résolu 100 problèmes dans la catégorie ';
 $string['administration_achievement_success'] = 'Le badge a été modifié';
-$
+
 // Problem
 $string['administration_problem_create_title'] = 'Créer un probleme';
 $string['administration_problem_modify_title'] = 'Modifier un problème';
@@ -299,6 +299,7 @@ $string['administration_problem_create_code_import_label'] = 'Importer des libra
 $string['administration_problem_create_code_complete_label'] = 'Code à completer';
 $string['administration_problem_create_code_unittest_label'] = 'Tests unitaires';
 $string['administration_problem_create_success'] = 'Le problème a été créé';
+$string['administration_problem_modify_select'] = 'Sélectionnez le problème';
 $string['administration_problem_modify_success'] = 'Le problème a été modifié';
 $string['administration_problems_import_confirmation'] = "Vous allez être redirigé vers la page Moodle pour la restauration de cours. Elle va vous permettre d'importer des problèmes dans LIPS.";
 $string['administration_problems_export_confirmation'] = "Vous allez être redirigé vers la page Moodle pour la sauvegarde de cours. Elle va vous permettre d'exporter les problèmes de LIPS.";

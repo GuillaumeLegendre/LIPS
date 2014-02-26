@@ -215,13 +215,9 @@ function deleteChalengedUser(user_id) {
 
 function populateselectinstance() {
     var idinstance = $("#id_language_id_js option:selected").val();
-    console.log(idinstance);
     $.getJSON("./get_categories_by_instance.php", {id: idinstance, ajax: 'true'}, function (j) {
-        console.log(j);
         var options = "<option value='all'>Tout</option>";
         $.each(j, function (key, val) {
-            console.log(val);
-
             options += '<option value="' + val.id_language + '">' + val.category_name + '</option>';
         });
         $("#id_category_id_js").html(options);
@@ -278,6 +274,7 @@ $(document).ready(function () {
         });
         populateselectinstance();
     }
+
     /*---------------------------------
      *  Autocomplete on users to challenge
      *-------------------------------*/
@@ -363,4 +360,310 @@ $(document).ready(function () {
             return false;
         });
     }
+
+    /*---------------------------------
+     *  Autocomplete on "Profile - Solved problems"
+     *-------------------------------*/
+
+    if ($('.solved_problems_ac').length > 0) {
+        var mytable = new Array();
+
+        // Get problems
+        $.ajax({
+            url: 'ajax/autocomplete.php',
+            type: 'POST',
+            data: {
+                action: 'solved_problems',
+                userid: $("#hiddenUserID").val()
+            },
+            dataType: 'json',
+            success: function (problems) {
+                $.map(problems, function (value, key) {
+                    problem = new Object();
+                    problem.label = value;
+                    problem.id = key;
+
+                    mytable.push(problem);
+                });
+            }
+        });
+
+        // Autocomplete
+        $(".solved_problems_ac").autocomplete({
+            minLength: 1,
+            source: mytable
+        });
+    }
+
+    /*---------------------------------
+     *  Autocomplete on "Profile - Followed users"
+     *-------------------------------*/
+
+    if ($('.followed_users_ac').length > 0) {
+        var mytable = new Array();
+
+        // Get users
+        $.ajax({
+            url: 'ajax/autocomplete.php',
+            type: 'POST',
+            data: {
+                action: 'followed_users',
+                userid: $("#hiddenUserID").val()
+            },
+            dataType: 'json',
+            success: function (users) {
+                $.map(users, function (value, key) {
+                    user = new Object();
+                    user.label = value;
+                    user.id = key;
+
+                    mytable.push(user);
+                });
+            }
+        });
+
+        // Autocomplete
+        $(".followed_users_ac").autocomplete({
+            minLength: 1,
+            source: mytable
+        });
+    }
+
+    /*---------------------------------
+     *  Autocomplete on "Category - Problems"
+     *-------------------------------*/
+
+    if ($('.category_problems_ac').length > 0) {
+        var mytable = new Array();
+
+        // Get users
+        $.ajax({
+            url: 'ajax/autocomplete.php',
+            type: 'POST',
+            data: {
+                action: 'problems_by_category',
+                categoryid: $("#hiddenCategoryID").val()
+            },
+            dataType: 'json',
+            success: function (problems) {
+                $.map(problems, function (value, key) {
+                    problem = new Object();
+                    problem.label = value;
+                    problem.id = key;
+
+                    mytable.push(problem);
+                });
+            }
+        });
+
+        // Autocomplete
+        $(".category_problems_ac").autocomplete({
+            minLength: 1,
+            source: mytable
+        });
+    }
+
+    /*---------------------------------
+     *  Autocomplete on "Problem - Solutions"
+     *-------------------------------*/
+
+    if ($('.users_problem_solutions_ac').length > 0) {
+        var mytable = new Array();
+
+        // Get users
+        $.ajax({
+            url: 'ajax/autocomplete.php',
+            type: 'POST',
+            data: {
+                action: 'users_problem_solutions',
+                problemid: $("#hiddenProblemID").val()
+            },
+            dataType: 'json',
+            success: function (users) {
+                $.map(users, function (value, key) {
+                    user = new Object();
+                    user.label = value;
+                    user.id = key;
+
+                    mytable.push(user);
+                });
+            }
+        });
+
+        // Autocomplete
+        $(".users_problem_solutions_ac").autocomplete({
+            minLength: 1,
+            source: mytable
+        });
+    }
+
+    /*---------------------------------
+     *  Autocomplete on "Users"
+     *-------------------------------*/
+
+    if ($('.users_ac').length > 0) {
+        var mytable = new Array();
+
+        // Get users
+        $.ajax({
+            url: 'ajax/autocomplete.php',
+            type: 'POST',
+            data: {
+                action: 'users'
+            },
+            dataType: 'json',
+            success: function (users) {
+                $.map(users, function (value, key) {
+                    user = new Object();
+                    user.label = value;
+                    user.id = key;
+
+                    mytable.push(user);
+                });
+            }
+        });
+
+        // Autocomplete
+        $(".users_ac").autocomplete({
+            minLength: 1,
+            source: mytable
+        });
+    }
+
+    /*---------------------------------
+     *  Autocomplete on "Received challenges - Problems"
+     *-------------------------------*/
+
+    if ($('.received_challenges_problems_ac').length > 0) {
+        var mytable = new Array();
+
+        // Get problems
+        $.ajax({
+            url: 'ajax/autocomplete.php',
+            type: 'POST',
+            data: {
+                action: 'received_challenges_problems',
+                userid: $("#hiddenUserID").val()
+            },
+            dataType: 'json',
+            success: function (problems) {
+                $.map(problems, function (value, key) {
+                    problem = new Object();
+                    problem.label = value;
+                    problem.id = key;
+
+                    mytable.push(problem);
+                });
+            }
+        });
+
+        // Autocomplete
+        $(".received_challenges_problems_ac").autocomplete({
+            minLength: 1,
+            source: mytable
+        });
+    }
+
+    /*---------------------------------
+     *  Autocomplete on "Received challenges - Users"
+     *-------------------------------*/
+
+    if ($('.received_challenges_users_ac').length > 0) {
+        var mytablereceivedu = new Array();
+
+        // Get users
+        $.ajax({
+            url: 'ajax/autocomplete.php',
+            type: 'POST',
+            data: {
+                action: 'received_challenges_users',
+                userid: $("#hiddenUserID").val()
+            },
+            dataType: 'json',
+            success: function (users) {
+                $.map(users, function (value, key) {
+                    user = new Object();
+                    user.label = value;
+                    user.id = key;
+
+                    mytablereceivedu.push(user);
+                });
+            }
+        });
+
+        // Autocomplete
+        $(".received_challenges_users_ac").autocomplete({
+            minLength: 1,
+            source: mytablereceivedu
+        });
+    }
+
+    /*---------------------------------
+     *  Autocomplete on "Sent challenges - Problems"
+     *-------------------------------*/
+
+    if ($('.sent_challenges_problems_ac').length > 0) {
+        var mytablesent = new Array();
+
+        // Get problems
+        $.ajax({
+            url: 'ajax/autocomplete.php',
+            type: 'POST',
+            data: {
+                action: 'sent_challenges_problems',
+                userid: $("#hiddenUserID").val()
+            },
+            dataType: 'json',
+            success: function (problems) {
+                $.map(problems, function (value, key) {
+                    problem = new Object();
+                    problem.label = value;
+                    problem.id = key;
+
+                    mytablesent.push(problem);
+                });
+            }
+        });
+
+        // Autocomplete
+        $(".sent_challenges_problems_ac").autocomplete({
+            minLength: 1,
+            source: mytablesent
+        });
+    }
+
+    /*---------------------------------
+     *  Autocomplete on "Sent challenges - Users"
+     *-------------------------------*/
+
+    if ($('.sent_challenges_users_ac').length > 0) {
+        var mytablesentu = new Array();
+
+        // Get users
+        $.ajax({
+            url: 'ajax/autocomplete.php',
+            type: 'POST',
+            data: {
+                action: 'sent_challenges_users',
+                userid: $("#hiddenUserID").val()
+            },
+            dataType: 'json',
+            success: function (users) {
+                $.map(users, function (value, key) {
+                    user = new Object();
+                    user.label = value;
+                    user.id = key;
+
+                    mytablesentu.push(user);
+                });
+            }
+        });
+
+        // Autocomplete
+        $(".sent_challenges_users_ac").autocomplete({
+            minLength: 1,
+            source: mytablesentu
+        });
+    }
+
 });

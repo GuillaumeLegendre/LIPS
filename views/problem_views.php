@@ -340,7 +340,13 @@ class page_solutions extends page_view {
         $prerequisite = $this->lipsoutput->display_span(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $prerequisite;
         echo $this->lipsoutput->display_p($prerequisite, array("class" => "field_page_problem"));
 
-        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), null, 'post', '', array('class' => 'search-form', 'style' => 'width: 60%'));
+        // Search form
+        $array = array(
+            "placeholder" => get_string('user', 'lips'),
+            "class" => "users_problem_solutions_ac"
+        );
+        echo '<input type="hidden" id="hiddenProblemID" value="' . $this->id . '"/>';
+        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), $array, 'post', '', array('class' => 'search-form', 'style' => 'width: 60%'));
         $searchform->display();
 
         $search = null;

@@ -24,20 +24,22 @@ class mod_lips_sent_challenges_search_form extends moodleform {
         $mform->addElement('header', 'headerSearch', get_string('search', 'lips'));
 
         // Input search for problem
-        $mform->addElement('text', 'problemInputSearch', null,
+        $mform->addElement('text', 'problemInputSearchSent', null,
             array(
-                'size' => '64',
+                'size' => '25',
                 'maxlength' => '255',
-                'placeholder' => get_string('problem', 'lips')
+                'placeholder' => get_string('problem', 'lips'),
+                'class' => 'sent_challenges_problems_ac'
             ));
-        $mform->setType('problemInputSearch', PARAM_TEXT);
+        $mform->setType('problemInputSearchSent', PARAM_TEXT);
 
         // Input search for author
         $mform->addElement('text', 'authorInputSearch', null,
             array(
-                'size' => '64',
+                'size' => '25',
                 'maxlength' => '255',
-                'placeholder' => get_string('author', 'lips')
+                'placeholder' => get_string('challenged', 'lips'),
+                'class' => 'sent_challenges_users_ac'
             ));
         $mform->setType('authorInputSearch', PARAM_TEXT);
 

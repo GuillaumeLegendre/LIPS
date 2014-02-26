@@ -47,7 +47,6 @@ if (!$view) {
     $view = "index";
 }
 
-
 if ($id) {
     $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);

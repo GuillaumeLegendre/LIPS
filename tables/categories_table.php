@@ -29,6 +29,27 @@ require_once("$CFG->libdir/outputrenderers.php");
 class categories_table extends table_sql {
     private $cm;
 
+    /**
+     * Override the get_sql_sort function to add a default sort
+     */
+    function get_sql_sort() {
+        $order = parent::construct_order_by($this->get_sort_columns());
+
+        $defaultorder = array(
+            'category_name' => 'ASC'
+        );
+
+        if($order == '') {
+            foreach($defaultorder as $key => $value) {
+                if(strpos($order, $key) === false) {
+                    $order = "$key $value, $order";
+                }
+            }
+        }
+
+        return trim($order, ', ');
+    }
+
     public function  __construct($cm, $search = null) {
         global $USER;
         parent::__construct("mdl_lips_category");
@@ -38,8 +59,7 @@ class categories_table extends table_sql {
             "mdl_lips_category mlc LEFT JOIN mdl_lips_problem mlp ON mlc.id = mlp.problem_category_id
             AND (problem_testing = 0 OR problem_testing = 1 AND problem_creator_id = " . $USER->id . ")",
             "mlc.id_language = " . get_current_instance()->id . "
-            GROUP BY mlc.id HAVING COUNT(mlc.id) > 0
-            ORDER BY category_name ASC");
+            GROUP BY mlc.id HAVING COUNT(mlc.id) > 0");
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_category WHERE id_language = " . get_current_instance()->id);
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "problems")));
         $context = context_module::instance($cm->id);
@@ -53,6 +73,7 @@ class categories_table extends table_sql {
         }
 
         $this->sortable(true);
+        $this->no_sorting("actions");
     }
 
     public function other_cols($colname, $attempt) {

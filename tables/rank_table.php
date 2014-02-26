@@ -32,12 +32,10 @@ class rank_table extends table_sql {
     private $language = null;
 
     public function  __construct($cm, $searchuser = null, $language = null, $category = null) {
-        global $USER;
         parent::__construct("mdl_lips_category");
         $this->language = $language;
         $this->cm = $cm;
         $conditions = "1";
-        $filterinstance = "";
         if (!empty($searchuser)) {
             $conditions .= " AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'";
         }
@@ -58,7 +56,6 @@ class rank_table extends table_sql {
             JOIN mdl_lips_problem mlp ON mlu.id_user_moodle = mu.id
             LEFT JOIN mdl_lips_score mls ON mls.score_user=mlu.id WHERE $conditions");
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "rank")));
-        $context = context_module::instance($cm->id);
 
         $this->define_headers(array(get_string('rank', 'lips'), get_string('user', 'lips'), get_string("solved_problems", "lips"), "score", ""));
         $this->define_columns(array("rank", "user", "nb_problems_solved", "user_score", "suivre"));

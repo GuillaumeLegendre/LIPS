@@ -98,7 +98,7 @@ class mod_lips_category_create_form extends moodleform {
      * @param array $files Form uploaded files
      */
     public function handle() {
-        global $PAGE, $USER;
+        global $PAGE;
 
         // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled()) {
@@ -265,7 +265,7 @@ class mod_lips_category_modify_form extends moodleform {
      * @param array $files Form uploaded files
      */
     public function handle() {
-        global $PAGE, $USER;
+        global $PAGE;
 
         // Do nothing if not submitted or cancelled
         if (!$this->is_submitted() || $this->is_cancelled()) {

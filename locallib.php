@@ -734,7 +734,7 @@ function get_solutions($problemid, $search = null) {
             JOIN mdl_user mu ON mu.id = mls.problem_solved_user
             JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
             WHERE problem_solved_problem = $problemid
-            AND (mu.firstname like '%" . $search . "%' or mu.lastname LIKE '%" . $search . "%')
+            AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search . "%'
             ORDER BY problem_solved_date DESC");
     }
 }
@@ -1355,16 +1355,6 @@ function get_active_languages() {
     global $DB;
 
     return $DB->get_records_sql('select id, compile_language from mdl_lips where compile_language is not null');
-}
-
-/**
- * Get categories of a specific instance of lips..
- *
- */
-function get_categories_by_instance($instanceid) {
-    global $DB;
-
-    $categories = $DB->get_records('lips_category', array('id_language' => $instanceid));
 }
 
 /**
