@@ -30,6 +30,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
+require_once(dirname(__FILE__) . '/locallib.php');
 require_once(dirname(__FILE__) . '/views/admin_views.php');
 require_once(dirname(__FILE__) . '/views/category_views.php');
 require_once(dirname(__FILE__) . '/views/challenge_views.php');
@@ -69,157 +70,161 @@ $PAGE->set_title(format_string($lips->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
-$viewpage = new page_index($cm);
+if(get_highest_role() == null) {
+    $viewpage = new page_index($cm, false);
+} else {
+    $viewpage = new page_index($cm, true);
 
-switch ($view) {
-    case "administration" :
-        if (has_capability('mod/lips:administration', $context)) {
+    switch ($view) {
+        case "administration" :
+            if (has_capability('mod/lips:administration', $context)) {
+                $action = optional_param('action', null, PARAM_TEXT);
+
+                switch ($action) {
+                    case "language_configure":
+                        $viewpage = new page_admin_langage_configure($cm);
+                        break;
+                    case "language_picture":
+                        $viewpage = new page_admin_langage_picture($cm);
+                        break;
+                    case "language_base":
+                        $viewpage = new page_admin_langage_base($cm);
+                        break;
+                    case "achievement_select":
+                        $viewpage = new page_admin_achievement_select($cm);
+                        break;
+                    case "achievement":
+                        $viewpage = new page_admin_achievement($cm);
+                        break;
+                    case "category_create":
+                        $viewpage = new page_admin_category_create($cm);
+                        break;
+                    case "category_select_modify":
+                        $viewpage = new page_admin_category_select_modify($cm);
+                        break;
+                    case "category_modify":
+                        $viewpage = new page_admin_category_modify($cm);
+                        break;
+                    case "category_delete":
+                        $viewpage = new page_admin_category_delete($cm);
+                        break;
+                    case "problem_create":
+                        $viewpage = new page_admin_problem_create($cm);
+                        break;
+                    case "problem_select_modify":
+                        $viewpage = new page_admin_problem_select_modify($cm);
+                        break;
+                    case "problem_category_select_delete":
+                        $viewpage = new page_admin_problem_category_select_delete($cm);
+                        break;
+                    case "problem_modify":
+                        $problemid = optional_param('problemId', null, PARAM_INT);
+                        if (isset($problemid)) {
+                            $viewpage = new page_admin_problem_modify($cm, $problemid);
+                        } else {
+                            $problemidarray = optional_param_array('problemIdArray', null, PARAM_RAW);
+                            if (!isset($problemidarray[1])) {
+                                $viewpage = new page_admin_problem_select_modify($cm);
+                            } else {
+                                $viewpage = new page_admin_problem_modify($cm, $problemidarray[1]);
+                            }
+                        }
+
+                        break;
+                    case "problems_delete":
+                        $categoryid = optional_param('idcategory', null, PARAM_INT);
+                        $viewpage = new page_admin_problem_delete($cm, $categoryid);
+                        break;
+                    case "problems_import" :
+                        $viewpage = new page_import_problems($cm);
+                        break;
+                    case "problems_export" :
+                        $viewpage = new page_export_problems($cm);
+                        break;
+                    case "my_problems":
+                        $viewpage = new page_admin_my_problems($cm);
+                        break;
+                    default:
+                        $viewpage = new page_admin($cm);
+                        break;
+                }
+            }
+            break;
+        case "problems" :
+            $viewpage = new page_list_categories($cm);
+            break;
+        case "profile" :
             $action = optional_param('action', null, PARAM_TEXT);
 
             switch ($action) {
-                case "language_configure":
-                    $viewpage = new page_admin_langage_configure($cm);
+                case "ranks":
+                    $viewpage = new page_profile_ranks($cm);
                     break;
-                case "language_picture":
-                    $viewpage = new page_admin_langage_picture($cm);
+                case "solved_problems":
+                    $viewpage = new page_profile_solved_problems($cm);
                     break;
-                case "language_base":
-                    $viewpage = new page_admin_langage_base($cm);
+                case "challenges":
+                    $viewpage = new page_profile_challenges($cm);
                     break;
-                case "achievement_select":
-                    $viewpage = new page_admin_achievement_select($cm);
-                    break;
-                case "achievement":
-                    $viewpage = new page_admin_achievement($cm);
-                    break;
-                case "category_create":
-                    $viewpage = new page_admin_category_create($cm);
-                    break;
-                case "category_select_modify":
-                    $viewpage = new page_admin_category_select_modify($cm);
-                    break;
-                case "category_modify":
-                    $viewpage = new page_admin_category_modify($cm);
-                    break;
-                case "category_delete":
-                    $viewpage = new page_admin_category_delete($cm);
-                    break;
-                case "problem_create":
-                    $viewpage = new page_admin_problem_create($cm);
-                    break;
-                case "problem_select_modify":
-                    $viewpage = new page_admin_problem_select_modify($cm);
-                    break;
-                case "problem_category_select_delete":
-                    $viewpage = new page_admin_problem_category_select_delete($cm);
-                    break;
-                case "problem_modify":
-                    $problemid = optional_param('problemId', null, PARAM_INT);
-                    if (isset($problemid)) {
-                        $viewpage = new page_admin_problem_modify($cm, $problemid);
-                    } else {
-                        $problemidarray = optional_param_array('problemIdArray', null, PARAM_RAW);
-                        if (!isset($problemidarray[1])) {
-                            $viewpage = new page_admin_problem_select_modify($cm);
-                        } else {
-                            $viewpage = new page_admin_problem_modify($cm, $problemidarray[1]);
-                        }
-                    }
-
-                    break;
-                case "problems_delete":
-                    $categoryid = optional_param('idcategory', null, PARAM_INT);
-                    $viewpage = new page_admin_problem_delete($cm, $categoryid);
-                    break;
-                case "problems_import" :
-                    $viewpage = new page_import_problems($cm);
-                    break;
-                case "problems_export" :
-                    $viewpage = new page_export_problems($cm);
-                    break;
-                case "my_problems":
-                    $viewpage = new page_admin_my_problems($cm);
+                case "followed_users":
+                    $viewpage = new page_profile_followed_users($cm);
                     break;
                 default:
-                    $viewpage = new page_admin($cm);
+                    $viewpage = new page_profile($cm);
                     break;
             }
-        }
-        break;
-    case "problems" :
-        $viewpage = new page_list_categories($cm);
-        break;
-    case "profile" :
-        $action = optional_param('action', null, PARAM_TEXT);
+            break;
+        case "users" :
+            $viewpage = new page_users($cm);
+            break;
+        case "problem" :
+            $idproblem = optional_param('problemId', 0, PARAM_INT);
+            $viewpage = new page_problem($cm, $idproblem);
+            break;
+        case "category" :
+            $idcategory = optional_param('categoryId', 0, PARAM_INT);
+            $viewpage = new page_category($cm, $idcategory);
+            break;
+        case "categoryDocumentation" :
+            $idcategory = optional_param('categoryId', 0, PARAM_INT);
+            $viewpage = new page_category_documentation($cm, $idcategory);
+            break;
+        case "deleteCategory" :
+            $idcategory = optional_param('categoryId', 0, PARAM_INT);
+            $originv = optional_param('originV', 0, PARAM_TEXT);
+            $originaction = optional_param('originAction', 0, PARAM_TEXT);
+            $viewpage = new page_delete_category($cm, $idcategory, $originv, $originaction);
+            break;
+        case "deleteProblem" :
+            $idcategory = optional_param('problemId', 0, PARAM_INT);
+            $originv = optional_param('originV', 0, PARAM_TEXT);
+            $originaction = optional_param('originAction', 0, PARAM_TEXT);
+            $categoryid = optional_param('categoryId', 0, PARAM_TEXT);
+            $viewpage = new page_delete_problem($cm, $idcategory, $originv, $originaction, $categoryid);
+            break;
+        case "deleteProblems" :
+            $viewpage = new page_delete_problems($cm);
+            break;
+        case "rank" :
+            $viewpage = new page_rank($cm);
+            break;
+        case "solutions" :
+            $idproblem = optional_param('problemId', 0, PARAM_INT);
+            if (nb_resolutions_problem($USER->id, $idproblem) > 0 || is_author($idproblem, $USER->id)) {
+                $viewpage = new page_solutions($cm, $idproblem);
+            }
+            break;
+        case "cancelChallenge" :
+            $idChallenge = optional_param('challengeid', 0, PARAM_INT);
+            $originv = optional_param('originV', 0, PARAM_TEXT);
+            $originaction = optional_param('originAction', 0, PARAM_TEXT);
+            $viewpage = new page_cancel_challenge($cm, $idChallenge, $originv, $originaction);
+            break;
+        default :
+            $access = insert_user_if_not_exists();
 
-        switch ($action) {
-            case "ranks":
-                $viewpage = new page_profile_ranks($cm);
-                break;
-            case "solved_problems":
-                $viewpage = new page_profile_solved_problems($cm);
-                break;
-            case "challenges":
-                $viewpage = new page_profile_challenges($cm);
-                break;
-            case "followed_users":
-                $viewpage = new page_profile_followed_users($cm);
-                break;
-            default:
-                $viewpage = new page_profile($cm);
-                break;
-        }
-        break;
-    case "users" :
-        $viewpage = new page_users($cm);
-        break;
-    case "problem" :
-        $idproblem = optional_param('problemId', 0, PARAM_INT);
-        $viewpage = new page_problem($cm, $idproblem);
-        break;
-    case "category" :
-        $idcategory = optional_param('categoryId', 0, PARAM_INT);
-        $viewpage = new page_category($cm, $idcategory);
-        break;
-    case "categoryDocumentation" :
-        $idcategory = optional_param('categoryId', 0, PARAM_INT);
-        $viewpage = new page_category_documentation($cm, $idcategory);
-        break;
-    case "deleteCategory" :
-        $idcategory = optional_param('categoryId', 0, PARAM_INT);
-        $originv = optional_param('originV', 0, PARAM_TEXT);
-        $originaction = optional_param('originAction', 0, PARAM_TEXT);
-        $viewpage = new page_delete_category($cm, $idcategory, $originv, $originaction);
-        break;
-    case "deleteProblem" :
-        $idcategory = optional_param('problemId', 0, PARAM_INT);
-        $originv = optional_param('originV', 0, PARAM_TEXT);
-        $originaction = optional_param('originAction', 0, PARAM_TEXT);
-        $categoryid = optional_param('categoryId', 0, PARAM_TEXT);
-        $viewpage = new page_delete_problem($cm, $idcategory, $originv, $originaction, $categoryid);
-        break;
-    case "deleteProblems" :
-        $viewpage = new page_delete_problems($cm);
-        break;
-    case "rank" :
-        $viewpage = new page_rank($cm);
-        break;
-    case "solutions" :
-        $idproblem = optional_param('problemId', 0, PARAM_INT);
-        if (nb_resolutions_problem($USER->id, $idproblem) > 0 || is_author($idproblem, $USER->id)) {
-            $viewpage = new page_solutions($cm, $idproblem);
-        }
-        break;
-    case "cancelChallenge" :
-        $idChallenge = optional_param('challengeid', 0, PARAM_INT);
-        $originv = optional_param('originV', 0, PARAM_TEXT);
-        $originaction = optional_param('originAction', 0, PARAM_TEXT);
-        $viewpage = new page_cancel_challenge($cm, $idChallenge, $originv, $originaction);
-        break;
-    default :
-        insert_user_if_not_exists();
-
-        $viewpage = new page_index($cm);
+            $viewpage = new page_index($cm, $access);
+    }
 }
 
 $viewpage->display();

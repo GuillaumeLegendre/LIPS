@@ -198,12 +198,15 @@ function delete_user_status($userid, $lipsinstance) {
 function insert_user_if_not_exists() {
     global $USER;
 
+
     $lips = get_current_instance();
     $user = get_user_details(array('id_user_moodle' => $USER->id));
     if ($user == null) {
         $role = get_highest_role();
         if ($role != null) {
             insert_user($USER->id, $role, 1, 0);
+        } else {
+            return false;
         }
     } else {
         delete_user_status($user->id, $lips->id);
@@ -211,6 +214,8 @@ function insert_user_if_not_exists() {
         $role = get_highest_role();
         if ($role != null) {
             insert_user_rights_score($user->id, $lips->id, $role);
+        } else {
+            return false;
         }
     }
 }

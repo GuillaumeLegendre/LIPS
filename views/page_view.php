@@ -56,6 +56,15 @@ abstract class page_view {
     }
 
     /**
+     * Display the denied header
+     */
+    function display_denied_header() {
+        global $OUTPUT;
+
+        echo $OUTPUT->header();
+    }
+
+    /**
      * Display the content
      */
     abstract protected function display_content();

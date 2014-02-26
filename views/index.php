@@ -11,14 +11,30 @@ require_once(dirname(__FILE__) . '/page_view.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class page_index extends page_view {
+    protected $access;
 
     /**
      * page_index constructor
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    function  __construct($cm, $access) {
         parent::__construct($cm, "index");
+
+        $this->access = $access;
+    }
+
+    function display() {
+
+        if($this->access == false) {
+            parent::display_denied_header();
+            echo '<center><img src="images/jp.gif"/><h1 style="color: red;">Vous n\'avez pas dit le mot magique !!!!</h1></center>';
+        } else {
+            parent::display_header();
+            $this->display_content();
+        }
+
+        parent::display_footer();
     }
 
     /**
