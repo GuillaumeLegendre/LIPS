@@ -157,6 +157,7 @@ $string['score'] = 'Score';
 $string['unranked'] = 'Non classé';
 $string['label'] = 'Label';
 $string['description'] = 'Description';
+$string['display_more_results'] = 'Afficher plus de résultats';
 
 /*--------------------------------------------------
  * Dates

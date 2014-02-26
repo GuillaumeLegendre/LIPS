@@ -28,6 +28,7 @@ class page_profile extends page_view {
         global $USER;
 
         $iduser = optional_param('id_user', null, PARAM_TEXT);
+        $page = optional_param('page', 1, PARAM_INT);
         if ($iduser == null) {
             $iduser = get_user_details(array('id_user_moodle' => $USER->id))->id;
         }
@@ -37,7 +38,18 @@ class page_profile extends page_view {
 
         // Recent activity
         echo $this->lipsoutput->display_h1(get_string('recent_activity', 'lips'));
-        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')'));
+        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')', $page * 15));
+
+        if (count(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')', $page + 1 * 15)) > $page * 15) {
+            echo "<br/><center>" . $this->lipsoutput->render(new action_link(new moodle_url('view.php', array(
+                        'id' => $this->cm->id,
+                        'view' => $this->view,
+                        'page' => $page * 15,
+                        'id_user' => $iduser
+                    )),
+                    get_string('display_more_results', 'lips'), null, array("class" => "lips-button"))). "</center>";
+        }
+
 
         // Achievements
         echo '<br/>' . $this->lipsoutput->display_h1(get_string('achievements', 'lips'));

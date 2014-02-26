@@ -101,10 +101,10 @@ class users_table extends table_sql {
                     get_string('unfollow', 'lips'), null, array("class" => "lips-button"));
                 } else {
                     $url = new action_link(new moodle_url('action.php', array(
-                        'id' => $this->cm->id,
-                        'action' => 'follow',
-                        'originV' => 'users',
-                        'to_follow' => $attempt->id
+                            'id' => $this->cm->id,
+                            'action' => 'follow',
+                            'originV' => 'users',
+                            'to_follow' => $attempt->id
                     )),
                     get_string('follow', 'lips'), null, array("class" => "lips-button"));
                 }

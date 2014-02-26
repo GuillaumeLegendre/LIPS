@@ -935,13 +935,19 @@ function problem_similar_exist($mainproblemid, $problemsimilarid) {
  * @param array $conditions Conditions to fetch the notifications
  * @return string The notifications details
  */
-function fetch_notifications_details($conditions) {
+function fetch_notifications_details($conditions, $nbelements = null) {
     global $DB;
+
+    if ($nbelements != null) {
+        $limit = $nbelements;
+    } else {
+        $limit = get_string('notifications_limit', 'lips');
+    }
 
     return $DB->get_records_sql('SELECT * FROM mdl_lips_notification 
         WHERE ' . $conditions . ' 
         ORDER BY notification_date DESC 
-        LIMIT 0, ' . get_string('notifications_limit', 'lips')
+        LIMIT 0, ' . $limit
     );
 }
 
@@ -1445,6 +1451,17 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
 
     $userdetails = get_user_details(array('id_user_moodle' => $iduser));
 
+    if (has_solved_problem($idproblem, $iduser) == 0) {
+        // Update the user score
+        $DB->execute("UPDATE mdl_lips_score
+        SET score_score = score_score + (SELECT difficulty_points
+            FROM mdl_lips_difficulty mld
+            JOIN mdl_lips_problem mlp ON mlp.problem_difficulty_id = mld.id
+            WHERE mlp.id = $idproblem)
+        WHERE score_user = (SELECT id FROM mdl_lips_user WHERE id_user_moodle = $iduser)
+        AND score_instance = " . get_current_instance()->id);
+    }
+
     // Solution
     $DB->insert_record('lips_problem_solved', array(
         'problem_solved_problem' => $idproblem,
@@ -1452,15 +1469,6 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
         'problem_solved_date' => time(),
         'problem_solved_solution' => $solution,
     ));
-
-    // Update the user score
-    $DB->execute("UPDATE mdl_lips_score
-        SET score_score = score_score + (SELECT difficulty_points
-            FROM mdl_lips_difficulty mld
-            JOIN mdl_lips_problem mlp ON mlp.problem_difficulty_id = mld.id
-            WHERE mlp.id = $idproblem)
-        WHERE score_user = (SELECT id FROM mdl_lips_user WHERE id_user_moodle = $iduser)
-        AND score_instance = " . get_current_instance()->id);
 
     // Notifications
     $lips = get_current_instance();

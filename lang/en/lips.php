@@ -184,6 +184,7 @@ $string['score'] = 'Score';
 $string['unranked'] = 'Unranked';
 $string['label'] = 'Label';
 $string['description'] = 'Description';
+$string['display_more_results'] = 'Display more results';
 
 /*--------------------------------------------------
  * Dates
