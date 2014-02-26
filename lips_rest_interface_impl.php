@@ -19,6 +19,9 @@ require_once(dirname(__FILE__) . '/lips_rest_interface.php');
 class lips_rest_interface_impl implements lips_rest_interface {
 
     public static function execute($source, $language) {
+
+        global $CFG;
+
         $postdata = http_build_query(
             array(
                 'code' => base64_encode($source),
@@ -34,7 +37,12 @@ class lips_rest_interface_impl implements lips_rest_interface {
             )
         );
         $context = stream_context_create($opts);
-        $json = file_get_contents("http://10.2.21.71:4567/execute", false, $context);
+
+        // Get url of the web service from config file.
+        $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
+        $serviceurl = $config['web_services']['service_compil_url'];
+
+        $json = file_get_contents($serviceurl, false, $context);
         if (!$json) {
             return false;
         }
@@ -51,8 +59,15 @@ class lips_rest_interface_impl implements lips_rest_interface {
     }
 
     public static function get_list_languages() {
+        global $CFG;
+
         $languages = array();
-        $json = file_get_contents("http://10.2.21.71:4567/languages");
+
+        // Get url of the web service from config file.
+        $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
+        $serviceurl = $config['web_services']['service_languages_url'];
+
+        $json = file_get_contents($serviceurl);
         if (!$json) {
             return false;
         }

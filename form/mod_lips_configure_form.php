@@ -15,7 +15,6 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
-require_once(dirname(__FILE__) . '/../lips_rest_interface_ideone.php');
 require_once(dirname(__FILE__) . '/../locallib.php');
 
 /**
@@ -32,15 +31,18 @@ class mod_lips_configure_language_form extends moodleform {
      * Form definition
      */
     public function definition() {
-        global $PAGE;
+        global $PAGE, $CFG;
 
+        // Get web service class from the file config.
+        $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
+        require_once(dirname(__FILE__). '/../'.$config['web_services']['service_languages_class'].'.php');
         $mform =& $this->_form;
 
         // Current language informations.
         $lips = get_current_instance();
 
         // Select the language.
-        $languages = lips_rest_interface_ideone::get_list_languages();
+        $languages = $config['web_services']['service_languages_class']::get_list_languages();
         $currentlanguage = get_current_instance()->compile_language;
         if (!$languages) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(
@@ -60,7 +62,7 @@ class mod_lips_configure_language_form extends moodleform {
                 $mform->setDefault('selectLanguage', $lips->compile_language);
             }
         }
-        
+
         // Select the syntax highlighting.
         $mform->addElement('select', 'selectSyntaxHighlighting', get_string('administration_language_form_highlighting_select', 'lips'), ace_available_languages());
         $mform->addRule('selectSyntaxHighlighting', get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');

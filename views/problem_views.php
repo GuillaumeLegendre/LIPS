@@ -30,7 +30,8 @@ class page_problem extends page_view {
             $categorydetails = get_category_details($details[$this->id]->problem_category_id);
             $lipsinstance = get_instance($categorydetails->id_language);
             if ($lipsinstance->instance_link != $this->cm->id) {
-                redirect(new moodle_url('view.php', array('id' => $lipsinstance->instance_link, 'view' => 'problem', 'problemId' => $this->id)));
+                redirect(new moodle_url('view.php',
+                    array('id' => $lipsinstance->instance_link, 'view' => 'problem', 'problemId' => $this->id)));
             }
         } else {
             redirect(new moodle_url('view.php', array('id' => $this->cm->id)));
@@ -42,11 +43,15 @@ class page_problem extends page_view {
     }
 
     function display_content() {
-        global $USER;
+        global $USER, $CFG;
 
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
         require_once(dirname(__FILE__) . '/../form/mod_lips_problem_form.php');
-        require_once(dirname(__FILE__) . '/../lips_rest_interface_ideone.php');
+
+        // Get web service class from the file config.
+        $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
+        $servicecompilclass = $config['web_services']['service_compil_class'];
+        require_once(dirname(__FILE__) . '/../' . $servicecompilclass . '.php');
 
         // Problem details
         $lips = get_current_instance();
@@ -55,13 +60,23 @@ class page_problem extends page_view {
         $difficultydetails = get_difficulty_details(array('difficulty_label' => $details[$this->id]->difficulty_label));
 
         $notifanswer = "";
-        $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), array('idproblem' => $this->id), 'post', '', array('class' => 'solve-button'));
+        $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php',
+                array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)),
+            array('idproblem' => $this->id),
+            'post',
+            '',
+            array('class' => 'solve-button'));
         if ($formanswer->is_submitted()) {
-            $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), null, 'post', '', array('class' => 'solve-button'));
+            $formanswer = new mod_lips_problems_resolve_form(new moodle_url('view.php',
+                    array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)),
+                null,
+                'post',
+                '',
+                array('class' => 'solve-button'));
             increment_attempt($this->id);
             $data = $formanswer->get_data();
             $codeinformations = get_code_complete($this->id, $data->problem_answer);
-            $languages = lips_rest_interface_ideone::execute($codeinformations['code'], get_current_instance()->compile_language);
+            $languages = $servicecompilclass::execute($codeinformations['code'], get_current_instance()->compile_language);
             if (!$languages) {
                 $notifanswer = $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
             } else if ($languages['result'] != 1) {
