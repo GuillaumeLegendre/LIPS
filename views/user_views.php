@@ -33,7 +33,12 @@ class page_users extends page_view {
         // Users title
         echo $this->lipsoutput->display_h1(get_string('users', 'lips'));
 
-        $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null, 'post', '', array('class' => 'search-form'));
+        // Search form
+        $array = array(
+            "placeholder" => get_string('user', 'lips'),
+            "class" => "users_ac"
+        );
+        $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), $array, 'post', '', array('class' => 'search-form'));
         $searchForm->display();
 
         $search = null;
@@ -80,7 +85,13 @@ class page_rank extends page_view {
         // Rank title
         $category_id_post = optional_param("category_id_js", null, PARAM_TEXT);
         echo $this->lipsoutput->display_h1(get_string('Rank', 'lips'));
-        $filterform = new mod_lips_filter_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), null, 'post', '', array('class' => 'search-form'));
+
+        $array = array(
+            "placeholder" => get_string('user', 'lips'),
+            "class" => "users_ac"
+        );
+        $filterform = new mod_lips_filter_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), $array, 'post', '', array('class' => 'search-form'));
+        
         $usersearch = null;
         $instance_id_js = null;
         $category_id_js = null;

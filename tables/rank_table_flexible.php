@@ -39,7 +39,7 @@ class rank_table extends flexible_table {
         $conditions = "1";
 
         if (!empty($searchuser)) {
-            $conditions .= " AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'";
+            $conditions .= " AND CONCAT(mu.firstname, ' ', mu.lastname) LIKE '%" . $searchuser . "%'";
         }
         if (!empty($language)) {
             $conditions .= " AND mls.score_instance =" . $language;
@@ -143,7 +143,7 @@ class rank_table extends flexible_table {
         foreach ($res as $user) {
             if ($user->id) {
                 if ($searchuser != null) {
-                    if (strpos($user->firstname, $searchuser) === false && strpos($user->lastname, $searchuser) === false) {
+                    if (strpos(strtolower($user->firstname) . ' ' . strtolower($user->lastname), $searchuser) === false) {
                         continue;
                     }
                 }

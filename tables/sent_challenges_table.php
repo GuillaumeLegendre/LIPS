@@ -56,13 +56,13 @@ class sent_challenges_table extends table_sql {
 
         if ($search != null) {
         	if (!empty($search->problem) && !empty($search->author)) {
-        		$sql = $sql . " AND (problem_label LIKE '%" . $search->problem . "%' AND firstname LIKE '%" . $search->author . "%' OR lastname LIKE '%" . $search->author . "%')";
+        		$sql = $sql . " AND (problem_label LIKE '%" . $search->problem . "%' AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%')";
         	}
         	else if (!empty($search->problem)) {
         		$sql = $sql . " AND (problem_label LIKE '%" . $search->problem . "%')";
         	}
         	else if (!empty($search->author)) {
-        		$sql = $sql . " AND (firstname LIKE '%" . $search->author . "%' OR lastname LIKE '%" . $search->author . "%')";
+        		$sql = $sql . " AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%'";
         	}
         }
 

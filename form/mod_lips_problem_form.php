@@ -36,6 +36,7 @@ class mod_lips_problem_create_form extends moodleform {
 
         $mform =& $this->_form;
         $output = $PAGE->get_renderer('mod_lips');
+
         // Fetch all categories.
         $categories = array();
         foreach (fetch_all_categories(get_current_instance()->id) as $category) {
@@ -312,6 +313,9 @@ class mod_lips_problem_modify_form extends moodleform {
         foreach (fetch_all_difficulties() as $difficulty) {
             $difficulties[$difficulty->id] = get_string($difficulty->difficulty_label, "lips");
         }
+
+        // /!\ DO NOT DELETE.
+        $mform->addElement('select', 'correction', null);
 
         // ID.
         $mform->addElement('hidden', 'id_problem', null, null);

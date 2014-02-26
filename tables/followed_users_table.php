@@ -55,7 +55,7 @@ class followed_users_table extends table_sql {
                 AND mlu.user_rank_id = mlr.id
                 AND mu.id = mlu.id_user_moodle
                 AND mlf.follower = " . $iduser . "
-                AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
+                AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search . "%'");
         }
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_follow WHERE follower = " . $iduser);
 

@@ -19,6 +19,11 @@ class mod_lips_filter_form extends moodleform {
     public function definition() {
         global $PAGE;
         $mform =& $this->_form;
+        $mcustomdata = $this->_customdata;
+
+        $placeholder = (isset($mcustomdata['placeholder'])) ? $mcustomdata['placeholder'] : '';
+        $clazz = (isset($mcustomdata['class'])) ? $mcustomdata['class'] : '';
+
         $activelanguages = array();
         $activelanguages["all"] = "Tout";
         $categorieslanguage["all"] = "Tout";
@@ -31,7 +36,7 @@ class mod_lips_filter_form extends moodleform {
         $mform->addElement('select', 'category_id_js', null, $categorieslanguage);
 
         // Input search
-        $mform->addElement('text', 'userSearch', null, array('placeholder' => get_string("user", "lips")));
+        $mform->addElement('text', 'userSearch', null, array('placeholder' => $placeholder, 'class' => $clazz));
         $mform->setType('userSearch', PARAM_TEXT);
 
         // Search button.

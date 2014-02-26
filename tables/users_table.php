@@ -55,13 +55,12 @@ class users_table extends table_sql {
                         JOIN mdl_lips_rank mlr ON mlu.user_rank_id = mlr.id
                         LEFT OUTER JOIN mdl_lips_user_rights mlur ON mlur.user_rights_user = mlu.id
                         AND mlur.user_rights_instance = " . $lips->id, 
-                        "(firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
+                        "CONCAT(firstname, ' ', lastname) LIKE '%" . $search . "%'");
             $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_user mlu, mdl_user mu WHERE mlu.id_user_moodle = mu.id AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
         }
-        
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "users")));
         $this->define_headers(array(get_string('user', 'lips'), get_string('status', 'lips'), get_string('grade', 'lips'), ''));
-        $this->define_columns(array("user_name", "user_status", "rank_label", "user_follow"));
+        $this->define_columns(array("firstname", "user_rights_status", "rank_label", "user_follow"));
         $this->sortable(true);
         $this->no_sorting("user_follow");
     }
@@ -76,11 +75,11 @@ class users_table extends table_sql {
         $lipsoutput = $PAGE->get_renderer('mod_lips');
 
         switch($colname) {
-            case 'user_name':
+            case 'firstname':
                 return '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $attempt->id)) . '"/>' . $lipsoutput->display_user_link($attempt->id, $attempt->firstname, $attempt->lastname) . '</div>';
                 break;
 
-            case 'user_status':
+            case 'user_rights_status':
                 if($attempt->user_rights_status != null) {
                     return get_string($attempt->user_rights_status, 'lips');
                 } else {
