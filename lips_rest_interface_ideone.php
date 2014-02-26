@@ -52,11 +52,13 @@ class lips_rest_interface_ideone implements lips_rest_interface {
         }
         $resarray = array();
         $resarray['error'] = $res['stderr'];
-        if ($res['result'] == 15 || $res['result'] == 12) {
+        if ($res['result'] == 15) {
             $resarray['result'] = 1;
         } else if ($res['result'] == 11) {
             $resarray['result'] = 0;
             $resarray['error'] = $res['cmpinfo'];
+        } else if ($res['result'] == 12) {
+            $resarray['result'] = 0;
         } else {
             $resarray['result'] = 0;
         }
