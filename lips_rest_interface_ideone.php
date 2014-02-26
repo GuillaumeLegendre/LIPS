@@ -50,7 +50,6 @@ class lips_rest_interface_ideone implements lips_rest_interface {
             sleep(3);
             $res = $client->getSubmissionDetails("mohlen", "lips", $testArray['link'], true, true, true, true, true);
         }
-        print_object($res);
         $resarray = array();
         $resarray['error'] = $res['stderr'];
         if ($res['result'] == 15) {
