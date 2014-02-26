@@ -1,4 +1,31 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package   mod_lips
+ * @copyright 2014 LIPS
+ *
+ * @author Valentin Got
+ * @author Guillaume Legendre
+ * @author Mickael Ohlen
+ * @author Anaïs Picoreau
+ * @author Julien Senac
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 require_once(dirname(__FILE__) . '/page_view.php');
 
@@ -28,6 +55,7 @@ class page_profile extends page_view {
         global $USER;
 
         $iduser = optional_param('id_user', null, PARAM_TEXT);
+        $page = optional_param('page', 1, PARAM_INT);
         if ($iduser == null) {
             $iduser = get_user_details(array('id_user_moodle' => $USER->id))->id;
         }
@@ -37,7 +65,18 @@ class page_profile extends page_view {
 
         // Recent activity
         echo $this->lipsoutput->display_h1(get_string('recent_activity', 'lips'));
-        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')'));
+        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')', $page * 15));
+
+        if (count(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')', $page + 1 * 15)) > $page * 15) {
+            echo "<br/><center>" . $this->lipsoutput->render(new action_link(new moodle_url('view.php', array(
+                        'id' => $this->cm->id,
+                        'view' => $this->view,
+                        'page' => $page * 15,
+                        'id_user' => $iduser
+                    )),
+                    get_string('display_more_results', 'lips'), null, array("class" => "lips-button"))). "</center>";
+        }
+
 
         // Achievements
         echo '<br/>' . $this->lipsoutput->display_h1(get_string('achievements', 'lips'));

@@ -14,6 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * @package   mod_lips
+ * @copyright 2014 LIPS
+ *
+ * @author Valentin Got
+ * @author Guillaume Legendre
+ * @author Mickael Ohlen
+ * @author Anaïs Picoreau
+ * @author Julien Senac
+ *
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 global $CFG;
 require_once("$CFG->libdir/tablelib.php");
 require_once("$CFG->libdir/outputrenderers.php");
@@ -100,10 +113,10 @@ class users_table extends table_sql {
                     get_string('unfollow', 'lips'), null, array("class" => "lips-button"));
                 } else {
                     $url = new action_link(new moodle_url('action.php', array(
-                        'id' => $this->cm->id,
-                        'action' => 'follow',
-                        'originV' => 'users',
-                        'to_follow' => $attempt->id
+                            'id' => $this->cm->id,
+                            'action' => 'follow',
+                            'originV' => 'users',
+                            'to_follow' => $attempt->id
                     )),
                     get_string('follow', 'lips'), null, array("class" => "lips-button"));
                 }

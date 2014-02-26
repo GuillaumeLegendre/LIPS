@@ -17,10 +17,18 @@
 /**
  * Define all the backup steps that will be used by the backup_lips_activity_task
  *
- * @package    mod_lips
- * @copyright  2014 LIPS
- * @author     Anaïs Picoreau
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     mod_lips
+ * @subpackage  backup-moodle2
+ * @category    backup
+ * @copyright   2014 LIPS
+ *
+ * @author Valentin Got
+ * @author Guillaume Legendre
+ * @author Mickael Ohlen
+ * @author Anaïs Picoreau
+ * @author Julien Senac
+ *
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_lips_activity_structure_step extends backup_activity_structure_step {
 

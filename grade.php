@@ -18,8 +18,14 @@
  * Redirect the user to the appropriate submission related page
  *
  * @package   mod_lips
- * @category  grade
- * @copyright 2011 Your Name
+ * @copyright 2014 LIPS
+ *
+ * @author Valentin Got
+ * @author Guillaume Legendre
+ * @author Mickael Ohlen
+ * @author Anaïs Picoreau
+ * @author Julien Senac
+ *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
