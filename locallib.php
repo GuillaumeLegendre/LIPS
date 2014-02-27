@@ -846,14 +846,14 @@ function get_solutions($problemid, $search = null) {
     global $DB;
 
     if ($search == null) {
-        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
+        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date  as problem_date, problem_solved_solution  as problem_solution
             FROM mdl_lips_problem_solved mls
             JOIN mdl_user mu ON mu.id = mls.problem_solved_user
             JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
             WHERE problem_solved_problem = $problemid
             ORDER BY problem_solved_date DESC");
     } else {
-        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date, problem_solved_solution
+        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date  as problem_date, problem_solved_solution as problem_solution
             FROM mdl_lips_problem_solved mls
             JOIN mdl_user mu ON mu.id = mls.problem_solved_user
             JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
@@ -871,12 +871,19 @@ function get_solutions($problemid, $search = null) {
  * */
 function get_all_solutions($problemid, $userid) {
     global $DB;
-    return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_failed_date, problem_failed_solution
-            FROM mdl_lips_problem_failed mls
-            JOIN mdl_user mu ON mu.id = mls.problem_solved_user
-            JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
-            WHERE problem_failed_problem = $problemid
-            ORDER BY problem_failed_date DESC");
+    return $DB->get_records_sql("SELECT @row := @row + 1 as row, t.* FROM
+                     ((SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date as problem_date, problem_solved_solution as problem_solution, 1 as source
+                    FROM mdl_lips_problem_solved mls
+                    JOIN mdl_user mu ON mu.id = mls.problem_solved_user
+                    JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
+                    WHERE problem_solved_problem = $problemid AND problem_solved_user = $userid)
+                UNION ALL
+                    (SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_failed_date as problem_date, problem_failed_solution as problem_solution, 0 as source
+                    FROM mdl_lips_problem_failed mls
+                    JOIN mdl_user mu ON mu.id = mls.problem_failed_user
+                    JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
+                    WHERE problem_failed_problem = $problemid AND problem_failed_user = $userid)) t, (SELECT @row := 0) r
+                ORDER BY problem_date DESC");
 }
 
 /**

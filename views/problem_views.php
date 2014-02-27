@@ -373,7 +373,7 @@ class page_solutions extends page_view {
         // Default user search
         $userid = optional_param('userid', null, PARAM_INT);
         $search = null;
-        if($userid != null) {
+        if ($userid != null) {
             $usermoodledetails = get_moodle_user_details(array('id' => $userid));
             $search = $usermoodledetails->firstname . ' ' . $usermoodledetails->lastname;
         }
@@ -394,14 +394,21 @@ class page_solutions extends page_view {
                 $search = $data->inputSearch;
             }
         }
-        if ($userid == null) {
-            $solutions = get_solutions($this->id, $search);
-        } else {
+        if ($userid != null && is_author($this->id, $userid)) {
             $solutions = get_all_solutions($this->id, $userid);
+        } else {
+            $solutions = get_solutions($this->id, $search);
         }
         foreach ($solutions as $solution) {
-            print_object($solution);
-            $this->lipsoutput->display_solution($solution, $lips);
+            if (isset($solution->source)) {
+                if ($solution->source == 0) {
+                    $this->lipsoutput->display_bad_solution($solution, $lips);
+                } else {
+                    $this->lipsoutput->display_solution($solution, $lips);
+                }
+            } else {
+                $this->lipsoutput->display_solution($solution, $lips);
+            }
         }
     }
 }
