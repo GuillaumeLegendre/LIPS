@@ -75,7 +75,7 @@ class mod_lips_configure_language_form extends moodleform {
                 $mform->setDefault('selectLanguage', $lips->compile_language);
             }
         }
-        
+
         // Select the syntax highlighting.
         $mform->addElement('select', 'selectSyntaxHighlighting', get_string('administration_language_form_highlighting_select', 'lips'), ace_available_languages());
         $mform->addRule('selectSyntaxHighlighting', get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
@@ -182,7 +182,7 @@ class mod_lips_configure_picture_form extends moodleform {
         global $CFG;
         $mform =& $this->_form;
 
-        // Select the image
+        // Select the image.
         $mform->addElement('text', 'filePicture', get_string('administration_language_form_file', 'lips'), array("size" => 40));
         $mform->setType('filePicture', PARAM_TEXT);
 
@@ -199,17 +199,18 @@ class mod_lips_configure_picture_form extends moodleform {
     public function handle() {
         global $PAGE;
 
-        // Do nothing if not submitted or cancelled
-        if (!$this->is_submitted() || $this->is_cancelled())
+        // Do nothing if not submitted or cancelled.
+        if (!$this->is_submitted() || $this->is_cancelled()) {
             return;
+        }
 
-        // Form data
+        // Form data.
         $data = $this->get_submitted_data();
 
-        // Picture
+        // Picture.
         $url = $data->filePicture;
-        $explode_picture = explode("/", $url);
-        $picture = $explode_picture[count($explode_picture) - 1];
+        $explodepicture = explode("/", $url);
+        $picture = $explodepicture[count($explodepicture) - 1];
 
         if (!is_a_picture($picture)) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error', 'lips'), 'ERROR');
@@ -217,20 +218,21 @@ class mod_lips_configure_picture_form extends moodleform {
             return;
         }
 
-        // Save the picture
+        // Save the picture.
         download_image($url);
 
-        // Current instance
+        // Current instance.
         $lips = get_current_instance();
 
-        // Delete the old image
-        if ($lips->language_picture != $picture && $lips->language_picture != 'default-language.png')
+        // Delete the old image.
+        if ($lips->language_picture != $picture && $lips->language_picture != 'default-language.png') {
             delete_picture_file($lips->language_picture);
+        }
 
-        // Update the picture on the database
+        // Update the picture on the database.
         update_language_picture($picture);
 
-        // Success message
+        // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_success', 'lips'), 'SUCCESS');
     }
 }

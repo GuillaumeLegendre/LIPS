@@ -66,7 +66,7 @@ class mod_lips_category_create_form extends moodleform {
         );
         $mform->setType('inputCategoryDocumentation', PARAM_TEXT);
 
-        // Category documentation (TEXT)
+        // Category documentation (TEXT).
         $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
 
         // Create button.
@@ -131,7 +131,7 @@ class mod_lips_category_create_form extends moodleform {
             return;
         }
 
-        // Params
+        // Params.
         $categoryname = $data->inputCategoryName;
         $categorydocumentation = (empty($data->inputCategoryDocumentation)) ? $data->areaCategoryDocumentation['text'] : $data->inputCategoryDocumentation;
         $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ? ((!empty($data->areaCategoryDocumentation['text'])) ? 'TEXT' : null) : 'LINK';
@@ -230,7 +230,7 @@ class mod_lips_category_modify_form extends moodleform {
         }
         $mform->setType('inputCategoryDocumentation', PARAM_TEXT);
 
-        // Category documentation (TEXT)
+        // Category documentation (TEXT).
         $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
         if ($mcustomdata['category_documentation_type'] == 'TEXT') {
             $mform->setDefault('areaCategoryDocumentation', array('text' => $mcustomdata['category_documentation'], 'format' => FORMAT_HTML));
@@ -280,15 +280,15 @@ class mod_lips_category_modify_form extends moodleform {
     public function handle() {
         global $PAGE;
 
-        // Do nothing if not submitted or cancelled
+        // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled()) {
             return;
         }
 
-        // Form data
+        // Form data.
         $data = $this->get_submitted_data();
 
-        // The validation failed
+        // The validation failed.
         $errors = $this->validation($data, null);
         if (count($errors) > 0) {
             foreach ($errors as $error) {
@@ -298,13 +298,13 @@ class mod_lips_category_modify_form extends moodleform {
             return;
         }
 
-        // Params
+        // Params.
         $categoryid = $data->inputCategoryID;
         $categoryname = $data->inputCategoryName;
         $categorydocumentation = (empty($data->inputCategoryDocumentation)) ? $data->areaCategoryDocumentation['text'] : $data->inputCategoryDocumentation;
         $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ? ((!empty($data->areaCategoryDocumentation['text'])) ? 'TEXT' : null) : 'LINK';
 
-        // Update the data
+        // Update the data.
         update_category($categoryid, $categoryname, $categorydocumentation, $categorydocumentationtype);
 
         // Success message.
