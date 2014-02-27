@@ -167,7 +167,7 @@ class mod_lips_problem_create_form extends moodleform {
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         $errors = array();
-        if (isset($data->problem_label) && isset($data->problem_category_id) && isset($data->problem_statement) && isset($data->problem_difficulty_id) && isset($data->problem_unit_tests)) {
+        if (isset($data->problem_label) && isset($data->problem_statement) && isset($data->problem_difficulty_id) && isset($data->problem_unit_tests)) {
             if (empty($data->problem_label)) {
                 $errors['emptyProblemLabel'] = get_string('administration_language_form_select_name_error', 'lips');
             } else if (problem_exists($data->problem_label, $data->problem_category_id)) {
@@ -558,10 +558,8 @@ class mod_lips_problem_modify_select_form extends moodleform {
             $problemsarray[$problem->problem_category_id][$problem->id] = $problem->problem_label;
         }
 
-        $problemscount = count($problems);
-        if ($problemscount != 0) {
-
-            $problemscount = ($problemscount < 10) ? $problemscount : 10;
+        if (count($problems) != 0) {
+            $problemscount = (count($problems) < 10) ? count($problems) : 10;
 
             // Add hierselect element.
             $attribs = array('size' => $problemscount);
@@ -573,9 +571,9 @@ class mod_lips_problem_modify_select_form extends moodleform {
             $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
         } else {
             $msg = get_string("administration_empty_problems", "lips");
-            $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'WARNING');
+            $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'INFO');
             $mform->addElement('html', $html);
-            $mform->addElement('html', '<br/><br/><br/><br/><br/><br/>');
+            $mform->addElement('html', '<br/><br/><br/><br/>');
         }
     }
 }

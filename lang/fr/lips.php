@@ -165,6 +165,7 @@ $string['unranked'] = 'Non classé';
 $string['label'] = 'Label';
 $string['description'] = 'Description';
 $string['display_more_results'] = 'Afficher plus de résultats';
+$string['categories'] = 'Catégories';
 
 /*--------------------------------------------------
  * Dates
@@ -320,6 +321,13 @@ $string['administration_delete_problems_confirmation'] = 'Confirmez vous la supp
 $string['administration_delete_problem_confirmation_msg'] = 'Confirmez vous la suppression du problème suivant ?';
 $string['administration_empty_problems'] = 'Aucun problème';
 $string['administration_unittests_form_code_unvalid'] = 'Vous devez afficher au moins une fois les mots clés PROBLEM_SOLVED et PROBLEM_FAILED dans les tests unitaires';
+$string['administration_delete_problem_confirmation'] = "Veuillez confirmer la suppression du problème";
+$string['administration_language_form_select_category_error'] = 'Vous devez sélectionner une catégorie';
+$string['administration_language_form_select_difficulty_error'] = 'Vous devez supprimer une difficulté';
+$string['administration_language_form_select_name_error'] = 'Vous devez entrer un nom';
+$string['administration_language_form_select_subject_error'] = 'Vous devez entrer un ennoncé';
+$string['administration_language_form_select_unittests_error'] = 'Vous devez entrer des tests unitaires';
+$string['administration_empty_category_msg'] = 'Aucune catégorie. Vous pouvez en créer une dans <strong>Administration > Catégories > Créer</strong>.';
 
 // My problems
 $string['administration_my_problems_title'] = "Mes problèmes";

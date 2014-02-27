@@ -666,13 +666,19 @@ class page_admin_problem_category_select_delete extends page_view {
         // Modify a problem
         echo $this->lipsoutput->display_h2(get_string('administration_problem_delete_title', 'lips'));
 
-        $modifySelectCategoryForm = new mod_lips_category_select_problems_delete_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problems_delete')), null, 'get');
+        $lips = get_current_instance();
+        if(count(fetch_all_categories($lips->id)) > 0) {
+            $modifySelectCategoryForm = new mod_lips_category_select_problems_delete_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problems_delete')), null, 'get');
 
-        if ($modifySelectCategoryForm->is_submitted()) {
-            $modifySelectCategoryForm->handle();
-            $modifySelectCategoryForm->display();
+            if ($modifySelectCategoryForm->is_submitted()) {
+                $modifySelectCategoryForm->handle();
+                $modifySelectCategoryForm->display();
+            } else {
+                $modifySelectCategoryForm->display();
+            }
         } else {
-            $modifySelectCategoryForm->display();
+            echo $this->lipsoutput->display_notification(get_string('administration_empty_problems', 'lips'), 'INFO');
+            echo '<br/><br/><br/><br/>';
         }
     }
 }
@@ -726,8 +732,6 @@ class page_admin_problem_delete extends page_view {
      * Display the page_admin_problem_delete content
      */
     function display_content() {
-
-
         // Administration title
         echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
 
@@ -775,18 +779,23 @@ class page_admin_problem_create extends page_view {
         echo $this->lipsoutput->display_h2(get_string('administration_problem_create_title', 'lips'));
 
         $lips = get_current_instance();
-        if ($lips->compile_language == null && has_role('administration'))
-            echo $this->lipsoutput->display_notification(get_string('administration_no_compile_language', 'lips'), 'ERROR');
-        if ($lips->coloration_language == null && has_role('administration'))
-            echo $this->lipsoutput->display_notification(get_string('administration_no_syntax_highlighting', 'lips'), 'WARNING');
-
-        $createProblemForm = new mod_lips_problem_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_create')), null, 'post', '', array('class' => 'problem-form'));
-
-        if ($createProblemForm->is_submitted()) {
-            $createProblemForm->handle();
-            $createProblemForm->display();
+        if(count(fetch_all_categories($lips->id)) == 0) {
+            echo $this->lipsoutput->display_notification(get_string('administration_empty_category_msg', 'lips'), 'INFO');
+            echo '<br/><br/><br/><br/>';
         } else {
-            $createProblemForm->display();
+            if ($lips->compile_language == null && has_role('administration'))
+                echo $this->lipsoutput->display_notification(get_string('administration_no_compile_language', 'lips'), 'ERROR');
+            if ($lips->coloration_language == null && has_role('administration'))
+                echo $this->lipsoutput->display_notification(get_string('administration_no_syntax_highlighting', 'lips'), 'WARNING');
+
+            $createProblemForm = new mod_lips_problem_create_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'problem_create')), null, 'post', '', array('class' => 'problem-form'));
+
+            if ($createProblemForm->is_submitted()) {
+                $createProblemForm->handle();
+                $createProblemForm->display();
+            } else {
+                $createProblemForm->display();
+            }
         }
 
         // Create ace

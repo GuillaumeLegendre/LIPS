@@ -80,6 +80,10 @@ h3 {
     width: auto;
 }
 
+.search-form {
+    margin-bottom: 10px;
+}
+
 .search-form .fcontainer {
     margin: 0 10px 0 10px;
 }
@@ -104,7 +108,21 @@ h3 {
     width: 30%;
 }
 
+.search-form fieldset {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+    -webkit-padding-before: 0.5em;
+    -webkit-padding-start: 0;
+    -webkit-padding-end: 0;
+    -webkit-padding-after: 0.5em;
+}
+
 .search-form input[type=submit] {
+    position: relative;
+    bottom: 5px;
     float: right;
 }
 
@@ -135,6 +153,10 @@ h3 {
 
 .solve-button #fitem_id_submit {
     text-align: left;
+}
+
+.solve-button #id_submit {
+    float: left;
 }
 
 /*---------------------------------
@@ -506,7 +528,7 @@ h3 {
 
 #administration_menu {
     height: 30px;
-    width: 400px;
+    width: 60%;
 
     background: #E7E7E7;
     background: -webkit-linear-gradient(top, #FFFFFF 0%, #E7E7E7 100%);

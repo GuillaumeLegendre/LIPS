@@ -193,6 +193,7 @@ $string['unranked'] = 'Unranked';
 $string['label'] = 'Label';
 $string['description'] = 'Description';
 $string['display_more_results'] = 'Display more results';
+$string['categories'] = 'Categories';
 
 /*--------------------------------------------------
  * Dates
@@ -335,15 +336,11 @@ $string['administration_problem_preconfig_msg'] = 'Before the compilation :<ul><
 $string['administration_problem_create_code_import_label'] = 'Import librairies';
 $string['administration_problem_create_code_complete_label'] = 'Code to complete';
 $string['administration_problem_create_code_unittest_label'] = 'Unit tests';
-$string['administration_delete_problem_confirmation'] = "Confirm the deletion of the problem";
 $string['administration_language_form_select_category_error'] = 'You must select a category';
 $string['administration_language_form_select_difficulty_error'] = 'You must select a difficulty';
 $string['administration_language_form_select_name_error'] = 'You must enter a name';
 $string['administration_language_form_select_subject_error'] = 'You must enter a subject';
 $string['administration_language_form_select_unittests_error'] = 'You must enter unit tests';
-$string['administration_problem_create_code_import_label'] = 'Import librairies';
-$string['administration_problem_create_code_complete_label'] = 'Code to complete';
-$string['administration_problem_create_code_unittest_label'] = 'Unit tests';
 $string['administration_delete_problem_confirmation'] = "Confirm the problem's deletion";
 $string['administration_problem_create_success'] = 'The problem has been created';
 $string['administration_problem_modify_select'] = 'Select the problem';
@@ -360,6 +357,7 @@ $string['administration_delete_problems_confirmation'] = 'Confirm the deletion o
 $string['administration_delete_problem_confirmation_msg'] = 'Confirm the deletion of this problem ?';
 $string['administration_empty_problems'] = 'No problems';
 $string['administration_unittests_form_code_unvalid'] = 'You must display keywords PROBLEM_SOLVED and PROBLEM_FAILED in unit tests';
+$string['administration_empty_category_msg'] = 'No category. You can create one going to <strong>Administration > Categories > Create</strong>.';
 
 // My problems
 $string['administration_my_problems_title'] = "My problems";

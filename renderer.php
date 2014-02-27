@@ -137,15 +137,15 @@ class mod_lips_renderer extends plugin_renderer_base {
             </li>';
         }
 
-        $administrationmenu .= '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_select">Badges</a></li>
-            <li><a href="#">Catégories</a>
+        $administrationmenu .= '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=achievement_select">' . get_string('achievements', 'lips') . '</a></li>
+            <li><a href="#">' . get_string('categories', 'lips') . '</a>
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_create">' . get_string('create', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_select_modify">' . get_string('modify', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=category_delete">' . get_string('delete', 'lips') . '</a></li>
                 </ul>
             </li>
-            <li><a href="#">Problèmes</a>
+            <li><a href="#">' . get_string('problems', 'lips') . '</a>
                 <ul>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_create">' . get_string('create', 'lips') . '</a></li>
                     <li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=problem_select_modify">' . get_string('modify', 'lips') . '</a></li>
@@ -167,7 +167,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @return string Profile menu
      */
     public function display_profile_menu($current) {
-        global $USER, $PAGE;
+        global $USER, $PAGE, $CFG;
 
         $id = $this->page->cm->id;
         $view = optional_param('view', null, PARAM_TEXT);
@@ -205,7 +205,11 @@ class mod_lips_renderer extends plugin_renderer_base {
                 get_string('follow', 'lips'), null, array("class" => "lips-button right-button", "style" => "margin-left: 15px")));
             }
 
-            $menu .= $this->render(new action_link(new moodle_url('#'), get_string('send_message', 'lips'), null, array("class" => "lips-button right-button")));
+            $menu .= $this->render(new action_link(
+                new moodle_url($CFG->wwwroot . '/message/index.php?id=' . $moodleuserdetails->id . '&viewing=course_' . $PAGE->context->get_course_context()->instanceid), 
+                get_string('send_message', 'lips'), 
+                null, array("class" => "lips-button right-button")
+            ));
         }
 
         $menu .= '<div id="background">
@@ -327,10 +331,10 @@ class mod_lips_renderer extends plugin_renderer_base {
         $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)), ucfirst($data->firstname) . ' ' . ucfirst($data->lastname));
         $date = html_writer::tag('div', get_string("The", "lips") . " " . format_date($data->problem_date), array("id" => "date"));
         $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header-failed"));
-        $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '" class="ace readonly">' . $data->problem_solution . '</div>', array("id" => "content"));
+        $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '_' . $data->problem_date . '" class="ace readonly">' . $data->problem_solution . '</div>', array("id" => "content"));
         echo html_writer::tag('div', $header . $content, array("class" => "solution"));
 
-        $this->display_ace_form('aceSolution_' . $data->id, '', $lips->coloration_language, 'readonly-notsizable');
+        $this->display_ace_form('aceSolution_' . $data->id . '_' . $data->problem_date, '', $lips->coloration_language, 'readonly-notsizable');
     }
 
     /**

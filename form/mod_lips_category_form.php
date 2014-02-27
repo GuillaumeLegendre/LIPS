@@ -159,6 +159,7 @@ class mod_lips_category_modify_select_form extends moodleform {
      * Form definition.
      */
     public function definition() {
+        global $PAGE; 
         $mform =& $this->_form;
 
         // Select the category.
@@ -174,7 +175,8 @@ class mod_lips_category_modify_select_form extends moodleform {
             // Modify button.
             $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
         } else {
-            echo get_string("administration_empty_problems", "lips");
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_empty_categories', 'lips'), 'INFO');
+            echo '<br/><br/><br/><br/>';
         }
     }
 }
@@ -332,18 +334,22 @@ class mod_lips_category_delete_form extends moodleform {
         // Select the category.
         $lips = get_current_instance();
         $categories = array();
-
         foreach (fetch_removable_categories($lips->id) as $category) {
             $categories[$category->id] = $category->category_name;
         }
 
-        $error = get_string("administration_category_delete_info", "lips");
-        echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'WARNING');
-        $mform->addElement('select', 'categoryId', get_string('administration_category_modify_select', 'lips'), $categories);
-        $mform->addRule('categoryId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+        if(count($categories) == 0) {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_empty_categories', 'lips'), 'INFO');
+            echo '<br/><br/><br/><br/>';
+        } else {
+            $error = get_string("administration_category_delete_info", "lips");
+            echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'WARNING');
+            $mform->addElement('select', 'categoryId', get_string('administration_category_modify_select', 'lips'), $categories);
+            $mform->addRule('categoryId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
-        // Delete button.
-        $mform->addElement('submit', 'submit', get_string('delete', 'lips'), array('class' => 'lips-button'));
+            // Delete button.
+            $mform->addElement('submit', 'submit', get_string('delete', 'lips'), array('class' => 'lips-button'));
+        }
     }
 }
 
