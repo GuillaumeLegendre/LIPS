@@ -228,13 +228,23 @@ h3 {
     margin-bottom: 10px;
 }
 
-.solution #header {
+.solution #header-solved {
     border-width: 1px;
     border-style: solid;
     border-color: black;
     padding: 5px;
-    background-color: #9fc5f8;
+    background-color: #9FC5F8;
 }
+
+.solution #header-failed {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    padding: 5px;
+    background-color: #E9659C;
+    color: #444444;
+}
+
 
 .solution #content {
     padding: 5px;
