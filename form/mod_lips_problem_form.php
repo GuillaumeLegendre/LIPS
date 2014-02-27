@@ -214,6 +214,7 @@ class mod_lips_problem_create_form extends moodleform {
 
         // The validation failed.
         $errors = $this->validation($data, null);
+
         if (count($errors) > 0) {
             foreach ($errors as $error) {
                 echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');

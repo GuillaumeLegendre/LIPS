@@ -1072,7 +1072,7 @@ function problem_exists($problemlabel, $categoryid) {
         WHERE prob.problem_category_id = cat.id
         AND cat.id_language = " . $lips->id . "
         AND cat.id = " . $categoryid . "
-        AND prob.problem_label = '" . $problemlabel . "'";
+        AND prob.problem_label = '" . mysql_real_escape_string($problemlabel) . "'";
 
     if ($DB->count_records_sql($sql) > 0) {
         return true;

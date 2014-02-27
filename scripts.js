@@ -31,19 +31,22 @@ window.createAce = function (editorid, areaid, mode, theme, flag, comment) {
             createConfigure(editorid);
             break;
         case "code":
-            createCode(editorid, comment);
+            createCode(editorid, comment, areaid);
             break;
         case "unit-test":
-            createUnitTest(editorid);
+            createUnitTest(editorid, areaid);
             break;
         case "resolution":
             createResolution(editorid, areaid);
             break;
         case "readonly":
             createReadOnly(editorid, true);
+            break;
         case "readonly-notsizable":
             createReadOnly(editorid, false);
+            break;
         default:
+            editor.getSession().setValue($("#" + areaid).val());
             break;
     }
 
@@ -112,7 +115,7 @@ window.createConfigure = function (editorid) {
 
 //Create an ace editor in code mode
 //used for problem code configuration editor, provides code tag
-window.createCode = function (editorid, comment) {
+window.createCode = function (editorid, comment, areaid) {
 
     // Create ace
 	var editor = ace.edit(editorid);
@@ -121,8 +124,10 @@ window.createCode = function (editorid, comment) {
 		$("#" + editorid).before('<div class="acepanel">' +
 		'<a href="#" id="' + editorid + '_tagCode">Comment</a>' + 
 		'</div>');
-		
-			// Click on the code tag
+
+        editor.getSession().setValue($("#" + areaid).val());
+
+        // Click on the code tag
 		$("#" + editorid + "_tagCode").click(function(){
 			editor.insert(comment);
 			editor.focus();
@@ -133,7 +138,7 @@ window.createCode = function (editorid, comment) {
 
 //Create an ace editor in unit-test mode
 //used for choosing the unit test to display, provides unit-test tag
-window.createUnitTest = function (editorid) {
+window.createUnitTest = function (editorid, areaid) {
 
     // Create ace
     var editor = ace.edit(editorid);
@@ -143,7 +148,9 @@ window.createUnitTest = function (editorid) {
 		'<a href="#" id="' + editorid + '_tagSolved">True</a>' +
 		'<a href="#" id="' + editorid + '_tagFailed">False</a>' +
         '</div>');
-		
+
+    editor.getSession().setValue($("#" + areaid).val());
+
     // Click on the code tag
     $("#" + editorid + "_tagUnit").click(function () {
 
