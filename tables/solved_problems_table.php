@@ -42,6 +42,7 @@ require_once("$CFG->libdir/outputrenderers.php");
  */
 class solved_problems_table extends table_sql {
     private $cm;
+    private $owner;
 
     /**
      * Override the get_sql_sort function to add a default sort
@@ -77,6 +78,7 @@ class solved_problems_table extends table_sql {
     function  __construct($cm, $search = null, $userid, $owner) {
         parent::__construct("mdl_lips_problem");
         $this->cm = $cm;
+        $this->owner = $owner;
 
         if($search == null) {
             $this->set_sql("mlp.id AS problem_id, ml.id AS language_id, compile_language, problem_label, difficulty_label, difficulty_points, problem_date",
@@ -152,15 +154,19 @@ class solved_problems_table extends table_sql {
                 break;
 
             case 'solution':
-                $instance = get_instance($attempt->language_id);
-                $url = new action_link(new moodle_url('view.php', array(
-                    'id' => $instance->instance_link,
-                    'view' => 'solutions',
-                    'problemId' => $attempt->problem_id
-                )),
-                get_string('solutions', 'lips'), null, array("class" => "lips-button"));
+                if($this->owner || nb_resolutions_problem($USER->id, $attempt->problem_id) > 0 || is_author($attempt->problem_id, $USER->id)) {
+                    $instance = get_instance($attempt->language_id);
+                    $url = new action_link(new moodle_url('view.php', array(
+                        'id' => $instance->instance_link,
+                        'view' => 'solutions',
+                        'problemId' => $attempt->problem_id
+                    )),
+                    get_string('solutions', 'lips'), null, array("class" => "lips-button"));
 
-                return $OUTPUT->render($url);
+                    return $OUTPUT->render($url);
+                } else {
+                    return '';
+                }
                 break;
         }
 

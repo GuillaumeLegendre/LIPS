@@ -308,9 +308,9 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param object LIPS instance
      */
     public function display_solution($data, $lips) {
-        $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)), ucfirst($data->firstname) . ' ' . strtoupper($data->lastname));
+        $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)), ucfirst($data->firstname) . ' ' . ucfirst($data->lastname));
         $date = html_writer::tag('div', get_string("The", "lips") . " " . format_date($data->problem_solved_date), array("id" => "date"));
-        $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header"));
+        $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header-solved"));
         $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '" class="ace readonly">' . $data->problem_solved_solution . '</div>', array("id" => "content"));
         echo html_writer::tag('div', $header . $content, array("class" => "solution"));
         
@@ -361,10 +361,9 @@ class mod_lips_renderer extends plugin_renderer_base {
         if(count($notifications) == 0) {
             $display = get_string('no_notifications', 'lips');
         } else {
-            foreach($notifications as $notification) {
-                // Notification border
-                $display .= '<div class="notification-border"></div>';
+            $display .= '<div style="margin-top: 15px;"></div>';
 
+            foreach($notifications as $notification) {
                 // Notification message
                 $language = '';
                 if($notification->notification_language != null) {
@@ -421,9 +420,8 @@ class mod_lips_renderer extends plugin_renderer_base {
                 }
 
                 $display .= $notification_msg;
-            }
 
-            if($display != '') {
+                // Notification border
                 $display .= '<div class="notification-border"></div>';
             }
         }

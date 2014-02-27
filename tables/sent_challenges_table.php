@@ -56,33 +56,32 @@ class sent_challenges_table extends table_sql {
         $this->cm = $cm;
         $this->owner = $owner;
 
-        $fieldstoselect = "cha.id, problem_label, category_name, difficulty_label, firstname, lastname, challenge_state";
-        $tablesfrom = "mdl_lips_problem prob, mdl_lips_category cat, mdl_lips_difficulty diff, mdl_lips_challenge cha, mdl_lips_user mlu_from, mdl_user mu";
-		$sql;
-
-        $sql =  "cha.challenge_from = " . $iduser . "
-                AND cha.challenge_to = mlu_from.id
-                AND mlu_from.id_user_moodle = mu.id
-                AND cha.challenge_problem = prob.id
-                AND prob.problem_category_id = cat.id
-                AND prob.problem_difficulty_id = diff.id";
+        $fieldstoselect = "cha.id, problem_label, category_name, difficulty_label, difficulty_points, firstname, lastname, challenge_state, compile_language";
+        $tablesfrom = "mdl_lips_challenge cha
+            JOIN mdl_lips_user mlu_from ON cha.challenge_to = mlu_from.id
+            JOIN mdl_user mu ON mlu_from.id_user_moodle = mu.id
+            JOIN mdl_lips_problem prob ON cha.challenge_problem = prob.id
+            JOIN mdl_lips_category cat ON prob.problem_category_id = cat.id
+            JOIN mdl_lips_difficulty diff ON prob.problem_difficulty_id = diff.id
+            LEFT JOIN mdl_lips lips ON lips.id = cat.id_language";
+        $where =  "cha.challenge_from = " . $iduser;
 
         if ($search != null) {
         	if (!empty($search->problem) && !empty($search->author)) {
-        		$sql = $sql . " AND (problem_label LIKE '%" . $search->problem . "%' AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%')";
+        		$where = $where . " AND (problem_label LIKE '%" . $search->problem . "%' AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%')";
         	}
         	else if (!empty($search->problem)) {
-        		$sql = $sql . " AND (problem_label LIKE '%" . $search->problem . "%')";
+        		$where = $where . " AND (problem_label LIKE '%" . $search->problem . "%')";
         	}
         	else if (!empty($search->author)) {
-        		$sql = $sql . " AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%'";
+        		$where = $where . " AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%'";
         	}
         }
 
         $this->set_sql(
             	$fieldstoselect,
             	$tablesfrom,
-            	$sql);
+            	$where);
         $this->set_count_sql("
         	SELECT COUNT(*)
         	FROM mdl_lips_challenge cha
@@ -99,28 +98,20 @@ class sent_challenges_table extends table_sql {
         $this->define_headers(array(get_string('language', 'lips'), get_string('problem', 'lips'), get_string('category', 'lips'),
             get_string('difficulty', 'lips'), get_string('challenge_challenged', 'lips'), get_string('state', 'lips')));
        
-        $this->define_columns(array("language", "problem_label", "category_name", "difficulty", "challenge_author", "state"));
+        $this->define_columns(array("compile_language", "problem_label", "category_name", "difficulty_points", "firstname", "state"));
 
         $this->sortable(true);
+        $this->no_sorting("state");
     }
 
     public function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE;
 
         switch ($colname) {
-            case 'language' :
-                $challengedetails = get_challenge_details(array('id' => $attempt->id));
-                $idlanguage = $challengedetails->challenge_language;
-                $moodledetails = get_instance($idlanguage);
-                if (!empty($moodledetails->compile_language)) {
-                    return ucfirst($moodledetails->compile_language);
-                }
-                return "";
-                break;
-        	case 'difficulty':
+        	case 'difficulty_points':
         		return get_string($attempt->difficulty_label, 'lips');
         		break;
-            case 'challenge_author':
+            case 'firstname':
                 return "$attempt->firstname $attempt->lastname";
                 break;
             case 'state':

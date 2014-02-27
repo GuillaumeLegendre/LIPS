@@ -65,13 +65,6 @@ class mod_lips_mod_form extends moodleform_mod
         // Adding the standard "intro" and "introformat" fields.
         $this->add_intro_editor();
 
-        // Adding the rest of lips settings, spreeading all them into this fieldset,
-        // Or adding more fieldsets ('header' elements) if needed for better logic.
-        $mform->addElement('static', 'label1', 'lipssetting1', 'Your lips fields go here. Replace me!');
-
-        $mform->addElement('header', 'lipsfieldset', get_string('lipsfieldset', 'lips'));
-        $mform->addElement('static', 'label2', 'lipssetting2', 'Your lips fields go here. Replace me!');
-
         // Add standard elements, common to all modules.
         $this->standard_coursemodule_elements();
 

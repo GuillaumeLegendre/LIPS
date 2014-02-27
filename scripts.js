@@ -31,19 +31,22 @@ window.createAce = function (editorid, areaid, mode, theme, flag, comment) {
             createConfigure(editorid);
             break;
         case "code":
-            createCode(editorid, comment);
+            createCode(editorid, comment, areaid);
             break;
         case "unit-test":
-            createUnitTest(editorid);
+            createUnitTest(editorid, areaid);
             break;
         case "resolution":
             createResolution(editorid, areaid);
             break;
         case "readonly":
             createReadOnly(editorid, true);
+            break;
         case "readonly-notsizable":
             createReadOnly(editorid, false);
+            break;
         default:
+            editor.getSession().setValue($("#" + areaid).val());
             break;
     }
 
@@ -112,7 +115,7 @@ window.createConfigure = function (editorid) {
 
 //Create an ace editor in code mode
 //used for problem code configuration editor, provides code tag
-window.createCode = function (editorid, comment) {
+window.createCode = function (editorid, comment, areaid) {
 
     // Create ace
 	var editor = ace.edit(editorid);
@@ -121,8 +124,10 @@ window.createCode = function (editorid, comment) {
 		$("#" + editorid).before('<div class="acepanel">' +
 		'<a href="#" id="' + editorid + '_tagCode">Comment</a>' + 
 		'</div>');
-		
-			// Click on the code tag
+
+        editor.getSession().setValue($("#" + areaid).val());
+
+        // Click on the code tag
 		$("#" + editorid + "_tagCode").click(function(){
 			editor.insert(comment);
 			editor.focus();
@@ -133,7 +138,7 @@ window.createCode = function (editorid, comment) {
 
 //Create an ace editor in unit-test mode
 //used for choosing the unit test to display, provides unit-test tag
-window.createUnitTest = function (editorid) {
+window.createUnitTest = function (editorid, areaid) {
 
     // Create ace
     var editor = ace.edit(editorid);
@@ -143,7 +148,9 @@ window.createUnitTest = function (editorid) {
 		'<a href="#" id="' + editorid + '_tagSolved">True</a>' +
 		'<a href="#" id="' + editorid + '_tagFailed">False</a>' +
         '</div>');
-		
+
+    editor.getSession().setValue($("#" + areaid).val());
+
     // Click on the code tag
     $("#" + editorid + "_tagUnit").click(function () {
 
@@ -667,3 +674,109 @@ $(document).ready(function () {
     }
 
 });
+
+var supportedModes = {
+    ABAP:        ["abap"],
+    ActionScript:["as"],
+    ADA:         ["ada|adb"],
+    Apache_Conf: ["^htaccess|^htgroups|^htpasswd|^conf|htaccess|htgroups|htpasswd"],
+    AsciiDoc:    ["asciidoc"],
+    Assembly_x86:["asm"],
+    AutoHotKey:  ["ahk"],
+    BatchFile:   ["bat|cmd"],
+    C9Search:    ["c9search_results"],
+    C_Cpp:       ["cpp|c|cc|cxx|h|hh|hpp"],
+    Clojure:     ["clj"],
+    Cobol:       ["CBL|COB"],
+    coffee:      ["coffee|cf|cson|^Cakefile"],
+    ColdFusion:  ["cfm"],
+    CSharp:      ["cs"],
+    CSS:         ["css"],
+    Curly:       ["curly"],
+    D:           ["d|di"],
+    Dart:        ["dart"],
+    Diff:        ["diff|patch"],
+    Dot:         ["dot"],
+    Erlang:      ["erl|hrl"],
+    EJS:         ["ejs"],
+    Forth:       ["frt|fs|ldr"],
+    FTL:         ["ftl"],
+    Glsl:        ["glsl|frag|vert"],
+    golang:      ["go"],
+    Groovy:      ["groovy"],
+    HAML:        ["haml"],
+    Handlebars:  ["hbs|handlebars|tpl|mustache"],
+    Haskell:     ["hs"],
+    haXe:        ["hx"],
+    HTML:        ["html|htm|xhtml"],
+    HTML_Ruby:   ["erb|rhtml|html.erb"],
+    INI:         ["ini|conf|cfg|prefs"],
+    Jack:        ["jack"],
+    Jade:        ["jade"],
+    Java:        ["java"],
+    JavaScript:  ["js|jsm"],
+    JSON:        ["json"],
+    JSONiq:      ["jq"],
+    JSP:         ["jsp"],
+    JSX:         ["jsx"],
+    Julia:       ["jl"],
+    LaTeX:       ["tex|latex|ltx|bib"],
+    LESS:        ["less"],
+    Liquid:      ["liquid"],
+    Lisp:        ["lisp"],
+    LiveScript:  ["ls"],
+    LogiQL:      ["logic|lql"],
+    LSL:         ["lsl"],
+    Lua:         ["lua"],
+    LuaPage:     ["lp"],
+    Lucene:      ["lucene"],
+    Makefile:    ["^Makefile|^GNUmakefile|^makefile|^OCamlMakefile|make"],
+    MATLAB:      ["matlab"],
+    Markdown:    ["md|markdown"],
+    MEL:         ["mel"],
+    MySQL:       ["mysql"],
+    MUSHCode:    ["mc|mush"],
+    Nix:         ["nix"],
+    ObjectiveC:  ["m|mm"],
+    OCaml:       ["ml|mli"],
+    Pascal:      ["pas|p"],
+    Perl:        ["pl|pm"],
+    pgSQL:       ["pgsql"],
+    PHP:         ["php|phtml"],
+    Powershell:  ["ps1"],
+    Prolog:      ["plg|prolog"],
+    Properties:  ["properties"],
+    Protobuf:    ["proto"],
+    Python:      ["py"],
+    R:           ["r"],
+    RDoc:        ["Rd"],
+    RHTML:       ["Rhtml"],
+    Ruby:        ["rb|ru|gemspec|rake|^Guardfile|^Rakefile|^Gemfile"],
+    Rust:        ["rs"],
+    SASS:        ["sass"],
+    SCAD:        ["scad"],
+    Scala:       ["scala"],
+    Scheme:      ["scm|rkt"],
+    SCSS:        ["scss"],
+    SH:          ["sh|bash|^.bashrc"],
+    SJS:         ["sjs"],
+    Space:       ["space"],
+    snippets:    ["snippets"],
+    Soy_Template:["soy"],
+    SQL:         ["sql"],
+    Stylus:      ["styl|stylus"],
+    SVG:         ["svg"],
+    Tcl:         ["tcl"],
+    Tex:         ["tex"],
+    Text:        ["txt"],
+    Textile:     ["textile"],
+    Toml:        ["toml"],
+    Twig:        ["twig"],
+    Typescript:  ["ts|typescript|str"],
+    VBScript:    ["vbs"],
+    Velocity:    ["vm"],
+    Verilog:     ["v|vh|sv|svh"],
+    XML:         ["xml|rdf|rss|wsdl|xslt|atom|mathml|mml|xul|xbl"],
+    XQuery:      ["xq"],
+    YAML:        ["yaml|yml"]
+};

@@ -53,20 +53,28 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
         $category = new backup_nested_element('category', array('id'), array(
             'category_name', 'category_documentation', 'category_documentation_type'));
 
+        $achievements = new backup_nested_element('achievements');
+
+        $achievement = new backup_nested_element('achievement', array('id'), array(
+            'achievement_label', 'achievement_desc', 'achievement_picture', 'achievement_category', 'achievement_problems'));
+
         $problems = new backup_nested_element('problems');
 
         $problem = new backup_nested_element('problem', array('id'), array(
             'problem_creator_id', 'problem_category_id', 'problem_label', 'problem_difficulty_id',
             'problem_preconditions', 'problem_statement', 'problem_tips', 'problem_code', 'problem_unit_tests', 'problem_date'));
 
-        $problems_similars = new backup_nested_element('problems_similars');
+        $problemssimilars = new backup_nested_element('problems_similars');
 
-        $problem_similar = new backup_nested_element('problem_similar', array('id'), array(
+        $problemsimilar = new backup_nested_element('problem_similar', array('id'), array(
             'problem_similar_main_id', 'problem_similar_id'));
 
         // Build the tree.
         $lips->add_child($categories);
         $categories->add_child($category);
+
+        $category->add_child($achievements);
+        $achievements->add_child($achievement);
 
         $category->add_child($problems);
         $problems->add_child($problem);
@@ -74,13 +82,15 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
         $problem->add_child($difficulties);
         $difficulties->add_child($difficulty);
 
-        $problem->add_child($problems_similars);
-        $problems_similars->add_child($problem_similar);
+        $problem->add_child($problemssimilars);
+        $problemssimilars->add_child($problemsimilar);
 
         // Define sources.
         $lips->set_source_table('lips', array('id' => backup::VAR_ACTIVITYID));
 
         $category->set_source_table('lips_category', array('id_language' => backup::VAR_PARENTID));
+
+        $achievement->set_source_table('lips_achievement', array('achievement_category' => backup::VAR_PARENTID));
 
         // Only backup the displayable problems (problem_testing = 0).
         $problem->set_source_sql("
@@ -92,7 +102,7 @@ class backup_lips_activity_structure_step extends backup_activity_structure_step
 
         $difficulty->set_source_table('lips_difficulty', array('id' => '../../problem_difficulty_id'));
 
-        $problem_similar->set_source_table('lips_problem_similar', array('problem_similar_main_id' => backup::VAR_PARENTID));
+        $problemsimilar->set_source_table('lips_problem_similar', array('problem_similar_main_id' => backup::VAR_PARENTID));
 
         // Define id annotations.
 

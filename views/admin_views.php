@@ -52,7 +52,7 @@ class page_admin extends page_view {
      * Display the page_admin content
      */
     function display_content() {
-        global $CFG;
+        global $CFG, $PAGE;
 
         // Administration title
         echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));

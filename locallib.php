@@ -653,16 +653,127 @@ function update_language($id, $data) {
  * @return array An array of available languages
  */
 function ace_available_languages() {
-    $dir = './ace/ace-builds/src-noconflict';
+    /*$dir = './ace/ace-builds/src-noconflict';
     $files = scandir($dir, 1);
-    $languages = array();
+    $languages = array();*/
 
-    foreach ($files as $value) {
-        if (preg_match('/^mode-.*/', $value) === 1) {
-            $language = preg_replace(array('/mode-/', '/\.js/'), array('', ''), $value);
-            $languages[$language] = $language;
-        }
-    }
+    //foreach ($files as $value) {
+    //    if (preg_match('/^mode-.*/', $value) === 1) {
+    //        $language = preg_replace(array('/mode-/', '/\.js/'), array('', ''), $value);
+    //        $languages[$language] = $language;
+    //    }
+    //}
+
+    $languages = array(
+        "abap" => "ABAP",
+        "actionscript" => "ActionScript",
+        "ada" => "ADA",
+        "apache_conf" => "Apache Conf",
+        "asciidoc" => "AsciiDoc",
+        "assembly_x86" => "Assembly x86",
+        "autohotkey" => "AutoHotKey",
+        "batchfile" => "BatchFile",
+        "c9search" => "C9Search",
+        "c_cpp" => "C/C++",
+        "clojure" => "Clojure",
+        "cobol" => "Cobol",
+        "coffee" => "Coffee",
+        "coldfusion" => "ColdFusion",
+        "csharp" => "C#",
+        "css" => "CSS",
+        "curly" => "Curly",
+        "d" => "D",
+        "dart" => "Dart",
+        "diff" => "Diff",
+        "django" => "Django",
+        "dot" => "Dot",
+        "ejs" => "EJS",
+        "erlang" => "Erlang",
+        "forth" => "Forth",
+        "ftl" => "FTL",
+        "glsl" => "Glsl",
+        "golang" => "Golang",
+        "groovy" => "Groovy",
+        "haml" => "HAML",
+        "handlebars" => "Handlebars",
+        "haskell" => "Haskell",
+        "haxe" => "Haxe",
+        "html" => "HTML",
+        "html_completions" => "HTML Completions",
+        "html_ruby" => "HTML Ruby",
+        "ini" => "INI",
+        "jack" => "Jack",
+        "jade" => "Jade",
+        "java" => "Java",
+        "javascript" => "Javascript",
+        "json" => "JSON",
+        "jsoniq" => "JSONiq",
+        "jsp" => "JSP",
+        "jsx" => "JSX",
+        "julia" => "Julia",
+        "latex" => "LaTeX",
+        "less" => "LESS",
+        "liquid" => "Liquid",
+        "lisp" => "Lisp",
+        "livescript" => "LiveScript",
+        "logiql" => "LogiQL",
+        "lsl" => "LSL",
+        "lua" => "Lua",
+        "luapage" => "LuaPage",
+        "lucene" => "Lucene",
+        "makefile" => "Makefile",
+        "markdown" => "Markdown",
+        "matlab" => "MATLAB",
+        "mel" => "MEL",
+        "mushcode" => "MUSHCode",
+        "mushcode_high_rules" => "MUSHCode High Rules",
+        "mysql" => "MySQL",
+        "nix" => "Nix",
+        "objectivec" => "ObjectiveC",
+        "ocaml" => "OCaml",
+        "pascal" => "Pascal",
+        "perl" => "Perl",
+        "pgsql" => "pgSQL",
+        "php" => "PHP",
+        "plain_text" => "Plain Text",
+        "powershell" => "Powershell",
+        "prolog" => "Prolog",
+        "properties" => "Properties",
+        "protobuf" => "Protobuf",
+        "python" => "Python",
+        "r" => "R",
+        "rdoc" => "RDoc",
+        "rhtml" => "RHTML",
+        "ruby" => "Ruby",
+        "rust" => "Rust",
+        "sass" => "SASS",
+        "scad" => "SCAD",
+        "scala" => "Scala",
+        "scheme" => "Scheme",
+        "scss" => "SCSS",
+        "sh" => "SH",
+        "sjs" => "SJS",
+        "snippets" => "Snippets",
+        "soy_template" => "Soy Template",
+        "space" => "Space",
+        "sql" => "SQL",
+        "stylus" => "Stylus",
+        "svg" => "SVG",
+        "tcl" => "TCL",
+        "tex" => "Tex",
+        "text" => "Text",
+        "textile" => "Textile",
+        "toml" => "Toml",
+        "twig" => "Twig",
+        "typescript" => "Typescript",
+        "vbscript" => "VBScript",
+        "velocity" => "Velocity",
+        "verilog" => "Verilog",
+        "vhdl" => "VHDL",
+        "xml" => "XML",
+        "xquery" => "XQuery",
+        "yaml" => "YAML"
+    );
 
     asort($languages);
 
@@ -1072,9 +1183,9 @@ function problem_exists($problemlabel, $categoryid) {
         WHERE prob.problem_category_id = cat.id
         AND cat.id_language = " . $lips->id . "
         AND cat.id = " . $categoryid . "
-        AND prob.problem_label = '" . $problemlabel . "'";
+        AND prob.problem_label = ?";
 
-    if ($DB->count_records_sql($sql) > 0) {
+    if ($DB->count_records_sql($sql, array($problemlabel)) > 0) {
         return true;
     }
 
