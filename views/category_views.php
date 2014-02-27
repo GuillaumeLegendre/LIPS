@@ -117,8 +117,8 @@ class page_category extends page_view {
         }
 
         if (has_role('administration')) {
-            echo '<p><span style="color: red;">*</span> : ' . get_string('problem_owner', 'lips') . '.</p>';
-            echo '<img src="images/' . get_string('picture_testing', 'lips') . '" width="16px" height="16px"/> : ' . get_string('problem_testing_picture', 'lips') . '.';
+            echo '<p><span style="color: red;">*</span> : ' . get_string('problem_owner', 'lips') . '.&nbsp;&nbsp;';
+            echo '<img src="images/' . get_string('picture_testing', 'lips') . '" width="16px" height="16px"/> : ' . get_string('problem_testing_picture', 'lips') . '.</p>';
         }
 
         // Problems table
