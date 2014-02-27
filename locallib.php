@@ -864,6 +864,22 @@ function get_solutions($problemid, $search = null) {
 }
 
 /**
+ * Return all solutions of a specific problem
+ *
+ * @param int Id of the problem
+ * @return object List of all solutions of the problem
+ * */
+function get_all_solutions($problemid, $userid) {
+    global $DB;
+    return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_failed_date, problem_failed_solution
+            FROM mdl_lips_problem_failed mls
+            JOIN mdl_user mu ON mu.id = mls.problem_solved_user
+            JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
+            WHERE problem_failed_problem = $problemid
+            ORDER BY problem_failed_date DESC");
+}
+
+/**
  * Update a problem with specified parameters.
  *
  * @param array $data New datas
@@ -1852,4 +1868,22 @@ function has_solved_problem($problemid, $userid) {
     global $DB;
 
     return $DB->count_records('lips_problem_solved', array('problem_solved_problem' => $problemid, 'problem_solved_user' => $userid));
+}
+
+function  insert_bad_solution($solution, $idproblem, $iduser, $categoryid) {
+    global $DB;
+
+    $DB->execute('DELETE FROM mdl_lips_problem_failed WHERE id NOT IN
+    (SELECT id FROM
+        (SELECT id FROM mdl_lips_problem_failed WHERE problem_failed_problem=' . $idproblem . ' AND problem_failed_user = ' . $iduser . ' ORDER BY problem_failed_date LIMIT 5) AS V)
+    AND problem_failed_problem=' . $idproblem . ' AND problem_failed_user = ' . $iduser . '
+    ');
+
+    // Solution
+    $DB->insert_record('lips_problem_failed', array(
+        'problem_failed_problem' => $idproblem,
+        'problem_failed_user' => $iduser,
+        'problem_failed_date' => time(),
+        'problem_failed_solution' => $solution,
+    ));
 }

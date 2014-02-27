@@ -107,6 +107,7 @@ class page_problem extends page_view {
             if (!$languages) {
                 $notifanswer = $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
             } else if ($languages['result'] != 1) {
+                insert_bad_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
                 $notifanswer = $this->lipsoutput->display_notification(nl2br($languages['error']), 'ERROR');
             } else if (trim($languages['output']) == $codeinformations['idtrue']) {
                 insert_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
@@ -116,6 +117,7 @@ class page_problem extends page_view {
                     $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
                 }
             } else {
+                insert_bad_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
                 $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"), 'ERROR');
             }
         }
@@ -383,8 +385,13 @@ class page_solutions extends page_view {
                 $search = $data->inputSearch;
             }
         }
-        $solutions = get_solutions($this->id, $search);
+        if ($userid == null) {
+            $solutions = get_solutions($this->id, $search);
+        } else {
+            $solutions = get_all_solutions($this->id, $userid);
+        }
         foreach ($solutions as $solution) {
+            print_object($solution);
             $this->lipsoutput->display_solution($solution, $lips);
         }
     }
