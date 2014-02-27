@@ -68,7 +68,7 @@ class mod_lips_achievement_select_form extends moodleform {
             $mform->addRule('selectAchievement', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
             // Modify button.
-            $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+            $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
         } else {
             $html = $PAGE->get_renderer('mod_lips')->display_notification(get_string("administration_empty_achievements", "lips"), 'WARNING');
             $mform->addElement('html', $html);
@@ -116,8 +116,8 @@ class mod_lips_achievement_form extends moodleform {
         $mform->setType('inputPicture', PARAM_TEXT);
         $mform->setDefault('inputPicture', $mcustomdata['achievement_picture']);
 
-        // Modify button.
-        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+        // Modify button
+        $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
     }
 
     /**

@@ -87,7 +87,7 @@ class mod_lips_configure_language_form extends moodleform {
         $mform->setDefault('inputComment', $lips->comment_format);
 
         // Modify button.
-        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
     }
 
     /**
@@ -187,7 +187,7 @@ class mod_lips_configure_picture_form extends moodleform {
         $mform->setType('filePicture', PARAM_TEXT);
 
         // Modify button.
-        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
     }
 
     /**
@@ -262,7 +262,7 @@ class mod_lips_configure_code_form extends moodleform {
         $mform->setDefault('areaBaseCode', $mcustomdata['base_code']);
 
         // Modify button.
-        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
     }
 
     /**

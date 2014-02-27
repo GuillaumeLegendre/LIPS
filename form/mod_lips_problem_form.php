@@ -152,8 +152,8 @@ class mod_lips_problem_create_form extends moodleform {
         *------------------------------------------------*/
 
         // Create & Test button
-        $mform->addElement('submit', 'submit', get_string('create', 'lips'));
-        $mform->addElement('submit', 'submit', get_string('test_problem', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('create', 'lips'), array('class' => 'lips-button'));
+        $mform->addElement('submit', 'submit', get_string('test_problem', 'lips'), array('class' => 'lips-button'));
     }
 
 
@@ -279,7 +279,7 @@ class mod_lips_problems_delete_form extends moodleform {
         }
         
         if ($hasproblems) {
-            $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
+            $mform->addElement('submit', 'submit', get_string('delete', 'lips'), array('class' => 'lips-button'));
         } else {
             $msg = get_string("administration_empty_problems", "lips");
             $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'WARNING');
@@ -431,7 +431,7 @@ class mod_lips_problem_modify_form extends moodleform {
         $mform->addElement('button', 'intro',
             get_string("administration_problem_modify_select", "lips"), array('class' => 'problem_similar', 'id' => 'problem_similar_button'));
         // Create button
-        $mform->addElement('submit', 'submit', get_string('edit', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('edit', 'lips'), array('class' => 'lips-button'), array('class' => 'lips-button'));
     }
 
     /**
@@ -570,7 +570,7 @@ class mod_lips_problem_modify_select_form extends moodleform {
             $mform->addRule('problemIdArray', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
             // Modify button.
-            $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+            $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
         } else {
             $msg = get_string("administration_empty_problems", "lips");
             $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'WARNING');
@@ -608,6 +608,6 @@ class mod_lips_problems_resolve_form extends moodleform {
         }
 
         // Export button.
-        $mform->addElement('submit', 'submit', get_string('send_response', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('send_response', 'lips'), array('class' => 'lips-button'));
     }
 }

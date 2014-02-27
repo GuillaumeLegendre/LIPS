@@ -70,7 +70,7 @@ class mod_lips_category_create_form extends moodleform {
         $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
 
         // Create button.
-        $mform->addElement('submit', 'submit', get_string('create', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('create', 'lips'), array('class' => 'lips-button'));
     }
 
     /**
@@ -172,7 +172,7 @@ class mod_lips_category_modify_select_form extends moodleform {
             $mform->addRule('selectCategory', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
             // Modify button.
-            $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+            $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
         } else {
             echo get_string("administration_empty_problems", "lips");
         }
@@ -237,7 +237,7 @@ class mod_lips_category_modify_form extends moodleform {
         }
 
         // Modify button.
-        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
     }
 
     /**
@@ -343,7 +343,7 @@ class mod_lips_category_delete_form extends moodleform {
         $mform->addRule('categoryId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
         // Delete button.
-        $mform->addElement('submit', 'submit', get_string('delete', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('delete', 'lips'), array('class' => 'lips-button'));
     }
 }
 
@@ -373,6 +373,6 @@ class mod_lips_category_select_problems_delete_form extends moodleform {
         $mform->addRule('idcategory', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
         // Modify button.
-        $mform->addElement('submit', 'submit', get_string('select', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('select', 'lips'), array('class' => 'lips-button'));
     }
 }

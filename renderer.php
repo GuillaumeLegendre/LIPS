@@ -361,10 +361,9 @@ class mod_lips_renderer extends plugin_renderer_base {
         if(count($notifications) == 0) {
             $display = get_string('no_notifications', 'lips');
         } else {
-            foreach($notifications as $notification) {
-                // Notification border
-                $display .= '<div class="notification-border"></div>';
+            $display .= '<div style="margin-top: 15px;"></div>';
 
+            foreach($notifications as $notification) {
                 // Notification message
                 $language = '';
                 if($notification->notification_language != null) {
@@ -421,9 +420,8 @@ class mod_lips_renderer extends plugin_renderer_base {
                 }
 
                 $display .= $notification_msg;
-            }
 
-            if($display != '') {
+                // Notification border
                 $display .= '<div class="notification-border"></div>';
             }
         }
