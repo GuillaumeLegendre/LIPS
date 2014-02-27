@@ -42,6 +42,7 @@ require_once("$CFG->libdir/outputrenderers.php");
  */
 class solved_problems_table extends table_sql {
     private $cm;
+    private $userid;
     private $owner;
 
     /**
@@ -78,6 +79,7 @@ class solved_problems_table extends table_sql {
     function  __construct($cm, $search = null, $userid, $owner) {
         parent::__construct("mdl_lips_problem");
         $this->cm = $cm;
+        $this->userid = $userid;
         $this->owner = $owner;
 
         if($search == null) {
@@ -159,7 +161,8 @@ class solved_problems_table extends table_sql {
                     $url = new action_link(new moodle_url('view.php', array(
                         'id' => $instance->instance_link,
                         'view' => 'solutions',
-                        'problemId' => $attempt->problem_id
+                        'problemId' => $attempt->problem_id,
+                        'userid' => $this->userid
                     )),
                     get_string('solutions', 'lips'), null, array("class" => "lips-button"));
 

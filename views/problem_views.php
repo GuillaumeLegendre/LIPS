@@ -367,8 +367,18 @@ class page_solutions extends page_view {
         $prerequisite = $this->lipsoutput->display_span(get_string("prerequisite", "lips"), array("class" => "label_field_page_problem")) . " " . $prerequisite;
         echo $this->lipsoutput->display_p($prerequisite, array("class" => "field_page_problem"));
 
+
+        // Default user search
+        $userid = optional_param('userid', null, PARAM_INT);
+        $search = null;
+        if($userid != null) {
+            $usermoodledetails = get_moodle_user_details(array('id' => $userid));
+            $search = $usermoodledetails->firstname . ' ' . $usermoodledetails->lastname;
+        }
+
         // Search form
         $array = array(
+            "default" => $search,
             "placeholder" => get_string('user', 'lips'),
             "class" => "users_problem_solutions_ac"
         );
@@ -376,13 +386,13 @@ class page_solutions extends page_view {
         $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'problemId' => $this->id)), $array, 'post', '', array('class' => 'search-form', 'style' => 'width: 60%'));
         $searchform->display();
 
-        $search = null;
         if ($searchform->is_submitted()) {
             $data = $searchform->get_submitted_data();
             if (!empty($data->inputSearch)) {
                 $search = $data->inputSearch;
             }
         }
+
         $solutions = get_solutions($this->id, $search);
         foreach ($solutions as $solution) {
             $this->lipsoutput->display_solution($solution, $lips);

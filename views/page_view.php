@@ -26,15 +26,6 @@
  *
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-/**
- * Page view
- *
- * @package    mod_lips
- * @copyright  2014 LIPS
- * @author     Valentin GOT & Mickaël Ohlen
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 abstract class page_view {
     protected $cm;
     protected $view;
