@@ -154,8 +154,8 @@ class page_profile_solved_problems extends page_view {
 
         // User details
         $userid = optional_param('id_user', null, PARAM_TEXT);
+        $curentid = get_user_details(array('id_user_moodle' => $USER->id))->id;
         if ($userid == null) {
-            $curentid = get_user_details(array('id_user_moodle' => $USER->id))->id;
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
         } else {
             $userdetails = get_user_details(array('id' => $userid));
@@ -183,7 +183,7 @@ class page_profile_solved_problems extends page_view {
             }
         }
 
-        // Followed users table
+        // Solved problems table
         if ($userid == null || $userid == $curentid) {
             $table = new solved_problems_table($this->cm, $search, $userdetails->id_user_moodle, true);
         } else {
