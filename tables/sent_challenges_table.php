@@ -56,7 +56,7 @@ class sent_challenges_table extends table_sql {
         $this->cm = $cm;
         $this->owner = $owner;
 
-        $fieldstoselect = "cha.id, problem_label, category_name, difficulty_label, firstname, lastname, challenge_state, compile_language";
+        $fieldstoselect = "cha.id, problem_label, category_name, difficulty_label, difficulty_points, firstname, lastname, challenge_state, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_to = mlu_from.id
             JOIN mdl_user mu ON mlu_from.id_user_moodle = mu.id
@@ -98,19 +98,20 @@ class sent_challenges_table extends table_sql {
         $this->define_headers(array(get_string('language', 'lips'), get_string('problem', 'lips'), get_string('category', 'lips'),
             get_string('difficulty', 'lips'), get_string('challenge_challenged', 'lips'), get_string('state', 'lips')));
        
-        $this->define_columns(array("compile_language", "problem_label", "category_name", "difficulty", "challenge_author", "state"));
+        $this->define_columns(array("compile_language", "problem_label", "category_name", "difficulty_points", "firstname", "state"));
 
         $this->sortable(true);
+        $this->no_sorting("state");
     }
 
     public function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE;
 
         switch ($colname) {
-        	case 'difficulty':
+        	case 'difficulty_points':
         		return get_string($attempt->difficulty_label, 'lips');
         		break;
-            case 'challenge_author':
+            case 'firstname':
                 return "$attempt->firstname $attempt->lastname";
                 break;
             case 'state':
