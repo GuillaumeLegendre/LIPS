@@ -1,4 +1,34 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @package     mod_lips
+ * @subpackage  backup-moodle2
+ * @category    backup
+ * @copyright   2014 LIPS
+ *
+ * @author Valentin Got
+ * @author Guillaume Legendre
+ * @author Mickael Ohlen
+ * @author Anaïs Picoreau
+ * @author Julien Senac
+ *
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 define('AJAX_SCRIPT', true);
 header('content-type: text/html; charset=utf-8');
 
@@ -11,29 +41,31 @@ global $USER, $DB;
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case 'solved_problems':
-            if(isset($_POST['userid'])) {
+            if (isset($_POST['userid'])) {
                 $userid = $_POST['userid'];
 
-                $problems = $DB->get_records_sql("SELECT mlp.id, problem_label 
-                    FROM mdl_lips_problem_solved mlps 
-                    JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id 
-                    WHERE mlps.problem_solved_user = $userid 
+                $problems = $DB->get_records_sql("
+                    SELECT mlp.id, problem_label
+                    FROM mdl_lips_problem_solved mlps
+                    JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id
+                    WHERE mlps.problem_solved_user = $userid
                     GROUP BY mlp.id");
 
-                $problems_table = array();
+                $problemstable = array();
                 foreach ($problems as $problem) {
-                    $problems_table[$problem->id] = $problem->problem_label;
+                    $problemstable[$problem->id] = $problem->problem_label;
                 }
 
-                echo json_encode($problems_table);
+                echo json_encode($problemstable);
             }
             break;
 
         case 'followed_users':
-            if(isset($_POST['userid'])) {
+            if (isset($_POST['userid'])) {
                 $userid = $_POST['userid'];
 
-                $users = $DB->get_records_sql("SELECT mlu.id, firstname, lastname
+                $users = $DB->get_records_sql("
+                    SELECT mlu.id, firstname, lastname
                     FROM mdl_lips_follow mlf, mdl_lips_user mlu, mdl_user mu
                     WHERE mlf.followed = mlu.id
                     AND mu.id = mlu.id_user_moodle
@@ -49,32 +81,34 @@ if (isset($_POST['action'])) {
             break;
 
         case 'problems_by_category':
-            if(isset($_POST['categoryid'])) {
+            if (isset($_POST['categoryid'])) {
                 $categoryid = $_POST['categoryid'];
 
-                $problems = $DB->get_records_sql("SELECT mlp.id, problem_label 
-                    FROM mdl_lips_problem mlp 
-                    WHERE problem_category_id = $categoryid 
+                $problems = $DB->get_records_sql("
+                    SELECT mlp.id, problem_label
+                    FROM mdl_lips_problem mlp
+                    WHERE problem_category_id = $categoryid
                     AND (
-                        problem_testing = 0 
+                        problem_testing = 0
                         OR problem_testing = 1 AND problem_creator_id = " . $USER->id . "
-                    ) 
+                    )
                     GROUP BY mlp.id");
 
-                $problems_table = array();
+                $problemstable = array();
                 foreach ($problems as $problem) {
-                    $problems_table[$problem->id] = $problem->problem_label;
+                    $problemstable[$problem->id] = $problem->problem_label;
                 }
 
-                echo json_encode($problems_table);
+                echo json_encode($problemstable);
             }
             break;
 
         case 'users_problem_solutions':
-            if(isset($_POST['problemid'])) {
+            if (isset($_POST['problemid'])) {
                 $problemid = $_POST['problemid'];
 
-                $users = $DB->get_records_sql("SELECT problem_solved_user, firstname, lastname 
+                $users = $DB->get_records_sql("
+                    SELECT problem_solved_user, firstname, lastname
                     FROM mdl_lips_problem_solved mlps
                     JOIN mdl_user mu ON mu.id = mlps.problem_solved_user
                     AND problem_solved_problem = $problemid
@@ -90,7 +124,8 @@ if (isset($_POST['action'])) {
             break;
 
         case 'users':
-            $users = $DB->get_records_sql("SELECT mlu.id, firstname, lastname 
+            $users = $DB->get_records_sql("
+                SELECT mlu.id, firstname, lastname
                 FROM mdl_lips_user mlu
                 JOIN mdl_user mu ON mlu.id_user_moodle = mu.id");
 
@@ -103,29 +138,31 @@ if (isset($_POST['action'])) {
             break;
 
         case 'received_challenges_problems':
-            if(isset($_POST['userid'])) {
+            if (isset($_POST['userid'])) {
                 $userid = $_POST['userid'];
 
-                $problems = $DB->get_records_sql("SELECT mlp.id, problem_label 
-                    FROM mdl_lips_challenge mlc 
+                $problems = $DB->get_records_sql("
+                    SELECT mlp.id, problem_label
+                    FROM mdl_lips_challenge mlc
                     JOIN mdl_lips_problem mlp ON mlc.challenge_problem = mlp.id
                     AND challenge_to = $userid");
 
-                $problems_table = array();
+                $problemstable = array();
                 foreach ($problems as $problem) {
-                    $problems_table[$problem->id] = $problem->problem_label;
+                    $problemstable[$problem->id] = $problem->problem_label;
                 }
 
-                echo json_encode($problems_table);
+                echo json_encode($problemstable);
             }
             break;
 
         case 'received_challenges_users':
-            if(isset($_POST['userid'])) {
+            if (isset($_POST['userid'])) {
                 $userid = $_POST['userid'];
 
-                $users = $DB->get_records_sql("SELECT mlu.id, firstname, lastname 
-                    FROM mdl_lips_challenge mlc 
+                $users = $DB->get_records_sql("
+                    SELECT mlu.id, firstname, lastname
+                    FROM mdl_lips_challenge mlc
                     JOIN mdl_lips_user mlu ON mlc.challenge_from = mlu.id
                     JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
                     AND challenge_to = $userid");
@@ -140,29 +177,31 @@ if (isset($_POST['action'])) {
             break;
 
         case 'sent_challenges_problems':
-            if(isset($_POST['userid'])) {
+            if (isset($_POST['userid'])) {
                 $userid = $_POST['userid'];
 
-                $problems = $DB->get_records_sql("SELECT mlp.id, problem_label 
-                    FROM mdl_lips_challenge mlc 
+                $problems = $DB->get_records_sql("
+                    SELECT mlp.id, problem_label
+                    FROM mdl_lips_challenge mlc
                     JOIN mdl_lips_problem mlp ON mlc.challenge_problem = mlp.id
                     AND challenge_from = $userid");
 
-                $problems_table = array();
+                $problemstable = array();
                 foreach ($problems as $problem) {
-                    $problems_table[$problem->id] = $problem->problem_label;
+                    $problemstable[$problem->id] = $problem->problem_label;
                 }
 
-                echo json_encode($problems_table);
+                echo json_encode($problemstable);
             }
             break;
 
         case 'sent_challenges_users':
-            if(isset($_POST['userid'])) {
+            if (isset($_POST['userid'])) {
                 $userid = $_POST['userid'];
 
-                $users = $DB->get_records_sql("SELECT mlu.id, firstname, lastname 
-                    FROM mdl_lips_challenge mlc 
+                $users = $DB->get_records_sql("
+                    SELECT mlu.id, firstname, lastname
+                    FROM mdl_lips_challenge mlc
                     JOIN mdl_lips_user mlu ON mlc.challenge_to = mlu.id
                     JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
                     AND challenge_from = $userid");

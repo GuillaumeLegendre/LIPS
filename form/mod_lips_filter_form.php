@@ -68,6 +68,6 @@ class mod_lips_filter_form extends moodleform {
         $mform->setType('userSearch', PARAM_TEXT);
 
         // Search button.
-        $mform->addElement('submit', 'submit', get_string('filter', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('filter', 'lips'), array('class' => 'lips-button'));
     }
 }

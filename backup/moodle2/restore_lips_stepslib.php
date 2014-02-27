@@ -47,8 +47,10 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
         $paths[] = new restore_path_element('lips', '/activity/lips');
         $paths[] = new restore_path_element('lips_category', '/activity/lips/categories/category');
         $paths[] = new restore_path_element('lips_achievement', '/activity/lips/categories/category/achievements/achievement');
-        $paths[] = new restore_path_element('lips_problem', '/activity/lips/categories/category/problems/problem');
-        $paths[] = new restore_path_element('lips_problem_similar', '/activity/lips/categories/category/problems/problem/problems_similars/problem_similar');
+        $paths[] = new restore_path_element(
+            'lips_problem', '/activity/lips/categories/category/problems/problem');
+        $paths[] = new restore_path_element(
+            'lips_problem_similar', '/activity/lips/categories/category/problems/problem/problems_similars/problem_similar');
         $paths[] = new restore_path_element('lips_difficulty', '/activity/lips/categories/category/problems/problem/difficulties/difficulty');
 
         // Return the paths wrapped into standard activity structure.
@@ -60,12 +62,12 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
      * the configured language.
      */
     protected function process_lips($data) {
-        global $DB; 
+        global $DB;
 
         $data = (object)$data;
 
         // Check if a compile language has been configured in the backup.
-        if ($data->compile_language != NULL) {
+        if ($data->compile_language != null) {
 
             $sql = "
                 SELECT id
@@ -74,7 +76,7 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
                 AND compile_language = '". $data->compile_language . "'";
 
             // Check if a lips instance exists with the same compile language.
-           $lipsinstances = $DB->get_records_sql($sql);
+            $lipsinstances = $DB->get_records_sql($sql);
             if ($lipsinstances) {
                 foreach ($lipsinstances as $lipsinstance) {
                     $this->apply_activity_instance($lipsinstance->id);
@@ -193,8 +195,8 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
     }
 
     /**
-     * Restore problem advices item for restored problem.
-     */
+    * Restore problem advices item for restored problem.
+    */
     protected function process_lips_problem_similar($data) {
 
         $data = (object)$data;
@@ -257,7 +259,9 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
             $problemsimilarid = $this->get_mappingid('lips_problem', $data->problem_similar_id);
 
             // Check if the link doesn't already exist.
-            $count = $DB->count_records("lips_problem_similar", array('problem_similar_main_id' => $problemsimilarmainid, 'problem_similar_id' => $problemsimilarid));
+            $count = $DB->count_records("lips_problem_similar", array(
+                'problem_similar_main_id' => $problemsimilarmainid,
+                'problem_similar_id' => $problemsimilarid));
 
             if ($count == 0) {
 

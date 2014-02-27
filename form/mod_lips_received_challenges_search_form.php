@@ -72,6 +72,6 @@ class mod_lips_received_challenges_search_form extends moodleform {
         $mform->setType('authorInputSearch', PARAM_TEXT);
 
         // Search button.
-        $mform->addElement('submit', 'submit', get_string('search', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('search', 'lips'), array('class' => 'lips-button'));
     }
 }

@@ -121,9 +121,9 @@ class problems_table extends table_sql {
 
             case 'solved':
                 if (has_solved_problem($attempt->id, $USER->id)) {
-                    return "<input type='checkbox' checked disabled='disabled'>";
+                    return '<img src="images/' . get_string('notification_problem_solved_picture', 'lips') . '"/>';
                 } else {
-                    return "<input type='checkbox' disabled='disabled'>";
+                    return '';
                 }
                 break;
 

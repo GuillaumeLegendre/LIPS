@@ -141,7 +141,7 @@ h3 {
  *  Button
  *-------------------------------*/
 
-.lips-button, .lips-button:visited, input[type=submit] {
+.lips-button, .lips-button:visited {
     display: inline-block;
     padding: 5px 10px 6px;
     text-decoration: none;
@@ -155,7 +155,7 @@ h3 {
     cursor: pointer;
 }
 
-.lips-button:hover, input[type=submit]:hover {
+.lips-button:hover {
     background-color: #7E9CC5;
     color: #FFFFFF;
     text-decoration: none;
@@ -416,7 +416,7 @@ h3 {
 #achievements table {
     display: inline-table;
     margin: 10px;
-    width: 300px;
+    width: 43%;
 }
 
 #achievements .img {
@@ -446,6 +446,7 @@ h3 {
 
 .notification-content, .challenge-content {
     margin: 5px 0 5px 0;
+    width: 100%;
 }
 
 .notification-content .notification-language, .challenge-content .notification-language {

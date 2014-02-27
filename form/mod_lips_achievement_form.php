@@ -59,16 +59,16 @@ class mod_lips_achievement_select_form extends moodleform {
             $achievementsarray[$achievement->categoryid][$achievement->achievementid] = $achievement->achievement_label;
         }
 
-        if(count($categoriesarray) != 0) {
+        if (count($categoriesarray) != 0) {
             $categoriescount = (count($categoriesarray) < 10) ? count($categoriesarray) : 10;
 
-            // Select achievement
+            // Select achievement.
             $hier =& $mform->addElement('hierselect', 'selectAchievement', get_string('achievements', 'lips'), array('size' => $categoriescount));
             $hier->setOptions(array($categoriesarray, $achievementsarray));
             $mform->addRule('selectAchievement', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
 
             // Modify button.
-            $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+            $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
         } else {
             $html = $PAGE->get_renderer('mod_lips')->display_notification(get_string("administration_empty_achievements", "lips"), 'WARNING');
             $mform->addElement('html', $html);
@@ -95,29 +95,29 @@ class mod_lips_achievement_form extends moodleform {
         $mform =& $this->_form;
         $mcustomdata = $this->_customdata;
 
-        // Category ID
+        // Category ID.
         $mform->addElement('hidden', 'inputAchievementID', null, null);
         $mform->setType('inputAchievementID', PARAM_INT);
         $mform->setDefault('inputAchievementID', $mcustomdata['id']);
 
-        // Label
+        // Label.
         $mform->addElement('text', 'inputLabel', get_string('label', 'lips'), array('size' => 48));
         $mform->addRule('inputLabel', get_string('administration_achievement_label_error', 'lips'), 'required', null, 'client');
         $mform->setType('inputLabel', PARAM_TEXT);
         $mform->setDefault('inputLabel', $mcustomdata['achievement_label']);
 
-        // Description
+        // Description.
         $mform->addElement('textarea', 'areaDescription', get_string('description', 'lips'), array('cols' => 50, 'rows' => 10));
         $mform->addRule('areaDescription', get_string('administration_achievement_area_error', 'lips'), 'required', null, 'client');
         $mform->setDefault('areaDescription', $mcustomdata['achievement_desc']);
 
-        // Picture
+        // Picture.
         $mform->addElement('text', 'inputPicture', get_string('picture', 'lips'), array('size' => 48));
         $mform->setType('inputPicture', PARAM_TEXT);
         $mform->setDefault('inputPicture', $mcustomdata['achievement_picture']);
 
         // Modify button
-        $mform->addElement('submit', 'submit', get_string('modify', 'lips'));
+        $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
     }
 
     /**
@@ -136,7 +136,7 @@ class mod_lips_achievement_form extends moodleform {
                 $errors['emptyAchievementLabel'] = get_string('administration_achievement_label_error', 'lips');
             }
 
-            if(empty($data->areaDescription)) {
+            if (empty($data->areaDescription)) {
                 $errors['emptyAchievementDesc'] = get_string('administration_achievement_area_error', 'lips');
             }
         } else {
@@ -155,11 +155,11 @@ class mod_lips_achievement_form extends moodleform {
     public function handle() {
         global $PAGE;
 
-        // Do nothing if not submitted or cancelled
+        // Do nothing if not submitted or cancelled.
         if (!$this->is_submitted() || $this->is_cancelled())
             return;
 
-        // Form data
+        // Form data.
         $data = $this->get_submitted_data();
 
         // The validation failed.
@@ -172,9 +172,9 @@ class mod_lips_achievement_form extends moodleform {
             return;
         }
 
-        // Update date
+        // Update date.
         $achievementdetails = get_achievement_details(array('id' => $data->inputAchievementID));
-        if(empty($data->inputPicture)) {
+        if (empty($data->inputPicture)) {
             $data->inputPicture = $achievementdetails->achievement_picture;
         }
         update_achievement(array(
@@ -184,7 +184,7 @@ class mod_lips_achievement_form extends moodleform {
             'achievement_picture' => $data->inputPicture
         ));
 
-        // Success message
+        // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_achievement_success', 'lips'), 'SUCCESS');
     }
 }
