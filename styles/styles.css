@@ -105,13 +105,14 @@ h3 {
 
 .search-form input[type=text] {
     height: 20px;
-    width: 30%;
+    width: 80%;
 }
 
 .search-form fieldset {
     width: 100%;
     margin: 0;
     padding: 0;
+    
     -webkit-margin-start: 0;
     -webkit-margin-end: 0;
     -webkit-padding-before: 0.5em;
