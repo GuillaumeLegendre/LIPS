@@ -348,6 +348,7 @@ class page_solutions extends page_view {
      * Display the message of confirmation.
      */
     function display_content() {
+        global $USER;
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
 
         $lips = get_current_instance();
@@ -394,7 +395,7 @@ class page_solutions extends page_view {
                 $search = $data->inputSearch;
             }
         }
-        if ($userid != null && is_author($this->id, $userid)) {
+        if ($userid != null && is_author($this->id, $USER->id)) {
             $solutions = get_all_solutions($this->id, $userid);
         } else {
             $solutions = get_solutions($this->id, $search);
