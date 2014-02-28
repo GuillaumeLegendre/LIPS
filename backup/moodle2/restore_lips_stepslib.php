@@ -68,7 +68,6 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
 
         // Check if a compile language has been configured in the backup.
         if ($data->compile_language != null) {
-
             $sql = "
                 SELECT id
                 FROM mdl_lips
@@ -82,6 +81,28 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
                     $this->apply_activity_instance($lipsinstance->id);
                     $this->lipsid = $lipsinstance->id;
                 }
+
+                // Clean course modules and sections tables.
+                $moduleId = $this->get_task()->get_moduleid();
+
+                // Remove the moduleID from sequence field in mdl_course_sections table.
+                $result = $DB->get_record_sql("
+                    SELECT sections.id, sections.sequence
+                    FROM mdl_course_sections sections, mdl_course_modules modules
+                    WHERE modules.section = sections.id
+                    AND modules.id = " . $moduleId);
+
+                $motif = "," . $moduleId;
+                $result->sequence = str_replace($motif, "", $result->sequence);
+
+                $DB->execute("
+                    UPDATE mdl_course_sections
+                    SET sequence = '" . $result->sequence . "'
+                    WHERE id = " . $result->id);
+
+                // Delete the row from mdl_course_modules tables for this moduleID.
+                $DB->delete_records("course_modules", array("id" => $moduleId));
+
                 return;
             }
         }
@@ -271,5 +292,9 @@ class restore_lips_activity_structure_step extends restore_activity_structure_st
                 $DB->insert_record('lips_problem_similar', $data);
             }
         }
+
+        // Purge all caches.
+        cache_helper::purge_all(false);
+        purge_all_caches();
     }
 }
