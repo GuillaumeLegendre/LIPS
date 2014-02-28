@@ -155,7 +155,12 @@ class mod_lips_achievement_form extends moodleform {
         $achievementdetails = get_achievement_details(array('id' => $data->inputAchievementID));
         if (empty($data->inputPicture)) {
             $data->inputPicture = $achievementdetails->achievement_picture;
+        } else if(!is_a_picture($data->inputPicture)) {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error', 'lips'), 'ERROR');
+
+            return;
         }
+
         update_achievement(array(
             'id' => $achievementdetails->id,
             'achievement_label' => $data->inputLabel,

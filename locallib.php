@@ -1763,18 +1763,24 @@ function fetch_all_ranks() {
  * Download an image from an URL
  *
  * @param string $url Image url
+ * @return bool|string True if the image has been downloaded, otherwise an error message
  */
 function download_image($url) {
     $explode_image = explode("/", $url);
     $image = $explode_image[count($explode_image) - 1];
 
     // Get the image
-    $content = file_get_contents($url);
+    $content = @file_get_contents($url);
+    if($content == false) {
+        return false;
+    }
 
     // Store in the filesystem
     $fp = fopen("images/" . $image, "w");
     fwrite($fp, $content);
     fclose($fp);
+
+    return true;
 }
 
 /**

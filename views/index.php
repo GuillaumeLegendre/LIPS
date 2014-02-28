@@ -55,7 +55,7 @@ class page_index extends page_view {
 
         if($this->access == false) {
             parent::display_denied_header();
-            echo '<center><img src="images/jp.gif"/><h1 style="color: red;">Vous n\'avez pas dit le mot magique !!!!</h1></center>';
+            echo '<center><img src="images/jp.gif"/><h1 style="color: red;">' . get_string('you_didnt_say_the_magic_word', 'lips') . '</h1></center>';
         } else {
             parent::display_header();
             $this->display_content();

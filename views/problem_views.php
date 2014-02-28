@@ -109,7 +109,7 @@ class page_problem extends page_view {
             } else if ($languages['result'] != 1) {
                 insert_bad_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
                 $notifanswer = $this->lipsoutput->display_notification(nl2br($languages['error']), 'ERROR');
-            } else if (trim($languages['output']) == $codeinformations['idtrue']) {
+            } else if (strpos(trim($languages['output']), $codeinformations['idtrue']) !== false) {
                 insert_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
                 if (has_solved_problem($this->id, $USER->id) == 1) {
                     $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips") . '<span class="success-solve">+ ' . $difficultydetails->difficulty_points . ' pt(s)</span>', 'SUCCESS');
