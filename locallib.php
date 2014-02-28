@@ -361,7 +361,7 @@ function update_language_picture($picture) {
  * @param string $picture Picture to delete
  */
 function delete_picture_file($picture) {
-    unlink('./images/' . $picture);
+    @unlink('./images/' . $picture);
 }
 
 /**
@@ -1768,6 +1768,8 @@ function fetch_all_ranks() {
 function download_image($url) {
     $explode_image = explode("/", $url);
     $image = $explode_image[count($explode_image) - 1];
+    $explodeextension = explode('.', $image);
+    $picture = uniqid() . '.' . $explodeextension[count($explodeextension) - 1];
 
     // Get the image
     $content = @file_get_contents($url);
@@ -1776,11 +1778,11 @@ function download_image($url) {
     }
 
     // Store in the filesystem
-    $fp = fopen("images/" . $image, "w");
+    $fp = fopen("images/" . $picture, "w");
     fwrite($fp, $content);
     fclose($fp);
 
-    return true;
+    return $picture;
 }
 
 /**

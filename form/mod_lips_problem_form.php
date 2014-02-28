@@ -147,6 +147,8 @@ class mod_lips_problem_create_form extends moodleform {
         }
 
         // Hidden field to store id of similar problems.
+        $similarproblemshtml = '<div id="similar-problems"><div id="similar-add"><img src="images/add_similar.png" title="Ajouter" id="problem-similar-button"></div><div id="problems"></div></div>';
+
         $mform->addElement('hidden', 'problems_similar', null, array("id" => "id_problem_similar"));
         $mform->setType('problems_similar', PARAM_TEXT);
         $mform->addElement('html', '<div id="dialog" title="Conseil de problèmes similaires">
@@ -154,16 +156,14 @@ class mod_lips_problem_create_form extends moodleform {
         $mform->addElement('select', 'problem_category_id_js', get_string('category', 'lips'),
             $categorieswithproblems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
         $mform->addElement('select', 'problem_id_js', get_string('problem', 'lips'),
-            $problems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
+            $problems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width: 95%'));
         $mform->addElement('html', '</div>');
 
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_similar_subtitle", "lips")));
         $mform->addElement('html', $output->display_p(get_string("administration_problem_similar_subtitle_msg", "lips")));
+        $mform->addElement('html', $similarproblemshtml);
         $mform->addElement('html', '<div id="problem_similar_content">');
         $mform->addElement('html', '</div>');
-        $mform->addElement('button', 'intro',
-            get_string("administration_problem_modify_select", "lips"),
-            array('class' => 'problem_similar', 'id' => 'problem_similar_button'));
 
         /*--------------------------------------------------
         * Submit
@@ -447,8 +447,9 @@ class mod_lips_problem_modify_form extends moodleform {
         $mform->setDefault('problem_unit_tests', $mcustomdata['problem_unit_tests']);
 
         /*--------------------------------------------------
-       * Similar problems
-       *------------------------------------------------*/
+         * Similar problems
+         *------------------------------------------------*/
+
         $categorieswithproblems = array();
         foreach (fetch_all_categories_with_problems(get_current_instance()->id) as $category) {
             $categorieswithproblems[$category->problem_category_id] = $category->category_name;
@@ -457,10 +458,23 @@ class mod_lips_problem_modify_form extends moodleform {
         foreach (fetch_problems_by_category(key($categorieswithproblems)) as $problem) {
             $problems[$problem->id] = $problem->problem_label;
         }
+
+        // Display stored relation of similar problems.
+        $idproblem = $mcustomdata['id'];
+        $valuehiddenfield = "";
+        $similarproblemshtml = '<div id="similar-problems"><div id="similar-add"><img src="images/add_similar.png" title="Ajouter" id="problem-similar-button"></div><div id="problems">';
+        if (isset($idproblem)) {
+            $similarproblems = get_similar_problems($mcustomdata['id']);
+            foreach ($similarproblems as $similarproblem) {
+                $similarproblemshtml .= '<p id="' . $similarproblem->problem_similar_id . '">' . $similarproblem->problem_label . '<img src="images/delete_similar.png" title="Supprimer" class="delete" onClick="deleteSimilarProblem(\'' . $similarproblem->problem_similar_id . '\')"/></p>';
+                
+                $valuehiddenfield .= " " . $similarproblem->problem_similar_id;
+            }
+        }
+        $similarproblemshtml .= '</div></div>';
+
         // Hidden field to store id of similar problems.
-        $mform->setType('problems_similar', PARAM_TEXT);
-        $mform->addElement('html', '<div id="dialog" title="Conseil de problèmes similaires">
-            <h2>Conseil - ' . $lips->compile_language . '</h2>');
+        $mform->addElement('html', '<div id="dialog" title="Conseil de problèmes similaires"><h2>Conseil - ' . $lips->compile_language . '</h2>');
         $mform->addElement('select', 'problem_category_id_js', get_string('category', 'lips'),
             $categorieswithproblems, array('class' => 'text ui-widget-content ui-corner-all', 'style' => 'width:95%'));
         $mform->addElement('select', 'problem_id_js', get_string('problem', 'lips'),
@@ -468,30 +482,12 @@ class mod_lips_problem_modify_form extends moodleform {
         $mform->addElement('html', '</div>');
         $mform->addElement('html', $output->display_h3(get_string("administration_problem_similar_subtitle", "lips")));
         $mform->addElement('html', $output->display_p(get_string("administration_problem_similar_subtitle_msg", "lips")));
-        $mform->addElement('html', '<div id="problem_similar_content">');
-        $mform->addElement('html', '</div>');
+        $mform->addElement('html', $similarproblemshtml);
+        //$mform->addElement('html', '</div>');
 
-        // Display stored relation of similar problems.
-        $idproblem = $mcustomdata['id'];
-        $valuehiddenfield = "";
-        if (isset($idproblem)) {
-            $similarproblems = get_similar_problems($mcustomdata['id']);
-            foreach ($similarproblems as $similarproblem) {
-                $mform->addElement('html', "<div class='fitem fitem_ftext similar_problem'>
-                    <div class='felement ftext'>
-                        <input readonly type='text' name='select_problem_similar_$similarproblem->problem_similar_id'
-                         value='$similarproblem->problem_label'>
-                    </div>
-                        <input class='delete_problem_similar_button' id='$similarproblem->problem_similar_id'
-                         src='./images/delete_similar.png' type='image'></div>");
-
-                $valuehiddenfield .= " " . $similarproblem->problem_similar_id;
-            }
-        }
         $mform->addElement('hidden', 'problems_similar', $valuehiddenfield, array("id" => "id_problem_similar"));
-        $mform->addElement('button', 'intro',
-            get_string("administration_problem_modify_select", "lips"),
-            array('class' => 'problem_similar', 'id' => 'problem_similar_button'));
+        $mform->setType('problems_similar', PARAM_TEXT);
+
         // Create button
         $mform->addElement('submit', 'submit',
             get_string('edit', 'lips'),

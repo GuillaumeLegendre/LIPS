@@ -263,6 +263,7 @@ $string['administration_language_image_success'] = 'The picture has been modifie
 $string['administration_language_image_save_error'] = 'An error occured while saving the file. Please try again.';
 $string['administration_language_image_type_error'] = 'The file you chose is not a picture. Please upload a picture.';
 $string['administration_language_image_url_error'] = 'An error occured while downloading the picture.';
+$string['administration_language_image_empty'] = 'Please select a picture.';
 $string['administration_language_code_title'] = 'Base code';
 $string['administration_problem_create_code_msg'] = 'Start by importing libraries that will be usefull to resolve the problem.<br/><br/>And then, type instructions user will have to fill.<br/>To indicate editable area, you can use comments.<br/><br/>To finish, fill the <strong>Unit tests</strong> area that contains all the tests used to check student answers.</br/>Program must return <strong>PROBLEM_SOLVED</strong> (True button) in case of success, <strong>PROBLEM_FAILED</strong> (False button) otherwise.<br/>You can define which units test will be displayed on the problem page, using the <span style="color: red">&lt;lips-unit-test&gt;&lt;/lips-unit-test&gt;</span>tag.';
 $string['administration_language_code_success'] = 'The base code has been modified';
@@ -320,9 +321,10 @@ $string['achievement_gold_title'] = 'Gold';
 $string['achievement_gold_msg'] = 'You solved 50 problems in the category ';
 $string['achievement_platinum_title'] = 'Platinum';
 $string['achievement_platinum_msg'] = 'You solved 100 problems in the category ';
-$string['administration_achievement_success'] = '';
-$string['administration_achievement_label_error'] = '';
-$string['administration_achievement_desc_error'] = '';
+$string['administration_achievement_success'] = 'The achievement has been modified';
+$string['administration_achievement_label_error'] = 'You must enter a label';
+$string['administration_achievement_desc_error'] = 'You must enter a description';
+$string['administration_achievement_default_picture'] = 'No picture selected. Restore default picture';
 
 // Problem
 $string['administration_problem_create_title'] = 'Create a problem';
