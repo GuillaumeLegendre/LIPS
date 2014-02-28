@@ -194,6 +194,7 @@ $string['label'] = 'Label';
 $string['description'] = 'Description';
 $string['display_more_results'] = 'Display more results';
 $string['categories'] = 'Categories';
+$string['you_didnt_say_the_magic_word'] = 'You didn\'t say the magic word !!!!';
 
 /*--------------------------------------------------
  * Dates
@@ -261,6 +262,7 @@ $string['administration_language_image_msg'] = 'Choose the picture for this prog
 $string['administration_language_image_success'] = 'The picture has been modified';
 $string['administration_language_image_save_error'] = 'An error occured while saving the file. Please try again.';
 $string['administration_language_image_type_error'] = 'The file you chose is not a picture. Please upload a picture.';
+$string['administration_language_image_url_error'] = 'An error occured while downloading the picture.';
 $string['administration_language_code_title'] = 'Base code';
 $string['administration_problem_create_code_msg'] = 'Start by importing libraries that will be usefull to resolve the problem.<br/><br/>And then, type instructions user will have to fill.<br/>To indicate editable area, you can use comments.<br/><br/>To finish, fill the <strong>Unit tests</strong> area that contains all the tests used to check student answers.</br/>Program must return <strong>PROBLEM_SOLVED</strong> (True button) in case of success, <strong>PROBLEM_FAILED</strong> (False button) otherwise.<br/>You can define which units test will be displayed on the problem page, using the <span style="color: red">&lt;lips-unit-test&gt;&lt;/lips-unit-test&gt;</span>tag.';
 $string['administration_language_code_success'] = 'The base code has been modified';

@@ -166,6 +166,7 @@ $string['label'] = 'Label';
 $string['description'] = 'Description';
 $string['display_more_results'] = 'Afficher plus de résultats';
 $string['categories'] = 'Catégories';
+$string['you_didnt_say_the_magic_word'] = 'Vous n\'avez pas dit le mot magique !!!!';
 
 /*--------------------------------------------------
  * Dates
@@ -233,6 +234,7 @@ $string['administration_language_image_msg'] = 'Choisissez l\'image de ce langag
 $string['administration_language_image_success'] = 'L\'image a été modifiée';
 $string['administration_language_image_type_error'] = 'Le fichier que vous avez choisi d\'uploader n\'est pas une image.';
 $string['administration_language_image_save_error'] = 'Une erreur est survenue lors de l\'enregistrement de l\'image';
+$string['administration_language_image_url_error'] = 'Une erreur est survenue lors du téléchargement de l\'image.';
 $string['administration_language_code_title'] = 'Base du code';
 $string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisée à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
 $string['administration_language_code_success'] = 'La préconfiguration du code a été modifiée';

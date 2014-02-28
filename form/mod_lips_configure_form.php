@@ -219,21 +219,25 @@ class mod_lips_configure_picture_form extends moodleform {
         }
 
         // Save the picture.
-        download_image($url);
+        $success = download_image($url);
 
-        // Current instance.
-        $lips = get_current_instance();
+        if($success) {
+            // Current instance.
+            $lips = get_current_instance();
 
-        // Delete the old image.
-        if ($lips->language_picture != $picture && $lips->language_picture != 'default-language.png') {
-            delete_picture_file($lips->language_picture);
+            // Delete the old image.
+            if ($lips->language_picture != $picture && $lips->language_picture != 'default-language.png') {
+                delete_picture_file($lips->language_picture);
+            }
+
+            // Update the picture on the database.
+            update_language_picture($picture);
+
+            // Success message.
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_success', 'lips'), 'SUCCESS');
+        } else {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_url_error', 'lips'), 'ERROR');
         }
-
-        // Update the picture on the database.
-        update_language_picture($picture);
-
-        // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_success', 'lips'), 'SUCCESS');
     }
 }
 
