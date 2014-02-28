@@ -328,11 +328,11 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param object LIPS instance
      */
     public function display_bad_solution($data, $lips) {
-        print_object($data);
         $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)), ucfirst($data->firstname) . ' ' . ucfirst($data->lastname));
         $date = html_writer::tag('div', get_string("The", "lips") . " " . format_date($data->problem_date), array("id" => "date"));
         $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header-failed"));
-        $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '_' . $data->problem_date . '" class="ace readonly">' . $data->problem_solution . '</div>', array("id" => "content"));
+        $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '_' . $data->row .
+            '" class="ace readonly">' . $data->problem_solution . '</div>', array("id" => "content"));
         echo html_writer::tag('div', $header . $content, array("class" => "solution"));
 
         $this->display_ace_form('aceSolution_' . $data->id . '_' . $data->row, '',
