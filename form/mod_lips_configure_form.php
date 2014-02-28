@@ -208,6 +208,14 @@ class mod_lips_configure_picture_form extends moodleform {
         // Form data.
         $data = $this->get_submitted_data();
 
+        if(empty($data->filePicture)) {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_empty',
+                    'lips'),
+                'ERROR');
+
+            return;
+        }
+
         // Picture.
         $url = $data->filePicture;
         $explodepicture = explode("/", $url);
@@ -217,13 +225,14 @@ class mod_lips_configure_picture_form extends moodleform {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error',
                     'lips'),
                 'ERROR');
+            
             return;
         }
 
         // Save the picture.
-        $success = download_image($url);
+        $picture = download_image($url);
 
-        if ($success) {
+        if ($picture !== false) {
             // Current instance.
             $lips = get_current_instance();
 

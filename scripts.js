@@ -366,6 +366,12 @@ $(document).ready(function () {
 
             return false;
         });
+
+        $(document).on('click','.ui-dialog-titlebar-close',function(){
+            $("#notify.notifySuccess").hide();
+            $("#challenge-user").val('');
+            $("#challenged-players").html('');
+        });
     }
 
     /*---------------------------------
