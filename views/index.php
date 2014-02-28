@@ -93,11 +93,13 @@ class page_index extends page_view {
 
         $page = optional_param('page', 1, PARAM_INT);
         // Notifications
-        $notificationsdetails = fetch_notifications_details('notification_user_id = ' . $userdetails->id . ' AND notification_from <> ' . $userdetails->id . ' AND notification_to <> ' . $userdetails->id);
+        $notificationsdetails = fetch_notifications_details('notification_user_id = ' . $userdetails->id . ' AND notification_from <> ' . $userdetails->id . ' AND notification_to <> ' .
+            $userdetails->id,  $page * 15);
         echo $this->lipsoutput->display_h1(get_string('notifications', 'lips'));
         if (count($notificationsdetails) > 0) {
             echo $this->lipsoutput->display_notifications($notificationsdetails);
-            if (count(fetch_notifications_details('notification_user_id = ' . $userdetails->id . ' AND notification_from <> ' . $userdetails->id . ' AND notification_to <> ' . $userdetails->id, $page + 1 * 15)) > $page * 15) {
+            if (count(fetch_notifications_details('notification_user_id = ' . $userdetails->id . ' AND notification_from <> ' . $userdetails->id . ' AND notification_to <> ' . $userdetails->id, $page
+                    + 1 * 15)) > $page * 15) {
                 echo "<br/><center>" . $this->lipsoutput->render(new action_link(new moodle_url('view.php', array(
                             'id' => $this->cm->id,
                             'view' => $this->view,

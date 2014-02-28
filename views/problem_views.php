@@ -106,19 +106,23 @@ class page_problem extends page_view {
             $languages = $servicecompilclass::execute($codeinformations['code'], get_current_instance()->compile_language);
             if (!$languages) {
                 $notifanswer = $this->lipsoutput->display_notification(get_string("web_service_compil_communication_error", "lips"), 'ERROR');
-            } else if ($languages['result'] != 1) {
-                insert_bad_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
-                $notifanswer = $this->lipsoutput->display_notification(nl2br($languages['error']), 'ERROR');
-            } else if (strpos(trim($languages['output']), $codeinformations['idtrue']) !== false) {
-                insert_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
-                if (has_solved_problem($this->id, $USER->id) == 1) {
-                    $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips") . '<span class="success-solve">+ ' . $difficultydetails->difficulty_points . ' pt(s)</span>', 'SUCCESS');
-                } else {
-                    $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
-                }
             } else {
-                insert_bad_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
-                $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"), 'ERROR');
+                if ($languages['result'] != 1) {
+                    insert_bad_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
+                    $notifanswer = $this->lipsoutput->display_notification(nl2br($languages['error']), 'ERROR');
+                } else {
+                    if (strpos(trim($languages['output']), $codeinformations['idtrue']) !== false) {
+                        insert_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
+                        if (has_solved_problem($this->id, $USER->id) == 1) {
+                            $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips") . '<span class="success-solve">+ ' . $difficultydetails->difficulty_points . ' pt(s)</span>', 'SUCCESS');
+                        } else {
+                            $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_success", "lips"), 'SUCCESS');
+                        }
+                    } else {
+                        insert_bad_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
+                        $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"), 'ERROR');
+                    }
+                }
             }
         }
 
@@ -395,10 +399,22 @@ class page_solutions extends page_view {
                 $search = $data->inputSearch;
             }
         }
+        $page = optional_param('page', 1, PARAM_INT);
+
+        $displaymoresolutions = false;
+
+        $limit = get_string('solutions_limit', 'lips');
+
         if ($userid != null && is_author($this->id, $USER->id)) {
-            $solutions = get_all_solutions($this->id, $userid);
+            $solutions = get_all_solutions($this->id, $userid, $page * $limit);
+            if (count(get_all_solutions($this->id, $userid, $page + 1 * $limit)) > $page * $limit) {
+                $displaymoresolutions = true;
+            }
         } else {
-            $solutions = get_solutions($this->id, $search);
+            $solutions = get_solutions($this->id, $search, $page * $limit);
+            if (count(get_solutions($this->id, $search, $page + 1 * $limit)) > $page * $limit) {
+                $displaymoresolutions = true;
+            }
         }
         foreach ($solutions as $solution) {
             if (isset($solution->source)) {
@@ -411,5 +427,16 @@ class page_solutions extends page_view {
                 $this->lipsoutput->display_solution($solution, $lips);
             }
         }
+        if ($displaymoresolutions) {
+            echo "<br/><center>" . $this->lipsoutput->render(new action_link(new moodle_url('view.php', array(
+                        'id' => $this->cm->id,
+                        'view' => $this->view,
+                        'page' => $page * 15,
+                        'problemId' => $this->id,
+                        'userid' => $userid
+                    )),
+                    get_string('display_more_results', 'lips'), null, array("class" => "lips-button"))) . "</center>";
+        }
+
     }
 }

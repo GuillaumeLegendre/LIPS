@@ -65,7 +65,8 @@ class page_profile extends page_view {
 
         // Recent activity
         echo $this->lipsoutput->display_h1(get_string('recent_activity', 'lips'));
-        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')', $page * 15));
+        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser .
+            ')', $page * 15));
 
         if (count(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')', $page + 1 * 15)) > $page * 15) {
             echo "<br/><center>" . $this->lipsoutput->render(new action_link(new moodle_url('view.php', array(

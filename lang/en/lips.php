@@ -56,6 +56,7 @@ $string['my_problems_table'] = 10;
 $string['followed_users_table'] = 15;
 $string['solved_problems_table'] = 15;
 $string['notifications_limit'] = 50;
+$string['solutions_limit'] = 8;
 $string['challenges_table'] = 10;
 
 /*--------------------------------------------------

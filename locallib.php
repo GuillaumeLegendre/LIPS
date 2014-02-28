@@ -842,8 +842,14 @@ function fetch_problems($userid) {
  * @param int Id of the problem
  * @return object List of all solutions of the problem
  * */
-function get_solutions($problemid, $search = null) {
+function get_solutions($problemid, $search = null, $limit = null) {
     global $DB;
+
+    if ($limit != null) {
+        $limit = $limit;
+    } else {
+        $limit = get_string('solutions_limit', 'lips');
+    }
 
     if ($search == null) {
         return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date  as problem_date, problem_solved_solution  as problem_solution
@@ -851,7 +857,7 @@ function get_solutions($problemid, $search = null) {
             JOIN mdl_user mu ON mu.id = mls.problem_solved_user
             JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
             WHERE problem_solved_problem = $problemid
-            ORDER BY problem_solved_date DESC");
+            ORDER BY problem_solved_date DESC LIMIT $limit");
     } else {
         return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date  as problem_date, problem_solved_solution as problem_solution
             FROM mdl_lips_problem_solved mls
@@ -859,7 +865,7 @@ function get_solutions($problemid, $search = null) {
             JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
             WHERE problem_solved_problem = $problemid
             AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search . "%'
-            ORDER BY problem_solved_date DESC");
+            ORDER BY problem_solved_date DESC LIMIT $limit");
     }
 }
 
@@ -869,8 +875,13 @@ function get_solutions($problemid, $search = null) {
  * @param int Id of the problem
  * @return object List of all solutions of the problem
  * */
-function get_all_solutions($problemid, $userid) {
+function get_all_solutions($problemid, $userid, $limit) {
     global $DB;
+    if ($limit != null) {
+        $limit = $limit;
+    } else {
+        $limit = get_string('solutions_limit', 'lips');
+    }
     return $DB->get_records_sql("SELECT @row := @row + 1 as row, t.* FROM
                      ((SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date as problem_date, problem_solved_solution as problem_solution, 1 as source
                     FROM mdl_lips_problem_solved mls
@@ -883,7 +894,7 @@ function get_all_solutions($problemid, $userid) {
                     JOIN mdl_user mu ON mu.id = mls.problem_failed_user
                     JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
                     WHERE problem_failed_problem = $problemid AND problem_failed_user = $userid)) t, (SELECT @row := 0) r
-                ORDER BY problem_date DESC");
+                ORDER BY problem_date DESC LIMIT $limit");
 }
 
 /**
@@ -1773,7 +1784,7 @@ function download_image($url) {
 
     // Get the image
     $content = @file_get_contents($url);
-    if($content == false) {
+    if ($content == false) {
         return false;
     }
 
@@ -1894,7 +1905,7 @@ function  insert_bad_solution($solution, $idproblem, $iduser, $categoryid) {
     $DB->execute('DELETE FROM mdl_lips_problem_failed WHERE id NOT IN
     (SELECT id FROM
         (SELECT id FROM mdl_lips_problem_failed WHERE problem_failed_problem=' . $idproblem . '
-        AND problem_failed_user = ' . $iduser . ' ORDER BY problem_failed_date DESC LIMIT '.$numberfailedanswersolved.')
+        AND problem_failed_user = ' . $iduser . ' ORDER BY problem_failed_date DESC LIMIT ' . $numberfailedanswersolved . ')
          AS
          V)
     AND problem_failed_problem=' . $idproblem . ' AND problem_failed_user = ' . $iduser . '
