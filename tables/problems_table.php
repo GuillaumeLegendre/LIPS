@@ -87,11 +87,34 @@ class problems_table extends table_sql {
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_problem where problem_category_id = " . $id);
         $context = context_module::instance($cm->id);
         if (has_capability('mod/lips:administration', $context)) {
-            $this->define_headers(array("Problème", "Difficulté", "Date", "Rédacteur", "Nombre de résolutions", "Résolu", ""));
-            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "firstname", "problem_resolutions", "solved", "actions"));
+            $this->define_headers(array("Problème",
+                "Difficulté",
+                "Date",
+                "Rédacteur",
+                "Nombre de résolutions",
+                "Résolu",
+                ""));
+            $this->define_columns(array(
+                "problem_label",
+                "difficulty_label",
+                "problem_date",
+                "firstname",
+                "problem_resolutions",
+                "solved",
+                "actions"));
         } else {
-            $this->define_headers(array("Problème", "Difficulté", "Date", "Rédacteur", "Nombre de résolutions", "Résolu"));
-            $this->define_columns(array("problem_label", "difficulty_label", "problem_date", "firstname", "problem_resolutions", "solved"));
+            $this->define_headers(array("Problème",
+                "Difficulté",
+                "Date",
+                "Rédacteur",
+                "Nombre de résolutions",
+                "Résolu"));
+            $this->define_columns(array("problem_label",
+                "difficulty_label",
+                "problem_date",
+                "firstname",
+                "problem_resolutions",
+                "solved"));
         }
         $this->no_sorting("solved");
         $this->no_sorting("actions");
@@ -105,9 +128,11 @@ class problems_table extends table_sql {
         switch ($colname) {
             case 'problem_label':
                 $star = ($USER->id == $attempt->problem_creator_id) ? ' <span style="color :red">*</span>' : '';
-                $img = ($attempt->problem_testing == 1) ? '<img src="images/' . get_string('picture_testing', 'lips') . '" class="testing-picture"/>' : '';
+                $img = ($attempt->problem_testing == 1) ?
+                    '<img src="images/' . get_string('picture_testing', 'lips') . '" class="testing-picture"/>' : '';
 
-                $url = new action_link(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $attempt->id)), $attempt->problem_label);
+                $url = new action_link(new moodle_url('view.php',
+                    array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $attempt->id)), $attempt->problem_label);
                 return $OUTPUT->render($url) . $star . $img;
                 break;
 

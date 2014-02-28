@@ -1878,11 +1878,17 @@ function has_solved_problem($problemid, $userid) {
 }
 
 function  insert_bad_solution($solution, $idproblem, $iduser, $categoryid) {
-    global $DB;
+    global $DB, $CFG;
+
+    $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
+    $numberfailedanswersolved = $config['solutions']['number_of_failed_solutions_solved'];
 
     $DB->execute('DELETE FROM mdl_lips_problem_failed WHERE id NOT IN
     (SELECT id FROM
-        (SELECT id FROM mdl_lips_problem_failed WHERE problem_failed_problem=' . $idproblem . ' AND problem_failed_user = ' . $iduser . ' ORDER BY problem_failed_date LIMIT 5) AS V)
+        (SELECT id FROM mdl_lips_problem_failed WHERE problem_failed_problem=' . $idproblem . '
+        AND problem_failed_user = ' . $iduser . ' ORDER BY problem_failed_date DESC LIMIT '.$numberfailedanswersolved.')
+         AS
+         V)
     AND problem_failed_problem=' . $idproblem . ' AND problem_failed_user = ' . $iduser . '
     ');
 

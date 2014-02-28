@@ -41,9 +41,9 @@ require_once("$CFG->libdir/outputrenderers.php");
  */
 class received_challenges_table extends table_sql {
 
-	private $owner = false;
+    private $owner = false;
 
-	/**
+    /**
      * received_challenges_table constructor
      *
      * @param object $cm Moodle context
@@ -64,30 +64,32 @@ class received_challenges_table extends table_sql {
             JOIN mdl_lips_category cat ON prob.problem_category_id = cat.id
             JOIN mdl_lips_difficulty diff ON prob.problem_difficulty_id = diff.id
             LEFT JOIN mdl_lips lips ON lips.id = cat.id_language";
-        $where =  "cha.challenge_to = " . $iduser;       
+        $where = "cha.challenge_to = " . $iduser;
 
         if ($search != null) {
-        	if (!empty($search->problem) && !empty($search->author)) {
-        		$where = $where . " AND (problem_label LIKE '%" . $search->problem . "%' AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%')";
-        	}
-        	else if (!empty($search->problem)) {
-        		$where = $where . " AND (problem_label LIKE '%" . $search->problem . "%')";
-        	}
-        	else if (!empty($search->author)) {
-        		$where = $where . " AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%'";
-        	}
+            if (!empty($search->problem) && !empty($search->author)) {
+                $where = $where . " AND (problem_label LIKE '%" . $search->problem . "%' AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%')";
+            } else {
+                if (!empty($search->problem)) {
+                    $where = $where . " AND (problem_label LIKE '%" . $search->problem . "%')";
+                } else {
+                    if (!empty($search->author)) {
+                        $where = $where . " AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%'";
+                    }
+                }
+            }
         }
 
         $this->set_sql(
-            	$fieldstoselect,
-            	$tablesfrom,
-            	$where);
+            $fieldstoselect,
+            $tablesfrom,
+            $where);
 
         $this->set_count_sql("
         	SELECT COUNT(*)
         	FROM mdl_lips_challenge cha
         	WHERE cha.challenge_to = " . $iduser);
-        
+
         if ($owner) {
             $this->define_baseurl(new moodle_url('view.php',
                 array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges')));
@@ -98,7 +100,7 @@ class received_challenges_table extends table_sql {
 
         $this->define_headers(array(get_string('language', 'lips'), get_string('problem', 'lips'), get_string('category', 'lips'),
             get_string('difficulty', 'lips'), get_string('challenge_author', 'lips'), get_string('state', 'lips')));
-       
+
         $this->define_columns(array("compile_language", "problem_label", "category_name", "difficulty_points", "firstname", "state"));
 
         $this->sortable(true);
@@ -109,17 +111,17 @@ class received_challenges_table extends table_sql {
         global $OUTPUT, $PAGE;
 
         switch ($colname) {
-        	case 'difficulty_points':
-        		return get_string($attempt->difficulty_label, 'lips');
-        		break;
+            case 'difficulty_points':
+                return get_string($attempt->difficulty_label, 'lips');
+                break;
             case 'firstname':
                 return "$attempt->firstname $attempt->lastname";
                 break;
             case 'state':
-            	if ($this->owner) {
-                	switch ($attempt->challenge_state) {
-            			// Problem is in WAITING state.
-            			case 'WAITING':
+                if ($this->owner) {
+                    switch ($attempt->challenge_state) {
+                        // Problem is in WAITING state.
+                        case 'WAITING':
                             $url_accept = new action_link(new moodle_url('action.php', array(
                                     'id' => $this->cm->id,
                                     'action' => 'accept_challenge',
@@ -141,21 +143,21 @@ class received_challenges_table extends table_sql {
                             return $OUTPUT->render($url_accept) . $OUTPUT->render($url_refuse);
                             break;
 
-            			// Problem is in ACCEPTED state.
-            			case 'ACCEPTED':
+                        // Problem is in ACCEPTED state.
+                        case 'ACCEPTED':
 
-            			// Problem is in SOLVED state.
-            			case 'SOLVED':
+                            // Problem is in SOLVED state.
+                        case 'SOLVED':
 
-            			// Problem is in REFUSED state.
-            			case 'REFUSED':
-            				return get_string($attempt->challenge_state, 'lips');
-            				break;
+                            // Problem is in REFUSED state.
+                        case 'REFUSED':
+                            return get_string($attempt->challenge_state, 'lips');
+                            break;
                     }
-            	} else {
-	                return get_string($attempt->challenge_state, 'lips');
-	            }
-	            break;
+                } else {
+                    return get_string($attempt->challenge_state, 'lips');
+                }
+                break;
         }
         return null;
     }

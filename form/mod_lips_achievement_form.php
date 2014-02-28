@@ -63,14 +63,20 @@ class mod_lips_achievement_select_form extends moodleform {
             $categoriescount = (count($categoriesarray) < 10) ? count($categoriesarray) : 10;
 
             // Select achievement.
-            $hier =& $mform->addElement('hierselect', 'selectAchievement', get_string('achievements', 'lips'), array('size' => $categoriescount));
+            $hier =& $mform->addElement('hierselect',
+                'selectAchievement',
+                get_string('achievements', 'lips'),
+                array('size' => $categoriescount));
             $hier->setOptions(array($categoriesarray, $achievementsarray));
-            $mform->addRule('selectAchievement', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+            $mform->addRule('selectAchievement',
+                get_string('administration_category_modify_select_error', 'lips'),
+                'required', null, 'client');
 
             // Modify button.
             $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
         } else {
-            $html = $PAGE->get_renderer('mod_lips')->display_notification(get_string("administration_empty_achievements", "lips"), 'WARNING');
+            $html = $PAGE->get_renderer('mod_lips')->display_notification(get_string("administration_empty_achievements", "lips"),
+                'WARNING');
             $mform->addElement('html', $html);
             $mform->addElement('html', '<br/><br/><br/><br/><br/><br/>');
         }
@@ -121,43 +127,16 @@ class mod_lips_achievement_form extends moodleform {
     }
 
     /**
-     * Form custom validation
-     *
-     * @param array $data Form data
-     * @param array $files Form uploaded files
-     * @return array Errors array
-     */
-    public function validation($data, $files) {
-        $errors = parent::validation($data, $files);
-        $errors = array();
-
-        if (isset($data->inputLabel) && isset($data->areaDescription) && isset($data->inputPicture)) {
-            if (empty($data->inputLabel)) {
-                $errors['emptyAchievementLabel'] = get_string('administration_achievement_label_error', 'lips');
-            }
-
-            if (empty($data->areaDescription)) {
-                $errors['emptyAchievementDesc'] = get_string('administration_achievement_area_error', 'lips');
-            }
-        } else {
-            $errors['impossibleError'] = get_string('error_impossible', 'lips');
-        }
-
-        return $errors;
-    }
-
-    /**
      * Handle the form
      *
-     * @param array $data Form data
-     * @param array $files Form uploaded files
      */
     public function handle() {
         global $PAGE;
 
         // Do nothing if not submitted or cancelled.
-        if (!$this->is_submitted() || $this->is_cancelled())
+        if (!$this->is_submitted() || $this->is_cancelled()) {
             return;
+        }
 
         // Form data.
         $data = $this->get_submitted_data();
@@ -186,5 +165,31 @@ class mod_lips_achievement_form extends moodleform {
 
         // Success message.
         echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_achievement_success', 'lips'), 'SUCCESS');
+    }
+
+    /**
+     * Form custom validation
+     *
+     * @param array $data Form data
+     * @param array $files Form uploaded files
+     * @return array Errors array
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        $errors = array();
+
+        if (isset($data->inputLabel) && isset($data->areaDescription) && isset($data->inputPicture)) {
+            if (empty($data->inputLabel)) {
+                $errors['emptyAchievementLabel'] = get_string('administration_achievement_label_error', 'lips');
+            }
+
+            if (empty($data->areaDescription)) {
+                $errors['emptyAchievementDesc'] = get_string('administration_achievement_area_error', 'lips');
+            }
+        } else {
+            $errors['impossibleError'] = get_string('error_impossible', 'lips');
+        }
+
+        return $errors;
     }
 }

@@ -48,7 +48,7 @@ class mod_lips_configure_language_form extends moodleform {
 
         // Get web service class from the file config.
         $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
-        require_once(dirname(__FILE__). '/../'.$config['web_services']['service_languages_class'].'.php');
+        require_once(dirname(__FILE__) . '/../' . $config['web_services']['service_languages_class'] . '.php');
         $mform =& $this->_form;
 
         // Current language informations.
@@ -77,8 +77,13 @@ class mod_lips_configure_language_form extends moodleform {
         }
 
         // Select the syntax highlighting.
-        $mform->addElement('select', 'selectSyntaxHighlighting', get_string('administration_language_form_highlighting_select', 'lips'), ace_available_languages());
-        $mform->addRule('selectSyntaxHighlighting', get_string('administration_language_form_select_error', 'lips'), 'required', null, 'client');
+        $mform->addElement('select',
+            'selectSyntaxHighlighting',
+            get_string('administration_language_form_highlighting_select', 'lips'),
+            ace_available_languages());
+        $mform->addRule('selectSyntaxHighlighting',
+            get_string('administration_language_form_select_error', 'lips'),
+            'required', null, 'client');
         if ($lips->coloration_language != null) {
             $mform->setDefault('selectSyntaxHighlighting', $lips->coloration_language);
         }
@@ -119,8 +124,6 @@ class mod_lips_configure_language_form extends moodleform {
     /**
      * Handle the form
      *
-     * @param array $data Form data
-     * @param array $files Form uploaded files
      */
     public function handle() {
         global $PAGE;
@@ -139,7 +142,6 @@ class mod_lips_configure_language_form extends moodleform {
             foreach ($errors as $error) {
                 echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
             }
-
             return;
         }
 
@@ -160,7 +162,8 @@ class mod_lips_configure_language_form extends moodleform {
         }
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_configure_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_configure_success', 'lips'),
+            'SUCCESS');
     }
 
 }
@@ -193,8 +196,6 @@ class mod_lips_configure_picture_form extends moodleform {
     /**
      * Handle the form
      *
-     * @param array $data Form data
-     * @param array $files Form uploaded files
      */
     public function handle() {
         global $PAGE;
@@ -213,8 +214,9 @@ class mod_lips_configure_picture_form extends moodleform {
         $picture = $explodepicture[count($explodepicture) - 1];
 
         if (!is_a_picture($picture)) {
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error', 'lips'), 'ERROR');
-
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error',
+                    'lips'),
+                'ERROR');
             return;
         }
 
@@ -233,7 +235,8 @@ class mod_lips_configure_picture_form extends moodleform {
         update_language_picture($picture);
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_success', 'lips'),
+            'SUCCESS');
     }
 }
 
@@ -257,7 +260,8 @@ class mod_lips_configure_code_form extends moodleform {
         $mcustomdata = $this->_customdata;
 
         // Textarea for base code.
-        $mform->addElement('html', '<div id="configEditor" class="ace">' . (($mcustomdata['base_code'] == null || $mcustomdata['base_code'] == '') ? '' : htmlspecialchars($mcustomdata['base_code'])) . '</div>');
+        $mform->addElement('html', '<div id="configEditor" class="ace">' . (($mcustomdata['base_code'] == null ||
+                $mcustomdata['base_code'] == '') ? '' : htmlspecialchars($mcustomdata['base_code'])) . '</div>');
         $mform->addElement('textarea', 'areaBaseCode', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
         $mform->setDefault('areaBaseCode', $mcustomdata['base_code']);
 
@@ -309,8 +313,6 @@ class mod_lips_configure_code_form extends moodleform {
     /**
      * Handle the form
      *
-     * @param array $data Form data
-     * @param array $files Form uploaded files
      */
     public function handle() {
         global $PAGE;
@@ -329,7 +331,6 @@ class mod_lips_configure_code_form extends moodleform {
             foreach ($errors as $error) {
                 echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
             }
-
             return;
         }
 
@@ -338,6 +339,7 @@ class mod_lips_configure_code_form extends moodleform {
         update_language($lips->id, array('base_code' => $data->areaBaseCode));
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_code_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_code_success', 'lips'),
+            'SUCCESS');
     }
 }

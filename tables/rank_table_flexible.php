@@ -64,7 +64,12 @@ class rank_table extends flexible_table {
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "rank")));
 
         $this->set_attribute('class', 'admintable generaltable');
-        $this->define_headers(array(get_string('rank', 'lips'), get_string('user', 'lips'), get_string("solved_problems", "lips"), get_string("score", "lips"), "Suivre"));
+        $this->define_headers(array(
+            get_string('rank', 'lips'),
+            get_string('user', 'lips'),
+            get_string("solved_problems", "lips"),
+            get_string("score", "lips"),
+            "Suivre"));
         $this->define_columns(array("rank", "user", "nb_problems_solved", "user_score", "follow"));
         $this->no_sorting("follow");
         $this->sortable(true);
@@ -81,17 +86,21 @@ class rank_table extends flexible_table {
             } else {
                 $orderby = "order by firstname DESC";
             }
-        } else if ($sortedcolumn == "user_score") {
-            if ($sortedcolumns["user_score"] == SORT_ASC) {
-                $orderby = "order by rank ASC";
+        } else {
+            if ($sortedcolumn == "user_score") {
+                if ($sortedcolumns["user_score"] == SORT_ASC) {
+                    $orderby = "order by rank ASC";
+                } else {
+                    $orderby = "order by rank DESC";
+                }
             } else {
-                $orderby = "order by rank DESC";
-            }
-        } else if ($sortedcolumn == "rank") {
-            if ($sortedcolumns["rank"] == SORT_ASC) {
-                $orderby = "order by rank ASC";
-            } else {
-                $orderby = "order by rank DESC";
+                if ($sortedcolumn == "rank") {
+                    if ($sortedcolumns["rank"] == SORT_ASC) {
+                        $orderby = "order by rank ASC";
+                    } else {
+                        $orderby = "order by rank DESC";
+                    }
+                }
             }
         }
         $page = optional_param("page", 0, PARAM_INT);
@@ -125,7 +134,8 @@ class rank_table extends flexible_table {
             WHERE $conditions");
 
 
-            $conditionsselect = str_replace(" AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'", "", $conditions);
+            $conditionsselect = str_replace(" AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'",
+                "", $conditions);
 
             $sql = "
             SELECT rank, id, user_score, id_moodle_user, firstname, lastname
@@ -190,7 +200,7 @@ class rank_table extends flexible_table {
                         )),
                         get_string('follow', 'lips'), null, array("class" => "lips-button"));
                 }
-                // You can't follow yourself
+                // You can't follow yourself.
                 if ($user->id_moodle_user != $USER->id) {
                     $followlink = $lipsoutput->render($url);
                 } else {

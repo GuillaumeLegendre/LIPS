@@ -67,7 +67,10 @@ class mod_lips_category_create_form extends moodleform {
         $mform->setType('inputCategoryDocumentation', PARAM_TEXT);
 
         // Category documentation (TEXT).
-        $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
+        $mform->addElement('editor', 'areaCategoryDocumentation',
+            get_string('administration_category_documentation_text', 'lips'),
+            'rows="15" cols="100" placeholder="' .
+            get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
 
         // Create button.
         $mform->addElement('submit', 'submit', get_string('create', 'lips'), array('class' => 'lips-button'));
@@ -84,7 +87,10 @@ class mod_lips_category_create_form extends moodleform {
         $errors = parent::validation($data, $files);
         $errors = array();
 
-        if (isset($data->inputCategoryName) && isset($data->inputCategoryDocumentation) && isset($data->areaCategoryDocumentation)) {
+        if (isset($data->inputCategoryName) &&
+            isset($data->inputCategoryDocumentation) &&
+            isset($data->areaCategoryDocumentation)
+        ) {
             if (!empty($data->inputCategoryName)) {
                 $lips = get_current_instance();
                 if (category_exists(array('id_language' => $lips->id, 'category_name' => $data->inputCategoryName))) {
@@ -107,8 +113,6 @@ class mod_lips_category_create_form extends moodleform {
     /**
      * Handle the form
      *
-     * @param array $data Form data
-     * @param array $files Form uploaded files
      */
     public function handle() {
         global $PAGE;
@@ -127,21 +131,23 @@ class mod_lips_category_create_form extends moodleform {
             foreach ($errors as $error) {
                 echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
             }
-
             return;
         }
 
         // Params.
         $categoryname = $data->inputCategoryName;
-        $categorydocumentation = (empty($data->inputCategoryDocumentation)) ? $data->areaCategoryDocumentation['text'] : $data->inputCategoryDocumentation;
-        $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ? ((!empty($data->areaCategoryDocumentation['text'])) ? 'TEXT' : null) : 'LINK';
+        $categorydocumentation = (empty($data->inputCategoryDocumentation)) ?
+            $data->areaCategoryDocumentation['text'] : $data->inputCategoryDocumentation;
+        $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ?
+            ((!empty($data->areaCategoryDocumentation['text'])) ? 'TEXT' : null) : 'LINK';
 
         // Insert the data.
         $lips = get_current_instance();
         insert_category($lips->id, $categoryname, $categorydocumentation, $categorydocumentationtype);
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_create_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_create_success', 'lips'),
+            'SUCCESS');
     }
 }
 
@@ -159,7 +165,7 @@ class mod_lips_category_modify_select_form extends moodleform {
      * Form definition.
      */
     public function definition() {
-        global $PAGE; 
+        global $PAGE;
         $mform =& $this->_form;
 
         // Select the category.
@@ -169,13 +175,19 @@ class mod_lips_category_modify_select_form extends moodleform {
             $categories[$category->id] = $category->category_name;
         }
         if (count($categories) != 0) {
-            $mform->addElement('select', 'selectCategory', get_string('administration_category_modify_select', 'lips'), $categories);
-            $mform->addRule('selectCategory', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+            $mform->addElement('select',
+                'selectCategory',
+                get_string('administration_category_modify_select', 'lips'),
+                $categories);
+            $mform->addRule('selectCategory',
+                get_string('administration_category_modify_select_error', 'lips'),
+                'required', null, 'client');
 
             // Modify button.
             $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
         } else {
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_empty_categories', 'lips'), 'INFO');
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_empty_categories', 'lips'),
+                'INFO');
             echo '<br/><br/><br/><br/>';
         }
     }
@@ -233,9 +245,12 @@ class mod_lips_category_modify_form extends moodleform {
         $mform->setType('inputCategoryDocumentation', PARAM_TEXT);
 
         // Category documentation (TEXT).
-        $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'), 'rows="15" cols="100" placeholder="' . get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
+        $mform->addElement('editor', 'areaCategoryDocumentation', get_string('administration_category_documentation_text', 'lips'),
+            'rows="15" cols="100" placeholder="' .
+            get_string('administration_category_documentation_text_placeholder', 'lips') . '"');
         if ($mcustomdata['category_documentation_type'] == 'TEXT') {
-            $mform->setDefault('areaCategoryDocumentation', array('text' => $mcustomdata['category_documentation'], 'format' => FORMAT_HTML));
+            $mform->setDefault('areaCategoryDocumentation',
+                array('text' => $mcustomdata['category_documentation'], 'format' => FORMAT_HTML));
         }
 
         // Modify button.
@@ -253,10 +268,15 @@ class mod_lips_category_modify_form extends moodleform {
         $errors = parent::validation($data, $files);
         $errors = array();
 
-        if (isset($data->inputCategoryName) && isset($data->inputCategoryDocumentation) && isset($data->areaCategoryDocumentation)) {
+        if (isset($data->inputCategoryName) &&
+            isset($data->inputCategoryDocumentation) &&
+            isset($data->areaCategoryDocumentation)
+        ) {
             if (!empty($data->inputCategoryName)) {
                 $lips = get_current_instance();
-                if ($data->inputCategoryCurrentName != $data->inputCategoryName && category_exists(array('id_language' => $lips->id, 'category_name' => $data->inputCategoryName))) {
+                if ($data->inputCategoryCurrentName != $data->inputCategoryName &&
+                    category_exists(array('id_language' => $lips->id, 'category_name' => $data->inputCategoryName))
+                ) {
                     $errors['alreadyExists'] = get_string('administration_category_already_exists', 'lips');
                 }
 
@@ -276,8 +296,6 @@ class mod_lips_category_modify_form extends moodleform {
     /**
      * Handle the form
      *
-     * @param array $data Form data
-     * @param array $files Form uploaded files
      */
     public function handle() {
         global $PAGE;
@@ -303,14 +321,17 @@ class mod_lips_category_modify_form extends moodleform {
         // Params.
         $categoryid = $data->inputCategoryID;
         $categoryname = $data->inputCategoryName;
-        $categorydocumentation = (empty($data->inputCategoryDocumentation)) ? $data->areaCategoryDocumentation['text'] : $data->inputCategoryDocumentation;
-        $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ? ((!empty($data->areaCategoryDocumentation['text'])) ? 'TEXT' : null) : 'LINK';
+        $categorydocumentation = (empty($data->inputCategoryDocumentation)) ?
+            $data->areaCategoryDocumentation['text'] : $data->inputCategoryDocumentation;
+        $categorydocumentationtype = (empty($data->inputCategoryDocumentation)) ?
+            ((!empty($data->areaCategoryDocumentation['text'])) ? 'TEXT' : null) : 'LINK';
 
         // Update the data.
         update_category($categoryid, $categoryname, $categorydocumentation, $categorydocumentationtype);
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_modify_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_category_modify_success', 'lips'),
+            'SUCCESS');
     }
 }
 
@@ -338,14 +359,17 @@ class mod_lips_category_delete_form extends moodleform {
             $categories[$category->id] = $category->category_name;
         }
 
-        if(count($categories) == 0) {
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_empty_categories', 'lips'), 'INFO');
+        if (count($categories) == 0) {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_empty_categories', 'lips'),
+                'INFO');
             echo '<br/><br/><br/><br/>';
         } else {
             $error = get_string("administration_category_delete_info", "lips");
             echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'WARNING');
             $mform->addElement('select', 'categoryId', get_string('administration_category_modify_select', 'lips'), $categories);
-            $mform->addRule('categoryId', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+            $mform->addRule('categoryId',
+                get_string('administration_category_modify_select_error', 'lips'),
+                'required', null, 'client');
 
             // Delete button.
             $mform->addElement('submit', 'submit', get_string('delete', 'lips'), array('class' => 'lips-button'));
@@ -376,7 +400,9 @@ class mod_lips_category_select_problems_delete_form extends moodleform {
             $categories[$category->id] = $category->category_name;
         }
         $mform->addElement('select', 'idcategory', get_string('administration_category_modify_select', 'lips'), $categories);
-        $mform->addRule('idcategory', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+        $mform->addRule('idcategory',
+            get_string('administration_category_modify_select_error', 'lips'),
+            'required', null, 'client');
 
         // Modify button.
         $mform->addElement('submit', 'submit', get_string('select', 'lips'), array('class' => 'lips-button'));
