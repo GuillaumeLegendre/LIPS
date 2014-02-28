@@ -220,6 +220,11 @@ function deleteChalengedUser(user_id) {
     $("#" + user_id).remove();
 }
 
+function deleteSimilarProblem(id) {
+    $("#similar-problems #" + id).remove();
+    $("#id_problem_similar").val($("#id_problem_similar").val().replace(" " + id, ""));
+}
+
 function populateselectinstance() {
     var idinstance = $("#id_language_id_js option:selected").val();
     $.getJSON("./get_categories_by_instance.php", {id: idinstance, ajax: 'true'}, function (j) {
@@ -247,7 +252,7 @@ $(document).ready(function () {
             buttons: {
                 Conseiller: function () {
                     if ($.inArray($("#id_problem_id_js option:selected").val(), $("#id_problem_similar").val().split(" ")) == -1) {
-                        $("#problem_similar_content").append("<div class='fitem fitem_ftext similar_problem'><div class='felement ftext'><input readonly type='text' name='select_problem_similar_" + $("#id_problem_id_js option:selected").val() + "' value='" + $("#id_problem_id_js option:selected").text() + "'></div> <input class='delete_problem_similar_button' id='" + $("#id_problem_id_js option:selected").val() + "' src='./images/delete_similar.png' type='image'></div>");
+                        $("#similar-problems #problems").append('<p id="' + $("#id_problem_id_js option:selected").val() + '">' + $("#id_problem_id_js option:selected").text() + '<img src="images/delete_similar.png" title="Supprimer" class="delete" onClick="deleteSimilarProblem(' + $("#id_problem_id_js option:selected").val() + ')"/></p>');
                         $("#id_problem_similar").val($("#id_problem_similar").val() + " " + $("#id_problem_id_js option:selected").val());
                     }
                     $(this).dialog("close");
@@ -265,13 +270,8 @@ $(document).ready(function () {
             })
         });
 
-        $('#problem_similar_button').on('click', function () {
+        $('#problem-similar-button').on('click', function () {
             $("#dialog").dialog("open");
-        });
-
-        $('body').on('click', '.delete_problem_similar_button', function () {
-            $(this).parent().remove();
-            $("#id_problem_similar").val($("#id_problem_similar").val().replace(" " + $(this).attr("id"), ""));
         });
     }
 
@@ -672,111 +672,4 @@ $(document).ready(function () {
             source: mytablesentu
         });
     }
-
 });
-
-var supportedModes = {
-    ABAP:        ["abap"],
-    ActionScript:["as"],
-    ADA:         ["ada|adb"],
-    Apache_Conf: ["^htaccess|^htgroups|^htpasswd|^conf|htaccess|htgroups|htpasswd"],
-    AsciiDoc:    ["asciidoc"],
-    Assembly_x86:["asm"],
-    AutoHotKey:  ["ahk"],
-    BatchFile:   ["bat|cmd"],
-    C9Search:    ["c9search_results"],
-    C_Cpp:       ["cpp|c|cc|cxx|h|hh|hpp"],
-    Clojure:     ["clj"],
-    Cobol:       ["CBL|COB"],
-    coffee:      ["coffee|cf|cson|^Cakefile"],
-    ColdFusion:  ["cfm"],
-    CSharp:      ["cs"],
-    CSS:         ["css"],
-    Curly:       ["curly"],
-    D:           ["d|di"],
-    Dart:        ["dart"],
-    Diff:        ["diff|patch"],
-    Dot:         ["dot"],
-    Erlang:      ["erl|hrl"],
-    EJS:         ["ejs"],
-    Forth:       ["frt|fs|ldr"],
-    FTL:         ["ftl"],
-    Glsl:        ["glsl|frag|vert"],
-    golang:      ["go"],
-    Groovy:      ["groovy"],
-    HAML:        ["haml"],
-    Handlebars:  ["hbs|handlebars|tpl|mustache"],
-    Haskell:     ["hs"],
-    haXe:        ["hx"],
-    HTML:        ["html|htm|xhtml"],
-    HTML_Ruby:   ["erb|rhtml|html.erb"],
-    INI:         ["ini|conf|cfg|prefs"],
-    Jack:        ["jack"],
-    Jade:        ["jade"],
-    Java:        ["java"],
-    JavaScript:  ["js|jsm"],
-    JSON:        ["json"],
-    JSONiq:      ["jq"],
-    JSP:         ["jsp"],
-    JSX:         ["jsx"],
-    Julia:       ["jl"],
-    LaTeX:       ["tex|latex|ltx|bib"],
-    LESS:        ["less"],
-    Liquid:      ["liquid"],
-    Lisp:        ["lisp"],
-    LiveScript:  ["ls"],
-    LogiQL:      ["logic|lql"],
-    LSL:         ["lsl"],
-    Lua:         ["lua"],
-    LuaPage:     ["lp"],
-    Lucene:      ["lucene"],
-    Makefile:    ["^Makefile|^GNUmakefile|^makefile|^OCamlMakefile|make"],
-    MATLAB:      ["matlab"],
-    Markdown:    ["md|markdown"],
-    MEL:         ["mel"],
-    MySQL:       ["mysql"],
-    MUSHCode:    ["mc|mush"],
-    Nix:         ["nix"],
-    ObjectiveC:  ["m|mm"],
-    OCaml:       ["ml|mli"],
-    Pascal:      ["pas|p"],
-    Perl:        ["pl|pm"],
-    pgSQL:       ["pgsql"],
-    PHP:         ["php|phtml"],
-    Powershell:  ["ps1"],
-    Prolog:      ["plg|prolog"],
-    Properties:  ["properties"],
-    Protobuf:    ["proto"],
-    Python:      ["py"],
-    R:           ["r"],
-    RDoc:        ["Rd"],
-    RHTML:       ["Rhtml"],
-    Ruby:        ["rb|ru|gemspec|rake|^Guardfile|^Rakefile|^Gemfile"],
-    Rust:        ["rs"],
-    SASS:        ["sass"],
-    SCAD:        ["scad"],
-    Scala:       ["scala"],
-    Scheme:      ["scm|rkt"],
-    SCSS:        ["scss"],
-    SH:          ["sh|bash|^.bashrc"],
-    SJS:         ["sjs"],
-    Space:       ["space"],
-    snippets:    ["snippets"],
-    Soy_Template:["soy"],
-    SQL:         ["sql"],
-    Stylus:      ["styl|stylus"],
-    SVG:         ["svg"],
-    Tcl:         ["tcl"],
-    Tex:         ["tex"],
-    Text:        ["txt"],
-    Textile:     ["textile"],
-    Toml:        ["toml"],
-    Twig:        ["twig"],
-    Typescript:  ["ts|typescript|str"],
-    VBScript:    ["vbs"],
-    Velocity:    ["vm"],
-    Verilog:     ["v|vh|sv|svh"],
-    XML:         ["xml|rdf|rss|wsdl|xslt|atom|mathml|mml|xul|xbl"],
-    XQuery:      ["xq"],
-    YAML:        ["yaml|yml"]
-};
