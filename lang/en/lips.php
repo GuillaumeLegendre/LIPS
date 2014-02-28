@@ -320,9 +320,10 @@ $string['achievement_gold_title'] = 'Gold';
 $string['achievement_gold_msg'] = 'You solved 50 problems in the category ';
 $string['achievement_platinum_title'] = 'Platinum';
 $string['achievement_platinum_msg'] = 'You solved 100 problems in the category ';
-$string['administration_achievement_success'] = '';
-$string['administration_achievement_label_error'] = '';
-$string['administration_achievement_desc_error'] = '';
+$string['administration_achievement_success'] = 'The achievement has been modified';
+$string['administration_achievement_label_error'] = 'You must enter a label';
+$string['administration_achievement_desc_error'] = 'You must enter a description';
+$string['administration_achievement_default_picture'] = 'No picture selected. Restore default picture';
 
 // Problem
 $string['administration_problem_create_title'] = 'Create a problem';

@@ -293,6 +293,9 @@ $string['achievement_gold_msg'] = 'Vous avez résolu 50 problèmes dans la caté
 $string['achievement_platinum_title'] = 'Platine';
 $string['achievement_platinum_msg'] = 'Vous avez résolu 100 problèmes dans la catégorie ';
 $string['administration_achievement_success'] = 'Le badge a été modifié';
+$string['administration_achievement_label_error'] = 'Vous devez entrer un label';
+$string['administration_achievement_desc_error'] = 'Vous devez entrer une description';
+$string['administration_achievement_default_picture'] = 'Aucune image n\'a été sélectionnée. Restoration de l\'image par défaut';
 
 // Problem
 $string['administration_problem_create_title'] = 'Créer un probleme';

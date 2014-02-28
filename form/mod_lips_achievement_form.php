@@ -154,7 +154,22 @@ class mod_lips_achievement_form extends moodleform {
         // Update date.
         $achievementdetails = get_achievement_details(array('id' => $data->inputAchievementID));
         if (empty($data->inputPicture)) {
-            $data->inputPicture = $achievementdetails->achievement_picture;
+            switch($achievementdetails->achievement_problems) {
+                case 10:
+                    $data->inputPicture = 'bronze.png';
+                break;
+                case 25:
+                    $data->inputPicture = 'silver.png';
+                break;
+                case 50:
+                    $data->inputPicture = 'gold.png';
+                break;
+                case 100:
+                    $data->inputPicture = 'platinum.png';
+                break;
+            }
+
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_achievement_default_picture', 'lips'), 'INFO');
         } else if(!is_a_picture($data->inputPicture)) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error', 'lips'), 'ERROR');
 
