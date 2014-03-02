@@ -76,16 +76,19 @@ class my_problems_table extends table_sql {
         parent::__construct("mdl_lips_problem");
         $this->cm = $cm;
 
-        $this->set_sql("mlp.id, problem_label, problem_date, problem_creator_id, difficulty_label, difficulty_points, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing",
-            "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
-            LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
-            JOIN mdl_user mu ON mu.id = problem_creator_id 
-            JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id 
+        $this->set_sql("mlp.id, problem_label, problem_date, problem_creator_id, difficulty_label,
+            difficulty_points, count(mls.id) as problem_resolutions, firstname, lastname, mlu.id AS user_id,
+            problem_testing",
+            "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id
+            LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id
+            JOIN mdl_user mu ON mu.id = problem_creator_id
+            JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id
             JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id",
-            "mlc.id_language = " . $idlanguage . " AND mlp.problem_creator_id = " . $idcreator . " 
+            "mlc.id_language = " . $idlanguage . " AND mlp.problem_creator_id = " . $idcreator . "
             GROUP BY mlp.id");
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_problem WHERE problem_creator_id = " . $idcreator);
-        $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'my_problems')));
+        $this->define_baseurl(new moodle_url('view.php',
+            array('id' => $cm->id, 'view' => 'administration', 'action' => 'my_problems')));
 
         $this->define_headers(array(
             get_string('problem', 'lips'),
@@ -155,9 +158,19 @@ class my_problems_table extends table_sql {
                 break;
 
             case 'actions':
-                $actions = $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_modify', "problemId" => $attempt->id)), new
-                pix_icon("t/edit", "edit"));
-                $actions .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'deleteProblem', "problemId" => $attempt->id, 'originV' => 'administration',
+                $actions = $OUTPUT->action_icon(
+                    new moodle_url("view.php",
+                        array('id' => $this->cm->id,
+                            'view' => 'administration',
+                            'action' => 'problem_modify',
+                            "problemId" => $attempt->id)),
+                    new pix_icon("t/edit", "edit"));
+                $actions .= " " . $OUTPUT->action_icon(
+                        new moodle_url("view.php",
+                            array('id' => $this->cm->id,
+                                'view' => 'deleteProblem',
+                                "problemId" => $attempt->id,
+                                'originV' => 'administration',
                         'originAction' => 'my_problems')), new pix_icon("t/delete", "delete"));
 
                 return $actions;

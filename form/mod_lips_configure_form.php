@@ -208,7 +208,7 @@ class mod_lips_configure_picture_form extends moodleform {
         // Form data.
         $data = $this->get_submitted_data();
 
-        if(empty($data->filePicture)) {
+        if (empty($data->filePicture)) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_empty',
                     'lips'),
                 'ERROR');
@@ -225,7 +225,6 @@ class mod_lips_configure_picture_form extends moodleform {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error',
                     'lips'),
                 'ERROR');
-            
             return;
         }
 
@@ -248,7 +247,8 @@ class mod_lips_configure_picture_form extends moodleform {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_success', 'lips'),
                 'SUCCESS');
         } else {
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_url_error', 'lips'),
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_url_error',
+                    'lips'),
                 'ERROR');
         }
     }

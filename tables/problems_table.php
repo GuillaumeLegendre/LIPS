@@ -64,23 +64,28 @@ class problems_table extends table_sql {
         $this->cm = $cm;
 
         if ($search != null) {
-            $this->set_sql("mlp.id, problem_label, problem_category_id, problem_date, problem_creator_id, difficulty_label, difficulty_points, count(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing, mlu.id_user_moodle",
-                "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
-                LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
-                JOIN mdl_user mu ON mu.id = problem_creator_id 
+            $this->set_sql("mlp.id, problem_label, problem_category_id, problem_date, problem_creator_id,
+                difficulty_label, difficulty_points, count(mls.id) AS problem_resolutions, firstname,
+                lastname, mlu.id AS user_id, problem_testing, mlu.id_user_moodle",
+                "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id
+                LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp
+                .id
+                JOIN mdl_user mu ON mu.id = problem_creator_id
                 JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id",
-                "problem_category_id = " . $id . " 
-                AND problem_label LIKE '%$search%' 
-                AND (problem_testing = 0 OR problem_testing = 1 AND problem_creator_id = " . $USER->id . ") 
+                "problem_category_id = " . $id . "
+                AND problem_label LIKE '%$search%'
+                AND (problem_testing = 0 OR problem_testing = 1 AND problem_creator_id = " . $USER->id . ")
                 GROUP BY mlp.id");
         } else {
-            $this->set_sql("mlp.id, problem_label, problem_category_id, problem_date, problem_creator_id, difficulty_label, count(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_testing,  mlu.id_user_moodle",
-                "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
-                LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
-                JOIN mdl_user mu ON mu.id = problem_creator_id 
+            $this->set_sql("mlp.id, problem_label, problem_category_id, problem_date, problem_creator_id,
+                difficulty_label, count(mls.id) AS problem_resolutions, firstname, lastname,
+                mlu.id AS user_id, problem_testing,  mlu.id_user_moodle",
+                "mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id
+                LEFT JOIN mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id
+                JOIN mdl_user mu ON mu.id = problem_creator_id
                 JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id",
-                "problem_category_id = " . $id . " 
-                AND (problem_testing = 0 OR problem_testing = 1 AND problem_creator_id = " . $USER->id . ") 
+                "problem_category_id = " . $id . "
+                AND (problem_testing = 0 OR problem_testing = 1 AND problem_creator_id = " . $USER->id . ")
                 GROUP BY mlp.id");
         }
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'category', "categoryId" => $id)));
@@ -157,8 +162,21 @@ class problems_table extends table_sql {
                 $a = "";
 
                 if (has_capability('mod/lips:administration', $context) && is_author($attempt->id, $USER->id)) {
-                    $a = $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'administration', 'action' => 'problem_modify', 'problemId' => $attempt->id)), new pix_icon("t/edit", "edit"));
-                    $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php", array('id' => $this->cm->id, 'view' => 'deleteProblem', 'problemId' => $attempt->id, 'originV' => "category", "categoryId" => $attempt->problem_category_id)), new pix_icon("t/delete", "delete"));
+                    $a = $OUTPUT->action_icon(
+                        new moodle_url("view.php",
+                            array('id' => $this->cm->id,
+                                'view' => 'administration',
+                                'action' => 'problem_modify',
+                                'problemId' => $attempt->id)),
+                        new pix_icon("t/edit", "edit"));
+                    $a .= " " . $OUTPUT->action_icon(
+                            new moodle_url("view.php",
+                                array('id' => $this->cm->id,
+                                    'view' => 'deleteProblem',
+                                    'problemId' => $attempt->id,
+                                    'originV' => "category",
+                                    "categoryId" => $attempt->problem_category_id)),
+                            new pix_icon("t/delete", "delete"));
                 }
 
                 return $a;

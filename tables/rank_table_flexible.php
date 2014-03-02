@@ -115,7 +115,8 @@ class rank_table extends flexible_table {
             JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id
             WHERE mlp.problem_category_id =$category");
 
-            $sql = "SELECT mlu.id,SUM( difficulty_points ) as user_score, mu.id AS id_moodle_user, mu.firstname, mu.lastname, @curRank := @curRank + 1 AS rank
+            $sql = "SELECT mlu.id,SUM( difficulty_points ) as user_score, mu.id AS id_moodle_user,
+            mu.firstname, mu.lastname, @curRank := @curRank + 1 AS rank
             FROM (SELECT @curRank := 0) r,mdl_lips_user mlu
             JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
             JOIN mdl_lips_problem_solved mlps ON problem_solved_user = mlu.id_user_moodle
@@ -134,7 +135,8 @@ class rank_table extends flexible_table {
             WHERE $conditions");
 
 
-            $conditionsselect = str_replace(" AND mu.firstname like '%" . $searchuser . "%' or mu.lastname like '%" . $searchuser . "%'",
+            $conditionsselect = str_replace(" AND mu.firstname like '%" . $searchuser . "%' or
+                mu.lastname like '%" . $searchuser . "%'",
                 "", $conditions);
 
             $sql = "
@@ -179,7 +181,8 @@ class rank_table extends flexible_table {
                 ";
                 $countproblemsolved = $DB->count_records_sql($sql);
 
-                $userlink = '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $user->id)) . '"/>' . $lipsoutput->display_user_link($user->id, $user->firstname, $user->lastname) . '</div>';
+                $userlink = '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $user->id)) . '"/>'
+                    . $lipsoutput->display_user_link($user->id, $user->firstname, $user->lastname) . '</div>';
 
 
                 $userdetails = get_user_details(array('id_user_moodle' => $USER->id));

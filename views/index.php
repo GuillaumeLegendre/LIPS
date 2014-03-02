@@ -53,9 +53,10 @@ class page_index extends page_view {
 
     function display() {
 
-        if($this->access == false) {
+        if ($this->access == false) {
             parent::display_denied_header();
-            echo '<center><img src="images/jp.gif"/><h1 style="color: red;">' . get_string('you_didnt_say_the_magic_word', 'lips') . '</h1></center>';
+            echo '<center><img src="images/jp.gif"/>
+                <h1 style="color: red;">' . get_string('you_didnt_say_the_magic_word', 'lips') . '</h1></center>';
         } else {
             parent::display_header();
             $this->display_content();
@@ -70,10 +71,10 @@ class page_index extends page_view {
     function display_content() {
         global $USER;
 
-        // User details
+        // User details.
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
 
-        // Current challenges
+        // Current challenges.
         $currentchallengedetails = fetch_challenges(array('challenge_to' => $userdetails->id, 'challenge_state' => 'ACCEPTED'));
         echo $this->lipsoutput->display_h1(get_string('current_challenges', 'lips'));
         if (count($currentchallengedetails) > 0) {
@@ -82,7 +83,7 @@ class page_index extends page_view {
             echo $this->lipsoutput->display_p(get_string('no_challenges', 'lips'));
         }
 
-        // Received challenges
+        // Received challenges.
         $receivedchallengedetails = fetch_challenges(array('challenge_to' => $userdetails->id, 'challenge_state' => 'WAITING'));
         echo $this->lipsoutput->display_h1(get_string('received_challenges', 'lips'), array("style" => "margin-top: 15px"));
         if (count($receivedchallengedetails) > 0) {
@@ -92,14 +93,17 @@ class page_index extends page_view {
         }
 
         $page = optional_param('page', 1, PARAM_INT);
-        // Notifications
-        $notificationsdetails = fetch_notifications_details('notification_user_id = ' . $userdetails->id . ' AND notification_from <> ' . $userdetails->id . ' AND notification_to <> ' .
-            $userdetails->id,  $page * 15);
+        // Notifications.
+        $notificationsdetails = fetch_notifications_details('notification_user_id = ' . $userdetails->id . ' AND
+            notification_from <> ' . $userdetails->id . ' AND notification_to <> ' .
+            $userdetails->id, $page * 15);
         echo $this->lipsoutput->display_h1(get_string('notifications', 'lips'));
         if (count($notificationsdetails) > 0) {
             echo $this->lipsoutput->display_notifications($notificationsdetails);
-            if (count(fetch_notifications_details('notification_user_id = ' . $userdetails->id . ' AND notification_from <> ' . $userdetails->id . ' AND notification_to <> ' . $userdetails->id, $page
-                    + 1 * 15)) > $page * 15) {
+            if (count(fetch_notifications_details('notification_user_id = ' . $userdetails->id . ' AND
+                notification_from <> ' . $userdetails->id . ' AND notification_to <> ' .
+                    $userdetails->id, $page + 1 * 15)) > $page * 15
+            ) {
                 echo "<br/><center>" . $this->lipsoutput->render(new action_link(new moodle_url('view.php', array(
                             'id' => $this->cm->id,
                             'view' => $this->view,

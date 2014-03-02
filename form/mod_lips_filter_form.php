@@ -58,12 +58,12 @@ class mod_lips_filter_form extends moodleform {
         foreach (get_active_languages() as $language) {
             $activelanguages[$language->id] = $language->compile_language;
         }
-        // Header
+        // Header.
         $mform->addElement('header', 'headerSearch', get_string('filter', 'lips'));
         $mform->addElement('select', 'language_id_js', null, $activelanguages);
         $mform->addElement('select', 'category_id_js', null, $categorieslanguage);
 
-        // Input search
+        // Input search.
         $mform->addElement('text', 'userSearch', null, array('placeholder' => $placeholder, 'class' => $clazz));
         $mform->setType('userSearch', PARAM_TEXT);
 

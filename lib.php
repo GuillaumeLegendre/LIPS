@@ -142,8 +142,8 @@ function lips_delete_instance($id) {
     $DB->delete_records('lips_notification', array('notification_language' => $lips->id));
     $DB->delete_records('lips_score', array('score_instance' => $lips->id));
     $DB->delete_records('lips_user_rights', array('user_rights_instance' => $lips->id));
-    foreach($DB->get_records('lips_category', array('id_language' => $lips->id)) as $category) {
-        foreach($DB->get_records('lips_problem', array('problem_category_id' => $category->id)) as $problem) {
+    foreach ($DB->get_records('lips_category', array('id_language' => $lips->id)) as $category) {
+        foreach ($DB->get_records('lips_problem', array('problem_category_id' => $category->id)) as $problem) {
             $DB->delete_records('lips_problem_similar', array('problem_similar_id' => $problem->id));
             $DB->delete_records('lips_problem_similar', array('problem_similar_main_id' => $problem->id));
             $DB->delete_records('lips_problem_solved', array('problem_solved_problem' => $problem->id));

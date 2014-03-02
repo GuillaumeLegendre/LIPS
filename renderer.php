@@ -48,7 +48,9 @@ class mod_lips_renderer extends plugin_renderer_base {
         $tabs[] = new tabobject('profile', "view.php?id={$id}&amp;view=profile", get_string('profile', 'lips'));
 
         if (has_capability('mod/lips:administration', $context)) {
-            $tabs[] = new tabobject('administration', "view.php?id={$id}&amp;view=administration", get_string('administration', 'lips'));
+            $tabs[] = new tabobject('administration',
+                "view.php?id={$id}&amp;view=administration",
+                get_string('administration', 'lips'));
         }
 
         return $this->tabtree($tabs, convert_active_tab($activetab));
@@ -174,7 +176,7 @@ class mod_lips_renderer extends plugin_renderer_base {
         $action = optional_param('action', 'profile', PARAM_TEXT);
         $iduser = optional_param('id_user', null, PARAM_TEXT);
 
-        // Infos
+        // Infos.
         $lips = get_current_instance();
         $currentuserdetails = get_user_details(array('id_user_moodle' => $USER->id));
         $userdetails = ($iduser == null) ? $currentuserdetails : get_user_details(array('id' => $iduser));
@@ -185,36 +187,43 @@ class mod_lips_renderer extends plugin_renderer_base {
 
         $menu = '<div id="profile-menu"><img src="' . $userpicture . '" id="picture"/>';
         if ($iduser != null && $iduser != $currentuserdetails->id) {
-            if(is_following($currentuserdetails->id, $userdetails->id)) {
+            if (is_following($currentuserdetails->id, $userdetails->id)) {
                 $menu .= $this->render(new action_link(new moodle_url('action.php', array(
-                    'id' => $this->page->cm->id,
-                    'action' => 'unfollow',
-                    'originV' => 'profile',
-                    'originUser' => $userdetails->id,
-                    'to_unfollow' => $userdetails->id
-                )),
-                get_string('unfollow', 'lips'), null, array("class" => "lips-button right-button", "style" => "margin-left: 15px")));
+                        'id' => $this->page->cm->id,
+                        'action' => 'unfollow',
+                        'originV' => 'profile',
+                        'originUser' => $userdetails->id,
+                        'to_unfollow' => $userdetails->id
+                    )),
+                    get_string('unfollow', 'lips'),
+                    null,
+                    array("class" => "lips-button right-button", "style" => "margin-left: 15px")));
             } else {
                 $menu .= $this->render(new action_link(new moodle_url('action.php', array(
-                    'id' => $this->page->cm->id,
-                    'action' => 'follow',
-                    'originV' => 'profile',
-                    'originUser' => $userdetails->id,
-                    'to_follow' => $userdetails->id
-                )),
-                get_string('follow', 'lips'), null, array("class" => "lips-button right-button", "style" => "margin-left: 15px")));
+                        'id' => $this->page->cm->id,
+                        'action' => 'follow',
+                        'originV' => 'profile',
+                        'originUser' => $userdetails->id,
+                        'to_follow' => $userdetails->id
+                    )),
+                    get_string('follow', 'lips'),
+                    null,
+                    array("class" => "lips-button right-button", "style" => "margin-left: 15px")));
             }
 
             $menu .= $this->render(new action_link(
-                new moodle_url($CFG->wwwroot . '/message/index.php?id=' . $moodleuserdetails->id . '&viewing=course_' . $PAGE->context->get_course_context()->instanceid), 
-                get_string('send_message', 'lips'), 
+                new moodle_url($CFG->wwwroot . '/message/index.php?id=' .
+                    $moodleuserdetails->id . '&viewing=course_' . $PAGE->context->get_course_context()->instanceid),
+                get_string('send_message', 'lips'),
                 null, array("class" => "lips-button right-button")
             ));
         }
 
         $menu .= '<div id="background">
             <div id="infos">
-                <div id="role">' . ((isset($userstatus->user_rights_status)) ? get_string($userstatus->user_rights_status, 'lips') : get_string('student', 'lips')) . '</div>
+                <div id="role">' .
+            ((isset($userstatus->user_rights_status)) ? get_string($userstatus->user_rights_status, 'lips') :
+                get_string('student', 'lips')) . '</div>
                 <div id="rank">' . $rank->rank_label . '</div>
             </div>
             <div id="user">' . ucfirst($moodleuserdetails->firstname) . ' ' . ucfirst($moodleuserdetails->lastname) . '</div>
@@ -280,7 +289,8 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param string $comment Base comment
      */
     public function display_ace_form($editorid, $areaid, $mode, $flag = '', $theme = 'eclipse', $comment = '') {
-        echo '<script type="text/javascript">createAce("' . $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '", "' . $flag . '", "' . $comment . '")</script>';
+        echo '<script type="text/javascript">createAce("' .
+            $editorid . '", "' . $areaid . '", "' . $mode . '", "' . $theme . '", "' . $flag . '", "' . $comment . '")</script>';
     }
 
     /**
@@ -317,7 +327,7 @@ class mod_lips_renderer extends plugin_renderer_base {
         $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header-solved"));
         $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '" class="ace readonly">' . $data->problem_solution . '</div>', array("id" => "content"));
         echo html_writer::tag('div', $header . $content, array("class" => "solution"));
-        
+
         $this->display_ace_form('aceSolution_' . $data->id, '', $lips->coloration_language, 'readonly-notsizable');
     }
 
@@ -349,12 +359,16 @@ class mod_lips_renderer extends plugin_renderer_base {
         $url = null;
         if ($categorydetails->category_documentation_type == 'LINK') {
             $url = new moodle_url($categorydetails->category_documentation);
-        } else if ($categorydetails->category_documentation_type == 'TEXT') {
-            $url = new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categorydetails->id));
+        } else {
+            if ($categorydetails->category_documentation_type == 'TEXT') {
+                $url = new moodle_url("view.php",
+                    array('id' => $this->page->cm->id, 'view' => 'categoryDocumentation', 'categoryId' => $categorydetails->id));
+            }
         }
 
-        if($url != null) {
-            return $this->display_div($this->render(new action_link($url, get_string("documentation", "lips"))), array("style" => "float: right;"));
+        if ($url != null) {
+            return $this->display_div($this->render(
+                new action_link($url, get_string("documentation", "lips"))), array("style" => "float: right;"));
         }
 
         return null;
@@ -380,70 +394,86 @@ class mod_lips_renderer extends plugin_renderer_base {
     public function display_notifications($notifications) {
         $display = '';
 
-        if(count($notifications) == 0) {
+        if (count($notifications) == 0) {
             $display = get_string('no_notifications', 'lips');
         } else {
             $display .= '<div style="margin-top: 25px;"></div>';
 
-            foreach($notifications as $notification) {
-                // Notification message
+            foreach ($notifications as $notification) {
+                // Notification message.
                 $language = '';
-                if($notification->notification_language != null) {
+                if ($notification->notification_language != null) {
                     $lips = get_instance($notification->notification_language);
-                    if($lips->compile_language != null) {
+                    if ($lips->compile_language != null) {
                         $language = '<div class="notification-language">' . ucfirst($lips->compile_language) . '</div>';
                     }
                 }
-                $notification_msg = '<div class="notification-content">' . $language . get_string($notification->notification_type, 'lips') . '</div>';
+                $notificationmsg = '<div class="notification-content">' . $language .
+                    get_string($notification->notification_type, 'lips') . '</div>';
 
-                // Set the picture
-                $notification_msg = str_replace('{img}', '<img src="images/' .  get_string($notification->notification_type . '_picture', 'lips') . '"/>', $notification_msg);
+                // Set the picture.
+                $notificationmsg = str_replace('{img}', '<img src="images/' .
+                    get_string($notification->notification_type . '_picture', 'lips') . '"/>', $notificationmsg);
 
-                // Set the date
-                $notification_msg = str_replace('{date}', '<span>' . format_date($notification->notification_date) . '</span>', $notification_msg);
+                // Set the date.
+                $notificationmsg = str_replace('{date}',
+                    '<span>' . format_date($notification->notification_date) . '</span>', $notificationmsg);
 
-                // Set the notification_from
-                $notification_from = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_from))->id_user_moodle));
-                $notification_msg = str_replace('{notification_from}', $this->display_user_link($notification->notification_from, $notification_from->firstname, $notification_from->lastname), $notification_msg);
+                // Set the notification_from.
+                $notificationfrom = get_moodle_user_details(
+                    array('id' => get_user_details(array('id' => $notification->notification_from))->id_user_moodle));
+                $notificationmsg = str_replace('{notification_from}',
+                    $this->display_user_link($notification->notification_from,
+                        $notificationfrom->firstname,
+                        $notificationfrom->lastname),
+                    $notificationmsg);
 
-                // Set the notification_to
-                if($notification->notification_to != 0) {
-                    $notification_to = get_moodle_user_details(array('id' => get_user_details(array('id' => $notification->notification_to))->id_user_moodle));
-                    $notification_msg = str_replace('{notification_to}', $this->display_user_link($notification->notification_to, $notification_to->firstname, $notification_to->lastname), $notification_msg);
+                // Set the notification_to.
+                if ($notification->notification_to != 0) {
+                    $notificationto = get_moodle_user_details(
+                        array('id' => get_user_details(array('id' => $notification->notification_to))->id_user_moodle));
+                    $notificationmsg = str_replace('{notification_to}',
+                        $this->display_user_link($notification->notification_to,
+                            $notificationto->firstname,
+                            $notificationto->lastname),
+                        $notificationmsg);
                 }
 
-                // Set the notification_problem
-                if($notification->notification_problem != null) {
-                    $notification_problem = get_problem_details($notification->notification_problem);
-                    $url_problem = new action_link(new moodle_url('view.php', array(
-                        'id' => $lips->instance_link,
-                        'view' => 'problem',
-                        'problemId' => $notification->notification_problem
-                    )),
-                    $notification_problem[$notification->notification_problem]->problem_label);
-                    $notification_msg = str_replace('{notification_problem}', $this->render($url_problem), $notification_msg);
+                // Set the notification_problem.
+                if ($notification->notification_problem != null) {
+                    $notificationproblem = get_problem_details($notification->notification_problem);
+                    $urlproblem = new action_link(new moodle_url('view.php', array(
+                            'id' => $lips->instance_link,
+                            'view' => 'problem',
+                            'problemId' => $notification->notification_problem
+                        )),
+                        $notificationproblem[$notification->notification_problem]->problem_label);
+                    $notificationmsg = str_replace('{notification_problem}', $this->render($urlproblem), $notificationmsg);
                 }
 
-                // Set the notification_category
-                if($notification->notification_category != null) {
-                    $notification_category = get_category_details($notification->notification_category);
-                    $url_category = new action_link(new moodle_url('view.php', array(
-                        'id' => $lips->instance_link,
-                        'view' => 'category',
-                        'categoryId' => $notification->notification_category
-                    )),
-                    $notification_category->category_name);
-                    $notification_msg = str_replace('{notification_category}', $this->render($url_category), $notification_msg);
+                // Set the notification_category.
+                if ($notification->notification_category != null) {
+                    $notificationcategory = get_category_details($notification->notification_category);
+                    $urlcategory = new action_link(
+                        new moodle_url('view.php',
+                            array(
+                                'id' => $lips->instance_link,
+                                'view' => 'category',
+                                'categoryId' => $notification->notification_category
+                            )),
+                        $notificationcategory->category_name);
+                    $notificationmsg = str_replace('{notification_category}', $this->render($urlcategory), $notificationmsg);
                 }
 
-                // Set the notification_text
-                if($notification->notification_text != null) {
-                    $notification_msg = str_replace('{notification_text}', '<strong>' . $notification->notification_text . '</strong>', $notification_msg);
+                // Set the notification_text.
+                if ($notification->notification_text != null) {
+                    $notificationmsg = str_replace('{notification_text}',
+                        '<strong>' . $notification->notification_text . '</strong>', $notificationmsg);
                 }
 
-                $display .= $notification_msg;
+                $display .= $notificationmsg;
 
-                // Notification border
+                // Notification border.
                 $display .= '<div class="notification-border"></div>';
             }
         }
@@ -462,11 +492,11 @@ class mod_lips_renderer extends plugin_renderer_base {
      */
     public function display_user_link($userid, $firstname, $lastname, $languageid = null) {
         $url = new action_link(new moodle_url('view.php', array(
-            'id' => (($languageid == null) ? $this->page->cm->id : $languageid),
-            'view' => 'profile',
-            'id_user' => $userid
-        )),
-        ucfirst($firstname) . ' ' . ucfirst($lastname));
+                'id' => (($languageid == null) ? $this->page->cm->id : $languageid),
+                'view' => 'profile',
+                'id_user' => $userid
+            )),
+            ucfirst($firstname) . ' ' . ucfirst($lastname));
 
         return $this->render($url);
     }
@@ -481,15 +511,16 @@ class mod_lips_renderer extends plugin_renderer_base {
      */
     public function display_challenge_dialog($category, $problem, $challengedusers) {
         $dialog = '<div id="challenge-users" title="' . get_string('challenge', 'lips') . ' - ' . $category . ' - ' . $problem . '">
-            <div id="notify" class="notifySuccess" style="width: 98%; display: none">' . get_string('problem_challenge_success', 'lips') . '</div>
+            <div id="notify" class="notifySuccess" style="width: 98%; display: none">' .
+            get_string('problem_challenge_success', 'lips') . '</div>
 
             <h2>' . $problem . '</h2>
             <p>Sélectionnez la liste des utilisateurs que vous souhaitez défier sur ce problème.</p>
             <input id="challenge-user"/>
             <h3>' . get_string('challenged_users', 'lips') . '</h3><p id="challenged-users">';
 
-        if(count($challengedusers) > 0) {
-            foreach($challengedusers as $user) {
+        if (count($challengedusers) > 0) {
+            foreach ($challengedusers as $user) {
                 $dialog .= ucfirst($user->firstname) . ' ' . ucfirst($user->lastname) . ', ';
             }
             $dialog = substr($dialog, 0, -2);
@@ -511,55 +542,63 @@ class mod_lips_renderer extends plugin_renderer_base {
     public function display_challenges($challenges) {
         $display = '';
 
-        foreach($challenges as $challenge) {
-            // Challenge border
+        foreach ($challenges as $challenge) {
+            // Challenge border.
             $display .= '<div class="notification-border"></div>';
 
             $lips = get_instance($challenge->challenge_language);
 
             $language = '';
             $lips = get_instance($challenge->challenge_language);
-            if($lips->compile_language != null) {
+            if ($lips->compile_language != null) {
                 $language = '<div class="notification-language">' . ucfirst($lips->compile_language) . '</div>';
             }
-            // Challenge message
-            $challenge_msg = '<div class="challenge-content">' . $language . get_string('challenge_notification', 'lips') . '<br/>{challenge_solve} {challenge_refuse}</div>';
+            // Challenge message.
+            $challengemsg = '<div class="challenge-content">' .
+                $language . get_string('challenge_notification', 'lips') . '<br/>{challenge_solve} {challenge_refuse}</div>';
 
-            // Set the date
-            $challenge_msg = str_replace('{date}', '<span>' . format_date($challenge->challenge_date) . '</span>', $challenge_msg);
+            // Set the date.
+            $challengemsg = str_replace('{date}', '<span>' . format_date($challenge->challenge_date) . '</span>', $challengemsg);
 
-            // Set the challenge_from
-            $challenge_from = get_moodle_user_details(array('id' => get_user_details(array('id' => $challenge->challenge_from))->id_user_moodle));
-            $challenge_msg = str_replace('{challenge_from}', $this->display_user_link($challenge->challenge_from, $challenge_from->firstname, $challenge_from->lastname), $challenge_msg);
+            // Set the challenge_from.
+            $challengefrom = get_moodle_user_details(
+                array('id' => get_user_details(array('id' => $challenge->challenge_from))->id_user_moodle));
+            $challengemsg = str_replace('{challenge_from}',
+                $this->display_user_link($challenge->challenge_from,
+                    $challengefrom->firstname,
+                    $challengefrom->lastname),
+                $challengemsg);
 
-            // Set the challenge_problem
-            $challenge_problem = get_problem_details($challenge->challenge_problem);
-            $url_problem = new action_link(new moodle_url('view.php', array(
-                'id' => $lips->instance_link,
-                'view' => 'problem',
-                'problemId' => $challenge->challenge_problem
-            )),
-            $challenge_problem[$challenge->challenge_problem]->problem_label);
-            $challenge_msg = str_replace('{challenge_problem}', $this->render($url_problem), $challenge_msg);
+            // Set the challenge_problem.
+            $challengeproblem = get_problem_details($challenge->challenge_problem);
+            $urlproblem = new action_link(new moodle_url('view.php', array(
+                    'id' => $lips->instance_link,
+                    'view' => 'problem',
+                    'problemId' => $challenge->challenge_problem
+                )),
+                $challengeproblem[$challenge->challenge_problem]->problem_label);
+            $challengemsg = str_replace('{challenge_problem}', $this->render($urlproblem), $challengemsg);
 
-            // Set the buttons
-            $url_solve = new moodle_url('action.php', array(
+            // Set the buttons.
+            $urlsolve = new moodle_url('action.php', array(
                 'id' => $this->page->cm->id,
                 'action' => 'accept_challenge',
                 'challenge_id' => $challenge->id
             ));
-            $url_refuse = new moodle_url('action.php', array(
+            $urlrefuse = new moodle_url('action.php', array(
                 'id' => $this->page->cm->id,
                 'action' => 'refuse_challenge',
                 'challenge_id' => $challenge->id
             ));
-            $challenge_msg = str_replace('{challenge_solve}', '<a href="' . $url_solve . '" class="lips-button">' . get_string('accept', 'lips') . '</a>', $challenge_msg);
-            $challenge_msg = str_replace('{challenge_refuse}', '<a href="' . $url_refuse . '" class="lips-button">' . get_string('refuse', 'lips') . '</a>', $challenge_msg);
+            $challengemsg = str_replace('{challenge_solve}', '<a href="' .
+                $urlsolve . '" class="lips-button">' . get_string('accept', 'lips') . '</a>', $challengemsg);
+            $challengemsg = str_replace('{challenge_refuse}', '<a href="' .
+                $urlrefuse . '" class="lips-button">' . get_string('refuse', 'lips') . '</a>', $challengemsg);
 
-            $display .= $challenge_msg;
+            $display .= $challengemsg;
         }
 
-        if($display != '') {
+        if ($display != '') {
             $display .= '<div class="notification-border"></div>';
         }
 
@@ -575,37 +614,43 @@ class mod_lips_renderer extends plugin_renderer_base {
     public function display_current_challenges($challenges) {
         $display = '';
 
-        foreach($challenges as $challenge) {
+        foreach ($challenges as $challenge) {
 
-            // Challenge border
+            // Challenge border.
             $display .= '<div class="notification-border"></div>';
 
             $language = '';
             $lips = get_instance($challenge->challenge_language);
-            if($lips->compile_language != null) {
+            if ($lips->compile_language != null) {
                 $language = '<div class="notification-language">' . ucfirst($lips->compile_language) . '</div>';
             }
-            // Challenge message
-            $challenge_msg = '<div class="challenge-content current">' . $language . '<span>' . get_string('challenge_current', 'lips') . '</span></div>';
+            // Challenge message.
+            $challengemsg = '<div class="challenge-content current">' .
+                $language . '<span>' . get_string('challenge_current', 'lips') . '</span></div>';
 
-            // Set the challenge_problem
-            $challenge_problem = get_problem_details($challenge->challenge_problem);
-            $url_problem = new action_link(new moodle_url('view.php', array(
-                'id' => $lips->instance_link,
-                'view' => 'problem',
-                'problemId' => $challenge->challenge_problem
-            )),
-            $challenge_problem[$challenge->challenge_problem]->problem_label);
-            $challenge_msg = str_replace('{challenge_problem}', $this->render($url_problem), $challenge_msg);
+            // Set the challenge_problem.
+            $challengeproblem = get_problem_details($challenge->challenge_problem);
+            $urlproblem = new action_link(new moodle_url('view.php', array(
+                    'id' => $lips->instance_link,
+                    'view' => 'problem',
+                    'problemId' => $challenge->challenge_problem
+                )),
+                $challengeproblem[$challenge->challenge_problem]->problem_label);
+            $challengemsg = str_replace('{challenge_problem}', $this->render($urlproblem), $challengemsg);
 
-            // Set the challenge_from
-            $challenge_from = get_moodle_user_details(array('id' => get_user_details(array('id' => $challenge->challenge_from))->id_user_moodle));
-            $challenge_msg = str_replace('{challenge_from}', $this->display_user_link($challenge->challenge_from, $challenge_from->firstname, $challenge_from->lastname), $challenge_msg);
+            // Set the challenge_from.
+            $challengefrom = get_moodle_user_details(
+                array('id' => get_user_details(array('id' => $challenge->challenge_from))->id_user_moodle));
+            $challengemsg = str_replace('{challenge_from}',
+                $this->display_user_link($challenge->challenge_from,
+                    $challengefrom->firstname,
+                    $challengefrom->lastname),
+                $challengemsg);
 
-            $display .= $challenge_msg;
+            $display .= $challengemsg;
         }
 
-        if($display != '') {
+        if ($display != '') {
             $display .= '<div class="notification-border"></div>';
         }
 
@@ -623,20 +668,20 @@ class mod_lips_renderer extends plugin_renderer_base {
 
         $numberofusers = number_of_users();
         $instances = fetch_all_instances();
-        foreach($instances as $instance) {
+        foreach ($instances as $instance) {
             $userrank = user_rank_for_language($instance->instance_id, $userid);
 
-            if($instance->compile_language != null) {
+            if ($instance->compile_language != null) {
                 $display .= '<table><tr>
                                 <td class="img"><img src="images/' . $instance->language_picture . '"/></td>
                                 <td><p class="rank-language">' . ucfirst($instance->compile_language) . '</p>';
 
-                if($userrank == null) {
+                if ($userrank == null) {
                     $display .= '<p class="rank-rank">' . get_string('unranked', 'lips') . '</p>';
                 } else {
                     $display .= '<p class="rank-rank">Classement ' . $numberofusers . ' / ' . $numberofusers . '</p>';
                 }
-                
+
                 $display .= '</td></tr></table>';
             }
         }
@@ -655,21 +700,22 @@ class mod_lips_renderer extends plugin_renderer_base {
     public function display_achievements($achievements) {
         $display = '';
 
-        if(count($achievements) == 0) {
+        if (count($achievements) == 0) {
             $display = get_string('no_achievements', 'lips');
         } else {
             $display = '<div id="achievements">';
 
-            foreach($achievements as $achievement) {
+            foreach ($achievements as $achievement) {
                 $display .= '<table><tr>
                                 <td class="img"><img src="images/' . $achievement->achievement_picture . '"/></td>
-                                <td><span class="title">' . $achievement->achievement_label . '</span> : 
-                                ' . $achievement->achievement_desc . ' - <span class="date">' . date('d/m/Y', $achievement->au_date) . '</span></td></tr></table>';
+                                <td><span class="title">' . $achievement->achievement_label . '</span> :
+                                 ' . $achievement->achievement_desc . ' - <span class="date">' .
+                    date('d/m/Y', $achievement->au_date) . '</span></td></tr></table>';
             }
 
             $display .= '</div>';
         }
 
         return $display;
-    } 
+    }
 }

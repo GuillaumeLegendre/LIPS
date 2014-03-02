@@ -57,20 +57,23 @@ class page_users extends page_view {
         require_once(dirname(__FILE__) . '/../tables/users_table.php');
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
 
-        // Users title
+        // Users title.
         echo $this->lipsoutput->display_h1(get_string('users', 'lips'));
 
-        // Search form
+        // Search form.
         $array = array(
             "placeholder" => get_string('user', 'lips'),
             "class" => "users_ac"
         );
-        $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), $array, 'post', '', array('class' => 'search-form'));
-        $searchForm->display();
+        $searchform = new mod_lips_search_form(
+            new moodle_url('view.php',
+                array('id' => $this->cm->id, 'view' => $this->view)),
+            $array, 'post', '', array('class' => 'search-form'));
+        $searchform->display();
 
         $search = null;
-        if ($searchForm->is_submitted()) {
-            $data = $searchForm->get_submitted_data();
+        if ($searchform->is_submitted()) {
+            $data = $searchform->get_submitted_data();
             if (!empty($data->inputSearch)) {
                 $search = $data->inputSearch;
             }
@@ -109,33 +112,35 @@ class page_rank extends page_view {
         require_once(dirname(__FILE__) . '/../tables/rank_table_flexible.php');
         require_once(dirname(__FILE__) . '/../form/mod_lips_filter_form.php');
 
-        // Rank title
-        $category_id_post = optional_param("category_id_js", null, PARAM_TEXT);
+        // Rank title.
+        $categoryidpost = optional_param("category_id_js", null, PARAM_TEXT);
         echo $this->lipsoutput->display_h1(get_string('Rank', 'lips'));
 
         $array = array(
             "placeholder" => get_string('user', 'lips'),
             "class" => "users_ac"
         );
-        $filterform = new mod_lips_filter_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view)), $array, 'post', '', array('class' => 'search-form'));
-        
+        $filterform = new mod_lips_filter_form(
+            new moodle_url('view.php',
+                array('id' => $this->cm->id, 'view' => $this->view)),
+            $array, 'post', '', array('class' => 'search-form'));
         $usersearch = null;
-        $instance_id_js = null;
-        $category_id_js = null;
+        $instanceidjs = null;
+        $categoryidjs = null;
         if ($filterform->is_submitted()) {
             $data = $filterform->get_submitted_data();
             if (isset($data->userSearch) && !empty($data->userSearch)) {
                 $usersearch = $data->userSearch;
             }
             if (isset($data->language_id_js) && $data->language_id_js != "all") {
-                $instance_id_js = $data->language_id_js;
+                $instanceidjs = $data->language_id_js;
             }
-            if (isset($category_id_post) && $category_id_post != "all") {
-                $category_id_js = $category_id_post;
+            if (isset($categoryidpost) && $categoryidpost != "all") {
+                $categoryidjs = $categoryidpost;
             }
         }
         $filterform->display();
-        $table = new rank_table($this->cm, $usersearch, $instance_id_js, $category_id_js);
+        $table = new rank_table($this->cm, $usersearch, $instanceidjs, $categoryidjs);
         $table->finish_output();
     }
 }

@@ -57,9 +57,9 @@ class solved_problems_table extends table_sql {
             'difficulty_points' => 'ASC'
         );
 
-        if($order == '') {
-            foreach($defaultorder as $key => $value) {
-                if(strpos($order, $key) === false) {
+        if ($order == '') {
+            foreach ($defaultorder as $key => $value) {
+                if (strpos($order, $key) === false) {
                     $order = "$key $value, $order";
                 }
             }
@@ -82,24 +82,26 @@ class solved_problems_table extends table_sql {
         $this->userid = $userid;
         $this->owner = $owner;
 
-        if($search == null) {
-            $this->set_sql("mlp.id AS problem_id, ml.id AS language_id, compile_language, problem_label, difficulty_label, difficulty_points, problem_date",
-                "mdl_lips_problem_solved mlps 
-                JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id 
-                JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
-                JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id 
+        if ($search == null) {
+            $this->set_sql("mlp.id AS problem_id, ml.id AS language_id, compile_language, problem_label,
+                difficulty_label, difficulty_points, problem_date",
+                "mdl_lips_problem_solved mlps
+                JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id
+                JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id
+                JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
                 JOIN mdl_lips ml ON mlc.id_language = ml.id",
-                "mlps.problem_solved_user = $userid 
+                "mlps.problem_solved_user = $userid
                 AND problem_testing = 0
                 GROUP BY mlp.id");
         } else {
-            $this->set_sql("mlp.id AS problem_id, ml.id AS language_id, compile_language, problem_label, difficulty_label, difficulty_points, problem_date",
-                "mdl_lips_problem_solved mlps 
-                JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id 
-                JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
-                JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id 
+            $this->set_sql("mlp.id AS problem_id, ml.id AS language_id, compile_language, problem_label,
+                difficulty_label, difficulty_points, problem_date",
+                "mdl_lips_problem_solved mlps
+                JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id
+                JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id
+                JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
                 JOIN mdl_lips ml ON mlc.id_language = ml.id",
-                "mlps.problem_solved_user = $userid 
+                "mlps.problem_solved_user = $userid
                 AND problem_testing = 0
                 AND problem_label LIKE '%" . $search . "%'
                 GROUP BY mlp.id");
@@ -107,19 +109,21 @@ class solved_problems_table extends table_sql {
         $this->set_count_sql("SELECT count(DISTINCT problem_solved_problem)
             FROM mdl_lips_problem_solved
             WHERE problem_solved_user = $userid");
-        $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'profile', 'action' => 'solved_problems')));
+
+        $this->define_baseurl(new moodle_url('view.php',
+            array('id' => $cm->id, 'view' => 'profile', 'action' => 'solved_problems')));
 
         $this->define_headers(array(
-            get_string('language', 'lips'), 
-            get_string('problem', 'lips'), 
-            get_string('difficulty', 'lips'), 
-            get_string('date', 'lips'), 
+            get_string('language', 'lips'),
+            get_string('problem', 'lips'),
+            get_string('difficulty', 'lips'),
+            get_string('date', 'lips'),
             ""));
         $this->define_columns(array(
-            "compile_language", 
-            "problem_label", 
-            "difficulty_points", 
-            "problem_date", 
+            "compile_language",
+            "problem_label",
+            "difficulty_points",
+            "problem_date",
             "solution"));
         $this->sortable(true);
         $this->no_sorting("solution");
@@ -137,13 +141,19 @@ class solved_problems_table extends table_sql {
         switch ($colname) {
             case 'compile_language':
                 $instance = get_instance($attempt->language_id);
-                $url = new action_link(new moodle_url('view.php', array('id' => $instance->instance_link)), ucfirst($attempt->compile_language));
+                $url = new action_link(
+                    new moodle_url('view.php', array('id' => $instance->instance_link)), ucfirst($attempt->compile_language));
                 return $OUTPUT->render($url);
                 break;
 
             case 'problem_label':
                 $instance = get_instance($attempt->language_id);
-                $url = new action_link(new moodle_url('view.php', array('id' => $instance->instance_link, 'view' => 'problem', 'problemId' => $attempt->problem_id)), $attempt->problem_label);
+                $url = new action_link(
+                    new moodle_url('view.php',
+                        array('id' => $instance->instance_link,
+                            'view' => 'problem',
+                            'problemId' => $attempt->problem_id)),
+                    $attempt->problem_label);
                 return $OUTPUT->render($url);
                 break;
 
@@ -156,15 +166,18 @@ class solved_problems_table extends table_sql {
                 break;
 
             case 'solution':
-                if($this->owner || nb_resolutions_problem($USER->id, $attempt->problem_id) > 0 || is_author($attempt->problem_id, $USER->id)) {
+                if ($this->owner ||
+                    nb_resolutions_problem($USER->id, $attempt->problem_id) > 0 ||
+                    is_author($attempt->problem_id, $USER->id)
+                ) {
                     $instance = get_instance($attempt->language_id);
                     $url = new action_link(new moodle_url('view.php', array(
-                        'id' => $instance->instance_link,
-                        'view' => 'solutions',
-                        'problemId' => $attempt->problem_id,
-                        'userid' => $this->userid
-                    )),
-                    get_string('solutions', 'lips'), null, array("class" => "lips-button"));
+                            'id' => $instance->instance_link,
+                            'view' => 'solutions',
+                            'problemId' => $attempt->problem_id,
+                            'userid' => $this->userid
+                        )),
+                        get_string('solutions', 'lips'), null, array("class" => "lips-button"));
 
                     return $OUTPUT->render($url);
                 } else {

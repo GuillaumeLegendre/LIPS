@@ -63,7 +63,7 @@ abstract class page_view {
         echo $OUTPUT->header();
         echo $this->lipsoutput->tabs($this->view);
 
-        // Add scripts
+        // Add scripts.
         $this->add_css_tag("//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css");
         $this->add_css_tag('./styles/styles.css');
         $this->add_script_tag('./js/jquery.js');

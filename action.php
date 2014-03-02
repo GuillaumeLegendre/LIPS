@@ -44,12 +44,14 @@ if ($id) {
     $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
     $lips = $DB->get_record('lips', array('id' => $cm->instance), '*', MUST_EXIST);
-} else if ($n) {
-    $lips = $DB->get_record('lips', array('id' => $n), '*', MUST_EXIST);
-    $course = $DB->get_record('course', array('id' => $lips->course), '*', MUST_EXIST);
-    $cm = get_coursemodule_from_instance('lips', $lips->id, $course->id, false, MUST_EXIST);
 } else {
-    error('You must specify a course_module ID or an instance ID');
+    if ($n) {
+        $lips = $DB->get_record('lips', array('id' => $n), '*', MUST_EXIST);
+        $course = $DB->get_record('course', array('id' => $lips->course), '*', MUST_EXIST);
+        $cm = get_coursemodule_from_instance('lips', $lips->id, $course->id, false, MUST_EXIST);
+    } else {
+        error('You must specify a course_module ID or an instance ID');
+    }
 }
 
 require_login($course, true, $cm);
@@ -67,10 +69,22 @@ switch ($action) {
             // Insert the notifications.
             $lips = get_current_instance();
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-            insert_notification($lips->id, $userdetails->id, 'notification_category_deleted', time(), $userdetails->id, null, null, null, $categorydetails->category_name);
+            insert_notification($lips->id,
+                $userdetails->id,
+                'notification_category_deleted',
+                time(),
+                $userdetails->id,
+                null, null, null,
+                $categorydetails->category_name);
             $followers = fetch_followers($userdetails->id);
             foreach ($followers as $follower) {
-                insert_notification($lips->id, $follower->follower, 'notification_category_deleted', time(), $userdetails->id, null, null, null, $categorydetails->category_name);
+                insert_notification($lips->id,
+                    $follower->follower,
+                    'notification_category_deleted',
+                    time(),
+                    $userdetails->id,
+                    null, null, null,
+                    $categorydetails->category_name);
             }
 
             if ($originaction == null) {
@@ -94,10 +108,22 @@ switch ($action) {
             // Insert the notifications.
             $lips = get_current_instance();
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-            insert_notification($lips->id, $userdetails->id, 'notification_problem_deleted', time(), $userdetails->id, null, null, null, $problemdetails->problem_label);
+            insert_notification($lips->id,
+                $userdetails->id,
+                'notification_problem_deleted',
+                time(),
+                $userdetails->id,
+                null, null, null,
+                $problemdetails->problem_label);
             $followers = fetch_followers($userdetails->id);
             foreach ($followers as $follower) {
-                insert_notification($lips->id, $follower->follower, 'notification_problem_deleted', time(), $userdetails->id, null, null, null, $problemdetails->problem_label);
+                insert_notification($lips->id,
+                    $follower->follower,
+                    'notification_problem_deleted',
+                    time(),
+                    $userdetails->id,
+                    null, null, null,
+                    $problemdetails->problem_label);
             }
 
             if ($categoryid != null && !empty($categoryid)) {
@@ -122,7 +148,8 @@ switch ($action) {
             foreach (unserialize($serializedidproblems) as $idproblem) {
                 delete_problem($idproblem);
             }
-            redirect(new moodle_url('view.php', array('id' => $cm->id, 'view' => 'administration', 'action' => 'problem_category_select_delete')));
+            redirect(new moodle_url('view.php',
+                array('id' => $cm->id, 'view' => 'administration', 'action' => 'problem_category_select_delete')));
         }
         break;
 
