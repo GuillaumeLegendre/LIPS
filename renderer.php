@@ -64,7 +64,10 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @return string H1 tag
      */
     public function display_h1($title, array $attributes = null) {
-        return html_writer::tag('h1', format_string($title), $attributes);
+        return html_writer::tag('h1', format_string($title), array_merge(
+            ($attributes ? $attributes : array()), 
+            array('class' => 'lips')
+        ));
     }
 
     /**
@@ -75,7 +78,10 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @return string H2 tag
      */
     public function display_h2($title, array $attributes = null) {
-        $html = html_writer::tag('h2', format_string($title), $attributes);
+        $html = html_writer::tag('h2', format_string($title), array_merge(
+            ($attributes ? $attributes : array()), 
+            array('class' => 'lips')
+        ));
         $html .= html_writer::tag('div', null, array('class' => 'h2_sub'));
 
         return $html;
@@ -90,10 +96,15 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @return string H3 tag
      */
     public function display_h3($title, array $attributes = null, $sub = true) {
-        $html = html_writer::tag('h3', format_string($title), $attributes);
+        $html = html_writer::tag('h3', format_string($title), array_merge(
+            ($attributes ? $attributes : array()), 
+            array('class' => 'lips')
+        ));
+
         if ($sub) {
             $html .= html_writer::tag('div', null, array('class' => 'h3_sub'));
         }
+
         return $html;
     }
 
@@ -185,7 +196,11 @@ class mod_lips_renderer extends plugin_renderer_base {
         $userpicture = get_user_picture_url(array('id_user_moodle' => $moodleuserdetails->id), 'f1');
         $userstatus = get_user_status($userdetails->id, $lips->id);
 
-        $menu = '<div id="profile-menu"><img src="' . $userpicture . '" id="picture"/>';
+        // Picture
+        $menu = '<table id="profile-menu"><tr><td rowspan="3" id="picture"><img src="' . $userpicture . '" id="picture"/></td>';
+
+        // Buttons
+        $menu .= '<td id="button">';
         if ($iduser != null && $iduser != $currentuserdetails->id) {
             if (is_following($currentuserdetails->id, $userdetails->id)) {
                 $menu .= $this->render(new action_link(new moodle_url('action.php', array(
@@ -197,7 +212,7 @@ class mod_lips_renderer extends plugin_renderer_base {
                     )),
                     get_string('unfollow', 'lips'),
                     null,
-                    array("class" => "lips-button right-button", "style" => "margin-left: 15px")));
+                    array("class" => "lips-button right-button")));
             } else {
                 $menu .= $this->render(new action_link(new moodle_url('action.php', array(
                         'id' => $this->page->cm->id,
@@ -217,9 +232,13 @@ class mod_lips_renderer extends plugin_renderer_base {
                 get_string('send_message', 'lips'),
                 null, array("class" => "lips-button right-button")
             ));
+        } else {
+            $menu .= '<div style="height: 31px"></div>';
         }
+        $menu .= '</td></tr>';
 
-        $menu .= '<div id="background">
+        // User informations
+        $menu .= '<tr><td id="background">
             <div id="infos">
                 <div id="role">' .
             ((isset($userstatus->user_rights_status)) ? get_string($userstatus->user_rights_status, 'lips') :
@@ -227,15 +246,18 @@ class mod_lips_renderer extends plugin_renderer_base {
                 <div id="rank">' . $rank->rank_label . '</div>
             </div>
             <div id="user">' . ucfirst($moodleuserdetails->firstname) . ' ' . ucfirst($moodleuserdetails->lastname) . '</div>
-        </div>
-        <ul id="links">';
+        </td></tr>';
 
+        // Links
+        $menu .= '<tr><td><ul id="links">';
         $menu .= ($action == 'profile') ? '<li><p class="current">' . get_string('profile', 'lips') . '</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('profile', 'lips') . '</a></li>';
         $menu .= ($action == 'ranks') ? '<li><p class="current">' . get_string('ranks', 'lips') . '</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=ranks' . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('ranks', 'lips') . '</a></li>';
         $menu .= ($action == 'solved_problems') ? '<li><p class="current">' . get_string('submitted_answers', 'lips') . '</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=solved_problems' . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('submitted_answers', 'lips') . '</a></li>';
         $menu .= ($action == 'challenges') ? '<li><p class="current">' . get_string('challenges', 'lips') . '</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=challenges' . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('challenges', 'lips') . '</a></li>';
         $menu .= ($action == 'followed_users') ? '<li><p class="current">' . get_string('followed_users', 'lips') . '</p></li>' : '<li><a href="view.php?id=' . $id . '&amp;view=' . $view . '&amp;action=followed_users' . (($iduser != null) ? '&amp;id_user=' . $iduser : '') . '">' . get_string('followed_users', 'lips') . '</a></li>';
-        $menu .= '</ul></div>';
+
+        // Close table
+        $menu .= '</ul></td></tr></table>';
 
         return $menu;
     }

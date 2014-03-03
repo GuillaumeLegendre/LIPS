@@ -106,17 +106,28 @@ class solved_problems_table extends table_sql {
                     AND problem_testing = 0
                 )) t', '1 GROUP BY problem_id');
         } else {
-            /*$this->set_sql("mlp.id AS problem_id, ml.id AS language_id, compile_language, problem_label,
-                difficulty_label, difficulty_points, problem_date",
-                "mdl_lips_problem_solved mlps
-                JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id
-                JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id
-                JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
-                JOIN mdl_lips ml ON mlc.id_language = ml.id",
-                "mlps.problem_solved_user = $userid
-                AND problem_testing = 0
-                AND problem_label LIKE '%" . $search . "%'
-                GROUP BY mlp.id");*/
+            $this->set_sql('t.*', '(
+                (
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, ml.compile_language, mlp.problem_label, difficulty_label, difficulty_points, problem_solved_date AS problem_date, "solved" AS state
+                    FROM mdl_lips_problem_solved mls
+                    JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_solved_problem 
+                    JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
+                    JOIN mdl_lips ml ON mlc.id_language = ml.id
+                    JOIN mdl_lips_difficulty mld ON mlp.problem_difficulty_id = mld.id
+                    WHERE problem_solved_user = ' . $userid . '
+                    AND problem_testing = 0
+                )
+                UNION ALL
+                (
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, ml.compile_language, mlp.problem_label, difficulty_label, difficulty_points, problem_failed_date AS problem_date, "failed" AS state
+                    FROM mdl_lips_problem_failed mls
+                    JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_failed_problem 
+                    JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
+                    JOIN mdl_lips ml ON mlc.id_language = ml.id
+                    JOIN mdl_lips_difficulty mld ON mlp.problem_difficulty_id = mld.id
+                    WHERE problem_failed_user = ' . $userid . '
+                    AND problem_testing = 0
+                )) t', 'problem_label LIKE "%' . $search . '%" GROUP BY problem_id');
         }
         $this->set_count_sql("SELECT count(DISTINCT problem_solved_problem)
             FROM mdl_lips_problem_solved
