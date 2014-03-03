@@ -315,7 +315,7 @@ class mod_lips_problems_delete_form extends moodleform {
             $mform->addElement('submit', 'submit', get_string('delete', 'lips'), array('class' => 'lips-button'));
         } else {
             $msg = get_string("administration_empty_problems", "lips");
-            $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'WARNING');
+            $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'INFO');
             $mform->addElement('html', $html);
             $mform->addElement('html', '<br/><br/><br/><br/><br/><br/>');
         }
