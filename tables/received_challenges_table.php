@@ -55,9 +55,17 @@ class received_challenges_table extends table_sql {
         parent::__construct("mdl_lips_challenges_table");
         $this->cm = $cm;
         $this->owner = $owner;
+        
+        $this->request  = array(
+            TABLE_VAR_SORT   => 'tsort',
+            TABLE_VAR_HIDE   => 'thide',
+            TABLE_VAR_SHOW   => 'tshow',
+            TABLE_VAR_IFIRST => 'tifirst',
+            TABLE_VAR_ILAST  => 'tilast',
+            TABLE_VAR_PAGE   => 'page_received',
+        );
 
-        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name,
-        difficulty_label, difficulty_points,
+        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label, difficulty_points,
         challenge_from, firstname, lastname, challenge_state, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_from = mlu_from.id
@@ -90,15 +98,17 @@ class received_challenges_table extends table_sql {
 
         $this->set_count_sql("
         	SELECT COUNT(*)
-        	FROM mdl_lips_challenge cha
-        	WHERE cha.challenge_to = " . $iduser);
+        	FROM ". $tablesfrom . "
+            WHERE " . $where);
+
+        $pagesent = optional_param('page_sent', 0, PARAM_INT);
 
         if ($owner) {
             $this->define_baseurl(new moodle_url('view.php',
-                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges')));
+                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'page_sent' => $pagesent)));
         } else {
             $this->define_baseurl(new moodle_url('view.php',
-                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'id_user' => $iduser)));
+                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'id_user' => $iduser, 'page_sent' => $pagesent)));
         }
 
         $this->define_headers(array(get_string('language', 'lips'), get_string('problem', 'lips'), get_string('category', 'lips'),
