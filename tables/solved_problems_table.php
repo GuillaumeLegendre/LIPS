@@ -85,8 +85,7 @@ class solved_problems_table extends table_sql {
         if ($search == null) {
             $this->set_sql('t.*', '(
                 (
-                    SELECT mlp.id AS problem_id, ml.id AS language_id, ml.compile_language, mlp.problem_label,
-                     difficulty_label, difficulty_points, problem_solved_date AS problem_date, "solved" AS state
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language, mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points, problem_solved_date AS problem_date, "solved" AS state
                     FROM mdl_lips_problem_solved mls
                     JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_solved_problem
                     JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
@@ -97,8 +96,7 @@ class solved_problems_table extends table_sql {
                 )
                 UNION ALL
                 (
-                    SELECT mlp.id AS problem_id, ml.id AS language_id, ml.compile_language, mlp.problem_label,
-                    difficulty_label, difficulty_points, problem_failed_date AS problem_date, "failed" AS state
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language, mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points, problem_failed_date AS problem_date, "failed" AS state
                     FROM mdl_lips_problem_failed mls
                     JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_failed_problem
                     JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
@@ -110,9 +108,7 @@ class solved_problems_table extends table_sql {
         } else {
             $this->set_sql('t.*', '(
                 (
-                    SELECT mlp.id AS problem_id, ml.id AS language_id, ml.compile_language, mlp.problem_label,
-                    difficulty_label, difficulty_points, problem_solved_date AS problem_date,
-                   "solved" AS state
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language, mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points, problem_solved_date AS problem_date, "solved" AS state
                     FROM mdl_lips_problem_solved mls
                     JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_solved_problem
                     JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
@@ -123,8 +119,7 @@ class solved_problems_table extends table_sql {
                 )
                 UNION ALL
                 (
-                    SELECT mlp.id AS problem_id, ml.id AS language_id, ml.compile_language, mlp.problem_label, difficulty_label,
-                    difficulty_points, problem_failed_date AS problem_date, "failed" AS state
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language, mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points, problem_failed_date AS problem_date, "failed" AS state
                     FROM mdl_lips_problem_failed mls
                     JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_failed_problem
                     JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
@@ -143,6 +138,7 @@ class solved_problems_table extends table_sql {
 
         $this->define_headers(array(
             get_string('language', 'lips'),
+            get_string('category', 'lips'),
             get_string('problem', 'lips'),
             get_string('difficulty', 'lips'),
             get_string('date', 'lips'),
@@ -151,6 +147,7 @@ class solved_problems_table extends table_sql {
         ));
         $this->define_columns(array(
             "compile_language",
+            "category_name",
             "problem_label",
             "difficulty_points",
             "problem_date",
@@ -176,6 +173,16 @@ class solved_problems_table extends table_sql {
                 $url = new action_link(new moodle_url('view.php', array(
                     'id' => $instance->instance_link)
                 ), ucfirst($attempt->compile_language));
+                return $OUTPUT->render($url);
+                break;
+
+            case 'category_name':
+                $instance = get_instance($attempt->language_id);
+                $url = new action_link(new moodle_url('view.php', array(
+                    'id' => $instance->instance_link,
+                    'view' => 'category',
+                    'categoryId' => $attempt->category_id)
+                ), ucfirst($attempt->category_name));
                 return $OUTPUT->render($url);
                 break;
 

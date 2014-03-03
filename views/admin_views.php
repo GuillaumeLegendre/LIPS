@@ -86,7 +86,7 @@ class page_admin_langage_configure extends page_view {
      * Display the page_admin_langage_configure content
      */
     function display_content() {
-        global $CFG, $PAGE;
+        global $CFG, $PAGE, $OUTPUT;
         require_once(dirname(__FILE__) . '/../form/mod_lips_configure_form.php');
 
         // Administration title.
@@ -96,6 +96,14 @@ class page_admin_langage_configure extends page_view {
         echo $this->lipsoutput->display_administration_menu();
 
         // Configure language.
+        echo $OUTPUT->render(new action_link(new moodle_url('view.php', array(
+            'id' => $this->cm->id,
+            'view' => 'tuto',
+            'action' => 'language'
+            )), 
+        get_string('help'), 
+        null, 
+        array('class' => 'title-right-link')));
         echo $this->lipsoutput->display_h2(get_string('administration_language_configure_title', 'lips'));
         echo $this->lipsoutput->display_p(get_string('administration_language_configure_msg', 'lips'));
         $activelanguages = get_active_languages();
@@ -154,7 +162,7 @@ class page_admin_langage_picture extends page_view {
      * Display the page_admin_langage_picture content
      */
     function display_content() {
-        global $CFG, $PAGE;
+        global $CFG, $PAGE, $OUTPUT;
         require_once(dirname(__FILE__) . '/../form/mod_lips_configure_form.php');
 
         // Administration title.
@@ -172,6 +180,14 @@ class page_admin_langage_picture extends page_view {
         }
 
         // Modify language picture.
+        echo $OUTPUT->render(new action_link(new moodle_url('view.php', array(
+            'id' => $this->cm->id,
+            'view' => 'tuto',
+            'action' => 'language'
+            ), "picture"), 
+        get_string('help'), 
+        null, 
+        array('class' => 'title-right-link')));
         echo $this->lipsoutput->display_h2(get_string('administration_language_image_title', 'lips'), array('id' => 'picture'));
         echo $this->lipsoutput->display_p(get_string('administration_language_image_msg', 'lips'));
         echo '<center>' . $this->lipsoutput->display_img(
@@ -204,7 +220,7 @@ class page_admin_langage_base extends page_view {
      * Display the page_admin_langage_base content
      */
     function display_content() {
-        global $CFG;
+        global $CFG, $OUTPUT;
         require_once(dirname(__FILE__) . '/../form/mod_lips_configure_form.php');
 
         // Administration title.
@@ -214,6 +230,14 @@ class page_admin_langage_base extends page_view {
         echo $this->lipsoutput->display_administration_menu();
 
         // Language base code.
+        echo $OUTPUT->render(new action_link(new moodle_url('view.php', array(
+            'id' => $this->cm->id,
+            'view' => 'tuto',
+            'action' => 'language'
+            ), "base"), 
+        get_string('help'), 
+        null, 
+        array('class' => 'title-right-link')));
         echo $this->lipsoutput->display_h2(get_string('administration_language_code_title', 'lips'), array('id' => 'code'));
         echo $this->lipsoutput->display_p(get_string('administration_language_code_msg', 'lips'));
 
@@ -616,12 +640,22 @@ class page_admin_problem_modify extends page_view {
      * Display the page_admin_problem_modify content
      */
     function display_content() {
-        global $CFG;
+        global $CFG, $OUTPUT;
         require_once(dirname(__FILE__) . '/../form/mod_lips_problem_form.php');
 
         echo $this->lipsoutput->display_h1(get_string('administration', 'lips'));
 
+        // Administration menu
         echo $this->lipsoutput->display_administration_menu();
+
+        echo $OUTPUT->render(new action_link(new moodle_url('view.php', array(
+            'id' => $this->cm->id,
+            'view' => 'tuto',
+            'action' => 'problem'
+            )), 
+        get_string('help'), 
+        null, 
+        array('class' => 'title-right-link')));
         echo $this->lipsoutput->display_h2(get_string('administration_problem_modify_title', 'lips'));
 
         $modifyproblemform = new mod_lips_problem_modify_form(
@@ -673,7 +707,7 @@ class page_admin_problem_select_modify extends page_view {
      * Display the page_admin_problem_select_modify content
      */
     function display_content() {
-        global $CFG;
+        global $CFG, $OUTPUT;
         require_once(dirname(__FILE__) . '/../form/mod_lips_problem_form.php');
 
         // Administration title.
@@ -683,6 +717,14 @@ class page_admin_problem_select_modify extends page_view {
         echo $this->lipsoutput->display_administration_menu();
 
         // Modify a problem.
+        echo $OUTPUT->render(new action_link(new moodle_url('view.php', array(
+            'id' => $this->cm->id,
+            'view' => 'tuto',
+            'action' => 'problem'
+            )), 
+        get_string('help'), 
+        null, 
+        array('class' => 'title-right-link')));
         echo $this->lipsoutput->display_h2(get_string('administration_problem_modify_title', 'lips'));
 
         $modifyselectproblemform = new mod_lips_problem_modify_select_form(
@@ -774,7 +816,7 @@ class page_admin_problem_delete extends page_view {
      * Display the view
      */
     function display() {
-        global $CFG;
+        global $CFG, $OUTPUT;
         require_once(dirname(__FILE__) . '/../form/mod_lips_problem_form.php');
         $deleteproblemform = new mod_lips_problems_delete_form(
             new moodle_url('view.php',
@@ -838,7 +880,7 @@ class page_admin_problem_create extends page_view {
      * Display the page_admin_problem_create content
      */
     function display_content() {
-        global $CFG;
+        global $CFG, $OUTPUT;
         require_once(dirname(__FILE__) . '/../form/mod_lips_problem_form.php');
 
         // Administration title.
@@ -848,6 +890,14 @@ class page_admin_problem_create extends page_view {
         echo $this->lipsoutput->display_administration_menu();
 
         // Create a problem.
+        echo $OUTPUT->render(new action_link(new moodle_url('view.php', array(
+            'id' => $this->cm->id,
+            'view' => 'tuto',
+            'action' => 'problem'
+            ), "create"), 
+        get_string('help'), 
+        null, 
+        array('class' => 'title-right-link')));
         echo $this->lipsoutput->display_h2(get_string('administration_problem_create_title', 'lips'));
 
         $lips = get_current_instance();
@@ -908,7 +958,7 @@ class page_admin_my_problems extends page_view {
      * Display the page_admin_my_problems content
      */
     function display_content() {
-        global $CFG, $USER;
+        global $CFG, $USER, $OUTPUT;
 
         require_once(dirname(__FILE__) . '/../tables/my_problems_table.php');
 

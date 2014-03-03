@@ -70,7 +70,7 @@ class page_problem extends page_view {
     }
 
     function display_content() {
-        global $USER, $CFG;
+        global $USER, $CFG, $OUTPUT;
 
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
         require_once(dirname(__FILE__) . '/../form/mod_lips_problem_form.php');
@@ -193,6 +193,18 @@ class page_problem extends page_view {
 
         // Category documentation.
         echo $this->lipsoutput->display_documentation($categorydetails);
+
+        echo '<span style="float: right; margin: 9px 5px 0 5px;">|</span>';
+
+        // Problem help
+        echo $OUTPUT->render(new action_link(new moodle_url('view.php', array(
+            'id' => $this->cm->id,
+            'view' => 'tuto',
+            'action' => 'resolution'
+            )), 
+        get_string('help'), 
+        null, 
+        array('class' => 'title-right-link documentation')));
 
         // Problem title.
         echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);

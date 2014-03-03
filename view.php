@@ -44,6 +44,7 @@ require_once(dirname(__FILE__) . '/views/page_view.php');
 require_once(dirname(__FILE__) . '/views/problem_views.php');
 require_once(dirname(__FILE__) . '/views/profile_views.php');
 require_once(dirname(__FILE__) . '/views/user_views.php');
+require_once(dirname(__FILE__) . '/views/tuto_views.php');
 
 $id = optional_param('id', 0, PARAM_INT); // Course_module ID.
 $n = optional_param('n', 0, PARAM_INT); // lips instance ID - it should be named as the first character of the module
@@ -82,6 +83,32 @@ if (get_highest_role() == null) {
     $viewpage = new page_index($cm, true);
 
     switch ($view) {
+        case "tuto":
+            $action = optional_param('action', null, PARAM_TEXT);
+
+            switch ($action) {
+                case 'language':
+                    if (has_capability('mod/lips:administration', $context)) {
+                        $viewpage = new page_tuto_language($cm);
+                    }
+                break;
+
+                case 'problem':
+                    if (has_capability('mod/lips:administration', $context)) {
+                        $viewpage = new page_tuto_problem($cm);
+                    }
+                break;
+
+                case 'resolution':
+                    $viewpage = new page_tuto_resolution($cm);
+                break;
+
+                default:
+                    $viewpage = new page_admin($cm);
+                    break;
+            }
+        break;
+
         case "administration" :
             if (has_capability('mod/lips:administration', $context)) {
                 $action = optional_param('action', null, PARAM_TEXT);

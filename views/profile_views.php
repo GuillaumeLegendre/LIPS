@@ -155,7 +155,7 @@ class page_profile_solved_problems extends page_view {
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
 
         echo $this->lipsoutput->display_profile_menu('solved_problems') . '<br/>';
-        echo $this->lipsoutput->display_h1(get_string('solved_problems', 'lips'));
+        echo $this->lipsoutput->display_h1(get_string('submitted_answers', 'lips'));
 
         // User details.
         $userid = optional_param('id_user', null, PARAM_TEXT);
