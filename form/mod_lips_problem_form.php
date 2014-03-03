@@ -459,7 +459,9 @@ class mod_lips_problem_modify_form extends moodleform {
         }
         $problems = array();
         foreach (fetch_problems_by_category(key($categorieswithproblems)) as $problem) {
-            $problems[$problem->id] = $problem->problem_label;
+            if ($problem->id != $idproblem) {
+                $problems[$problem->id] = $problem->problem_label;
+            }
         }
 
         // Display stored relation of similar problems.
