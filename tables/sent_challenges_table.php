@@ -56,8 +56,8 @@ class sent_challenges_table extends table_sql {
         $this->cm = $cm;
         $this->owner = $owner;
 
-        $fieldstoselect = "cha.id, problem_label, category_name, difficulty_label, difficulty_points,
-         firstname, lastname, challenge_state, compile_language";
+        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label, difficulty_points,
+        challenge_to, firstname, lastname, challenge_state, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_to = mlu_from.id
             JOIN mdl_user mu ON mlu_from.id_user_moodle = mu.id
@@ -120,13 +120,27 @@ class sent_challenges_table extends table_sql {
 
     public function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE;
+        $lipsoutput = $PAGE->get_renderer('mod_lips');
 
         switch ($colname) {
+            case 'compile_language' :
+                break;
+            case 'problem_label' :
+                $url = new action_link(new moodle_url('view.php',
+                    array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $attempt->challenge_problem)), $attempt->problem_label);
+                return $OUTPUT->render($url);
+                break;
+            case 'category_name' :
+                $url = new action_link(new moodle_url('view.php',
+                    array('id' => $this->cm->id, 'view' => 'category', 'categoryId' => $attempt->problem_category_id)),
+                $attempt->category_name);
+            return $OUTPUT->render($url);
+                break;
             case 'difficulty_points':
                 return get_string($attempt->difficulty_label, 'lips');
                 break;
             case 'firstname':
-                return "$attempt->firstname $attempt->lastname";
+                return $lipsoutput->display_user_link($attempt->challenge_to, $attempt->firstname, $attempt->lastname);
                 break;
             case 'state':
                 if ($this->owner) {
