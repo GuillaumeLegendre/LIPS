@@ -72,6 +72,7 @@ $string['student'] = 'Student';
 $string['picture_default_language'] = 'default_language.png';
 $string['picture_test'] = 'test.png';
 $string['picture_testing'] = 'testing.png';
+$string['picture_failed'] = 'failed.png';
 
 /*--------------------------------------------------
  * Difficulties
@@ -148,6 +149,7 @@ $string['tips'] = 'Tips';
 $string['none'] = 'None';
 $string['search'] = 'Search';
 $string['answer'] = 'Answer';
+$string['answers'] = 'Answers';
 $string['edit'] = 'Edit';
 $string['error_impossible'] = 'You shouldn\'t have access to this page';
 $string['language'] = 'Language';
@@ -158,6 +160,7 @@ $string['grade'] = 'Grade';
 $string['ranks'] = 'Ranks';
 $string['status'] = 'Status';
 $string['solved_problems'] = 'Solved problems';
+$string['submitted_answers'] = 'Submitted answers';
 $string['challenges'] = 'Challenges';
 $string['challenge'] = 'Challenge';
 $string['challenged'] = 'Challenged';
