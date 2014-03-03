@@ -61,7 +61,6 @@ class mod_lips_filter_form extends moodleform {
         // Header.
         $mform->addElement('header', 'headerSearch', get_string('filter', 'lips'));
         $mform->addElement('select', 'language_id_js', null, $activelanguages);
-        $mform->addElement('select', 'category_id_js', null, $categorieslanguage);
 
         // Input search.
         $mform->addElement('text', 'userSearch', null, array('placeholder' => $placeholder, 'class' => $clazz));
