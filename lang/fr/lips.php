@@ -236,6 +236,7 @@ $string['administration_language_image_type_error'] = 'Le fichier que vous avez 
 $string['administration_language_image_save_error'] = 'Une erreur est survenue lors de l\'enregistrement de l\'image';
 $string['administration_language_image_url_error'] = 'Une erreur est survenue lors du téléchargement de l\'image.';
 $string['administration_language_image_empty'] = 'Sélectionnez une image à uploader.';
+$string['administration_language_image_rights'] = 'Vous n\'avez pas les droits d\'écriture dans le dossier <strong>images</strong>.';
 $string['administration_language_code_title'] = 'Base du code';
 $string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisée à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
 $string['administration_language_code_success'] = 'La préconfiguration du code a été modifiée';

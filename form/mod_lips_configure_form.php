@@ -216,6 +216,14 @@ class mod_lips_configure_picture_form extends moodleform {
             return;
         }
 
+        if(!is_writable('images/')) {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_rights',
+                    'lips'),
+                'ERROR');
+
+            return;
+        }
+
         // Picture.
         $url = $data->filePicture;
         $explodepicture = explode("/", $url);
