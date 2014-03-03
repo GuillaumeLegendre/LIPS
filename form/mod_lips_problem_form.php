@@ -364,7 +364,7 @@ class mod_lips_problem_modify_form extends moodleform {
         $mform->addElement('select', 'correction', null);
 
         // ID.
-        $mform->addElement('hidden', 'id_problem', null, null);
+        $mform->addElement('hidden', 'id_problem', null, array("id" => "id_problem"));
         $mform->setType('id_problem', PARAM_INT);
         $mform->setDefault('id_problem', $mcustomdata['id']);
 
@@ -452,8 +452,9 @@ class mod_lips_problem_modify_form extends moodleform {
          * Similar problems
          *------------------------------------------------*/
 
+        $idproblem = $mcustomdata['id'];
         $categorieswithproblems = array();
-        foreach (fetch_all_categories_with_problems(get_current_instance()->id) as $category) {
+        foreach (fetch_all_categories_with_problems(get_current_instance()->id, $idproblem) as $category) {
             $categorieswithproblems[$category->problem_category_id] = $category->category_name;
         }
         $problems = array();
@@ -462,7 +463,6 @@ class mod_lips_problem_modify_form extends moodleform {
         }
 
         // Display stored relation of similar problems.
-        $idproblem = $mcustomdata['id'];
         $valuehiddenfield = "";
         $similarproblemshtml = '<div id="similar-problems"><div id="similar-add">
             <img src="images/add_similar.png" title="Ajouter" id="problem-similar-button"></div><div id="problems">';

@@ -987,13 +987,18 @@ function fetch_problems_by_category($categoryid) {
  *
  * @return array Categories that have at least one problem.
  */
-function fetch_all_categories_with_problems($idinstance) {
+function fetch_all_categories_with_problems($idinstance, $idproblem = null) {
     global $DB;
+
+    $condition = "";
+    if ($idproblem != null) {
+        $condition = " AND mlp.id <> $idproblem";
+    }
 
     return $DB->get_records_sql("select *
     from mdl_lips_category lc
-    join mdl_lips_problem lm on problem_category_id=lc.id
-    where id_language=" . $idinstance . " group by lc.id");
+    join mdl_lips_problem mlp on problem_category_id=lc.id
+    where id_language=" . $idinstance . " $condition group by lc.id");
 }
 
 /**

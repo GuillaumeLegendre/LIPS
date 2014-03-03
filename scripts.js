@@ -252,7 +252,8 @@ $(document).ready(function () {
             buttons: {
                 Conseiller: function () {
                     if ($.inArray($("#id_problem_id_js option:selected").val(), $("#id_problem_similar").val().split(" ")) == -1) {
-                        $("#similar-problems #problems").append('<p id="' + $("#id_problem_id_js option:selected").val() + '">' + $("#id_problem_id_js option:selected").text() + '<img src="images/delete_similar.png" title="Supprimer" class="delete" onClick="deleteSimilarProblem(' + $("#id_problem_id_js option:selected").val() + ')"/></p>');
+                        $("#similar-problems #problems").append('<p id="' + $("#id_problem_id_js option:selected").val() + '">' + $("#id_problem_id_js option:selected").text() + '<img ' +
+                            'src="images/delete_similar.png" title="Supprimer" class="delete" onClick="deleteSimilarProblem(' + $("#id_problem_id_js option:selected").val() + ')"/></p>');
                         $("#id_problem_similar").val($("#id_problem_similar").val() + " " + $("#id_problem_id_js option:selected").val());
                     }
                     $(this).dialog("close");
@@ -261,13 +262,27 @@ $(document).ready(function () {
         });
 
         $("#id_problem_category_id_js").change(function () {
-            $.getJSON("./get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
-                var options = '';
-                $.each(j, function (key, val) {
-                    options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
-                });
-                $("#id_problem_id_js").html(options);
-            })
+            var idproblem = $("#id_problem").val();
+            console.log(idproblem);
+            if(idproblem!==undefined) {
+                $.getJSON("./get_problems_by_category.php", {id: $(this).val(),idproblem: idproblem, ajax: 'true'}, function (j) {
+                    var options = '';
+                    $.each(j, function (key, val) {
+                        options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
+                    });
+                    $("#id_problem_id_js").html(options);
+                })
+            } else {
+                console.log("iiii");
+                $.getJSON("./get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
+                    var options = '';
+                    $.each(j, function (key, val) {
+                        options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
+                    });
+                    $("#id_problem_id_js").html(options);
+                })
+            }
+
         });
 
         $('#problem-similar-button').on('click', function () {

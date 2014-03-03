@@ -33,7 +33,13 @@ require_once(dirname(__FILE__) . '/lib.php');
 $id = $_GET['id'];
 $PAGE->set_url('/mod/lips/get_problems_by_category.php', array('id' => $id));
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
-$problems = $DB->get_records('lips_problem', array('problem_category_id' => $id));
+if (isset($_GET['idproblem'])) {
+    $idproblem = $_GET['idproblem'];
+    $problems = $DB->get_records_sql('SELECT * from mdl_lips_problem WHERE problem_category_id='
+        . $id . ' AND id <> ' . $idproblem);
+} else {
+    $problems = $DB->get_records('lips_problem', array('problem_category_id' => $id));
+}
 echo $OUTPUT->header();
 echo json_encode($problems);
 echo $OUTPUT->footer();

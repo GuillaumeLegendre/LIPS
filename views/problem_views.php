@@ -460,20 +460,23 @@ class page_solutions extends page_view {
             "class" => "users_problem_solutions_ac"
         );
         echo '<input type="hidden" id="hiddenProblemID" value="' . $this->id . '"/>';
-        $searchform = new mod_lips_search_form(
-            new moodle_url('view.php',
-                array('id' => $this->cm->id,
-                    'view' => $this->view,
-                    'problemId' => $this->id)),
-            $array, 'post', '', array('class' => 'search-form', 'style' => 'width: 100%'));
-        $searchform->display();
-
-        if ($searchform->is_submitted()) {
-            $data = $searchform->get_submitted_data();
-            if (!empty($data->inputSearch)) {
-                $search = $data->inputSearch;
+        if ($userid == null) {
+            $searchform = new mod_lips_search_form(
+                new moodle_url('view.php',
+                    array('id' => $this->cm->id,
+                        'view' => $this->view,
+                        'problemId' => $this->id)),
+                $array, 'post', '', array('class' => 'search-form', 'style' => 'width: 100%'));
+            $searchform->display();
+            if ($searchform->is_submitted()) {
+                $data = $searchform->get_submitted_data();
+                if (!empty($data->inputSearch)) {
+                    $search = $data->inputSearch;
+                }
             }
         }
+
+
         $page = optional_param('page', 1, PARAM_INT);
 
         $displaymoresolutions = false;
