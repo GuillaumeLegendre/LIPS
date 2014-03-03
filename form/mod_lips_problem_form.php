@@ -692,4 +692,22 @@ class mod_lips_problems_resolve_form extends moodleform {
         // Export button.
         $mform->addElement('submit', 'submit', get_string('send_response', 'lips'), array('class' => 'lips-button'));
     }
+
+    /**
+     * Form custom validation
+     *
+     * @param array $data Form data
+     * @param array $files Form uploaded files
+     * @return array Errors array
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        $errors = array();
+        if (isset($data->problem_answer)) {
+            if (empty($data->problem_answer)) {
+                $errors['emptyAnswer'] = get_string('answer_empty_error', 'lips');
+            }
+        }
+        return $errors;
+    }
 }

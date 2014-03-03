@@ -56,7 +56,8 @@ class received_challenges_table extends table_sql {
         $this->cm = $cm;
         $this->owner = $owner;
 
-        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label, difficulty_points,
+        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name,
+        difficulty_label, difficulty_points,
         challenge_from, firstname, lastname, challenge_state, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_from = mlu_from.id
@@ -121,13 +122,14 @@ class received_challenges_table extends table_sql {
         switch ($colname) {
             case 'problem_label' :
                 $url = new action_link(new moodle_url('view.php',
-                    array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $attempt->challenge_problem)), $attempt->problem_label);
+                        array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $attempt->challenge_problem)),
+                    $attempt->problem_label);
                 return $OUTPUT->render($url);
                 break;
             case 'category_name' :
                 $url = new action_link(new moodle_url('view.php',
-                    array('id' => $this->cm->id, 'view' => 'category', 'categoryId' => $attempt->problem_category_id)),
-                $attempt->category_name);
+                        array('id' => $this->cm->id, 'view' => 'category', 'categoryId' => $attempt->problem_category_id)),
+                    $attempt->category_name);
                 return $OUTPUT->render($url);
                 break;
             case 'difficulty_points':

@@ -393,3 +393,4 @@ $string['problem_challenge_success'] = 'The selected users has been challenged';
 $string['problem_solved_success'] = 'Congratulation you have solved the problem !';
 $string['problem_solved_fail'] = 'Insert coin';
 $string['problem_challenge_success'] = 'The selected users have been challenged';
+$string['answer_empty_error'] = 'You have to type an answer';

@@ -92,12 +92,13 @@ class problems_table extends table_sql {
         $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_problem where problem_category_id = " . $id);
         $context = context_module::instance($cm->id);
         if (has_capability('mod/lips:administration', $context)) {
-            $this->define_headers(array("Problème",
-                "Difficulté",
-                "Date",
-                "Rédacteur",
-                "Nombre de résolutions",
-                "Résolu",
+            $this->define_headers(array(
+                get_string("problem", "lips"),
+                get_string("difficulty", "lips"),
+                get_string("date", "lips"),
+                get_string("problem_author", "lips"),
+                get_string("problem_nb_resolutions", "lips"),
+                get_string("SOLVED", "lips"),
                 ""));
             $this->define_columns(array(
                 "problem_label",
@@ -108,13 +109,15 @@ class problems_table extends table_sql {
                 "solved",
                 "actions"));
         } else {
-            $this->define_headers(array("Problème",
-                "Difficulté",
-                "Date",
-                "Rédacteur",
-                "Nombre de résolutions",
-                "Résolu"));
-            $this->define_columns(array("problem_label",
+            $this->define_headers(array(
+                get_string("problem", "lips"),
+                get_string("difficulty", "lips"),
+                get_string("date", "lips"),
+                get_string("problem_author", "lips"),
+                get_string("problem_nb_resolutions", "lips"),
+                get_string("SOLVED", "lips")));
+            $this->define_columns(array(
+                "problem_label",
                 "difficulty_label",
                 "problem_date",
                 "firstname",

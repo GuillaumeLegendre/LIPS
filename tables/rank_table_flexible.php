@@ -69,7 +69,8 @@ class rank_table extends flexible_table {
             get_string('user', 'lips'),
             get_string("solved_problems", "lips"),
             get_string("score", "lips"),
-            "Suivre"));
+            get_string("follow", "lips")
+        ));
         $this->define_columns(array("rank", "user", "nb_problems_solved", "user_score", "follow"));
         $this->no_sorting("follow");
         $this->sortable(true);
