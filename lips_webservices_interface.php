@@ -30,11 +30,28 @@
 /**
  * This interface represents the code used to dialog with web services.
  * The are two web services used by the plugin.
- * The first web service permits to obtain the list of languages available.
- * The second permits to execute source code and get the result of execution.
+ * The first web service allows the plugin to get the list of available languages.
+ * The second permits to execute source code and get the result of the execution.
  *
  */
-interface lips_rest_interface {
+interface lips_webservices_interface {
+    /**
+     * Returns the result of the execution of a source code.
+     *
+     * @param $source source code
+     * @param $language name of the language
+     * @return array An array containing the result of the execution.
+     *      Ex : $array['result'] => 0 if an error occured. 1 otherwise.
+     *           $array['error'] => The error message if present.
+     *           $array['output'] => The stdout.
+     */
     public static function execute($source, $language);
+
+    /**
+     * Returns an array containing all available languages
+     * on the web service.
+     * @return array An associative array.
+     *      Ex : $array['Java'] => "Java"
+     */
     public static function get_list_languages();
 }
