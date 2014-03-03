@@ -44,6 +44,15 @@ h3.lips {
     padding-bottom: 15px;
 }
 
+.title-right-link {
+    float: right;
+    margin-top: 7px;
+}
+
+.title-right-link.documentation {
+    margin-top: 10px;
+}
+
 /*---------------------------------
  *  JQuery dialog
  *-------------------------------*/

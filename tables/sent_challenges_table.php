@@ -56,8 +56,16 @@ class sent_challenges_table extends table_sql {
         $this->cm = $cm;
         $this->owner = $owner;
 
-        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name,
-        difficulty_label, difficulty_points,
+        $this->request  = array(
+            TABLE_VAR_SORT   => 'tsort',
+            TABLE_VAR_HIDE   => 'thide',
+            TABLE_VAR_SHOW   => 'tshow',
+            TABLE_VAR_IFIRST => 'tifirst',
+            TABLE_VAR_ILAST  => 'tilast',
+            TABLE_VAR_PAGE   => 'page_sent',
+        );
+
+        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label, difficulty_points,
         challenge_to, firstname, lastname, challenge_state, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_to = mlu_from.id
@@ -87,17 +95,20 @@ class sent_challenges_table extends table_sql {
             $fieldstoselect,
             $tablesfrom,
             $where);
-        $this->set_count_sql("
-        	SELECT COUNT(*)
-        	FROM mdl_lips_challenge cha
-        	WHERE cha.challenge_from = " . $iduser);
+
+         $this->set_count_sql("
+            SELECT COUNT(*)
+            FROM ". $tablesfrom . "
+            WHERE " . $where);
+
+        $pagereceived = optional_param('page_received', 0, PARAM_INT);
 
         if ($owner) {
             $this->define_baseurl(new moodle_url('view.php',
-                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges')));
+                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'page_received' => $pagereceived)));
         } else {
             $this->define_baseurl(new moodle_url('view.php',
-                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'id_user' => $iduser)));
+                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'id_user' => $iduser, 'page_received' => $pagereceived)));
         }
 
         $this->define_headers(array(

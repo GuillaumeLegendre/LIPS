@@ -44,7 +44,7 @@ if (isset($_POST['action'])) {
             if (isset($_POST['userid'])) {
                 $userid = $_POST['userid'];
 
-                $problems = $DB->get_records_sql('SELECT t.* FROM (
+                $problems = $DB->get_records_sql('SELECT problem_id, problem_label FROM (
                     (
                         SELECT mlp.id AS problem_id, mlp.problem_label
                         FROM mdl_lips_problem_solved mls
