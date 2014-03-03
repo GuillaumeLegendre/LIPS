@@ -178,7 +178,7 @@ h3.lips {
     padding: 5px 10px 6px;
     text-decoration: none;
     background-color: #9DC3F6;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
