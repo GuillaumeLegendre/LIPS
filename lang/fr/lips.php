@@ -121,6 +121,7 @@ $string['tips'] = 'Astuces';
 $string['none'] = 'Aucun';
 $string['search'] = 'Rechercher';
 $string['answer'] = 'Réponse';
+$string['answers'] = 'Réponses';
 $string['edit'] = 'Modifier';
 $string['solutions'] = 'Solutions';
 $string['follow'] = 'S\'abonner';
@@ -130,6 +131,7 @@ $string['grade'] = 'Grade';
 $string['status'] = 'Statut';
 $string['ranks'] = 'Classements';
 $string['solved_problems'] = 'Problèmes résolus';
+$string['submitted_answers'] = 'Réponses soumises';
 $string['challenge'] = 'Défier';
 $string['challenged'] = 'Défiés';
 $string['challenged_users'] = 'Utilisateurs défiés';
@@ -166,6 +168,7 @@ $string['label'] = 'Label';
 $string['description'] = 'Description';
 $string['display_more_results'] = 'Afficher plus de résultats';
 $string['categories'] = 'Catégories';
+$string['you_didnt_say_the_magic_word'] = 'Vous n\'avez pas dit le mot magique !!!!';
 
 /*--------------------------------------------------
  * Dates
@@ -233,6 +236,9 @@ $string['administration_language_image_msg'] = 'Choisissez l\'image de ce langag
 $string['administration_language_image_success'] = 'L\'image a été modifiée';
 $string['administration_language_image_type_error'] = 'Le fichier que vous avez choisi d\'uploader n\'est pas une image.';
 $string['administration_language_image_save_error'] = 'Une erreur est survenue lors de l\'enregistrement de l\'image';
+$string['administration_language_image_url_error'] = 'Une erreur est survenue lors du téléchargement de l\'image.';
+$string['administration_language_image_empty'] = 'Sélectionnez une image à uploader.';
+$string['administration_language_image_rights'] = 'Vous n\'avez pas les droits d\'écriture dans le dossier <strong>images</strong>.';
 $string['administration_language_code_title'] = 'Base du code';
 $string['administration_language_code_msg'] = 'Entrez la base du code qui sera utilisée à chaque compilation.<br/>Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
 $string['administration_language_code_success'] = 'La préconfiguration du code a été modifiée';
@@ -291,6 +297,9 @@ $string['achievement_gold_msg'] = 'Vous avez résolu 50 problèmes dans la caté
 $string['achievement_platinum_title'] = 'Platine';
 $string['achievement_platinum_msg'] = 'Vous avez résolu 100 problèmes dans la catégorie ';
 $string['administration_achievement_success'] = 'Le badge a été modifié';
+$string['administration_achievement_label_error'] = 'Vous devez entrer un label';
+$string['administration_achievement_desc_error'] = 'Vous devez entrer une description';
+$string['administration_achievement_default_picture'] = 'Aucune image n\'a été sélectionnée. Restoration de l\'image par défaut';
 
 // Problem
 $string['administration_problem_create_title'] = 'Créer un probleme';
@@ -299,9 +308,9 @@ $string['administration_problem_create_preconfig_subtitle'] = '1. Pré-configura
 $string['administration_problem_create_informations_subtitle'] = "2. Informations sur le problème";
 $string['administration_problem_create_informations_msg'] = 'Sélectionnez la catégorie à laquelle appartiendra votre problème.<br/>Entrez le nom, la difficulté et la liste des prérequis nécessaires à la réalisation du problème.';
 $string['administration_problem_create_subject_subtitle'] = '3. Enoncé';
-$string['administration_problem_create_subject_msg'] = "Rédigez l'énoncé et les astuces du problème";
+$string['administration_problem_create_subject_msg'] = "Rédigez l'énoncé et les astuces du problème.";
 $string['administration_problem_create_code_subtitle'] = '4. Code';
-$string['administration_problem_create_code_msg'] = 'Commencez par importer les libraires utiles à la résolution du problème.<br/><br/>Ensuite, écrivez le code que l\'utilisateur devra compléter.<br/>Pour indiquer les zones à éditer, vous pouvez utiliser des commentaires.<br/><br/>Pour finir, rédigez la partie <strong>Tests unitaires</strong> qui correspond à la liste des tests effectués pour valider ou non le problème. Le contenu de cette zone correspond au <strong>main</strong> du programme.</br/>Le programme doit retourner <strong>PROBLEM_SOLVED</strong> (bouton True) en cas de réussite et <strong>PROBLEM_FAILED</strong> (bouton False) dans le cas contraire.<br/>Vous pouvez définir la liste des tests unitaires qui seront affichés lors de la consultation du problème. Pour cela, entourez le test unitaire à afficher d\'une balise <span style="color: red">&lt;lips-unit-test&gt;&lt;/lips-unit-test&gt;.</span>';
+$string['administration_problem_create_code_msg'] = 'Commencez par importer les libraires utiles à la résolution du problème.<br/><br/>Ensuite, écrivez le code que l\'utilisateur devra compléter.<br/>Pour indiquer les zones à éditer, vous pouvez utiliser des commentaires.<br/><br/>Pour finir, rédigez la partie <strong>Tests unitaires</strong> qui correspond à la liste des tests effectués pour valider ou non le problème.</br/>Le programme doit afficher <strong>PROBLEM_SOLVED</strong> (bouton True) en cas de réussite et <strong>PROBLEM_FAILED</strong> (bouton False) dans le cas contraire.<br/>Vous pouvez définir la liste des tests unitaires qui seront affichés lors de la consultation du problème. Pour cela, entourez le test unitaire à afficher d\'une balise <span style="color: red">&lt;lips-unit-test&gt;&lt;/lips-unit-test&gt;.</span>';
 $string['administration_problem_preconfig_msg'] = 'Avant la compilation :<ul><li>La balise <span style="color: red;">&lt;lips-preconfig-import/&gt;</span> sera remplacée par le contenu de la zone "<strong>Importer des librairies</strong>" ;</li><li>La balise <span style="color: red;">&lt;lips-preconfig-code/&gt;</span> sera remplacée par le contenu de la zone "<strong>Code à compléter</strong>";</li><li>La balise <span style="color: red;">&lt;lips-preconfig-tests/&gt;</span> sera remplacée par le contenu de la zone "<strong>Tests unitaires</strong>".</li></ul>';
 $string['administration_problem_create_code_import_label'] = 'Importer des librairies';
 $string['administration_problem_create_code_complete_label'] = 'Code à completer';
@@ -312,7 +321,7 @@ $string['administration_problem_modify_success'] = 'Le problème a été modifi�
 $string['administration_problems_import_confirmation'] = "Vous allez être redirigé vers la page Moodle pour la restauration de cours. Elle va vous permettre d'importer des problèmes dans LIPS.";
 $string['administration_problems_export_confirmation'] = "Vous allez être redirigé vers la page Moodle pour la sauvegarde de cours. Elle va vous permettre d'exporter les problèmes de LIPS.";
 $string['administration_problem_similar_subtitle'] = '5. Conseil de problèmes similaires';
-$string['administration_problem_similar_subtitle_msg'] = 'Conseillez des problèmes que l\'utilisateur pourrait vouloir réaliser après la réalisation de celui-ci.';
+$string['administration_problem_similar_subtitle_msg'] = 'Conseillez des problèmes que l\'utilisateur pourrait réaliser après la réalisation de celui-ci.';
 $string['administration_language_form_code_error'] = 'Vous devez renseigner du code à compléter';
 $string['administration_unittests_form_code_error'] = 'Vous devez renseigner les tests unitaires';
 $string['administration_problem_already_exists'] = 'Un problème ayant le même existe déjà, merci d\'en choisir un autre';

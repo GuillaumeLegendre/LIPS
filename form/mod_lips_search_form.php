@@ -53,10 +53,10 @@ class mod_lips_search_form extends moodleform {
         $placeholder = (isset($mcustomdata['placeholder'])) ? $mcustomdata['placeholder'] : '';
         $clazz = (isset($mcustomdata['class'])) ? $mcustomdata['class'] : '';
 
-        // Header
+        // Header.
         $mform->addElement('header', 'headerSearch', get_string('search', 'lips'));
 
-        // Input search
+        // Input search.
         $mform->addElement('text', 'inputSearch', null, array('placeholder' => $placeholder, 'class' => $clazz));
         $mform->setType('inputSearch', PARAM_TEXT);
         $mform->setDefault('inputSearch', $default);

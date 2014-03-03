@@ -56,10 +56,11 @@ function get_current_instance() {
 function get_instance($id) {
     global $DB;
 
-    return $DB->get_record_sql('SELECT mcd.id AS instance_link, ml.id AS instance_id, ml.name, ml.compile_language, ml.coloration_language, ml.language_picture, ml.base_code, mm.name 
-        FROM mdl_lips ml, mdl_course_modules mcd, mdl_modules mm 
-        WHERE ml.id = mcd.instance 
-        AND ml.course = mcd.course 
+    return $DB->get_record_sql('SELECT mcd.id AS instance_link, ml.id AS instance_id, ml.name,
+        ml.compile_language, ml.coloration_language, ml.language_picture, ml.base_code, mm.name
+        FROM mdl_lips ml, mdl_course_modules mcd, mdl_modules mm
+        WHERE ml.id = mcd.instance
+        AND ml.course = mcd.course
         AND ml.id = ' . $id . '
         AND mcd.module = mm.id
         HAVING mm.name = \'lips\'');
@@ -68,10 +69,11 @@ function get_instance($id) {
 function fetch_all_instances() {
     global $DB;
 
-    return $DB->get_records_sql('SELECT mcd.id AS instance_link, ml.id AS instance_id, ml.name, ml.compile_language, ml.coloration_language, ml.language_picture, ml.base_code, mm.name 
-        FROM mdl_lips ml, mdl_course_modules mcd, mdl_modules mm 
-        WHERE ml.id = mcd.instance 
-        AND ml.course = mcd.course 
+    return $DB->get_records_sql('SELECT mcd.id AS instance_link, ml.id AS instance_id, ml.name,
+        ml.compile_language, ml.coloration_language, ml.language_picture, ml.base_code, mm.name
+        FROM mdl_lips ml, mdl_course_modules mcd, mdl_modules mm
+        WHERE ml.id = mcd.instance
+        AND ml.course = mcd.course
         AND mcd.module = mm.id
         HAVING mm.name = \'lips\'');
 }
@@ -126,7 +128,7 @@ function get_highest_role() {
 /**
  * Get the tab name corresponding to the view name in parameter.
  *
- * @return array
+ * @return String
  * The tab name corresponding to the view name in parameter.
  */
 function convert_active_tab($view) {
@@ -245,10 +247,10 @@ function insert_user($idusermoodle, $userstatus, $userrankid) {
         'user_rank_id' => $userrankid
     ));
 
-    // Delete current user status
+    // Delete current user status.
     delete_user_status($lastinsertid, $lips->id);
 
-    // Insert user status
+    // Insert user status.
     $role = get_highest_role();
     if ($role != null) {
         insert_user_rights_score($lastinsertid, $lips->id, $userstatus);
@@ -271,7 +273,7 @@ function insert_user_rights_score($iduser, $lipsintance, $status) {
         'user_rights_status' => $status
     ));
 
-    // Insert user score if not exist
+    // Insert user score if not exist.
     $score = $DB->get_record('lips_score', array('score_instance' => $lipsintance, 'score_user' => $iduser));
     if ($score == null) {
         $DB->insert_record('lips_score', array(
@@ -349,7 +351,7 @@ function get_language_picture() {
 function update_language_picture($picture) {
     global $DB;
 
-    // Current instance
+    // Current instance.
     $lips = get_current_instance();
 
     $DB->update_record('lips', array('id' => $lips->id, 'language_picture' => $picture));
@@ -361,7 +363,7 @@ function update_language_picture($picture) {
  * @param string $picture Picture to delete
  */
 function delete_picture_file($picture) {
-    unlink('./images/' . $picture);
+    @unlink('./images/' . $picture);
 }
 
 /**
@@ -435,11 +437,14 @@ function get_category_details_array(array $conditions = array()) {
 function get_problem_details($id) {
     global $DB;
 
-    return $DB->get_records_sql("SELECT mlp.id,problem_label, mld.id AS difficulty_id, problem_date, problem_creator_id, problem_attempts, difficulty_label, problem_preconditions, problem_statement, problem_tips, problem_unit_tests, problem_category_id, COUNT(mls.id) AS problem_resolutions, firstname, lastname, mlu.id AS user_id, problem_code, problem_imports, problem_testing 
-        FROM mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id 
-        LEFT join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id 
-        JOIN mdl_user mu ON mu.id = problem_creator_id 
-        JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id 
+    return $DB->get_records_sql("SELECT mlp.id,problem_label, mld.id AS difficulty_id, problem_date,
+        problem_creator_id, problem_attempts, difficulty_label, problem_preconditions, problem_statement,
+        problem_tips, problem_unit_tests, problem_category_id, COUNT(mls.id) AS problem_resolutions,
+        firstname, lastname, mlu.id AS user_id, problem_code, problem_imports, problem_testing
+        FROM mdl_lips_problem mlp JOIN mdl_lips_difficulty mld ON problem_difficulty_id = mld.id
+        LEFT join mdl_lips_problem_solved mls ON mls.problem_solved_problem = mlp.id
+        JOIN mdl_user mu ON mu.id = problem_creator_id
+        JOIN mdl_lips_user mlu ON mlu.id_user_moodle = problem_creator_id
         WHERE mlp.id = " . $id);
 }
 
@@ -462,7 +467,9 @@ function get_problem_details_array(array $conditions = array()) {
  */
 function get_similar_problems($mainproblemid) {
     global $DB;
-    return $DB->get_records_sql("select * from mdl_lips_problem_similar lps join mdl_lips_problem lp on lps.problem_similar_id = lp.id where lps.problem_similar_main_id = " . $mainproblemid);
+    return $DB->get_records_sql("select *
+        from mdl_lips_problem_similar lps join mdl_lips_problem lp on lps.problem_similar_id = lp.id
+         where lps.problem_similar_main_id = " . $mainproblemid);
 }
 
 /**
@@ -538,7 +545,7 @@ function is_removable($id, $idlanguage) {
 function insert_category($idlanguage, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB, $USER;
 
-    // Category
+    // Category.
     $categoryid = $DB->insert_record('lips_category', array(
         'id_language' => $idlanguage,
         'category_name' => $categoryname,
@@ -546,7 +553,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
         'category_documentation_type' => $categorydocumentationtype
     ));
 
-    // Achievement - Bronze
+    // Achievement - Bronze.
     $DB->insert_record('lips_achievement', array(
         'achievement_label' => "$categoryname - " . get_string('achievement_bronze_title', 'lips'),
         'achievement_desc' => get_string('achievement_bronze_msg', 'lips') . $categoryname,
@@ -555,7 +562,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
         'achievement_problems' => 10
     ));
 
-    // Achievement - Silver
+    // Achievement - Silver.
     $DB->insert_record('lips_achievement', array(
         'achievement_label' => "$categoryname - " . get_string('achievement_silver_title', 'lips'),
         'achievement_desc' => get_string('achievement_silver_msg', 'lips') . $categoryname,
@@ -564,7 +571,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
         'achievement_problems' => 25
     ));
 
-    // Achievement - Gold
+    // Achievement - Gold.
     $DB->insert_record('lips_achievement', array(
         'achievement_label' => "$categoryname - " . get_string('achievement_gold_title', 'lips'),
         'achievement_desc' => get_string('achievement_gold_msg', 'lips') . $categoryname,
@@ -573,7 +580,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
         'achievement_problems' => 50
     ));
 
-    // Achievement - Platinum
+    // Achievement - Platinum.
     $DB->insert_record('lips_achievement', array(
         'achievement_label' => "$categoryname - " . get_string('achievement_platinum_title', 'lips'),
         'achievement_desc' => get_string('achievement_platinum_msg', 'lips') . $categoryname,
@@ -582,13 +589,19 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
         'achievement_problems' => 100
     ));
 
-    // Notifications
+    // Notifications.
     $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
-    insert_notification($idlanguage, $userdetails->id, 'notification_category_created', time(), $userdetails->id, 0, null, $categoryid);
+    insert_notification($idlanguage,
+        $userdetails->id,
+        'notification_category_created',
+        time(), $userdetails->id, 0, null, $categoryid);
     $followers = fetch_followers($userdetails->id);
 
     foreach ($followers as $follower) {
-        insert_notification($idlanguage, $follower->follower, 'notification_category_created', time(), $userdetails->id, 0, null, $categoryid);
+        insert_notification($idlanguage,
+            $follower->follower,
+            'notification_category_created',
+            time(), $userdetails->id, 0, null, $categoryid);
     }
 }
 
@@ -603,7 +616,7 @@ function insert_category($idlanguage, $categoryname, $categorydocumentation, $ca
 function update_category($id, $categoryname, $categorydocumentation, $categorydocumentationtype) {
     global $DB, $USER;
 
-    // Category
+    // Category.
     $DB->update_record('lips_category', array(
         'id' => $id,
         'category_name' => $categoryname,
@@ -611,14 +624,17 @@ function update_category($id, $categoryname, $categorydocumentation, $categorydo
         'category_documentation_type' => $categorydocumentationtype
     ));
 
-    // Notifications
+    // Notifications.
     $lips = get_current_instance();
     $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
     insert_notification($lips->id, $userdetails->id, 'notification_category_modified', time(), $userdetails->id, null, null, $id);
     $followers = fetch_followers($userdetails->id);
 
     foreach ($followers as $follower) {
-        insert_notification($lips->id, $follower->follower, 'notification_category_modified', time(), $userdetails->id, null, null, $id);
+        insert_notification($lips->id,
+            $follower->follower,
+            'notification_category_modified',
+            time(), $userdetails->id, null, null, $id);
     }
 }
 
@@ -791,7 +807,8 @@ function ace_available_languages() {
 function nb_resolutions_problem($iduser, $idproblem) {
     global $DB;
 
-    return $DB->count_records("lips_problem_solved", array('problem_solved_problem' => $idproblem, 'problem_solved_user' => $iduser));
+    return $DB->count_records("lips_problem_solved",
+        array('problem_solved_problem' => $idproblem, 'problem_solved_user' => $iduser));
 }
 
 
@@ -802,7 +819,7 @@ function nb_resolutions_problem($iduser, $idproblem) {
  * @return array The displayable unit tests
  */
 function get_displayable_unittests($unittests) {
-    preg_match_all("|<lips-unit-test>(.*?)</lips-unit-test>|U", $unittests, $out);
+    preg_match_all("|<lips-unit-test>(.*)</lips-unit-test>|U", $unittests, $out);
 
     return $out;
 }
@@ -830,7 +847,7 @@ function fetch_problems($userid) {
     return $DB->get_records_sql('SELECT mlp.id, problem_label, problem_category_id, category_name
         FROM mdl_lips_problem mlp, mdl_lips_category mlc
         WHERE mlp.problem_category_id = mlc.id
-        AND problem_creator_id = ' . $userid . ' 
+        AND problem_creator_id = ' . $userid . '
         AND mlc.id_language = ' . $lips->id . "
         ORDER BY category_name ASC, problem_label ASC");
 }
@@ -842,24 +859,32 @@ function fetch_problems($userid) {
  * @param int Id of the problem
  * @return object List of all solutions of the problem
  * */
-function get_solutions($problemid, $search = null) {
+function get_solutions($problemid, $search = null, $limit = null) {
     global $DB;
 
+    if ($limit != null) {
+        $limit = $limit;
+    } else {
+        $limit = get_string('solutions_limit', 'lips');
+    }
+
     if ($search == null) {
-        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date  as problem_date, problem_solved_solution  as problem_solution
+        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname,
+            problem_solved_date  as problem_date, problem_solved_solution  as problem_solution
             FROM mdl_lips_problem_solved mls
             JOIN mdl_user mu ON mu.id = mls.problem_solved_user
             JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
             WHERE problem_solved_problem = $problemid
-            ORDER BY problem_solved_date DESC");
+            ORDER BY problem_solved_date DESC LIMIT $limit");
     } else {
-        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date  as problem_date, problem_solved_solution as problem_solution
+        return $DB->get_records_sql("SELECT mls.id, mlu.id AS profil_id, firstname, lastname,
+            problem_solved_date  as problem_date, problem_solved_solution as problem_solution
             FROM mdl_lips_problem_solved mls
             JOIN mdl_user mu ON mu.id = mls.problem_solved_user
             JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
             WHERE problem_solved_problem = $problemid
             AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search . "%'
-            ORDER BY problem_solved_date DESC");
+            ORDER BY problem_solved_date DESC LIMIT $limit");
     }
 }
 
@@ -869,21 +894,28 @@ function get_solutions($problemid, $search = null) {
  * @param int Id of the problem
  * @return object List of all solutions of the problem
  * */
-function get_all_solutions($problemid, $userid) {
+function get_all_solutions($problemid, $userid, $limit) {
     global $DB;
+    if ($limit != null) {
+        $limit = $limit;
+    } else {
+        $limit = get_string('solutions_limit', 'lips');
+    }
     return $DB->get_records_sql("SELECT @row := @row + 1 as row, t.* FROM
-                     ((SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_solved_date as problem_date, problem_solved_solution as problem_solution, 1 as source
+                     ((SELECT mls.id, mlu.id AS profil_id, firstname, lastname,
+                      problem_solved_date as problem_date, problem_solved_solution as problem_solution, 1 as source
                     FROM mdl_lips_problem_solved mls
                     JOIN mdl_user mu ON mu.id = mls.problem_solved_user
                     JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
                     WHERE problem_solved_problem = $problemid AND problem_solved_user = $userid)
                 UNION ALL
-                    (SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_failed_date as problem_date, problem_failed_solution as problem_solution, 0 as source
+                    (SELECT mls.id, mlu.id AS profil_id, firstname, lastname, problem_failed_date as problem_date,
+                     problem_failed_solution as problem_solution, 0 as source
                     FROM mdl_lips_problem_failed mls
                     JOIN mdl_user mu ON mu.id = mls.problem_failed_user
                     JOIN mdl_lips_user mlu ON mlu.id_user_moodle = mu.id
                     WHERE problem_failed_problem = $problemid AND problem_failed_user = $userid)) t, (SELECT @row := 0) r
-                ORDER BY problem_date DESC");
+                ORDER BY problem_date DESC LIMIT $limit");
 }
 
 /**
@@ -1016,19 +1048,27 @@ function formatBytes($bytes, $precision = 2) {
     if (($bytes >= 0) && ($bytes < $kilobyte)) {
         return $bytes . ' B';
 
-    } elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
-        return round($bytes / $kilobyte, $precision) . ' KB';
-
-    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-        return round($bytes / $megabyte, $precision) . ' MB';
-
-    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-        return round($bytes / $gigabyte, $precision) . ' GB';
-
-    } elseif ($bytes >= $terabyte) {
-        return round($bytes / $terabyte, $precision) . ' TB';
     } else {
-        return $bytes . ' B';
+        if (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
+            return round($bytes / $kilobyte, $precision) . ' KB';
+
+        } else {
+            if (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
+                return round($bytes / $megabyte, $precision) . ' MB';
+
+            } else {
+                if (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
+                    return round($bytes / $gigabyte, $precision) . ' GB';
+
+                } else {
+                    if ($bytes >= $terabyte) {
+                        return round($bytes / $terabyte, $precision) . ' TB';
+                    } else {
+                        return $bytes . ' B';
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -1072,7 +1112,8 @@ function is_a_picture($picture) {
 function problem_similar_exist($mainproblemid, $problemsimilarid) {
     global $DB;
 
-    $result = $DB->count_records('lips_problem_similar', array('problem_similar_main_id' => $mainproblemid, 'problem_similar_id' => $problemsimilarid), '*');
+    $result = $DB->count_records('lips_problem_similar',
+        array('problem_similar_main_id' => $mainproblemid, 'problem_similar_id' => $problemsimilarid), '*');
     return $result >= 1;
 }
 
@@ -1091,9 +1132,9 @@ function fetch_notifications_details($conditions, $nbelements = null) {
         $limit = get_string('notifications_limit', 'lips');
     }
 
-    return $DB->get_records_sql('SELECT * FROM mdl_lips_notification 
-        WHERE ' . $conditions . ' 
-        ORDER BY notification_date DESC 
+    return $DB->get_records_sql('SELECT * FROM mdl_lips_notification
+        WHERE ' . $conditions . '
+        ORDER BY notification_date DESC
         LIMIT 0, ' . $limit
     );
 }
@@ -1153,7 +1194,8 @@ function fetch_followers($id) {
  * @param int $notification_category Category ID related to the notification
  * @param string $notification_text Notification text
  */
-function insert_notification($notification_language, $notification_user_id, $notification_type, $notification_date, $notification_from, $notification_to = 0, $notification_problem = null, $notification_category = null, $notification_text = null) {
+function insert_notification($notification_language, $notification_user_id, $notification_type, $notification_date, $notification_from, $notification_to = 0, $notification_problem = null,
+                             $notification_category = null, $notification_text = null) {
     global $DB;
 
     if ($notification_to == null) {
@@ -1232,7 +1274,7 @@ function problem_exists_for_conditions($conditions) {
     return false;
 }
 
-/*
+/**
  * Fetch challenged users
  *
  * @param int $userid Current user ID
@@ -1243,11 +1285,11 @@ function fetch_challenged_users($userid, $problemid) {
     global $DB;
 
     return $DB->get_records_sql('SELECT mlu.id AS userid, firstname, lastname, mlc.id FROM mdl_lips_user mlu
-        JOIN mdl_user mu ON mlu.id_user_moodle = mu.id 
-        AND mlu.id <> ' . $userid . ' 
-        LEFT OUTER JOIN mdl_lips_challenge mlc ON mlu.id = mlc.challenge_to 
-        AND mlc.challenge_from = ' . $userid . ' 
-        AND mlc.challenge_problem = ' . $problemid . ' 
+        JOIN mdl_user mu ON mlu.id_user_moodle = mu.id
+        AND mlu.id <> ' . $userid . '
+        LEFT OUTER JOIN mdl_lips_challenge mlc ON mlu.id = mlc.challenge_to
+        AND mlc.challenge_from = ' . $userid . '
+        AND mlc.challenge_problem = ' . $problemid . '
         HAVING mlc.id IS NOT NULL');
 }
 
@@ -1281,7 +1323,9 @@ function fetch_not_challenged_users($userid, $problemid) {
 function is_challenged($from, $to, $problem) {
     global $DB;
 
-    if ($DB->count_records('lips_challenge', array("challenge_from" => $from, "challenge_to" => $to, "challenge_problem" => $problem)) > 0) {
+    if ($DB->count_records('lips_challenge',
+            array("challenge_from" => $from, "challenge_to" => $to, "challenge_problem" => $problem)) > 0
+    ) {
         return true;
     }
 
@@ -1312,7 +1356,7 @@ function fetch_problems_user_by_category($userid, $categoryid) {
 function challenge($lipsid, $from, $to, $problem) {
     global $DB;
 
-    // Challenge
+    // Challenge.
     $DB->insert_record('lips_challenge', array(
         'challenge_language' => $lipsid,
         'challenge_from' => $from,
@@ -1322,10 +1366,10 @@ function challenge($lipsid, $from, $to, $problem) {
         'challenge_state' => 'WAITING'
     ));
 
-    // From & From followers
+    // From & From followers.
     insert_notification($lipsid, $from, 'notification_challenge', time(), $from, $to, $problem);
-    $from_followers = fetch_followers($from);
-    foreach ($from_followers as $follower) {
+    $fromfollowers = fetch_followers($from);
+    foreach ($fromfollowers as $follower) {
         $notificationexists = notification_exists(array(
             'notification_user_id' => $follower->follower,
             'notification_type' => 'notification_challenge',
@@ -1338,10 +1382,10 @@ function challenge($lipsid, $from, $to, $problem) {
         }
     }
 
-    // To & To follower
+    // To & To follower.
     insert_notification($lipsid, $to, 'notification_challenge', time(), $from, $to, $problem);
-    $to_followers = fetch_followers($to);
-    foreach ($to_followers as $follower) {
+    $tofollowers = fetch_followers($to);
+    foreach ($tofollowers as $follower) {
         $notificationexists = notification_exists(array(
             'notification_user_id' => $follower->follower,
             'notification_type' => 'notification_challenge',
@@ -1389,13 +1433,20 @@ function accept_challenge($challengeid) {
 
     $DB->update_record('lips_challenge', array('id' => $challengeid, 'challenge_state' => 'ACCEPTED'));
 
-    // Challenge details
+    // Challenge details.
     $challengedetails = get_challenge_details(array('id' => $challengeid));
 
-    // From & From followers
-    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_from, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
-    $from_followers = fetch_followers($challengedetails->challenge_from);
-    foreach ($from_followers as $follower) {
+    // From & From followers.
+    insert_notification($challengedetails->challenge_language,
+        $challengedetails->challenge_from,
+        'notification_challenge_accepted',
+        time(),
+        $challengedetails->challenge_to,
+        $challengedetails->challenge_from,
+        $challengedetails->challenge_problem);
+
+    $fromfollowers = fetch_followers($challengedetails->challenge_from);
+    foreach ($fromfollowers as $follower) {
         $notificationexists = notification_exists(array(
             'notification_user_id' => $follower->follower,
             'notification_type' => 'notification_challenge_accepted',
@@ -1404,14 +1455,27 @@ function accept_challenge($challengeid) {
             'notification_problem' => $challengedetails->challenge_problem));
 
         if (!$notificationexists) {
-            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
+            insert_notification($challengedetails->challenge_language,
+                $follower->follower,
+                'notification_challenge_accepted',
+                time(),
+                $challengedetails->challenge_to,
+                $challengedetails->challenge_from,
+                $challengedetails->challenge_problem);
         }
     }
 
-    // To & To follower
-    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_to, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
-    $to_followers = fetch_followers($challengedetails->challenge_to);
-    foreach ($to_followers as $follower) {
+    // To & To follower.
+    insert_notification($challengedetails->challenge_language,
+        $challengedetails->challenge_to,
+        'notification_challenge_accepted',
+        time(),
+        $challengedetails->challenge_to,
+        $challengedetails->challenge_from,
+        $challengedetails->challenge_problem);
+
+    $tofollowers = fetch_followers($challengedetails->challenge_to);
+    foreach ($tofollowers as $follower) {
         $notificationexists = notification_exists(array(
             'notification_user_id' => $follower->follower,
             'notification_type' => 'notification_challenge_accepted',
@@ -1420,7 +1484,13 @@ function accept_challenge($challengeid) {
             'notification_problem' => $challengedetails->challenge_problem));
 
         if (!$notificationexists) {
-            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_accepted', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
+            insert_notification($challengedetails->challenge_language,
+                $follower->follower,
+                'notification_challenge_accepted',
+                time(),
+                $challengedetails->challenge_to,
+                $challengedetails->challenge_from,
+                $challengedetails->challenge_problem);
         }
     }
 }
@@ -1435,13 +1505,20 @@ function refuse_challenge($challengeid) {
 
     $DB->update_record('lips_challenge', array('id' => $challengeid, 'challenge_state' => 'REFUSED'));
 
-    // Challenge details
+    // Challenge details.
     $challengedetails = get_challenge_details(array('id' => $challengeid));
 
-    // From & From followers
-    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_from, 'notification_challenge_refused', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
-    $from_followers = fetch_followers($challengedetails->challenge_from);
-    foreach ($from_followers as $follower) {
+    // From & From followers.
+    insert_notification($challengedetails->challenge_language,
+        $challengedetails->challenge_from,
+        'notification_challenge_refused',
+        time(),
+        $challengedetails->challenge_to,
+        $challengedetails->challenge_from,
+        $challengedetails->challenge_problem);
+
+    $fromfollowers = fetch_followers($challengedetails->challenge_from);
+    foreach ($fromfollowers as $follower) {
         $notificationexists = notification_exists(array(
             'notification_user_id' => $follower->follower,
             'notification_type' => 'notification_challenge_refused',
@@ -1450,14 +1527,27 @@ function refuse_challenge($challengeid) {
             'notification_problem' => $challengedetails->challenge_problem));
 
         if (!$notificationexists) {
-            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_refused', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
+            insert_notification($challengedetails->challenge_language,
+                $follower->follower,
+                'notification_challenge_refused',
+                time(),
+                $challengedetails->challenge_to,
+                $challengedetails->challenge_from,
+                $challengedetails->challenge_problem);
         }
     }
 
-    // To & To follower
-    insert_notification($challengedetails->challenge_language, $challengedetails->challenge_to, 'notification_challenge_refused', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
-    $to_followers = fetch_followers($challengedetails->challenge_to);
-    foreach ($to_followers as $follower) {
+    // To & To follower.
+    insert_notification($challengedetails->challenge_language,
+        $challengedetails->challenge_to,
+        'notification_challenge_refused',
+        time(),
+        $challengedetails->challenge_to,
+        $challengedetails->challenge_from,
+        $challengedetails->challenge_problem);
+
+    $tofollowers = fetch_followers($challengedetails->challenge_to);
+    foreach ($tofollowers as $follower) {
         $notificationexists = notification_exists(array(
             'notification_user_id' => $follower->follower,
             'notification_type' => 'notification_challenge_refused',
@@ -1466,7 +1556,13 @@ function refuse_challenge($challengeid) {
             'notification_problem' => $challengedetails->challenge_problem));
 
         if (!$notificationexists) {
-            insert_notification($challengedetails->challenge_language, $follower->follower, 'notification_challenge_refused', time(), $challengedetails->challenge_to, $challengedetails->challenge_from, $challengedetails->challenge_problem);
+            insert_notification($challengedetails->challenge_language,
+                $follower->follower,
+                'notification_challenge_refused',
+                time(),
+                $challengedetails->challenge_to,
+                $challengedetails->challenge_from,
+                $challengedetails->challenge_problem);
         }
     }
 }
@@ -1479,10 +1575,10 @@ function refuse_challenge($challengeid) {
 function cancel_challenge($challengeid) {
     global $DB;
 
-    // Challenge details
+    // Challenge details.
     $challengedetails = get_challenge_details(array('id' => $challengeid));
 
-    // Delete notifications
+    // Delete notifications.
     $DB->delete_records('lips_notification', array(
         'notification_language' => $challengedetails->challenge_language,
         'notification_type' => 'notification_challenge',
@@ -1490,7 +1586,7 @@ function cancel_challenge($challengeid) {
         'notification_to' => $challengedetails->challenge_to
     ));
 
-    // Delete the challenge
+    // Delete the challenge.
     $DB->delete_records('lips_challenge', array('id' => $challengeid));
 }
 
@@ -1513,7 +1609,11 @@ function get_code_complete($idproblem, $solution) {
     $res = array();
     $idtrue = uniqid();
     $idfalse = uniqid();
-    $codes = $DB->get_record_sql('select base_code,problem_code, problem_imports, problem_unit_tests from mdl_lips_problem mlp join mdl_lips_category mlc on mlc.id=mlp.problem_category_id JOIN mdl_lips ml ON ml.id=mlc.id_language where mlp.id=' . $idproblem);
+    $codes = $DB->get_record_sql('select base_code,problem_code, problem_imports, problem_unit_tests
+     from mdl_lips_problem mlp
+      join mdl_lips_category mlc on mlc.id=mlp.problem_category_id
+      JOIN mdl_lips ml ON ml.id=mlc.id_language
+      where mlp.id=' . $idproblem);
     $basecode = $codes->base_code;
     $solution = preg_replace("|(<code>)|U", "", $solution);
     $solution = preg_replace("|(</code>)|U", "", $solution);
@@ -1537,7 +1637,11 @@ function get_code_complete($idproblem, $solution) {
  */
 function get_code_to_resolve($idproblem) {
     global $DB;
-    $codes = $DB->get_record_sql('select problem_code from mdl_lips_problem mlp join mdl_lips_category mlc on mlc.id=mlp.problem_category_id JOIN mdl_lips ml ON ml.id=mlc.id_language where mlp.id=' . $idproblem);
+    $codes = $DB->get_record_sql('select problem_code
+     from mdl_lips_problem mlp
+      join mdl_lips_category mlc on mlc.id=mlp.problem_category_id
+       JOIN mdl_lips ml ON ml.id=mlc.id_language
+        where mlp.id=' . $idproblem);
     return $codes->problem_code;
 }
 
@@ -1551,8 +1655,9 @@ function get_code_to_resolve($idproblem) {
 function user_rank_for_language($languageid, $userid) {
     global $DB;
 
-    // Scores on a language
-    $scores = $DB->get_records_sql('SELECT * FROM mdl_lips_score WHERE score_instance = ' . $languageid . ' ORDER BY score_score DESC');
+    // Scores on a language.
+    $scores = $DB->get_records_sql('SELECT * FROM mdl_lips_score
+     WHERE score_instance = ' . $languageid . ' ORDER BY score_score DESC');
 
     $pos = 1;
     foreach ($scores as $score) {
@@ -1589,7 +1694,7 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
     $userdetails = get_user_details(array('id_user_moodle' => $iduser));
 
     if (has_solved_problem($idproblem, $iduser) == 0) {
-        // Update the user score
+        // Update the user score.
         $DB->execute("UPDATE mdl_lips_score
         SET score_score = score_score + (SELECT difficulty_points
             FROM mdl_lips_difficulty mld
@@ -1599,7 +1704,7 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
         AND score_instance = " . get_current_instance()->id);
     }
 
-    // Solution
+    // Solution.
     $DB->insert_record('lips_problem_solved', array(
         'problem_solved_problem' => $idproblem,
         'problem_solved_user' => $iduser,
@@ -1607,7 +1712,7 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
         'problem_solved_solution' => $solution,
     ));
 
-    // Notifications
+    // Notifications.
     $lips = get_current_instance();
     $notificationexists = notification_exists(array(
         'notification_user_id' => $userdetails->id,
@@ -1618,7 +1723,7 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
         insert_notification($lips->id, $userdetails->id, 'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
     }
 
-    // Followers notifications
+    // Followers notifications.
     $followers = fetch_followers($userdetails->id);
     foreach ($followers as $follower) {
         $notificationexists = notification_exists(array(
@@ -1628,27 +1733,29 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
             'notification_problem' => $idproblem));
 
         if (!$notificationexists) {
-            insert_notification($lips->id, $follower->follower, 'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
+            insert_notification($lips->id, $follower->follower,
+                'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
         }
     }
 
-    // If challenged
+    // If challenged.
     $challenge = get_challenge_details(array('challenge_to' => $userdetails->id, 'challenge_problem' => $idproblem));
     if ($challenge != null) {
-        // Solve the challenge
+        // Solve the challenge.
         $DB->update_record('lips_challenge', array('id' => $challenge->id, 'challenge_state' => 'SOLVED'));
 
-        // Insert a notification to "challenge_from"
+        // Insert a notification to "challenge_from".
         $notificationexists = notification_exists(array(
             'notification_user_id' => $challenge->challenge_from,
             'notification_type' => 'notification_problem_solved',
             'notification_from' => $userdetails->id,
             'notification_problem' => $idproblem));
         if (!$notificationexists) {
-            insert_notification($lips->id, $challenge->challenge_from, 'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
+            insert_notification($lips->id, $challenge->challenge_from,
+                'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
         }
 
-        // Insert notifications to "challenge_from" followers
+        // Insert notifications to "challenge_from" followers.
         $followers = fetch_followers($challenge->challenge_from);
         foreach ($followers as $follower) {
             $notificationexists = notification_exists(array(
@@ -1658,12 +1765,16 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
                 'notification_problem' => $idproblem));
 
             if (!$notificationexists) {
-                insert_notification($lips->id, $follower->follower, 'notification_problem_solved', time(), $userdetails->id, null, $idproblem);
+                insert_notification($lips->id, $follower->follower,
+                    'notification_problem_solved',
+                    time(),
+                    $userdetails->id,
+                    null, $idproblem);
             }
         }
     }
 
-    // Update the user rank
+    // Update the user rank.
     $numberproblemsolved = get_count_problem_resolved($iduser);
     foreach (fetch_all_ranks() as $rank) {
         if ($rank->rank_problem_solved == $numberproblemsolved) {
@@ -1676,10 +1787,16 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
                 'notification_text' => $rank->rank_label));
 
             if (!$notificationexists) {
-                insert_notification(null, $userdetails->id, 'notification_grade', time(), $userdetails->id, null, null, null, $rank->rank_label);
+                insert_notification(null,
+                    $userdetails->id,
+                    'notification_grade',
+                    time(),
+                    $userdetails->id,
+                    null, null, null,
+                    $rank->rank_label);
             }
 
-            // Followers notifications
+            // Followers notifications.
             $followers = fetch_followers($userdetails->id);
             foreach ($followers as $follower) {
                 $notificationexists = notification_exists(array(
@@ -1689,13 +1806,19 @@ function insert_solution($solution, $idproblem, $iduser, $categoryid) {
                     'notification_text' => $rank->rank_label));
 
                 if (!$notificationexists) {
-                    insert_notification(null, $follower->follower, 'notification_grade', time(), $userdetails->id, null, null, null, $rank->rank_label);
+                    insert_notification(null,
+                        $follower->follower,
+                        'notification_grade',
+                        time(),
+                        $userdetails->id,
+                        null, null, null,
+                        $rank->rank_label);
                 }
             }
         }
     }
 
-    // Achievement
+    // Achievement.
     $problemsolvedbycategory = problem_solved_by_category($iduser, $categoryid);
     foreach (get_category_achievements($categoryid) as $achievement) {
         if ($achievement->achievement_problems == $problemsolvedbycategory) {
@@ -1763,18 +1886,26 @@ function fetch_all_ranks() {
  * Download an image from an URL
  *
  * @param string $url Image url
+ * @return bool|string True if the image has been downloaded, otherwise an error message
  */
 function download_image($url) {
     $explode_image = explode("/", $url);
     $image = $explode_image[count($explode_image) - 1];
+    $explodeextension = explode('.', $image);
+    $picture = uniqid() . '.' . $explodeextension[count($explodeextension) - 1];
 
-    // Get the image
-    $content = file_get_contents($url);
+    // Get the image.
+    $content = @file_get_contents($url);
+    if ($content == false) {
+        return false;
+    }
 
-    // Store in the filesystem
-    $fp = fopen("images/" . $image, "w");
+    // Store in the filesystem.
+    $fp = fopen("images/" . $picture, "w");
     fwrite($fp, $content);
     fclose($fp);
+
+    return $picture;
 }
 
 /**
@@ -1798,9 +1929,9 @@ function get_difficulty_details(array $conditions = array()) {
 function fetch_categories_and_achievements($instanceid) {
     global $DB;
 
-    return $DB->get_records_sql('SELECT mla.id AS achievementid, achievement_label, mlc.id AS categoryid, category_name 
-        FROM mdl_lips_category mlc, mdl_lips_achievement mla 
-        WHERE mlc.id = mla.achievement_category 
+    return $DB->get_records_sql('SELECT mla.id AS achievementid, achievement_label, mlc.id AS categoryid, category_name
+        FROM mdl_lips_category mlc, mdl_lips_achievement mla
+        WHERE mlc.id = mla.achievement_category
         AND mlc.id_language = ' . $instanceid);
 }
 
@@ -1874,19 +2005,26 @@ function fetch_achievements_details($userid) {
 function has_solved_problem($problemid, $userid) {
     global $DB;
 
-    return $DB->count_records('lips_problem_solved', array('problem_solved_problem' => $problemid, 'problem_solved_user' => $userid));
+    return $DB->count_records('lips_problem_solved',
+        array('problem_solved_problem' => $problemid, 'problem_solved_user' => $userid));
 }
 
 function  insert_bad_solution($solution, $idproblem, $iduser, $categoryid) {
-    global $DB;
+    global $DB, $CFG;
+
+    $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
+    $numberfailedanswersolved = $config['solutions']['number_of_failed_solutions_solved'];
 
     $DB->execute('DELETE FROM mdl_lips_problem_failed WHERE id NOT IN
     (SELECT id FROM
-        (SELECT id FROM mdl_lips_problem_failed WHERE problem_failed_problem=' . $idproblem . ' AND problem_failed_user = ' . $iduser . ' ORDER BY problem_failed_date LIMIT 5) AS V)
+        (SELECT id FROM mdl_lips_problem_failed WHERE problem_failed_problem=' . $idproblem . '
+        AND problem_failed_user = ' . $iduser . ' ORDER BY problem_failed_date DESC LIMIT ' . $numberfailedanswersolved . ')
+         AS
+         V)
     AND problem_failed_problem=' . $idproblem . ' AND problem_failed_user = ' . $iduser . '
     ');
 
-    // Solution
+    // Solution.
     $DB->insert_record('lips_problem_failed', array(
         'problem_failed_problem' => $idproblem,
         'problem_failed_user' => $iduser,

@@ -63,14 +63,20 @@ class mod_lips_achievement_select_form extends moodleform {
             $categoriescount = (count($categoriesarray) < 10) ? count($categoriesarray) : 10;
 
             // Select achievement.
-            $hier =& $mform->addElement('hierselect', 'selectAchievement', get_string('achievements', 'lips'), array('size' => $categoriescount));
+            $hier =& $mform->addElement('hierselect',
+                'selectAchievement',
+                get_string('achievements', 'lips'),
+                array('size' => $categoriescount));
             $hier->setOptions(array($categoriesarray, $achievementsarray));
-            $mform->addRule('selectAchievement', get_string('administration_category_modify_select_error', 'lips'), 'required', null, 'client');
+            $mform->addRule('selectAchievement',
+                get_string('administration_category_modify_select_error', 'lips'),
+                'required', null, 'client');
 
             // Modify button.
             $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
         } else {
-            $html = $PAGE->get_renderer('mod_lips')->display_notification(get_string("administration_empty_achievements", "lips"), 'WARNING');
+            $html = $PAGE->get_renderer('mod_lips')->display_notification(get_string("administration_empty_achievements", "lips"),
+                'WARNING');
             $mform->addElement('html', $html);
             $mform->addElement('html', '<br/><br/><br/><br/><br/><br/>');
         }
@@ -121,6 +127,67 @@ class mod_lips_achievement_form extends moodleform {
     }
 
     /**
+     * Handle the form
+     *
+     */
+    public function handle() {
+        global $PAGE;
+
+        // Do nothing if not submitted or cancelled.
+        if (!$this->is_submitted() || $this->is_cancelled()) {
+            return;
+        }
+
+        // Form data.
+        $data = $this->get_submitted_data();
+
+        // The validation failed.
+        $errors = $this->validation($data, null);
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
+            }
+
+            return;
+        }
+
+        // Update date.
+        $achievementdetails = get_achievement_details(array('id' => $data->inputAchievementID));
+        if (empty($data->inputPicture)) {
+            switch($achievementdetails->achievement_problems) {
+                case 10:
+                    $data->inputPicture = 'bronze.png';
+                break;
+                case 25:
+                    $data->inputPicture = 'silver.png';
+                break;
+                case 50:
+                    $data->inputPicture = 'gold.png';
+                break;
+                case 100:
+                    $data->inputPicture = 'platinum.png';
+                break;
+            }
+
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_achievement_default_picture', 'lips'), 'INFO');
+        } else if(!is_a_picture($data->inputPicture)) {
+            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error', 'lips'), 'ERROR');
+
+            return;
+        }
+
+        update_achievement(array(
+            'id' => $achievementdetails->id,
+            'achievement_label' => $data->inputLabel,
+            'achievement_desc' => $data->areaDescription,
+            'achievement_picture' => $data->inputPicture
+        ));
+
+        // Success message.
+        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_achievement_success', 'lips'), 'SUCCESS');
+    }
+
+    /**
      * Form custom validation
      *
      * @param array $data Form data
@@ -144,47 +211,5 @@ class mod_lips_achievement_form extends moodleform {
         }
 
         return $errors;
-    }
-
-    /**
-     * Handle the form
-     *
-     * @param array $data Form data
-     * @param array $files Form uploaded files
-     */
-    public function handle() {
-        global $PAGE;
-
-        // Do nothing if not submitted or cancelled.
-        if (!$this->is_submitted() || $this->is_cancelled())
-            return;
-
-        // Form data.
-        $data = $this->get_submitted_data();
-
-        // The validation failed.
-        $errors = $this->validation($data, null);
-        if (count($errors) > 0) {
-            foreach ($errors as $error) {
-                echo $PAGE->get_renderer('mod_lips')->display_notification($error, 'ERROR');
-            }
-
-            return;
-        }
-
-        // Update date.
-        $achievementdetails = get_achievement_details(array('id' => $data->inputAchievementID));
-        if (empty($data->inputPicture)) {
-            $data->inputPicture = $achievementdetails->achievement_picture;
-        }
-        update_achievement(array(
-            'id' => $achievementdetails->id,
-            'achievement_label' => $data->inputLabel,
-            'achievement_desc' => $data->areaDescription,
-            'achievement_picture' => $data->inputPicture
-        ));
-
-        // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_achievement_success', 'lips'), 'SUCCESS');
     }
 }

@@ -52,9 +52,9 @@ class categories_table extends table_sql {
             'category_name' => 'ASC'
         );
 
-        if($order == '') {
-            foreach($defaultorder as $key => $value) {
-                if(strpos($order, $key) === false) {
+        if ($order == '') {
+            foreach ($defaultorder as $key => $value) {
+                if (strpos($order, $key) === false) {
                     $order = "$key $value, $order";
                 }
             }
@@ -122,11 +122,13 @@ class categories_table extends table_sql {
             $category = get_category_details($attempt->id);
             if ($category->category_documentation_type == 'LINK') {
                 $a .= " " . $OUTPUT->action_icon($category->category_documentation, new pix_icon("i/manual_item", "documentation"));
-            } else if ($category->category_documentation_type == 'TEXT') {
-                $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php",
-                            array('id' => $PAGE->cm->id, 'view' => 'categoryDocumentation',
-                                'categoryId' => $attempt->id)),
-                        new pix_icon("i/manual_item", "documentation"));
+            } else {
+                if ($category->category_documentation_type == 'TEXT') {
+                    $a .= " " . $OUTPUT->action_icon(new moodle_url("view.php",
+                                array('id' => $PAGE->cm->id, 'view' => 'categoryDocumentation',
+                                    'categoryId' => $attempt->id)),
+                            new pix_icon("i/manual_item", "documentation"));
+                }
             }
 
             return $a;

@@ -32,33 +32,33 @@ require_once(dirname(__FILE__) . '/lips_rest_interface.php');
 class lips_rest_interface_ideone implements lips_rest_interface {
 
     public static function execute($source, $language) {
-        // creating soap client
+        // creating soap client.
         $languageid = "";
         $client = new SoapClient("http://ideone.com/api/1/service.wsdl");
-        $languagessupported = $client->getLanguages("mohlen", "lips");
+        $languagessupported = $client->getLanguages("jsenac", "lips");
         foreach ($languagessupported['languages'] as $langid => $langname) {
             if ($langname == $language) {
                 $languageid = $langid;
             }
         }
 
-        // calling test function
-        $testArray = $client->createSubmission("mohlen", "lips", $source, $languageid, "", true, true);
-        $res = $client->getSubmissionDetails("mohlen", "lips", $testArray['link'], true, true, true, true, true);
-        // printing returned values
+        $testArray = $client->createSubmission("jsenac", "lips", $source, $languageid, "", true, true);
+        $res = $client->getSubmissionDetails("jsenac", "lips", $testArray['link'], true, true, true, true, true);
         while ($res['status'] != 0) {
             sleep(3);
-            $res = $client->getSubmissionDetails("mohlen", "lips", $testArray['link'], true, true, true, true, true);
+            $res = $client->getSubmissionDetails("jsenac", "lips", $testArray['link'], true, true, true, true, true);
         }
         $resarray = array();
         $resarray['error'] = $res['stderr'];
         if ($res['result'] == 15 || $res['result'] == 12) {
             $resarray['result'] = 1;
-        } else if ($res['result'] == 11) {
-            $resarray['result'] = 0;
-            $resarray['error'] = $res['cmpinfo'];
         } else {
-            $resarray['result'] = 0;
+            if ($res['result'] == 11) {
+                $resarray['result'] = 0;
+                $resarray['error'] = $res['cmpinfo'];
+            } else {
+                $resarray['result'] = 0;
+            }
         }
         $resarray['output'] = $res['output'];
         return $resarray;
@@ -66,10 +66,8 @@ class lips_rest_interface_ideone implements lips_rest_interface {
 
     public static function get_list_languages() {
         $languages = array();
-        // creating soap client
         $client = new SoapClient("http://ideone.com/api/1/service.wsdl");
-        // calling test function
-        $languagessupported = $client->getLanguages("mohlen", "lips");
+        $languagessupported = $client->getLanguages("jsenac", "lips");
         foreach ($languagessupported['languages'] as $languageid => $languagename) {
             $languages[$languagename] = $languagename;
         }

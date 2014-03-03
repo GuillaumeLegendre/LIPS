@@ -41,9 +41,9 @@ require_once("$CFG->libdir/outputrenderers.php");
  */
 class received_challenges_table extends table_sql {
 
-	private $owner = false;
+    private $owner = false;
 
-	/**
+    /**
      * received_challenges_table constructor
      *
      * @param object $cm Moodle context
@@ -56,7 +56,8 @@ class received_challenges_table extends table_sql {
         $this->cm = $cm;
         $this->owner = $owner;
 
-        $fieldstoselect = "cha.id, problem_label, category_name, difficulty_label, difficulty_points, firstname, lastname, challenge_state, compile_language";
+        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label, difficulty_points,
+        challenge_from, firstname, lastname, challenge_state, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_from = mlu_from.id
             JOIN mdl_user mu ON mlu_from.id_user_moodle = mu.id
@@ -64,30 +65,33 @@ class received_challenges_table extends table_sql {
             JOIN mdl_lips_category cat ON prob.problem_category_id = cat.id
             JOIN mdl_lips_difficulty diff ON prob.problem_difficulty_id = diff.id
             LEFT JOIN mdl_lips lips ON lips.id = cat.id_language";
-        $where =  "cha.challenge_to = " . $iduser;       
+        $where = "cha.challenge_to = " . $iduser;
 
         if ($search != null) {
-        	if (!empty($search->problem) && !empty($search->author)) {
-        		$where = $where . " AND (problem_label LIKE '%" . $search->problem . "%' AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%')";
-        	}
-        	else if (!empty($search->problem)) {
-        		$where = $where . " AND (problem_label LIKE '%" . $search->problem . "%')";
-        	}
-        	else if (!empty($search->author)) {
-        		$where = $where . " AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%'";
-        	}
+            if (!empty($search->problem) && !empty($search->author)) {
+                $where = $where . " AND (problem_label LIKE '%" . $search->problem . "%' AND
+                 CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%')";
+            } else {
+                if (!empty($search->problem)) {
+                    $where = $where . " AND (problem_label LIKE '%" . $search->problem . "%')";
+                } else {
+                    if (!empty($search->author)) {
+                        $where = $where . " AND CONCAT(firstname, ' ', lastname) LIKE '%" . $search->author . "%'";
+                    }
+                }
+            }
         }
 
         $this->set_sql(
-            	$fieldstoselect,
-            	$tablesfrom,
-            	$where);
+            $fieldstoselect,
+            $tablesfrom,
+            $where);
 
         $this->set_count_sql("
         	SELECT COUNT(*)
         	FROM mdl_lips_challenge cha
         	WHERE cha.challenge_to = " . $iduser);
-        
+
         if ($owner) {
             $this->define_baseurl(new moodle_url('view.php',
                 array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges')));
@@ -98,8 +102,13 @@ class received_challenges_table extends table_sql {
 
         $this->define_headers(array(get_string('language', 'lips'), get_string('problem', 'lips'), get_string('category', 'lips'),
             get_string('difficulty', 'lips'), get_string('challenge_author', 'lips'), get_string('state', 'lips')));
-       
-        $this->define_columns(array("compile_language", "problem_label", "category_name", "difficulty_points", "firstname", "state"));
+
+        $this->define_columns(array(
+            "compile_language",
+            "problem_label",
+            "category_name",
+            "difficulty_points",
+            "firstname", "state"));
 
         $this->sortable(true);
         $this->no_sorting("state");
@@ -107,20 +116,32 @@ class received_challenges_table extends table_sql {
 
     public function other_cols($colname, $attempt) {
         global $OUTPUT, $PAGE;
+        $lipsoutput = $PAGE->get_renderer('mod_lips');
 
         switch ($colname) {
-        	case 'difficulty_points':
-        		return get_string($attempt->difficulty_label, 'lips');
-        		break;
+            case 'problem_label' :
+                $url = new action_link(new moodle_url('view.php',
+                    array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $attempt->challenge_problem)), $attempt->problem_label);
+                return $OUTPUT->render($url);
+                break;
+            case 'category_name' :
+                $url = new action_link(new moodle_url('view.php',
+                    array('id' => $this->cm->id, 'view' => 'category', 'categoryId' => $attempt->problem_category_id)),
+                $attempt->category_name);
+                return $OUTPUT->render($url);
+                break;
+            case 'difficulty_points':
+                return get_string($attempt->difficulty_label, 'lips');
+                break;
             case 'firstname':
-                return "$attempt->firstname $attempt->lastname";
+                return $lipsoutput->display_user_link($attempt->challenge_from, $attempt->firstname, $attempt->lastname);
                 break;
             case 'state':
-            	if ($this->owner) {
-                	switch ($attempt->challenge_state) {
-            			// Problem is in WAITING state.
-            			case 'WAITING':
-                            $url_accept = new action_link(new moodle_url('action.php', array(
+                if ($this->owner) {
+                    switch ($attempt->challenge_state) {
+                        // Problem is in WAITING state.
+                        case 'WAITING':
+                            $urlaccept = new action_link(new moodle_url('action.php', array(
                                     'id' => $this->cm->id,
                                     'action' => 'accept_challenge',
                                     'originV' => 'profile',
@@ -129,7 +150,7 @@ class received_challenges_table extends table_sql {
                                 )),
                                 get_string('accept', 'lips'), null, array("class" => "lips-button margin-right"));
 
-                            $url_refuse = new action_link(new moodle_url('action.php', array(
+                            $urlrefuse = new action_link(new moodle_url('action.php', array(
                                     'id' => $this->cm->id,
                                     'action' => 'refuse_challenge',
                                     'originV' => 'profile',
@@ -138,24 +159,24 @@ class received_challenges_table extends table_sql {
                                 )),
                                 get_string('refuse', 'lips'), null, array("class" => "lips-button"));
 
-                            return $OUTPUT->render($url_accept) . $OUTPUT->render($url_refuse);
+                            return $OUTPUT->render($urlaccept) . $OUTPUT->render($urlrefuse);
                             break;
 
-            			// Problem is in ACCEPTED state.
-            			case 'ACCEPTED':
+                        // Problem is in ACCEPTED state.
+                        case 'ACCEPTED':
 
-            			// Problem is in SOLVED state.
-            			case 'SOLVED':
+                            // Problem is in SOLVED state.
+                        case 'SOLVED':
 
-            			// Problem is in REFUSED state.
-            			case 'REFUSED':
-            				return get_string($attempt->challenge_state, 'lips');
-            				break;
+                            // Problem is in REFUSED state.
+                        case 'REFUSED':
+                            return get_string($attempt->challenge_state, 'lips');
+                            break;
                     }
-            	} else {
-	                return get_string($attempt->challenge_state, 'lips');
-	            }
-	            break;
+                } else {
+                    return get_string($attempt->challenge_state, 'lips');
+                }
+                break;
         }
         return null;
     }

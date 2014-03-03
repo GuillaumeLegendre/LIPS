@@ -60,25 +60,30 @@ class page_profile extends page_view {
             $iduser = get_user_details(array('id_user_moodle' => $USER->id))->id;
         }
 
-        // Profile menu
+        // Profile menu.
         echo $this->lipsoutput->display_profile_menu('profile') . '<br/>';
 
-        // Recent activity
+        // Recent activity.
         echo $this->lipsoutput->display_h1(get_string('recent_activity', 'lips'));
-        echo $this->lipsoutput->display_notifications(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')', $page * 15));
+        echo $this->lipsoutput->display_notifications(
+            fetch_notifications_details('notification_user_id = ' . $iduser . ' AND
+             (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser .
+                ')', $page * 15));
 
-        if (count(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')', $page + 1 * 15)) > $page * 15) {
+        if (count(fetch_notifications_details('notification_user_id = ' . $iduser . ' AND
+         (notification_from = ' . $iduser . ' OR notification_to = ' . $iduser . ')', $page + 1 * 15)) > $page * 15
+        ) {
             echo "<br/><center>" . $this->lipsoutput->render(new action_link(new moodle_url('view.php', array(
                         'id' => $this->cm->id,
                         'view' => $this->view,
                         'page' => $page * 15,
                         'id_user' => $iduser
                     )),
-                    get_string('display_more_results', 'lips'), null, array("class" => "lips-button"))). "</center>";
+                    get_string('display_more_results', 'lips'), null, array("class" => "lips-button"))) . "</center>";
         }
 
 
-        // Achievements
+        // Achievements.
         echo '<br/>' . $this->lipsoutput->display_h1(get_string('achievements', 'lips'));
         echo $this->lipsoutput->display_achievements(fetch_achievements_details($iduser));
     }
@@ -152,7 +157,7 @@ class page_profile_solved_problems extends page_view {
         echo $this->lipsoutput->display_profile_menu('solved_problems') . '<br/>';
         echo $this->lipsoutput->display_h1(get_string('solved_problems', 'lips'));
 
-        // User details
+        // User details.
         $userid = optional_param('id_user', null, PARAM_TEXT);
         $curentid = get_user_details(array('id_user_moodle' => $USER->id))->id;
         if ($userid == null) {
@@ -161,29 +166,40 @@ class page_profile_solved_problems extends page_view {
             $userdetails = get_user_details(array('id' => $userid));
         }
 
-        // Search form
+        // Search form.
         $array = array(
             "placeholder" => get_string('problem', 'lips'),
             "class" => "solved_problems_ac"
         );
         echo '<input type="hidden" id="hiddenUserID" value="' . $userdetails->id_user_moodle . '"/>';
         if ($userid == null) {
-            $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'solved_problems')), $array, 'post', '', array('class' => 'search-form'));
+            $searchform = new mod_lips_search_form(
+                new moodle_url('view.php',
+                    array('id' => $this->cm->id,
+                        'view' => $this->view,
+                        'action' => 'solved_problems')),
+                $array, 'post', '', array('class' => 'search-form'));
         } else {
-            $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'solved_problems', 'id_user' => $userid)), $array, 'post', '', array('class' => 'search-form'));
+            $searchform = new mod_lips_search_form(
+                new moodle_url('view.php',
+                    array('id' => $this->cm->id,
+                        'view' => $this->view,
+                        'action' => 'solved_problems',
+                        'id_user' => $userid)),
+                $array, 'post', '', array('class' => 'search-form'));
         }
-        $searchForm->display();
+        $searchform->display();
 
-        // Search result
+        // Search result.
         $search = null;
-        if ($searchForm->is_submitted()) {
-            $data = $searchForm->get_submitted_data();
+        if ($searchform->is_submitted()) {
+            $data = $searchform->get_submitted_data();
             if (!empty($data->inputSearch)) {
                 $search = $data->inputSearch;
             }
         }
 
-        // Solved problems table
+        // Solved problems table.
         if ($userid == null || $userid == $curentid) {
             $table = new solved_problems_table($this->cm, $search, $userdetails->id_user_moodle, true);
         } else {
@@ -225,31 +241,33 @@ class page_profile_challenges extends page_view {
 
         echo $this->lipsoutput->display_profile_menu('challenges') . '<br/>';
 
-        // User details
+        // User details.
         $iduser = optional_param('id_user', null, PARAM_TEXT);
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
         echo '<input type="hidden" id="hiddenUserID" value="' . $userdetails->id . '"/>';
 
-        // Search form for received challenges
+        // Search form for received challenges.
         if ($iduser == null) {
-            $receivedSearchForm = new mod_lips_received_challenges_search_form(new moodle_url('view.php', array(
-                'id' => $this->cm->id, 
-                'view' => $this->view, 
-                'action' => 'challenges')
-            ), null, 'post', '', array('class' => 'search-form'));
+            $receivedsearchform = new mod_lips_received_challenges_search_form(
+                new moodle_url('view.php', array(
+                        'id' => $this->cm->id,
+                        'view' => $this->view,
+                        'action' => 'challenges')
+                ), null, 'post', '', array('class' => 'search-form'));
         } else {
-            $receivedSearchForm = new mod_lips_received_challenges_search_form(new moodle_url('view.php', array(
-                'id' => $this->cm->id, 
-                'view' => $this->view, 
-                'action' => 'challenges', 
-                'id_user' => $iduser)
-            ), null, 'post', '', array('class' => 'search-form'));
+            $receivedsearchform = new mod_lips_received_challenges_search_form(
+                new moodle_url('view.php', array(
+                        'id' => $this->cm->id,
+                        'view' => $this->view,
+                        'action' => 'challenges',
+                        'id_user' => $iduser)
+                ), null, 'post', '', array('class' => 'search-form'));
         }
 
-        // Search result
+        // Search result.
         $receivedsearch = new stdClass();
-        if ($receivedSearchForm->is_submitted()) {
-            $data = $receivedSearchForm->get_submitted_data();
+        if ($receivedsearchform->is_submitted()) {
+            $data = $receivedsearchform->get_submitted_data();
             if (!empty($data->problemInputSearchReceived)) {
                 $receivedsearch->problem = $data->problemInputSearchReceived;
             }
@@ -258,9 +276,9 @@ class page_profile_challenges extends page_view {
             }
         }
 
-        // Received challenges table
+        // Received challenges table.
         echo $this->lipsoutput->display_h1(get_string('received_challenges', 'lips'));
-        $receivedSearchForm->display();
+        $receivedsearchform->display();
 
         if ($iduser == null || $iduser == $userdetails->id) {
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
@@ -270,26 +288,28 @@ class page_profile_challenges extends page_view {
         }
         $receivedchallengestable->out(get_string('challenges_table', 'lips'), true);
 
-        // Search form for sent challenges
+        // Search form for sent challenges.
         if ($iduser == null) {
-            $sentSearchForm = new mod_lips_sent_challenges_search_form(new moodle_url('view.php', array(
-                'id' => $this->cm->id, 
-                'view' => $this->view, 
-                'action' => 'challenges')
-            ), null, 'post', '', array('class' => 'search-form'));
+            $sentsearchform = new mod_lips_sent_challenges_search_form(
+                new moodle_url('view.php', array(
+                        'id' => $this->cm->id,
+                        'view' => $this->view,
+                        'action' => 'challenges')
+                ), null, 'post', '', array('class' => 'search-form'));
         } else {
-            $sentSearchForm = new mod_lips_sent_challenges_search_form(new moodle_url('view.php', array(
-                'id' => $this->cm->id, 
-                'view' => $this->view, 
-                'action' => 'challenges', 
-                'id_user' => $iduser)
-            ), null, 'post', '', array('class' => 'search-form'));
+            $sentsearchform = new mod_lips_sent_challenges_search_form(
+                new moodle_url('view.php', array(
+                        'id' => $this->cm->id,
+                        'view' => $this->view,
+                        'action' => 'challenges',
+                        'id_user' => $iduser)
+                ), null, 'post', '', array('class' => 'search-form'));
         }
 
-        // Search result
+        // Search result.
         $sentsearch = new stdClass();
-        if ($sentSearchForm->is_submitted()) {
-            $data = $sentSearchForm->get_submitted_data();
+        if ($sentsearchform->is_submitted()) {
+            $data = $sentsearchform->get_submitted_data();
             if (!empty($data->problemInputSearchSent)) {
                 $sentsearch->problem = $data->problemInputSearchSent;
             }
@@ -298,9 +318,9 @@ class page_profile_challenges extends page_view {
             }
         }
 
-        // Sent challenges table
+        // Sent challenges table.
         echo '<br/>' . $this->lipsoutput->display_h1(get_string('sent_challenges', 'lips'));
-        $sentSearchForm->display();
+        $sentsearchform->display();
 
         if ($iduser == null || $iduser == $userdetails->id) {
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
@@ -343,11 +363,11 @@ class page_profile_followed_users extends page_view {
         echo $this->lipsoutput->display_profile_menu('followed_users') . '<br/>';
         echo $this->lipsoutput->display_h1(get_string('followed_users', 'lips'));
 
-        // User details
+        // User details.
         $iduser = optional_param('id_user', null, PARAM_TEXT);
         $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
 
-        // Search form
+        // Search form.
         $array = array(
             "placeholder" => get_string('user', 'lips'),
             "class" => "followed_users_ac"
@@ -355,22 +375,28 @@ class page_profile_followed_users extends page_view {
 
         echo '<input type="hidden" id="hiddenUserID" value="' . $userdetails->id . '"/>';
         if ($iduser == null) {
-            $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'followed_users')), $array, 'post', '', array('class' => 'search-form'));
+            $searchform = new mod_lips_search_form(
+                new moodle_url('view.php',
+                    array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'followed_users')),
+                $array, 'post', '', array('class' => 'search-form'));
         } else {
-            $searchForm = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'followed_users', 'id_user' => $iduser)), $array, 'post', '', array('class' => 'search-form'));
+            $searchform = new mod_lips_search_form(
+                new moodle_url('view.php',
+                    array('id' => $this->cm->id, 'view' => $this->view, 'action' => 'followed_users', 'id_user' => $iduser)),
+                $array, 'post', '', array('class' => 'search-form'));
         }
-        $searchForm->display();
+        $searchform->display();
 
-        // Search result
+        // Search result.
         $search = null;
-        if ($searchForm->is_submitted()) {
-            $data = $searchForm->get_submitted_data();
+        if ($searchform->is_submitted()) {
+            $data = $searchform->get_submitted_data();
             if (!empty($data->inputSearch)) {
                 $search = $data->inputSearch;
             }
         }
 
-        // Followed users table
+        // Followed users table.
         if ($iduser == null || $iduser == $userdetails->id) {
             $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
 

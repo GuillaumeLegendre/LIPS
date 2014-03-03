@@ -44,12 +44,12 @@ if (isset($_POST['action'])) {
                 $problemid = $_POST['problemid'];
 
                 $users = fetch_not_challenged_users($userid, $problemid);
-                $users_table = array();
+                $userstable = array();
                 foreach ($users as $user) {
-                    $users_table[$user->userid] = ucfirst($user->firstname) . ' ' . $user->lastname;
+                    $userstable[$user->userid] = ucfirst($user->firstname) . ' ' . $user->lastname;
                 }
 
-                echo json_encode($users_table);
+                echo json_encode($userstable);
             }
             break;
 

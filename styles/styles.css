@@ -105,13 +105,14 @@ h3 {
 
 .search-form input[type=text] {
     height: 20px;
-    width: 30%;
+    width: 40%;
 }
 
 .search-form fieldset {
     width: 100%;
     margin: 0;
     padding: 0;
+    
     -webkit-margin-start: 0;
     -webkit-margin-end: 0;
     -webkit-padding-before: 0.5em;
@@ -222,7 +223,7 @@ h3 {
 }
 
 .solution {
-    width: 60%;
+    width: 100%;
     margin-bottom: 10px;
 }
 
@@ -262,6 +263,15 @@ h3 {
     display: inline;
 }
 
+.problem-form #fitem_id_submit, .problem-form #fitem_id_submit .felement {
+    display: inline;
+    margin: 0;
+}
+
+.problem-form #fitem_id_submit .felement .lips-button {
+    margin: 10px 0 50px 0;
+}
+
 /*---------------------------------
  *  Challenge
  *-------------------------------*/
@@ -294,6 +304,51 @@ h3 {
     width: 10px;
     height: 10px;
     margin: 2px 3px 0 0;
+}
+
+/*---------------------------------
+ *  Similar problems
+ *-------------------------------*/
+
+#similar-problems {
+    overflow: auto;
+    height: 200px;
+    width: 50%;
+    border: 1px solid #555555;
+}
+
+#similar-problems #similar-add {
+    border-bottom: 1px solid #555555;
+}
+
+#similar-problems #similar-add img {
+    cursor: pointer;
+    border: 1px solid #AAAAAA;
+    padding: 3px;
+    margin: 3px 0 0 3px;
+}
+
+#similar-problems #similar-add img:hover {
+    background-color: #EDEDED;
+}
+
+#similar-problems p {
+    margin: 6px;
+    padding: 5px;
+    border: 1px solid #AAAAAA;
+    background-color: #FFFFFF;
+}
+
+#similar-problems p:hover {
+    background-color: #EEEEEE;
+}
+
+#similar-problems .delete {
+    float: right;
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+    margin: 5px 3px 0 0;
 }
 
 /*---------------------------------

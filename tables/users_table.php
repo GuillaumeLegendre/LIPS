@@ -53,23 +53,26 @@ class users_table extends table_sql {
         $this->cm = $cm;
         $lips = get_current_instance();
 
-        if($search == null) {
+        if ($search == null) {
             $this->set_sql("mlu.id, mlu.id_user_moodle, firstname, lastname, user_rights_status, rank_label",
-                        "mdl_lips_user mlu
-                        JOIN mdl_user mu ON mu.id = mlu.id_user_moodle
-                        JOIN mdl_lips_rank mlr ON mlu.user_rank_id = mlr.id
-                        LEFT OUTER JOIN mdl_lips_user_rights mlur ON mlur.user_rights_user = mlu.id
-                        AND mlur.user_rights_instance = " . $lips->id, "1");
+                "mdl_lips_user mlu
+                JOIN mdl_user mu ON mu.id = mlu.id_user_moodle
+                JOIN mdl_lips_rank mlr ON mlu.user_rank_id = mlr.id
+                LEFT OUTER JOIN mdl_lips_user_rights mlur ON mlur.user_rights_user = mlu.id
+                AND mlur.user_rights_instance = " . $lips->id, "1");
             $this->set_count_sql('SELECT COUNT(*) FROM mdl_lips_user');
         } else {
             $this->set_sql("mlu.id, mlu.id_user_moodle, firstname, lastname, user_rights_status, rank_label",
-                        "mdl_lips_user mlu
-                        JOIN mdl_user mu ON mu.id = mlu.id_user_moodle
-                        JOIN mdl_lips_rank mlr ON mlu.user_rank_id = mlr.id
-                        LEFT OUTER JOIN mdl_lips_user_rights mlur ON mlur.user_rights_user = mlu.id
-                        AND mlur.user_rights_instance = " . $lips->id, 
-                        "CONCAT(firstname, ' ', lastname) LIKE '%" . $search . "%'");
-            $this->set_count_sql("SELECT COUNT(*) FROM mdl_lips_user mlu, mdl_user mu WHERE mlu.id_user_moodle = mu.id AND (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
+                "mdl_lips_user mlu
+                JOIN mdl_user mu ON mu.id = mlu.id_user_moodle
+                JOIN mdl_lips_rank mlr ON mlu.user_rank_id = mlr.id
+                LEFT OUTER JOIN mdl_lips_user_rights mlur ON mlur.user_rights_user = mlu.id
+                AND mlur.user_rights_instance = " . $lips->id,
+                "CONCAT(firstname, ' ', lastname) LIKE '%" . $search . "%'");
+            $this->set_count_sql("SELECT COUNT(*)
+             FROM mdl_lips_user mlu, mdl_user mu
+              WHERE mlu.id_user_moodle = mu.id AND
+              (firstname LIKE '%" . $search . "%' OR lastname LIKE '%" . $search . "%')");
         }
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "users")));
         $this->define_headers(array(get_string('user', 'lips'), get_string('status', 'lips'), get_string('grade', 'lips'), ''));
@@ -87,13 +90,15 @@ class users_table extends table_sql {
         global $OUTPUT, $PAGE, $USER;
         $lipsoutput = $PAGE->get_renderer('mod_lips');
 
-        switch($colname) {
+        switch ($colname) {
             case 'firstname':
-                return '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $attempt->id)) . '"/>' . $lipsoutput->display_user_link($attempt->id, $attempt->firstname, $attempt->lastname) . '</div>';
+                return '<div class="user-picture">
+                    <img src="' . get_user_picture_url(array('id' => $attempt->id)) . '"/>' .
+                    $lipsoutput->display_user_link($attempt->id, $attempt->firstname, $attempt->lastname) . '</div>';
                 break;
 
             case 'user_rights_status':
-                if($attempt->user_rights_status != null) {
+                if ($attempt->user_rights_status != null) {
                     return get_string($attempt->user_rights_status, 'lips');
                 } else {
                     return get_string('student', 'lips');
@@ -103,26 +108,26 @@ class users_table extends table_sql {
             case 'user_follow':
                 $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
 
-                if(is_following($userdetails->id, $attempt->id)) {
+                if (is_following($userdetails->id, $attempt->id)) {
                     $url = new action_link(new moodle_url('action.php', array(
-                        'id' => $this->cm->id,
-                        'action' => 'unfollow',
-                        'originV' => 'users',
-                        'to_unfollow' => $attempt->id
-                    )),
-                    get_string('unfollow', 'lips'), null, array("class" => "lips-button"));
+                            'id' => $this->cm->id,
+                            'action' => 'unfollow',
+                            'originV' => 'users',
+                            'to_unfollow' => $attempt->id
+                        )),
+                        get_string('unfollow', 'lips'), null, array("class" => "lips-button"));
                 } else {
                     $url = new action_link(new moodle_url('action.php', array(
                             'id' => $this->cm->id,
                             'action' => 'follow',
                             'originV' => 'users',
                             'to_follow' => $attempt->id
-                    )),
-                    get_string('follow', 'lips'), null, array("class" => "lips-button"));
+                        )),
+                        get_string('follow', 'lips'), null, array("class" => "lips-button"));
                 }
 
-                // You can't follow yourself
-                if($attempt->id_user_moodle != $USER->id) {
+                // You can't follow yourself.
+                if ($attempt->id_user_moodle != $USER->id) {
                     return $OUTPUT->render($url);
                 } else {
                     return '';

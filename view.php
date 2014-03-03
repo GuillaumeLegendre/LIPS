@@ -45,7 +45,7 @@ require_once(dirname(__FILE__) . '/views/problem_views.php');
 require_once(dirname(__FILE__) . '/views/profile_views.php');
 require_once(dirname(__FILE__) . '/views/user_views.php');
 
-$id = optional_param('id', 0, PARAM_INT); // course_module ID, or
+$id = optional_param('id', 0, PARAM_INT); // Course_module ID.
 $n = optional_param('n', 0, PARAM_INT); // lips instance ID - it should be named as the first character of the module
 $view = optional_param('view', 0, PARAM_TEXT); // lips instance ID - it should be named as the first character of the module.
 if (!$view) {
@@ -56,12 +56,14 @@ if ($id) {
     $cm = get_coursemodule_from_id('lips', $id, 0, false, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
     $lips = $DB->get_record('lips', array('id' => $cm->instance), '*', MUST_EXIST);
-} else if ($n) {
-    $lips = $DB->get_record('lips', array('id' => $n), '*', MUST_EXIST);
-    $course = $DB->get_record('course', array('id' => $lips->course), '*', MUST_EXIST);
-    $cm = get_coursemodule_from_instance('lips', $lips->id, $course->id, false, MUST_EXIST);
 } else {
-    error('You must specify a course_module ID or an instance ID');
+    if ($n) {
+        $lips = $DB->get_record('lips', array('id' => $n), '*', MUST_EXIST);
+        $course = $DB->get_record('course', array('id' => $lips->course), '*', MUST_EXIST);
+        $cm = get_coursemodule_from_instance('lips', $lips->id, $course->id, false, MUST_EXIST);
+    } else {
+        error('You must specify a course_module ID or an instance ID');
+    }
 }
 
 require_login($course, true, $cm);
@@ -74,7 +76,7 @@ $PAGE->set_title(format_string($lips->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
-if(get_highest_role() == null) {
+if (get_highest_role() == null) {
     $viewpage = new page_index($cm, false);
 } else {
     $viewpage = new page_index($cm, true);
@@ -219,10 +221,10 @@ if(get_highest_role() == null) {
             }
             break;
         case "cancelChallenge" :
-            $idChallenge = optional_param('challengeid', 0, PARAM_INT);
+            $idchallenge = optional_param('challengeid', 0, PARAM_INT);
             $originv = optional_param('originV', 0, PARAM_TEXT);
             $originaction = optional_param('originAction', 0, PARAM_TEXT);
-            $viewpage = new page_cancel_challenge($cm, $idChallenge, $originv, $originaction);
+            $viewpage = new page_cancel_challenge($cm, $idchallenge, $originv, $originaction);
             break;
         default :
             $access = insert_user_if_not_exists();

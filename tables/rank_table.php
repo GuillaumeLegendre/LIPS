@@ -70,7 +70,11 @@ class rank_table extends table_sql {
             LEFT JOIN mdl_lips_score mls ON mls.score_user=mlu.id WHERE $conditions");
         $this->define_baseurl(new moodle_url('view.php', array('id' => $cm->id, 'view' => "rank")));
 
-        $this->define_headers(array(get_string('rank', 'lips'), get_string('user', 'lips'), get_string("solved_problems", "lips"), "score", ""));
+        $this->define_headers(array(
+            get_string('rank', 'lips'),
+            get_string('user', 'lips'),
+            get_string("solved_problems", "lips"),
+            "score", ""));
         $this->define_columns(array("rank", "user", "nb_problems_solved", "user_score", "suivre"));
 
         $this->sortable(true);
@@ -115,7 +119,7 @@ class rank_table extends table_sql {
                     get_string('follow', 'lips'), null, array("class" => "lips-button"));
             }
 
-            // You can't follow yourself
+            // You can't follow yourself.
             if ($attempt->id_moodle_user != $USER->id) {
                 return $OUTPUT->render($url);
             } else {

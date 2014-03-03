@@ -48,10 +48,10 @@ class mod_lips_sent_challenges_search_form extends moodleform {
         global $PAGE;
         $mform =& $this->_form;
 
-        // Header
+        // Header.
         $mform->addElement('header', 'headerSearch', get_string('search', 'lips'));
 
-        // Input search for problem
+        // Input search for problem.
         $mform->addElement('text', 'problemInputSearchSent', null,
             array(
                 'size' => '25',
@@ -61,7 +61,7 @@ class mod_lips_sent_challenges_search_form extends moodleform {
             ));
         $mform->setType('problemInputSearchSent', PARAM_TEXT);
 
-        // Input search for author
+        // Input search for author.
         $mform->addElement('text', 'authorInputSearch', null,
             array(
                 'size' => '25',

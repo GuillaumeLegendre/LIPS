@@ -56,6 +56,7 @@ $string['my_problems_table'] = 10;
 $string['followed_users_table'] = 15;
 $string['solved_problems_table'] = 15;
 $string['notifications_limit'] = 50;
+$string['solutions_limit'] = 8;
 $string['challenges_table'] = 10;
 
 /*--------------------------------------------------
@@ -71,6 +72,7 @@ $string['student'] = 'Student';
 $string['picture_default_language'] = 'default_language.png';
 $string['picture_test'] = 'test.png';
 $string['picture_testing'] = 'testing.png';
+$string['picture_failed'] = 'failed.png';
 
 /*--------------------------------------------------
  * Difficulties
@@ -147,6 +149,7 @@ $string['tips'] = 'Tips';
 $string['none'] = 'None';
 $string['search'] = 'Search';
 $string['answer'] = 'Answer';
+$string['answers'] = 'Answers';
 $string['edit'] = 'Edit';
 $string['error_impossible'] = 'You shouldn\'t have access to this page';
 $string['language'] = 'Language';
@@ -157,6 +160,7 @@ $string['grade'] = 'Grade';
 $string['ranks'] = 'Ranks';
 $string['status'] = 'Status';
 $string['solved_problems'] = 'Solved problems';
+$string['submitted_answers'] = 'Submitted answers';
 $string['challenges'] = 'Challenges';
 $string['challenge'] = 'Challenge';
 $string['challenged'] = 'Challenged';
@@ -194,6 +198,7 @@ $string['label'] = 'Label';
 $string['description'] = 'Description';
 $string['display_more_results'] = 'Display more results';
 $string['categories'] = 'Categories';
+$string['you_didnt_say_the_magic_word'] = 'You didn\'t say the magic word !!!!';
 
 /*--------------------------------------------------
  * Dates
@@ -241,12 +246,12 @@ $string['level'] = 'Level';
 $string['date'] = 'Date';
 $string['author'] = 'Author';
 $string['number_of_resolutions'] = 'Number of resolutions';
-$string['resolved'] = 'Resolved';
+$string['resolved'] = 'Solved';
 $string['configure'] = 'Configure';
 $string['picture'] = 'Picture';
 $string['base'] = 'Base';
 $string['challenge_author'] = 'Author';
-$string['resolve'] = 'Resolve';
+$string['resolve'] = 'Solve';
 
 /*--------------------------------------------------
  * Administration
@@ -261,8 +266,11 @@ $string['administration_language_image_msg'] = 'Choose the picture for this prog
 $string['administration_language_image_success'] = 'The picture has been modified';
 $string['administration_language_image_save_error'] = 'An error occured while saving the file. Please try again.';
 $string['administration_language_image_type_error'] = 'The file you chose is not a picture. Please upload a picture.';
+$string['administration_language_image_url_error'] = 'An error occured while downloading the picture.';
+$string['administration_language_image_empty'] = 'Please select a picture.';
+$string['administration_language_image_rights'] = 'You don\'t have the rights "write" access on the <strong>images</strong> folder.';
 $string['administration_language_code_title'] = 'Base code';
-$string['administration_problem_create_code_msg'] = 'Start by importing libraries that will be usefull to resolve the problem.<br/><br/>And then, type instructions user will have to fill.<br/>To indicate editable area, you can use comments.<br/><br/>To finish, fill the <strong>Unit tests</strong> area that contains all the tests used to check student answers.</br/>Program must return <strong>PROBLEM_SOLVED</strong> (True button) in case of success, <strong>PROBLEM_FAILED</strong> (False button) otherwise.<br/>You can define which units test will be displayed on the problem page, using the <span style="color: red">&lt;lips-unit-test&gt;&lt;/lips-unit-test&gt;</span>tag.';
+$string['administration_problem_create_code_msg'] = 'Start by importing libraries that will be usefull to solve the problem.<br/><br/>And then, type instructions user will have to fill.<br/>To indicate editable area, you can use comments.<br/><br/>To finish, fill the <strong>Unit tests</strong> area that contains all the tests used to check student answers.</br/>Program must display <strong>PROBLEM_SOLVED</strong> (True button) in case of success, <strong>PROBLEM_FAILED</strong> (False button) otherwise.<br/>You can define which units test will be displayed on the problem page, using the <span style="color: red">&lt;lips-unit-test&gt;&lt;/lips-unit-test&gt;</span>tag.';
 $string['administration_language_code_success'] = 'The base code has been modified';
 $string['administration_language_code_imports_error'] = 'You can put only one &lt;lips-preconfig-import/&gt; tag';
 $string['administration_language_code_imports_error_no'] = 'The &lt;lips-preconfig-import/&gt; tag has to be present';
@@ -318,16 +326,17 @@ $string['achievement_gold_title'] = 'Gold';
 $string['achievement_gold_msg'] = 'You solved 50 problems in the category ';
 $string['achievement_platinum_title'] = 'Platinum';
 $string['achievement_platinum_msg'] = 'You solved 100 problems in the category ';
-$string['administration_achievement_success'] = '';
-$string['administration_achievement_label_error'] = '';
-$string['administration_achievement_desc_error'] = '';
+$string['administration_achievement_success'] = 'The achievement has been modified';
+$string['administration_achievement_label_error'] = 'You must enter a label';
+$string['administration_achievement_desc_error'] = 'You must enter a description';
+$string['administration_achievement_default_picture'] = 'No picture selected. Restore default picture';
 
 // Problem
 $string['administration_problem_create_title'] = 'Create a problem';
 $string['administration_problem_modify_title'] = 'Modify a problem';
 $string['administration_problem_create_preconfig_subtitle'] = '1. Pre-configuration';
 $string['administration_problem_create_informations_subtitle'] = "2. Problem's information";
-$string['administration_problem_create_informations_msg'] = 'Select the problem\'s category.<br/>Enter the name, the difficulty, the conditions need to resolve the problem.';
+$string['administration_problem_create_informations_msg'] = 'Select the problem\'s category.<br/>Enter the name, the difficulty, the conditions need to solve the problem.';
 $string['administration_problem_create_subject_subtitle'] = '3. Subject';
 $string['administration_problem_create_subject_msg'] = 'Write the problem subject and tips';
 $string['administration_problem_create_code_subtitle'] = '4. Code';

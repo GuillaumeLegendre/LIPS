@@ -90,21 +90,24 @@ class page_category extends page_view {
         require_once(dirname(__FILE__) . '/../tables/problems_table.php');
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
 
-        // Category documentation
+        // Category documentation.
         $categorydetails = get_category_details($this->id);
         echo $this->lipsoutput->display_documentation($categorydetails);
 
-        // Category name
+        // Category name.
         echo $this->lipsoutput->display_h1($categorydetails->category_name);
 
-        // Search form
+        // Search form.
         $array = array(
             "placeholder" => get_string('problem', 'lips'),
             "class" => "category_problems_ac"
         );
 
         echo '<input type="hidden" id="hiddenCategoryID" value="' . $categorydetails->id . '"/>';
-        $searchform = new mod_lips_search_form(new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->view, 'categoryId' => $this->id)), $array, 'post', '', array('class' => 'search-form'));
+        $searchform = new mod_lips_search_form(
+            new moodle_url('view.php',
+                array('id' => $this->cm->id, 'view' => $this->view, 'categoryId' => $this->id)),
+            $array, 'post', '', array('class' => 'search-form'));
         $searchform->display();
 
         $search = null;
@@ -117,10 +120,11 @@ class page_category extends page_view {
 
         if (has_role('administration')) {
             echo '<p><span style="color: red;">*</span> : ' . get_string('problem_owner', 'lips') . '.&nbsp;&nbsp;';
-            echo '<img src="images/' . get_string('picture_testing', 'lips') . '" width="16px" height="16px"/> : ' . get_string('problem_testing_picture', 'lips') . '.</p>';
+            echo '<img src="images/' . get_string('picture_testing', 'lips') . '" width="16px" height="16px"/>
+             : ' . get_string('problem_testing_picture', 'lips') . '.</p>';
         }
 
-        // Problems table
+        // Problems table.
         $table = new problems_table($this->cm, $categorydetails->id, $search);
         $table->out(10, true);
     }
@@ -183,11 +187,18 @@ class page_delete_category extends page_view {
      */
     function display_content() {
         $details = get_category_details($this->id);
-        $message = $this->lipsoutput->display_h2(get_string('administration_delete_category_confirmation', 'lips') . " " . $details->category_name . " ?");
+        $message = $this->lipsoutput->display_h2(
+            get_string('administration_delete_category_confirmation', 'lips') . " " . $details->category_name . " ?");
 
-        $continueurl = new moodle_url('action.php', array('id' => $this->cm->id, 'action' => $this->view, 'originV' => $this->originv, 'originAction' => $this->originaction, 'categoryId' => $this->id));
+        $continueurl = new moodle_url('action.php',
+            array('id' => $this->cm->id,
+                'action' => $this->view,
+                'originV' => $this->originv,
+                'originAction' => $this->originaction,
+                'categoryId' => $this->id));
         if ($this->originaction != null) {
-            $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv, 'action' => $this->originaction));
+            $cancelurl = new moodle_url('view.php',
+                array('id' => $this->cm->id, 'view' => $this->originv, 'action' => $this->originaction));
         } else {
             $cancelurl = new moodle_url('view.php', array('id' => $this->cm->id, 'view' => $this->originv));
         }
