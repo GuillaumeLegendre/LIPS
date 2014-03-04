@@ -195,7 +195,7 @@ class page_problem extends page_view {
          *------------------------------*/
 
         // Category documentation.
-        if($categorydetails->category_documentation != null) {
+        if ($categorydetails->category_documentation != null) {
             echo $this->lipsoutput->display_documentation($categorydetails);
             echo '<span style="float: right; margin: 9px 5px 0 5px;">|</span>';
         }
@@ -467,7 +467,6 @@ class page_solutions extends page_view {
                 array("class" => "label_field_page_problem")) . " " . $prerequisite;
         echo $this->lipsoutput->display_p($prerequisite, array("class" => "field_page_problem"));
 
-
         // Default user search.
         $userid = optional_param('userid', null, PARAM_INT);
         $search = null;
@@ -498,8 +497,6 @@ class page_solutions extends page_view {
                 }
             }
         }
-
-
         $page = optional_param('page', 1, PARAM_INT);
 
         $displaymoresolutions = false;

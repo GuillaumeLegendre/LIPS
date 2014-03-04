@@ -135,7 +135,6 @@ class rank_table extends flexible_table {
             LEFT JOIN mdl_lips_score mls ON mls.score_user=mlu.id
             WHERE $conditions");
 
-
             $conditionsselect = str_replace(" AND mu.firstname like '%" . $searchuser . "%' or
                 mu.lastname like '%" . $searchuser . "%'",
                 "", $conditions);
@@ -184,7 +183,6 @@ class rank_table extends flexible_table {
 
                 $userlink = '<div class="user-picture"><img src="' . get_user_picture_url(array('id' => $user->id)) . '"/>'
                     . $lipsoutput->display_user_link($user->id, $user->firstname, $user->lastname) . '</div>';
-
 
                 $userdetails = get_user_details(array('id_user_moodle' => $USER->id));
                 if (is_following($userdetails->id, $user->id)) {

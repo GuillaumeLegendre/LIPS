@@ -85,7 +85,9 @@ class solved_problems_table extends table_sql {
         if ($search == null) {
             $this->set_sql('t.*', '(
                 (
-                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language, mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points, problem_solved_date AS problem_date, "solved" AS state
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language,
+                    mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points,
+                    problem_solved_date AS problem_date, "solved" AS state
                     FROM mdl_lips_problem_solved mls
                     JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_solved_problem
                     JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
@@ -96,7 +98,9 @@ class solved_problems_table extends table_sql {
                 )
                 UNION ALL
                 (
-                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language, mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points, problem_failed_date AS problem_date, "failed" AS state
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language,
+                    mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points,
+                    problem_failed_date AS problem_date, "failed" AS state
                     FROM mdl_lips_problem_failed mls
                     JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_failed_problem
                     JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
@@ -108,7 +112,9 @@ class solved_problems_table extends table_sql {
         } else {
             $this->set_sql('t.*', '(
                 (
-                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language, mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points, problem_solved_date AS problem_date, "solved" AS state
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language,
+                    mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points,
+                    problem_solved_date AS problem_date, "solved" AS state
                     FROM mdl_lips_problem_solved mls
                     JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_solved_problem
                     JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
@@ -119,7 +125,9 @@ class solved_problems_table extends table_sql {
                 )
                 UNION ALL
                 (
-                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language, mlc.category_name, mlp.problem_label, difficulty_label, difficulty_points, problem_failed_date AS problem_date, "failed" AS state
+                    SELECT mlp.id AS problem_id, ml.id AS language_id, mlc.id AS category_id, ml.compile_language,
+                    mlc.category_name, mlp.problem_label, difficulty_label,
+                    difficulty_points, problem_failed_date AS problem_date, "failed" AS state
                     FROM mdl_lips_problem_failed mls
                     JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_failed_problem
                     JOIN mdl_lips_category mlc ON mlc.id = mlp.problem_category_id
@@ -171,7 +179,7 @@ class solved_problems_table extends table_sql {
             case 'compile_language':
                 $instance = get_instance($attempt->language_id);
                 $url = new action_link(new moodle_url('view.php', array(
-                    'id' => $instance->instance_link)
+                        'id' => $instance->instance_link)
                 ), ucfirst($attempt->compile_language));
                 return $OUTPUT->render($url);
                 break;
@@ -179,9 +187,9 @@ class solved_problems_table extends table_sql {
             case 'category_name':
                 $instance = get_instance($attempt->language_id);
                 $url = new action_link(new moodle_url('view.php', array(
-                    'id' => $instance->instance_link,
-                    'view' => 'category',
-                    'categoryId' => $attempt->category_id)
+                        'id' => $instance->instance_link,
+                        'view' => 'category',
+                        'categoryId' => $attempt->category_id)
                 ), ucfirst($attempt->category_name));
                 return $OUTPUT->render($url);
                 break;
@@ -189,9 +197,9 @@ class solved_problems_table extends table_sql {
             case 'problem_label':
                 $instance = get_instance($attempt->language_id);
                 $url = new action_link(new moodle_url('view.php', array(
-                    'id' => $instance->instance_link,
-                    'view' => 'problem',
-                    'problemId' => $attempt->problem_id)
+                        'id' => $instance->instance_link,
+                        'view' => 'problem',
+                        'problemId' => $attempt->problem_id)
                 ), $attempt->problem_label);
                 return $OUTPUT->render($url);
                 break;
@@ -205,50 +213,50 @@ class solved_problems_table extends table_sql {
                 break;
 
             case 'state':
-                switch($attempt->state) {
+                switch ($attempt->state) {
                     case 'solved':
-                    return '<img src="images/' . get_string('notification_problem_solved_picture', 'lips') . '"/>';
-                    break;
+                        return '<img src="images/' . get_string('notification_problem_solved_picture', 'lips') . '"/>';
+                        break;
 
                     case 'failed':
-                    return '<img src="images/' . get_string('picture_failed', 'lips') . '"/>';
-                    break;
+                        return '<img src="images/' . get_string('picture_failed', 'lips') . '"/>';
+                        break;
                 }
                 break;
 
             case 'solution':
-                switch($attempt->state) {
+                switch ($attempt->state) {
                     case 'solved':
-                    if ($this->owner || is_author($attempt->problem_id, $USER->id)) {
-                        $instance = get_instance($attempt->language_id);
-                        $url = new action_link(new moodle_url('view.php', array(
+                        if ($this->owner || is_author($attempt->problem_id, $USER->id)) {
+                            $instance = get_instance($attempt->language_id);
+                            $url = new action_link(new moodle_url('view.php', array(
                                 'id' => $instance->instance_link,
                                 'view' => 'solutions',
                                 'problemId' => $attempt->problem_id,
                                 'userid' => $this->userid
                             )), get_string('answers', 'lips'), null, array("class" => "lips-button"));
 
-                        return $OUTPUT->render($url);
-                    } else {
-                        return '';
-                    }
-                    break;
+                            return $OUTPUT->render($url);
+                        } else {
+                            return '';
+                        }
+                        break;
 
                     case 'failed':
-                    if (is_author($attempt->problem_id, $USER->id)) {
-                        $instance = get_instance($attempt->language_id);
-                        $url = new action_link(new moodle_url('view.php', array(
+                        if (is_author($attempt->problem_id, $USER->id)) {
+                            $instance = get_instance($attempt->language_id);
+                            $url = new action_link(new moodle_url('view.php', array(
                                 'id' => $instance->instance_link,
                                 'view' => 'solutions',
                                 'problemId' => $attempt->problem_id,
                                 'userid' => $this->userid
                             )), get_string('answers', 'lips'), null, array("class" => "lips-button"));
 
-                        return $OUTPUT->render($url);
-                    } else {
-                        return '';
-                    }
-                    break;
+                            return $OUTPUT->render($url);
+                        } else {
+                            return '';
+                        }
+                        break;
                 }
                 break;
         }
