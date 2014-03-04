@@ -217,21 +217,38 @@ class solved_problems_table extends table_sql {
                 break;
 
             case 'solution':
-                if ($this->owner ||
-                    nb_resolutions_problem($USER->id, $attempt->problem_id) > 0 ||
-                    is_author($attempt->problem_id, $USER->id)
-                ) {
-                    $instance = get_instance($attempt->language_id);
-                    $url = new action_link(new moodle_url('view.php', array(
-                            'id' => $instance->instance_link,
-                            'view' => 'solutions',
-                            'problemId' => $attempt->problem_id,
-                            'userid' => $this->userid
-                        )), get_string('answers', 'lips'), null, array("class" => "lips-button"));
+                switch($attempt->state) {
+                    case 'solved':
+                    if ($this->owner || is_author($attempt->problem_id, $USER->id)) {
+                        $instance = get_instance($attempt->language_id);
+                        $url = new action_link(new moodle_url('view.php', array(
+                                'id' => $instance->instance_link,
+                                'view' => 'solutions',
+                                'problemId' => $attempt->problem_id,
+                                'userid' => $this->userid
+                            )), get_string('answers', 'lips'), null, array("class" => "lips-button"));
 
-                    return $OUTPUT->render($url);
-                } else {
-                    return '';
+                        return $OUTPUT->render($url);
+                    } else {
+                        return '';
+                    }
+                    break;
+
+                    case 'failed':
+                    if (is_author($attempt->problem_id, $USER->id)) {
+                        $instance = get_instance($attempt->language_id);
+                        $url = new action_link(new moodle_url('view.php', array(
+                                'id' => $instance->instance_link,
+                                'view' => 'solutions',
+                                'problemId' => $attempt->problem_id,
+                                'userid' => $this->userid
+                            )), get_string('answers', 'lips'), null, array("class" => "lips-button"));
+
+                        return $OUTPUT->render($url);
+                    } else {
+                        return '';
+                    }
+                    break;
                 }
                 break;
         }
