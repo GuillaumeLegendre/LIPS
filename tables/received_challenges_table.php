@@ -66,7 +66,7 @@ class received_challenges_table extends table_sql {
         );
 
         $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label,
-        difficulty_points, challenge_from, firstname, lastname, challenge_state, compile_language";
+        difficulty_points, challenge_from, firstname, lastname, challenge_state, lips.id AS language_id, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_from = mlu_from.id
             JOIN mdl_user mu ON mlu_from.id_user_moodle = mu.id
@@ -115,13 +115,13 @@ class received_challenges_table extends table_sql {
                     'page_sent' => $pagesent)));
         }
 
-        $this->define_headers(array(get_string('language', 'lips'), get_string('problem', 'lips'), get_string('category', 'lips'),
+        $this->define_headers(array(get_string('language', 'lips'), get_string('category', 'lips'), get_string('problem', 'lips'),
             get_string('difficulty', 'lips'), get_string('challenge_author', 'lips'), get_string('state', 'lips')));
 
         $this->define_columns(array(
             "compile_language",
-            "problem_label",
             "category_name",
+            "problem_label",
             "difficulty_points",
             "firstname", "state"));
 
@@ -134,6 +134,14 @@ class received_challenges_table extends table_sql {
         $lipsoutput = $PAGE->get_renderer('mod_lips');
 
         switch ($colname) {
+            case 'compile_language':
+                $instance = get_instance($attempt->language_id);
+                $url = new action_link(new moodle_url('view.php', array(
+                    'id' => $instance->instance_link)
+                ), ucfirst($attempt->compile_language));
+                return $OUTPUT->render($url);
+                break;
+
             case 'problem_label' :
                 $url = new action_link(new moodle_url('view.php',
                         array('id' => $this->cm->id, 'view' => 'problem', 'problemId' => $attempt->challenge_problem)),
