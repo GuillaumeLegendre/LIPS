@@ -122,7 +122,7 @@ class mod_lips_achievement_form extends moodleform {
         $mform->setType('inputPicture', PARAM_TEXT);
         $mform->setDefault('inputPicture', $mcustomdata['achievement_picture']);
 
-        // Modify button
+        // Modify button.
         $mform->addElement('submit', 'submit', get_string('modify', 'lips'), array('class' => 'lips-button'));
     }
 
@@ -154,26 +154,32 @@ class mod_lips_achievement_form extends moodleform {
         // Update date.
         $achievementdetails = get_achievement_details(array('id' => $data->inputAchievementID));
         if (empty($data->inputPicture)) {
-            switch($achievementdetails->achievement_problems) {
+            switch ($achievementdetails->achievement_problems) {
                 case 10:
                     $data->inputPicture = 'bronze.png';
-                break;
+                    break;
                 case 25:
                     $data->inputPicture = 'silver.png';
-                break;
+                    break;
                 case 50:
                     $data->inputPicture = 'gold.png';
-                break;
+                    break;
                 case 100:
                     $data->inputPicture = 'platinum.png';
-                break;
+                    break;
             }
 
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_achievement_default_picture', 'lips'), 'INFO');
-        } else if(!is_a_picture($data->inputPicture)) {
-            echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_type_error', 'lips'), 'ERROR');
+            echo $PAGE->get_renderer('mod_lips')->display_notification(
+                get_string('administration_achievement_default_picture', 'lips'),
+                'INFO');
+        } else {
+            if (!is_a_picture($data->inputPicture)) {
+                echo $PAGE->get_renderer('mod_lips')->display_notification(
+                    get_string('administration_language_image_type_error', 'lips'),
+                    'ERROR');
 
-            return;
+                return;
+            }
         }
 
         update_achievement(array(
@@ -184,7 +190,9 @@ class mod_lips_achievement_form extends moodleform {
         ));
 
         // Success message.
-        echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_achievement_success', 'lips'), 'SUCCESS');
+        echo $PAGE->get_renderer('mod_lips')->display_notification(
+            get_string('administration_achievement_success', 'lips'),
+            'SUCCESS');
     }
 
     /**
