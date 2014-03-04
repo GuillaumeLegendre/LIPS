@@ -55,7 +55,7 @@ class received_challenges_table extends table_sql {
         parent::__construct("mdl_lips_challenges_table");
         $this->cm = $cm;
         $this->owner = $owner;
-        
+
         $this->request  = array(
             TABLE_VAR_SORT   => 'tsort_received',
             TABLE_VAR_HIDE   => 'thide',
@@ -65,8 +65,8 @@ class received_challenges_table extends table_sql {
             TABLE_VAR_PAGE   => 'page_received',
         );
 
-        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label, difficulty_points,
-        challenge_from, firstname, lastname, challenge_state, compile_language";
+        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label,
+        difficulty_points, challenge_from, firstname, lastname, challenge_state, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_from = mlu_from.id
             JOIN mdl_user mu ON mlu_from.id_user_moodle = mu.id
@@ -108,7 +108,8 @@ class received_challenges_table extends table_sql {
                 array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'page_sent' => $pagesent)));
         } else {
             $this->define_baseurl(new moodle_url('view.php',
-                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'id_user' => $iduser, 'page_sent' => $pagesent)));
+                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'id_user' => $iduser,
+                    'page_sent' => $pagesent)));
         }
 
         $this->define_headers(array(get_string('language', 'lips'), get_string('problem', 'lips'), get_string('category', 'lips'),
