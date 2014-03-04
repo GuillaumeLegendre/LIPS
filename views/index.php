@@ -112,7 +112,6 @@ class page_index extends page_view {
                         get_string('display_more_results', 'lips'), null, array("class" => "lips-button"))) . "</center>";
             }
 
-
         } else {
             echo $this->lipsoutput->display_p(get_string('no_notifications', 'lips'));
         }

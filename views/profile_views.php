@@ -81,8 +81,6 @@ class page_profile extends page_view {
                     )),
                     get_string('display_more_results', 'lips'), null, array("class" => "lips-button"))) . "</center>";
         }
-
-
         // Achievements.
         echo '<br/>' . $this->lipsoutput->display_h1(get_string('achievements', 'lips'));
         echo $this->lipsoutput->display_achievements(fetch_achievements_details($iduser));
