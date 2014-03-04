@@ -57,7 +57,7 @@ class sent_challenges_table extends table_sql {
         $this->owner = $owner;
 
         $this->request  = array(
-            TABLE_VAR_SORT   => 'tsort',
+            TABLE_VAR_SORT   => 'tsort_sent',
             TABLE_VAR_HIDE   => 'thide',
             TABLE_VAR_SHOW   => 'tshow',
             TABLE_VAR_IFIRST => 'tifirst',
