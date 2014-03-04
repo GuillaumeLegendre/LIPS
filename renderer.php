@@ -142,29 +142,42 @@ class mod_lips_renderer extends plugin_renderer_base {
         if (has_role('adminplugin')) {
             $administrationmenu .= '<li><a href="#">' . get_string('language', 'lips') . '</a>
                 <ul>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=language_configure">' . get_string('configure', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=language_picture">' . get_string('picture', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=language_base">' . get_string('base', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=language_configure">' .
+                get_string('configure', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=language_picture">' .
+                get_string('picture', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=language_base">' .
+                get_string('base', 'lips') . '</a></li>
                 </ul>
             </li>';
         }
 
-        $administrationmenu .= '<li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=achievement_select">' . get_string('achievements', 'lips') . '</a></li>
+        $administrationmenu .= '<li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=achievement_select">' .
+            get_string('achievements', 'lips') . '</a></li>
             <li><a href="#">' . get_string('categories', 'lips') . '</a>
                 <ul>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=category_create">' . get_string('create', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=category_select_modify">' . get_string('modify', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=category_delete">' . get_string('delete', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=category_create">' .
+            get_string('create', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=category_select_modify">' .
+            get_string('modify', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=category_delete">' .
+            get_string('delete', 'lips') . '</a></li>
                 </ul>
             </li>
             <li><a href="#">' . get_string('problems', 'lips') . '</a>
                 <ul>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problem_create">' . get_string('create', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problem_select_modify">' . get_string('modify', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problem_category_select_delete">' . get_string('delete', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problems_import">' . get_string('import', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problems_export">' . get_string('export', 'lips') . '</a></li>
-                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=my_problems">' . get_string('administration_my_problems_title', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problem_create">' .
+            get_string('create', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problem_select_modify">' .
+            get_string('modify', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problem_category_select_delete">' .
+            get_string('delete', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problems_import">' .
+            get_string('import', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=problems_export">' .
+            get_string('export', 'lips') . '</a></li>
+                    <li><a href="view.php?id=' . $id . '&amp;view=administration&amp;action=my_problems">' .
+            get_string('administration_my_problems_title', 'lips') . '</a></li>
                 </ul>
             </li>
         </ul>';
@@ -236,7 +249,7 @@ class mod_lips_renderer extends plugin_renderer_base {
         }
         $menu .= '</td></tr>';
 
-        // User informations
+        // User informations.
         $menu .= '<tr><td id="background">
             <div id="infos">
                 <div id="role">' .
@@ -343,10 +356,13 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param object LIPS instance
      */
     public function display_solution($data, $lips) {
-        $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)), ucfirst($data->firstname) . ' ' . ucfirst($data->lastname));
+        $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)),
+            ucfirst($data->firstname) . ' ' . ucfirst($data->lastname));
         $date = html_writer::tag('div', get_string("The", "lips") . " " . format_date($data->problem_date), array("id" => "date"));
-        $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header-solved"));
-        $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '" class="ace readonly">' . $data->problem_solution . '</div>', array("id" => "content"));
+        $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" .
+            $date, array("id" => "header-solved"));
+        $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '" class="ace readonly">' .
+            $data->problem_solution . '</div>', array("id" => "content"));
         echo html_writer::tag('div', $header . $content, array("class" => "solution"));
 
         $this->display_ace_form('aceSolution_' . $data->id, '', $lips->coloration_language, 'readonly-notsizable');
@@ -359,9 +375,12 @@ class mod_lips_renderer extends plugin_renderer_base {
      * @param object LIPS instance
      */
     public function display_bad_solution($data, $lips) {
-        $profillink = $this->action_link(new moodle_url("view.php", array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)), ucfirst($data->firstname) . ' ' . ucfirst($data->lastname));
+        $profillink = $this->action_link(new moodle_url("view.php",
+                array('id' => $this->page->cm->id, 'view' => 'profile', 'id_user' => $data->profil_id)),
+            ucfirst($data->firstname) . ' ' . ucfirst($data->lastname));
         $date = html_writer::tag('div', get_string("The", "lips") . " " . format_date($data->problem_date), array("id" => "date"));
-        $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" . $date, array("id" => "header-failed"));
+        $header = html_writer::tag('div', get_string("problem_resolved_by", "lips") . " " . $profillink . "<br/>" .
+            $date, array("id" => "header-failed"));
         $content = html_writer::tag('div', '<div id="aceSolution_' . $data->id . '_' . $data->row .
             '" class="ace readonly">' . $data->problem_solution . '</div>', array("id" => "content"));
         echo html_writer::tag('div', $header . $content, array("class" => "solution"));
@@ -388,7 +407,8 @@ class mod_lips_renderer extends plugin_renderer_base {
         }
 
         if ($url != null) {
-            return $this->render(new action_link($url, get_string("documentation", "lips"), null, array('class' => 'title-right-link documentation')));
+            return $this->render(new action_link($url, get_string("documentation", "lips"), null,
+                array('class' => 'title-right-link documentation')));
         }
 
         return null;
