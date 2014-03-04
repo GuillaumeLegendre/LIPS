@@ -680,7 +680,7 @@ class mod_lips_problems_resolve_form extends moodleform {
         $mcustomdata = $this->_customdata;
 
         if ($mcustomdata['idproblem'] != null) {
-            $code = htmlspecialchars(get_code_to_resolve($mcustomdata['idproblem']));
+            $code = get_code_to_resolve($mcustomdata['idproblem']);
             $mform->addElement('html', '<div id="answerEditor"" class="ace">' .
                 htmlspecialchars(get_code_to_resolve($mcustomdata['idproblem'])) . '</div>');
             $mform->addElement('textarea', 'problem_answer', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));

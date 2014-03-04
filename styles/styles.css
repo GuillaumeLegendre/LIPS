@@ -422,11 +422,13 @@ h3.lips {
 #profile-menu {
     width: 100%;
     border-collapse: collapse;
+    border: none;
 }
 
 #profile-menu, #profile-menu tr, #profile-menu td {
     padding: 0;
     margin: 0;
+    background-color: transparent;
 }
 
 #profile-menu #picture {
