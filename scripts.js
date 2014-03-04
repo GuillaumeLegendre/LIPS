@@ -225,17 +225,6 @@ function deleteSimilarProblem(id) {
     $("#id_problem_similar").val($("#id_problem_similar").val().replace(" " + id, ""));
 }
 
-function populateselectinstance() {
-    var idinstance = $("#id_language_id_js option:selected").val();
-    $.getJSON("./get_categories_by_instance.php", {id: idinstance, ajax: 'true'}, function (j) {
-        var options = "<option value='all'>Tout</option>";
-        $.each(j, function (key, val) {
-            options += '<option value="' + val.id_language + '">' + val.category_name + '</option>';
-        });
-        $("#id_category_id_js").html(options);
-    })
-}
-
 $(document).ready(function () {
 
     /*---------------------------------
@@ -244,7 +233,7 @@ $(document).ready(function () {
 
     if ($('#dialog').length > 0) {
         $('#dialog').dialog({
-            height: 250,
+            height: 265,
             width: 400,
             modal: true,
             autoOpen: false,
@@ -263,9 +252,8 @@ $(document).ready(function () {
 
         $("#id_problem_category_id_js").change(function () {
             var idproblem = $("#id_problem").val();
-            console.log(idproblem);
-            if(idproblem!==undefined) {
-                $.getJSON("./get_problems_by_category.php", {id: $(this).val(),idproblem: idproblem, ajax: 'true'}, function (j) {
+            if(idproblem !== undefined) {
+                $.getJSON("ajax/get_problems_by_category.php", {id: $(this).val(),idproblem: idproblem, ajax: 'true'}, function (j) {
                     var options = '';
                     $.each(j, function (key, val) {
                         options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
@@ -273,8 +261,7 @@ $(document).ready(function () {
                     $("#id_problem_id_js").html(options);
                 })
             } else {
-                console.log("iiii");
-                $.getJSON("./get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
+                $.getJSON("ajax/get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
                     var options = '';
                     $.each(j, function (key, val) {
                         options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
