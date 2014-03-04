@@ -48,7 +48,8 @@ class mod_lips_configure_language_form extends moodleform {
 
         // Get web service class from the file config.
         $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
-        require_once(dirname(__FILE__) . '/../' . $config['web_services']['service_languages_class'] . '.php');
+        require_once(dirname(__FILE__) . '/../webservices/' .
+            $config['web_services']['service_languages_class'] . '.php');
         $mform =& $this->_form;
 
         // Current language informations.
@@ -216,7 +217,7 @@ class mod_lips_configure_picture_form extends moodleform {
             return;
         }
 
-        if(!is_writable('images/')) {
+        if (!is_writable('images/')) {
             echo $PAGE->get_renderer('mod_lips')->display_notification(get_string('administration_language_image_rights',
                     'lips'),
                 'ERROR');

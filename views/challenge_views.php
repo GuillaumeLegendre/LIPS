@@ -42,7 +42,7 @@ class page_cancel_challenge extends page_view {
     private $originv;
     private $originaction;
 
-    function  __construct($cm, $id, $originv, $originaction) {
+    public function  __construct($cm, $id, $originv, $originaction) {
         parent::__construct($cm, "cancelChallenge");
 
         $this->idchallenge = $id;
@@ -53,7 +53,7 @@ class page_cancel_challenge extends page_view {
     /**
      * Display the message of confirmation.
      */
-    function display_content() {
+    protected function display_content() {
         $message = $this->lipsoutput->display_h2(get_string('administration_cancel_challenge_confirmation', 'lips'));
 
         $continueurl = new moodle_url('action.php',

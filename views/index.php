@@ -45,13 +45,13 @@ class page_index extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm, $access) {
+    public function  __construct($cm, $access) {
         parent::__construct($cm, "index");
 
         $this->access = $access;
     }
 
-    function display() {
+    public function display() {
 
         if ($this->access == false) {
             parent::display_denied_header();
@@ -68,7 +68,7 @@ class page_index extends page_view {
     /**
      * Display the page_index content
      */
-    function display_content() {
+    protected function display_content() {
         global $USER;
 
         // User details.

@@ -65,7 +65,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      */
     public function display_h1($title, array $attributes = null) {
         return html_writer::tag('h1', format_string($title), array_merge(
-            ($attributes ? $attributes : array()), 
+            ($attributes ? $attributes : array()),
             array('class' => 'lips')
         ));
     }
@@ -79,7 +79,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      */
     public function display_h2($title, array $attributes = null) {
         $html = html_writer::tag('h2', format_string($title), array_merge(
-            ($attributes ? $attributes : array()), 
+            ($attributes ? $attributes : array()),
             array('class' => 'lips')
         ));
         $html .= html_writer::tag('div', null, array('class' => 'h2_sub'));
@@ -97,7 +97,7 @@ class mod_lips_renderer extends plugin_renderer_base {
      */
     public function display_h3($title, array $attributes = null, $sub = true) {
         $html = html_writer::tag('h3', format_string($title), array_merge(
-            ($attributes ? $attributes : array()), 
+            ($attributes ? $attributes : array()),
             array('class' => 'lips')
         ));
 
@@ -195,10 +195,10 @@ class mod_lips_renderer extends plugin_renderer_base {
         $userpicture = get_user_picture_url(array('id_user_moodle' => $moodleuserdetails->id), 'f1');
         $userstatus = get_user_status($userdetails->id, $lips->id);
 
-        // Picture
+        // Picture.
         $menu = '<table id="profile-menu"><tr><td rowspan="3" id="picture"><img src="' . $userpicture . '" id="picture"/></td>';
 
-        // Buttons
+        // Buttons.
         $menu .= '<td id="button">';
         if ($iduser != null && $iduser != $currentuserdetails->id) {
             if (is_following($currentuserdetails->id, $userdetails->id)) {

@@ -520,7 +520,8 @@ class mod_lips_problem_modify_form extends moodleform {
             if (empty($data->problem_label)) {
                 $errors['emptyProblemLabel'] = get_string('administration_language_form_select_name_error', 'lips');
             } else {
-                if ($data->inputProblemCurrentName != $data->problem_label && problem_exists($data->problem_label, $data->problem_category_id)) {
+                if ($data->inputProblemCurrentName != $data->problem_label &&
+                    problem_exists($data->problem_label, $data->problem_category_id)) {
                     $errors['alreadyExists'] = get_string('administration_problem_already_exists', 'lips');
                 }
             }

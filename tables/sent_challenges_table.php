@@ -65,7 +65,8 @@ class sent_challenges_table extends table_sql {
             TABLE_VAR_PAGE   => 'page_sent',
         );
 
-        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label, difficulty_points,
+        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name,
+        difficulty_label, difficulty_points,
         challenge_to, firstname, lastname, challenge_state, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_to = mlu_from.id
@@ -108,7 +109,11 @@ class sent_challenges_table extends table_sql {
                 array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'page_received' => $pagereceived)));
         } else {
             $this->define_baseurl(new moodle_url('view.php',
-                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'id_user' => $iduser, 'page_received' => $pagereceived)));
+                array('id' => $cm->id,
+                    'view' => 'profile',
+                    'action' => 'challenges',
+                    'id_user' => $iduser,
+                    'page_received' => $pagereceived)));
         }
 
         $this->define_headers(array(

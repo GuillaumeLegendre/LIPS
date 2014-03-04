@@ -55,7 +55,7 @@ class received_challenges_table extends table_sql {
         parent::__construct("mdl_lips_challenges_table");
         $this->cm = $cm;
         $this->owner = $owner;
-        
+
         $this->request  = array(
             TABLE_VAR_SORT   => 'tsort',
             TABLE_VAR_HIDE   => 'thide',
@@ -108,7 +108,11 @@ class received_challenges_table extends table_sql {
                 array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'page_sent' => $pagesent)));
         } else {
             $this->define_baseurl(new moodle_url('view.php',
-                array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'id_user' => $iduser, 'page_sent' => $pagesent)));
+                array('id' => $cm->id,
+                    'view' => 'profile',
+                    'action' => 'challenges',
+                    'id_user' => $iduser,
+                    'page_sent' => $pagesent)));
         }
 
         $this->define_headers(array(get_string('language', 'lips'), get_string('problem', 'lips'), get_string('category', 'lips'),

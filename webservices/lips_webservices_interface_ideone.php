@@ -32,7 +32,6 @@ require_once(dirname(__FILE__) . '/lips_webservices_interface.php');
 class lips_webservices_interface_ideone implements lips_webservices_interface {
 
     public static function execute($source, $language) {
-        // creating soap client.
         $languageid = "";
         $client = new SoapClient("http://ideone.com/api/1/service.wsdl");
         $languagessupported = $client->getLanguages("jsenac", "lips");
@@ -42,11 +41,11 @@ class lips_webservices_interface_ideone implements lips_webservices_interface {
             }
         }
 
-        $testArray = $client->createSubmission("jsenac", "lips", $source, $languageid, "", true, true);
-        $res = $client->getSubmissionDetails("jsenac", "lips", $testArray['link'], true, true, true, true, true);
+        $testarray = $client->createSubmission("jsenac", "lips", $source, $languageid, "", true, true);
+        $res = $client->getSubmissionDetails("jsenac", "lips", $testarray['link'], true, true, true, true, true);
         while ($res['status'] != 0) {
             sleep(3);
-            $res = $client->getSubmissionDetails("jsenac", "lips", $testArray['link'], true, true, true, true, true);
+            $res = $client->getSubmissionDetails("jsenac", "lips", $testarray['link'], true, true, true, true, true);
         }
         $resarray = array();
         $resarray['error'] = $res['stderr'];

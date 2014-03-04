@@ -40,7 +40,7 @@ require_once(dirname(__FILE__) . '/page_view.php');
 class page_problem extends page_view {
     private $id;
 
-    function  __construct($cm, $id) {
+    public function  __construct($cm, $id) {
         parent::__construct($cm, "problem");
 
         $this->id = $id;
@@ -49,7 +49,7 @@ class page_problem extends page_view {
     /**
      * Display the view
      */
-    function display() {
+    public function display() {
 
         // Manage rights.
         if (problem_exists_for_conditions(array('id' => $this->id))) {
@@ -69,7 +69,7 @@ class page_problem extends page_view {
         parent::display_footer();
     }
 
-    function display_content() {
+    protected function display_content() {
         global $USER, $CFG, $OUTPUT;
 
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
@@ -78,7 +78,7 @@ class page_problem extends page_view {
         // Get web service class from the file config.
         $config = parse_ini_file($CFG->dirroot . "/mod/lips/config.ini", true);
         $servicecompilclass = $config['web_services']['service_compil_class'];
-        require_once(dirname(__FILE__) . '/../' . $servicecompilclass . '.php');
+        require_once(dirname(__FILE__) . '/../webservices/' . $servicecompilclass . '.php');
 
         // Problem details.
         $lips = get_current_instance();
@@ -130,8 +130,11 @@ class page_problem extends page_view {
                                     'SUCCESS');
                             }
                         } else {
-                            insert_bad_solution($data->problem_answer, $this->id, $USER->id, $details[$this->id]->problem_category_id);
-                            $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"), 'ERROR');
+                            insert_bad_solution($data->problem_answer,
+                                $this->id, $USER->id,
+                                $details[$this->id]->problem_category_id);
+                            $notifanswer = $this->lipsoutput->display_notification(get_string("problem_solved_fail", "lips"),
+                                'ERROR');
                         }
                     }
                 }
@@ -196,15 +199,15 @@ class page_problem extends page_view {
 
         echo '<span style="float: right; margin: 9px 5px 0 5px;">|</span>';
 
-        // Problem help
+        // Problem help.
         echo $OUTPUT->render(new action_link(new moodle_url('view.php', array(
-            'id' => $this->cm->id,
-            'view' => 'tuto',
-            'action' => 'resolution'
-            )), 
-        get_string('help'), 
-        null, 
-        array('class' => 'title-right-link documentation')));
+                'id' => $this->cm->id,
+                'view' => 'tuto',
+                'action' => 'resolution'
+            )),
+            get_string('help'),
+            null,
+            array('class' => 'title-right-link documentation')));
 
         // Problem title.
         echo $this->lipsoutput->display_h2($details[$this->id]->problem_label);
@@ -324,7 +327,7 @@ class page_delete_problem extends page_view {
     private $originaction;
     private $categoryid;
 
-    function  __construct($cm, $id, $originv, $originaction, $categoryid = null) {
+    public function  __construct($cm, $id, $originv, $originaction, $categoryid = null) {
         parent::__construct($cm, "deleteProblem");
         $this->id = $id;
         $this->originv = $originv;
@@ -335,7 +338,7 @@ class page_delete_problem extends page_view {
     /**
      * Display the message of confirmation.
      */
-    function display_content() {
+    protected function display_content() {
         $details = get_problem_details($this->id);
         $message = $this->lipsoutput->display_h2(get_string('administration_delete_problem_confirmation', 'lips') .
             " " . $details[$this->id]->problem_label . " ?");
@@ -373,14 +376,14 @@ class page_delete_problem extends page_view {
  */
 class page_delete_problems extends page_view {
 
-    function  __construct($cm) {
+    public function  __construct($cm) {
         parent::__construct($cm, "deleteProblems");
     }
 
     /**
      * Display the message of confirmation.
      */
-    function display_content() {
+    protected function display_content() {
         global $CFG;
         require_once(dirname(__FILE__) . '/../form/mod_lips_problem_form.php');
         $message = "";
@@ -420,7 +423,7 @@ class page_delete_problems extends page_view {
 class page_solutions extends page_view {
     private $id;
 
-    function  __construct($cm, $id) {
+    public function  __construct($cm, $id) {
         parent::__construct($cm, "solutions");
         $this->id = $id;
     }
@@ -428,7 +431,7 @@ class page_solutions extends page_view {
     /**
      * Display the message of confirmation.
      */
-    function display_content() {
+    protected function display_content() {
         global $USER;
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
 

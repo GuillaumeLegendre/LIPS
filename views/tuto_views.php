@@ -44,14 +44,14 @@ class page_tuto_language extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    public function  __construct($cm) {
         parent::__construct($cm, "administration");
     }
 
     /**
      * Display the page_tuto_language content
      */
-    function display_content() {
+    protected function display_content() {
         global $CFG;
 
         // Administration title.
@@ -60,7 +60,7 @@ class page_tuto_language extends page_view {
         // Administration menu.
         echo $this->lipsoutput->display_administration_menu();
 
-        // Tutorial
+        // Tutorial.
         echo file_get_contents('tutorials/language.html');
     }
 }
@@ -80,14 +80,14 @@ class page_tuto_problem extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    public function  __construct($cm) {
         parent::__construct($cm, "administration");
     }
 
     /**
      * Display the page_tuto_problem content
      */
-    function display_content() {
+    protected function display_content() {
         global $CFG;
 
         // Administration title.
@@ -96,7 +96,7 @@ class page_tuto_problem extends page_view {
         // Administration menu.
         echo $this->lipsoutput->display_administration_menu();
 
-        // Tutorial
+        // Tutorial.
         echo file_get_contents('tutorials/problem.html');
     }
 }
@@ -116,17 +116,17 @@ class page_tuto_resolution extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    public function  __construct($cm) {
         parent::__construct($cm, "problem");
     }
 
     /**
      * Display the page_tuto_resolution content
      */
-    function display_content() {
+    protected function display_content() {
         global $CFG;
-        
-        // Tutorial
+
+        // Tutorial.
         echo file_get_contents('tutorials/resolution.html');
     }
 }

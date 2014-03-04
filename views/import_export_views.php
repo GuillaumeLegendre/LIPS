@@ -44,14 +44,14 @@ class page_import_problems extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    public function  __construct($cm) {
         parent::__construct($cm, "administration");
     }
 
     /**
      * Display the page_import_problems content
      */
-    function display_content() {
+    protected function display_content() {
         global $PAGE;
 
         $context = $PAGE->context;
@@ -82,14 +82,14 @@ class page_export_problems extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    public function  __construct($cm) {
         parent::__construct($cm, "administration");
     }
 
     /**
      * Display the page_export_problems content
      */
-    function display_content() {
+    protected function display_content() {
         global $PAGE;
 
         $context = $PAGE->context;
