@@ -307,7 +307,7 @@ $(document).ready(function () {
                     });
 
                     $.ajax({
-                        url: 'challenge_users.php',
+                        url: 'ajax/challenge_users.php',
                         type: 'POST',
                         data: {
                             action: 'post',
@@ -333,7 +333,7 @@ $(document).ready(function () {
 
         // Get users
         $.ajax({
-            url: 'challenge_users.php',
+            url: 'ajax/challenge_users.php',
             type: 'POST',
             data: {
                 action: 'get',
