@@ -195,9 +195,10 @@ class page_problem extends page_view {
          *------------------------------*/
 
         // Category documentation.
-        echo $this->lipsoutput->display_documentation($categorydetails);
-
-        echo '<span style="float: right; margin: 9px 5px 0 5px;">|</span>';
+        if($categorydetails->category_documentation != null) {
+            echo $this->lipsoutput->display_documentation($categorydetails);
+            echo '<span style="float: right; margin: 9px 5px 0 5px;">|</span>';
+        }
 
         // Problem help.
         echo $OUTPUT->render(new action_link(new moodle_url('view.php', array(

@@ -699,7 +699,7 @@ class mod_lips_renderer extends plugin_renderer_base {
                 if ($userrank == null) {
                     $display .= '<p class="rank-rank">' . get_string('unranked', 'lips') . '</p>';
                 } else {
-                    $display .= '<p class="rank-rank">Classement ' . $numberofusers . ' / ' . $numberofusers . '</p>';
+                    $display .= '<p class="rank-rank">Classement ' . $userrank . ' / ' . $numberofusers . '</p>';
                 }
 
                 $display .= '</td></tr></table>';

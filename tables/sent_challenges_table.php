@@ -57,7 +57,7 @@ class sent_challenges_table extends table_sql {
         $this->owner = $owner;
 
         $this->request  = array(
-            TABLE_VAR_SORT   => 'tsort',
+            TABLE_VAR_SORT   => 'tsort_sent',
             TABLE_VAR_HIDE   => 'thide',
             TABLE_VAR_SHOW   => 'tshow',
             TABLE_VAR_IFIRST => 'tifirst',
@@ -109,7 +109,9 @@ class sent_challenges_table extends table_sql {
                 array('id' => $cm->id, 'view' => 'profile', 'action' => 'challenges', 'page_received' => $pagereceived)));
         } else {
             $this->define_baseurl(new moodle_url('view.php',
-                array('id' => $cm->id,
+
+                array(
+                    'id' => $cm->id,
                     'view' => 'profile',
                     'action' => 'challenges',
                     'id_user' => $iduser,

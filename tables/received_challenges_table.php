@@ -57,7 +57,7 @@ class received_challenges_table extends table_sql {
         $this->owner = $owner;
 
         $this->request  = array(
-            TABLE_VAR_SORT   => 'tsort',
+            TABLE_VAR_SORT   => 'tsort_received',
             TABLE_VAR_HIDE   => 'thide',
             TABLE_VAR_SHOW   => 'tshow',
             TABLE_VAR_IFIRST => 'tifirst',
@@ -65,8 +65,8 @@ class received_challenges_table extends table_sql {
             TABLE_VAR_PAGE   => 'page_received',
         );
 
-        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label, difficulty_points,
-        challenge_from, firstname, lastname, challenge_state, compile_language";
+        $fieldstoselect = "cha.id, challenge_problem, problem_label, problem_category_id, category_name, difficulty_label,
+        difficulty_points, challenge_from, firstname, lastname, challenge_state, compile_language";
         $tablesfrom = "mdl_lips_challenge cha
             JOIN mdl_lips_user mlu_from ON cha.challenge_from = mlu_from.id
             JOIN mdl_user mu ON mlu_from.id_user_moodle = mu.id
