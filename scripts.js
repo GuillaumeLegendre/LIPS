@@ -680,4 +680,8 @@ $(document).ready(function () {
             source: mytablesentu
         });
     }
+
+    if($('.solve-button.mform #id_submit').length > 0) {
+        $(".solve-button.mform").attr("action", "view.php#answers");
+    }
 });

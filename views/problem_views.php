@@ -273,7 +273,7 @@ class page_problem extends page_view {
         }
 
         // Answer.
-        echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("style" => "margin-bottom: 10px;"), false);
+        echo $this->lipsoutput->display_h3(get_string("answer", "lips"), array("id" => "answers", "style" => "margin-bottom: 10px;"), false);
 
         echo $notifanswer;
 

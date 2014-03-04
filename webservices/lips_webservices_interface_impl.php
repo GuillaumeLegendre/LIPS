@@ -56,6 +56,7 @@ class lips_webservices_interface_impl implements lips_webservices_interface {
         $serviceurl = $config['web_services']['service_compil_url'];
 
         $json = file_get_contents($serviceurl, false, $context);
+
         if (!$json) {
             return false;
         }
