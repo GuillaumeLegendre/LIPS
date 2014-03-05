@@ -44,16 +44,26 @@ if (isset($_POST['action'])) {
             if (isset($_POST['userid'])) {
                 $userid = $_POST['userid'];
 
-                $problems = $DB->get_records_sql("
-                    SELECT mlp.id, problem_label
-                    FROM mdl_lips_problem_solved mlps
-                    JOIN mdl_lips_problem mlp ON mlps.problem_solved_problem = mlp.id
-                    WHERE mlps.problem_solved_user = $userid
-                    GROUP BY mlp.id");
+                $problems = $DB->get_records_sql('SELECT problem_id, problem_label FROM (
+                    (
+                        SELECT mlp.id AS problem_id, mlp.problem_label
+                        FROM mdl_lips_problem_solved mls
+                        JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_solved_problem 
+                        WHERE problem_solved_user = ' . $userid . '
+                        AND problem_testing = 0
+                    )
+                    UNION ALL
+                    (
+                        SELECT mlp.id AS problem_id, mlp.problem_label
+                        FROM mdl_lips_problem_failed mls
+                        JOIN mdl_lips_problem mlp ON mlp.id = mls.problem_failed_problem 
+                        WHERE problem_failed_user = ' . $userid . '
+                        AND problem_testing = 0
+                    )) t GROUP BY problem_id');
 
                 $problemstable = array();
                 foreach ($problems as $problem) {
-                    $problemstable[$problem->id] = $problem->problem_label;
+                    $problemstable[$problem->problem_id] = $problem->problem_label;
                 }
 
                 echo json_encode($problemstable);

@@ -37,7 +37,7 @@ abstract class page_view {
      * @param object $cm Moodle context
      * @param object $view Moodle view
      */
-    function __construct($cm, $view) {
+    public function __construct($cm, $view) {
         global $PAGE;
 
         $this->cm = $cm;
@@ -48,7 +48,7 @@ abstract class page_view {
     /**
      * Display the view
      */
-    function display() {
+    public function display() {
         $this->display_header();
         $this->display_content();
         $this->display_footer();
@@ -57,26 +57,24 @@ abstract class page_view {
     /**
      * Display the header
      */
-    function display_header() {
-        global $OUTPUT;
-
+    protected function display_header() {
+        global $OUTPUT, $PAGE;
+        $PAGE->requires->jquery();
+        $PAGE->requires->jquery_plugin('ui');
+        $PAGE->requires->jquery_plugin('ui-css');
         echo $OUTPUT->header();
         echo $this->lipsoutput->tabs($this->view);
-
         // Add scripts.
-        $this->add_css_tag("//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css");
         $this->add_css_tag('./styles/styles.css');
-        $this->add_script_tag('./js/jquery.js');
         $this->add_script_tag('./scripts.js');
         $this->add_script_tag('./ace/ace-builds/src-noconflict/ace.js');
-        $this->add_script_tag("//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js");
         $this->add_script_tag("./ace/ace-builds/src-noconflict/ext-language_tools.js");
     }
 
     /**
      * Display the denied header
      */
-    function display_denied_header() {
+    protected function display_denied_header() {
         global $OUTPUT;
 
         echo $OUTPUT->header();
@@ -90,7 +88,7 @@ abstract class page_view {
     /**
      * Display the footer
      */
-    function display_footer() {
+    protected function display_footer() {
         global $OUTPUT;
 
         echo $OUTPUT->footer();
@@ -101,7 +99,7 @@ abstract class page_view {
      *
      * @param string $script Script to add
      */
-    function add_script_tag($script) {
+    private function add_script_tag($script) {
         echo '<script src="' . $script . '" type="text/javascript" charset="utf-8"></script>';
     }
 
@@ -110,7 +108,7 @@ abstract class page_view {
      *
      * @param string $css Scss to add
      */
-    function add_css_tag($css) {
+    private function add_css_tag($css) {
         echo "<link rel='stylesheet' href='" . $css . "'>";
     }
 }

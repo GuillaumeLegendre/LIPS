@@ -27,9 +27,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(__FILE__) . '/lips_rest_interface.php');
+require_once(dirname(__FILE__) . '/lips_webservices_interface.php');
 
-class lips_rest_interface_impl implements lips_rest_interface {
+class lips_webservices_interface_impl implements lips_webservices_interface {
 
     public static function execute($source, $language) {
 
@@ -56,6 +56,7 @@ class lips_rest_interface_impl implements lips_rest_interface {
         $serviceurl = $config['web_services']['service_compil_url'];
 
         $json = file_get_contents($serviceurl, false, $context);
+
         if (!$json) {
             return false;
         }

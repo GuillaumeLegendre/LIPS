@@ -2,23 +2,23 @@
  *  Title styles
  *-------------------------------*/
 
-h1, h2, h3 {
+h1.lips, h2.lips, h2.main, h3.lips {
     text-align: left;
     margin-top: 5px;
+    color:#009DE0;
 }
 
-h1 {
+h1.lips {
     font-size: 1.5em;
 }
 
-h2 {
+h2.lips, h2.main {
     font-size: 1.3em;
     margin-bottom: 1px;
 }
 
-h3 {
-    font-size: 1.1em;
-    margin-bottom: 1px;
+h2.main {
+    text-align:center;
 }
 
 .h2_sub {
@@ -28,11 +28,29 @@ h3 {
     padding-bottom: 15px;
 }
 
+h2.main:before, h2.main:after {
+    content: " ... ";
+}
+
+h3.lips {
+    font-size: 1.1em;
+    margin-bottom: 1px;
+}
+
 .h3_sub {
     border-top: 1px dashed #555555;
     width: 100%;
     margin: 0;
     padding-bottom: 15px;
+}
+
+.title-right-link {
+    float: right;
+    margin-top: 7px;
+}
+
+.title-right-link.documentation {
+    margin-top: 10px;
 }
 
 /*---------------------------------
@@ -169,7 +187,7 @@ h3 {
     padding: 5px 10px 6px;
     text-decoration: none;
     background-color: #9DC3F6;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
@@ -403,32 +421,45 @@ h3 {
 
 #profile-menu {
     width: 100%;
-    height: 120px;
+    border-collapse: collapse;
+    border: none;
+}
+
+#profile-menu, #profile-menu tr, #profile-menu td {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
 }
 
 #profile-menu #picture {
-    position: relative;
-    z-index: 5;
+    width: 120px;
+}
+
+#profile-menu #picture img {
     width: 120px;
     height: 120px;
     border: 1px solid #555555;
 }
 
-#profile-menu .right-button {
+#profile-menu #button {
+    padding: 0 0 6px 0;
+}
+
+#profile-menu #button .right-button {
     float: right;
-    margin-top: 10px;
+}
+
+#profile-menu #button .right-button:first-child {
+    margin-left: 15px;
 }
 
 #profile-menu #background {
-    position: relative;
-    z-index: 3;
-    bottom: 80px;
     line-height: 60px;
     background-color: #555555;
-    padding-left: 130px;
 }
 
 #profile-menu #background #user {
+    margin-left: 10px;
     font-size: 1.7em;
     color: #FFFFFF;
 }
@@ -438,7 +469,7 @@ h3 {
     line-height: 30px;
 }
 
-#profile-menu #background #infos #role, #profile-menu #background #infos #rank {
+#profile-menu #background #infos div {
     color: #FFFFFF;
     font-weight: bold;
     margin-right: 10px;
@@ -446,11 +477,9 @@ h3 {
 }
 
 #profile-menu #links {
-    position: relative;
-    display: inline-block;
-    left: 95px;
-    bottom: 91px;
     list-style: none;
+    margin: 2px 0 0 0;
+    padding: 0;
 }
 
 #profile-menu #links li {

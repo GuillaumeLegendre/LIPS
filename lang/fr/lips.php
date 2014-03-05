@@ -361,3 +361,4 @@ $string['problem_testing_info'] = 'Ce problème est en mode <strong>Test</strong
 $string['problem_challenge_success'] = 'Les utilisateurs sélectionnés ont été défiés';
 $string['problem_solved_success'] = 'Félicitations vous avez réussi !';
 $string['problem_solved_fail'] = 'Solution incorrecte ';
+$string['answer_empty_error'] = 'Vous devez saisir une réponse';

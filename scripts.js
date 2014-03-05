@@ -225,17 +225,6 @@ function deleteSimilarProblem(id) {
     $("#id_problem_similar").val($("#id_problem_similar").val().replace(" " + id, ""));
 }
 
-function populateselectinstance() {
-    var idinstance = $("#id_language_id_js option:selected").val();
-    $.getJSON("./get_categories_by_instance.php", {id: idinstance, ajax: 'true'}, function (j) {
-        var options = "<option value='all'>Tout</option>";
-        $.each(j, function (key, val) {
-            options += '<option value="' + val.id_language + '">' + val.category_name + '</option>';
-        });
-        $("#id_category_id_js").html(options);
-    })
-}
-
 $(document).ready(function () {
 
     /*---------------------------------
@@ -244,7 +233,7 @@ $(document).ready(function () {
 
     if ($('#dialog').length > 0) {
         $('#dialog').dialog({
-            height: 250,
+            height: 265,
             width: 400,
             modal: true,
             autoOpen: false,
@@ -252,7 +241,8 @@ $(document).ready(function () {
             buttons: {
                 Conseiller: function () {
                     if ($.inArray($("#id_problem_id_js option:selected").val(), $("#id_problem_similar").val().split(" ")) == -1) {
-                        $("#similar-problems #problems").append('<p id="' + $("#id_problem_id_js option:selected").val() + '">' + $("#id_problem_id_js option:selected").text() + '<img src="images/delete_similar.png" title="Supprimer" class="delete" onClick="deleteSimilarProblem(' + $("#id_problem_id_js option:selected").val() + ')"/></p>');
+                        $("#similar-problems #problems").append('<p id="' + $("#id_problem_id_js option:selected").val() + '">' + $("#id_problem_id_js option:selected").text() + '<img ' +
+                            'src="images/delete_similar.png" title="Supprimer" class="delete" onClick="deleteSimilarProblem(' + $("#id_problem_id_js option:selected").val() + ')"/></p>');
                         $("#id_problem_similar").val($("#id_problem_similar").val() + " " + $("#id_problem_id_js option:selected").val());
                     }
                     $(this).dialog("close");
@@ -261,13 +251,25 @@ $(document).ready(function () {
         });
 
         $("#id_problem_category_id_js").change(function () {
-            $.getJSON("./get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
-                var options = '';
-                $.each(j, function (key, val) {
-                    options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
-                });
-                $("#id_problem_id_js").html(options);
-            })
+            var idproblem = $("#id_problem").val();
+            if(idproblem !== undefined) {
+                $.getJSON("ajax/get_problems_by_category.php", {id: $(this).val(),idproblem: idproblem, ajax: 'true'}, function (j) {
+                    var options = '';
+                    $.each(j, function (key, val) {
+                        options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
+                    });
+                    $("#id_problem_id_js").html(options);
+                })
+            } else {
+                $.getJSON("ajax/get_problems_by_category.php", {id: $(this).val(), ajax: 'true'}, function (j) {
+                    var options = '';
+                    $.each(j, function (key, val) {
+                        options += '<option value="' + j[key].id + '">' + j[key].problem_label + '</option>';
+                    });
+                    $("#id_problem_id_js").html(options);
+                })
+            }
+
         });
 
         $('#problem-similar-button').on('click', function () {
@@ -305,7 +307,7 @@ $(document).ready(function () {
                     });
 
                     $.ajax({
-                        url: 'challenge_users.php',
+                        url: 'ajax/challenge_users.php',
                         type: 'POST',
                         data: {
                             action: 'post',
@@ -331,7 +333,7 @@ $(document).ready(function () {
 
         // Get users
         $.ajax({
-            url: 'challenge_users.php',
+            url: 'ajax/challenge_users.php',
             type: 'POST',
             data: {
                 action: 'get',
@@ -677,5 +679,9 @@ $(document).ready(function () {
             minLength: 1,
             source: mytablesentu
         });
+    }
+
+    if($('.solve-button.mform #id_submit').length > 0) {
+        $(".solve-button.mform").attr("action", "view.php#answers");
     }
 });

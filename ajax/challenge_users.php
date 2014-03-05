@@ -30,9 +30,9 @@
 define('AJAX_SCRIPT', true);
 header('content-type: text/html; charset=utf-8');
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once(dirname(__FILE__) . '/lib.php');
-require_once(dirname(__FILE__) . '/locallib.php');
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
+require_once(dirname(dirname(__FILE__)) . '/lib.php');
+require_once(dirname(dirname(__FILE__)) . '/locallib.php');
 
 global $USER;
 

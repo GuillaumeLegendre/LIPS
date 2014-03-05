@@ -315,7 +315,7 @@ class mod_lips_problems_delete_form extends moodleform {
             $mform->addElement('submit', 'submit', get_string('delete', 'lips'), array('class' => 'lips-button'));
         } else {
             $msg = get_string("administration_empty_problems", "lips");
-            $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'WARNING');
+            $html = $PAGE->get_renderer('mod_lips')->display_notification($msg, 'INFO');
             $mform->addElement('html', $html);
             $mform->addElement('html', '<br/><br/><br/><br/><br/><br/>');
         }
@@ -364,7 +364,7 @@ class mod_lips_problem_modify_form extends moodleform {
         $mform->addElement('select', 'correction', null);
 
         // ID.
-        $mform->addElement('hidden', 'id_problem', null, null);
+        $mform->addElement('hidden', 'id_problem', null, array("id" => "id_problem"));
         $mform->setType('id_problem', PARAM_INT);
         $mform->setDefault('id_problem', $mcustomdata['id']);
 
@@ -452,17 +452,19 @@ class mod_lips_problem_modify_form extends moodleform {
          * Similar problems
          *------------------------------------------------*/
 
+        $idproblem = $mcustomdata['id'];
         $categorieswithproblems = array();
-        foreach (fetch_all_categories_with_problems(get_current_instance()->id) as $category) {
+        foreach (fetch_all_categories_with_problems(get_current_instance()->id, $idproblem) as $category) {
             $categorieswithproblems[$category->problem_category_id] = $category->category_name;
         }
         $problems = array();
         foreach (fetch_problems_by_category(key($categorieswithproblems)) as $problem) {
-            $problems[$problem->id] = $problem->problem_label;
+            if ($problem->id != $idproblem) {
+                $problems[$problem->id] = $problem->problem_label;
+            }
         }
 
         // Display stored relation of similar problems.
-        $idproblem = $mcustomdata['id'];
         $valuehiddenfield = "";
         $similarproblemshtml = '<div id="similar-problems"><div id="similar-add">
             <img src="images/add_similar.png" title="Ajouter" id="problem-similar-button"></div><div id="problems">';
@@ -518,7 +520,8 @@ class mod_lips_problem_modify_form extends moodleform {
             if (empty($data->problem_label)) {
                 $errors['emptyProblemLabel'] = get_string('administration_language_form_select_name_error', 'lips');
             } else {
-                if ($data->inputProblemCurrentName != $data->problem_label && problem_exists($data->problem_label, $data->problem_category_id)) {
+                if ($data->inputProblemCurrentName != $data->problem_label &&
+                    problem_exists($data->problem_label, $data->problem_category_id)) {
                     $errors['alreadyExists'] = get_string('administration_problem_already_exists', 'lips');
                 }
             }
@@ -677,7 +680,7 @@ class mod_lips_problems_resolve_form extends moodleform {
         $mcustomdata = $this->_customdata;
 
         if ($mcustomdata['idproblem'] != null) {
-            $code = htmlspecialchars(get_code_to_resolve($mcustomdata['idproblem']));
+            $code = get_code_to_resolve($mcustomdata['idproblem']);
             $mform->addElement('html', '<div id="answerEditor"" class="ace">' .
                 htmlspecialchars(get_code_to_resolve($mcustomdata['idproblem'])) . '</div>');
             $mform->addElement('textarea', 'problem_answer', null, array('rows' => 1, 'cols' => 1, 'class' => 'editorCode'));
@@ -689,5 +692,23 @@ class mod_lips_problems_resolve_form extends moodleform {
 
         // Export button.
         $mform->addElement('submit', 'submit', get_string('send_response', 'lips'), array('class' => 'lips-button'));
+    }
+
+    /**
+     * Form custom validation
+     *
+     * @param array $data Form data
+     * @param array $files Form uploaded files
+     * @return array Errors array
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        $errors = array();
+        if (isset($data->problem_answer)) {
+            if (empty($data->problem_answer)) {
+                $errors['emptyAnswer'] = get_string('answer_empty_error', 'lips');
+            }
+        }
+        return $errors;
     }
 }

@@ -44,14 +44,14 @@ class page_list_categories extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    public function  __construct($cm) {
         parent::__construct($cm, "problems");
     }
 
     /**
      * Display the page_list_categories content
      */
-    function display_content() {
+    protected function display_content() {
         global $CFG;
         require_once("$CFG->libdir/tablelib.php");
         require_once(dirname(__FILE__) . '/../tables/categories_table.php');
@@ -77,7 +77,7 @@ class page_category extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm, $id) {
+    public function  __construct($cm, $id) {
         parent::__construct($cm, "category");
 
         $this->id = $id;
@@ -86,7 +86,7 @@ class page_category extends page_view {
     /**
      * Display the page_category content
      */
-    function display_content() {
+    protected function display_content() {
         require_once(dirname(__FILE__) . '/../tables/problems_table.php');
         require_once(dirname(__FILE__) . '/../form/mod_lips_search_form.php');
 
@@ -146,7 +146,7 @@ class page_category_documentation extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm, $id) {
+    public function  __construct($cm, $id) {
         parent::__construct($cm, "categoryDocumentation");
         $this->id = $id;
     }
@@ -154,7 +154,7 @@ class page_category_documentation extends page_view {
     /**
      * Display the category_documentation content
      */
-    function display_content() {
+    protected function display_content() {
         $details = get_category_details($this->id);
         echo $this->lipsoutput->display_h2($details->category_name . " - " . get_string('documentation', 'lips'));
         echo $details->category_documentation;
@@ -174,7 +174,7 @@ class page_delete_category extends page_view {
     private $originv;
     private $originaction;
 
-    function  __construct($cm, $id, $originv, $originaction) {
+    public function  __construct($cm, $id, $originv, $originaction) {
         parent::__construct($cm, "deleteCategory");
 
         $this->id = $id;
@@ -185,7 +185,7 @@ class page_delete_category extends page_view {
     /**
      * Display the message of confirmation.
      */
-    function display_content() {
+    protected function display_content() {
         $details = get_category_details($this->id);
         $message = $this->lipsoutput->display_h2(
             get_string('administration_delete_category_confirmation', 'lips') . " " . $details->category_name . " ?");

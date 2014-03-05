@@ -44,14 +44,14 @@ class page_users extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    public function  __construct($cm) {
         parent::__construct($cm, "users");
     }
 
     /**
      * Display the page_users content
      */
-    function display_content() {
+    protected function display_content() {
         global $CFG, $PAGE;
 
         require_once(dirname(__FILE__) . '/../tables/users_table.php');
@@ -99,14 +99,14 @@ class page_rank extends page_view {
      *
      * @param object $cm Moodle context
      */
-    function  __construct($cm) {
+    public function  __construct($cm) {
         parent::__construct($cm, "rank");
     }
 
     /**
      * Display the page_rank content
      */
-    function display_content() {
+    protected function display_content() {
         global $CFG;
         require_once("$CFG->libdir/tablelib.php");
         require_once(dirname(__FILE__) . '/../tables/rank_table_flexible.php');

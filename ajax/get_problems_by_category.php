@@ -28,12 +28,25 @@
  */
 
 define('AJAX_SCRIPT', true);
-require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once(dirname(__FILE__) . '/lib.php');
+
+require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
+require_once(dirname(dirname(__FILE__)) . '/lib.php');
+require_once(dirname(dirname(__FILE__)) . '/locallib.php');
+
+global $DB, $OUTPUT;
+
 $id = $_GET['id'];
-$PAGE->set_url('/mod/lips/get_categories_by_instance.php', array('id' => $id));
+$PAGE->set_url('/mod/lips/ajax/get_problems_by_category.php', array('id' => $id));
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
-$categories = $DB->get_records('lips_category', array('id_language' => $id));
+if (isset($_GET['idproblem'])) {
+    $idproblem = $_GET['idproblem'];
+    $problems = $DB->get_records_sql('SELECT * FROM mdl_lips_problem 
+    	WHERE problem_category_id = '. $id . ' 
+    	AND id <> ' . $idproblem);
+} else {
+    $problems = $DB->get_records('lips_problem', array('problem_category_id' => $id));
+}
+
 echo $OUTPUT->header();
-echo json_encode($categories);
+echo json_encode($problems);
 echo $OUTPUT->footer();
